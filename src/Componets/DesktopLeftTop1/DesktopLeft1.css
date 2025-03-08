@@ -1,0 +1,76 @@
+/* Container */
+.leftsectiontop {
+  background: linear-gradient(
+    to bottom, 
+    rgba(201, 228, 202, 0.5),  /* #C9E4CA with 50% opacity */
+    rgba(207, 232, 239, 0.2)   /* #CFE8EF with 20% opacity */
+  );
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid grey;
+ width: 375px;
+ height: 353px;
+  
+}
+
+/* Heading */
+.leftsectiontop-heading {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Each Event */
+.leftsectiontop-event {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Keeps "Read More" aligned */
+  gap: 10px;
+
+  padding: 10px 0;
+}
+
+/* Image */
+.leftsectiontop-image {
+  width: 42px;
+  height: 43px;
+  border-radius: 5px;
+}
+
+/* Details */
+.leftsectiontop-details {
+  flex: 1;
+}
+
+/* Date */
+.leftsectiontop-date {
+  font-weight: bold;
+}
+
+/* Location */
+.leftsectiontop-location {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Read More */
+.leftsectiontop-link {
+  color: grey;
+  text-decoration: none;
+  white-space: nowrap; /* Prevents wrapping */
+}
+
+/* "See All" Button */
+.leftsectiontop-button {
+  color: #555;
+  text-align: center;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd; /* Adds a line only on top */
+  cursor: pointer;
+  font-weight: bold;
+  display: block;
+}
+
+
