@@ -1,10 +1,12 @@
+/* Middle Section Card */
 .middle-middle-card {
-  background: linear-gradient(to bottom, #554BE70D 5%, #FF6D6D0D 95%);
+  background: linear-gradient(to bottom, #554be70d 5%, #ff6d6d0d 95%);
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 35vw;
-  
+  max-width: 500px; /* Prevents getting too wide on large screens */
+  min-width: 300px; /* Prevents shrinking too much */
 }
 
 /* Profile Header */
@@ -14,6 +16,7 @@
   justify-content: space-between;
 }
 
+/* Profile Picture */
 .middle-profile-pic {
   width: 40px;
   height: 40px;
@@ -21,11 +24,13 @@
   object-fit: cover;
 }
 
+/* Profile Info */
 .middle-profile-info {
   flex-grow: 1;
   margin-left: 10px;
 }
 
+/* Profile Name & Time */
 .middle-profile-top {
   display: flex;
   align-items: center;
@@ -41,6 +46,7 @@
   font-size: 12px;
 }
 
+/* Additional Profile Details */
 .middle-profile-details {
   font-size: 13px;
   color: gray;
@@ -61,6 +67,7 @@
 .middle-content-image {
   width: 100%;
   border-radius: 8px;
+  object-fit: cover;
 }
 
 /* Action Bar (Connect Image on Left, Icons on Right) */
@@ -71,6 +78,7 @@
   padding: 8px 0;
 }
 
+/* Connect Image */
 .middle-connect-image {
   width: 120px;
   cursor: pointer;
@@ -100,4 +108,19 @@
 .middle-see-more {
   color: blue;
   cursor: pointer;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .middle-middle-card {
+    width: 90vw; /* Expands to take most of the screen on small devices */
+    min-width: unset; /* Allows normal shrinking */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .middle-profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

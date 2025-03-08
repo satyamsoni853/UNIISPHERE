@@ -9,9 +9,10 @@
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid grey;
- width: 375px;
- height: 353px;
-  
+  width: 100%;
+  max-width: 375px; /* Prevents it from getting too big */
+  height: auto; /* Allow height to adjust */
+  min-height: 353px; /* Prevents it from shrinking too much */
 }
 
 /* Heading */
@@ -27,7 +28,6 @@
   align-items: center;
   justify-content: space-between; /* Keeps "Read More" aligned */
   gap: 10px;
-
   padding: 10px 0;
 }
 
@@ -73,4 +73,9 @@
   display: block;
 }
 
-
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .leftsectiontop {
+    display: none; /* Hide the left section on small screens */
+  }
+}
