@@ -1,5 +1,5 @@
 /* Container */
-.leftsectiontop {
+.leftsectionbottom-1 {
   background: linear-gradient(
     to bottom, 
     rgba(201, 228, 202, 0.5),  /* #C9E4CA with 50% opacity */
@@ -13,17 +13,19 @@
   max-width: 375px; /* Prevents it from getting too big */
   height: auto; /* Allow height to adjust */
   min-height: 353px; /* Prevents it from shrinking too much */
+  margin-top: 30px;
 }
 
 /* Heading */
-.leftsectiontop-heading {
+.leftsectionbottom-1-heading {
   font-size: 18px;
   margin-bottom: 10px;
   font-weight: bold;
 }
 
 /* Each Event */
-.leftsectiontop-event {
+.leftsectionbottom-1-event {
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between; /* Keeps "Read More" aligned */
@@ -32,37 +34,37 @@
 }
 
 /* Image */
-.leftsectiontop-image {
+.leftsectionbottom-1-image {
   width: 42px;
   height: 43px;
   border-radius: 5px;
 }
 
 /* Details */
-.leftsectiontop-details {
+.leftsectionbottom-1-details {
   flex: 1;
 }
 
 /* Date */
-.leftsectiontop-date {
+.leftsectionbottom-1-date {
   font-weight: bold;
 }
 
 /* Location */
-.leftsectiontop-location {
+.leftsectionbottom-1-location {
   font-size: 14px;
   color: #555;
 }
 
 /* Read More */
-.leftsectiontop-link {
+.leftsectionbottom-1-link {
   color: grey;
   text-decoration: none;
   white-space: nowrap; /* Prevents wrapping */
 }
 
 /* "See All" Button */
-.leftsectiontop-button {
+.leftsectionbottom-1-button {
   color: #555;
   text-align: center;
   margin-top: 10px;
@@ -72,10 +74,23 @@
   font-weight: bold;
   display: block;
 }
+.leftsectionbottom-1-details {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2; /* Reduce line spacing */
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
+}
+.leftsectionbottom-1-date,
+.leftsectionbottom-1-location {
+  margin: 0; /* Remove any margin */
+  padding: 0; /* Remove any padding */
+}
+
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-  .leftsectiontop {
+  .leftsectionbottom-1 {
     display: none; /* Hide the left section on small screens */
   }
 }

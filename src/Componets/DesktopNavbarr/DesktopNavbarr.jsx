@@ -11,7 +11,7 @@ import Unispherelogoicon from './Unispherelogoicon.png';
 
 function DesktopNavbarr() {
   return (
-    <div className="desktop-navbar">
+    <div className="desktop-navbar-1">
       <img src={Homeicon} alt="Home" className="desktop-icon" />
       <img src={Networkicon} alt="Network" className="desktop-icon" />
       <img src={Clendericon} alt="Calendar" className="desktop-icon" />

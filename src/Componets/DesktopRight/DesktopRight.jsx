@@ -1,5 +1,5 @@
 import React from "react";
-import "./DesktopRightsection.css";
+import "./DesktopRight.css";
 import Profileimg from "./Profile.jpeg";
 import ConnectandCollbrate from "./Connect&coll.png";
 import Sugestion1img from "./Sugestion1.png";

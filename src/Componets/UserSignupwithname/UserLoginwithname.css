@@ -1,0 +1,45 @@
+.custom-switch .form-check-input {
+ width: 40px;
+ color: grey;
+}
+
+/* Ensure the slider switches stay in the same line */
+.switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.switch-container span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.custom-switch {
+  margin-left: 10px;
+}
+
+/* Styling for the Continue button */
+.continue-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.continue-btn:hover {
+  background-color: #0056b3;
+}
+
+.continue-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

@@ -1,104 +1,144 @@
-/* Middle Section Card */
+/* Parent Container */
 .middle-middle-card {
-  background: linear-gradient(to bottom, #554be70d 5%, #ff6d6d0d 95%);
-  padding: 15px;
+  position: relative;
+  background: white;
+  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 35vw;
-  max-width: 500px; /* Prevents getting too wide on large screens */
-  min-width: 300px; /* Prevents shrinking too much */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  max-width: 600px; /* Prevents it from getting too big */
+  height: auto; /* Allow height to adjust */
+  min-height: 353px; /* Prevents it from shrinking too much */
+  margin-top: 30px;
+  margin: auto;
+  overflow: hidden;
 }
 
 /* Profile Header */
 .middle-profile-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
 }
 
-/* Profile Picture */
 .middle-profile-pic {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  object-fit: cover;
 }
 
-/* Profile Info */
 .middle-profile-info {
   flex-grow: 1;
-  margin-left: 10px;
-}
-
-/* Profile Name & Time */
-.middle-profile-top {
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
 
 .middle-profile-name {
-  font-weight: 500;
+  font-weight: bold;
 }
 
-.middle-post-time {
-  color: gray;
-  font-size: 12px;
-}
-
-/* Additional Profile Details */
-.middle-profile-details {
-  font-size: 13px;
-  color: gray;
-  margin-top: 2px;
-}
-
-/* Three Dots Icon */
 .middle-options-icon {
-  font-size: 22px;
   cursor: pointer;
 }
 
 /* Main Image */
 .middle-main-image {
-  margin: 10px 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .middle-content-image {
   width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
+  border-radius: 10px;
 }
 
-/* Action Bar (Connect Image on Left, Icons on Right) */
+/* Small Image Overlay */
+.small-images-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.small-image {
+  position: absolute;
+  width: 40px; /* Adjust size */
+  height: auto;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+/* Right End Positioning */
+.right1 {
+  right: 5px;
+  top: 10%;
+}
+.right2 {
+  right: 5px;
+  top: 50%;
+}
+.right3 {
+  right: 5px;
+  bottom: 10%;
+}
+
+/* Left End Positioning */
+.left1 {
+  left: 5px;
+  top: 10%;
+}
+.left2 {
+  left: 5px;
+  top: 50%;
+}
+.left3 {
+  left: 5px;
+  bottom: 10%;
+}
+
+/* Top Positioning */
+.top1 {
+  left: 20%;
+  top: -15px;
+}
+.top2 {
+  left: 45%;
+  top: -15px;
+}
+.top3 {
+  right: 20%;
+  top: -15px;
+}
+
+/* Action Bar */
 .middle-action-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 10px 0;
 }
 
-/* Connect Image */
 .middle-connect-image {
-  width: 120px;
-  cursor: pointer;
+  width: 100px;
 }
 
-/* Icons */
 .middle-action-icons {
   display: flex;
-  gap: 15px;
+  gap: 10px;
 }
 
 .middle-icon {
-  font-size: 28px;
+  font-size: 20px;
   cursor: pointer;
 }
 
 /* Post Text */
 .middle-post-text {
   font-size: 14px;
-  margin-top: 5px;
+  padding-top: 10px;
 }
 
 .middle-post-author {
@@ -108,19 +148,4 @@
 .middle-see-more {
   color: blue;
   cursor: pointer;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-  .middle-middle-card {
-    width: 90vw; /* Expands to take most of the screen on small devices */
-    min-width: unset; /* Allows normal shrinking */
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .middle-profile-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }

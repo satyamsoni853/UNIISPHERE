@@ -1,19 +1,31 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Background from "./Componets/Background/Background";
-import DesktopNavbarr from "./Componets/DesktopNavbarr/DesktopNavbarr";
-import DesktopLeft1 from "./Componets/DesktopLeftTop1/DesktopLeft1";
-import DesktopLeft2 from "./Componets/DesktopLeftTop2/DesktopLeft2";
-import DesktopRightsection from "./Componets/RightSection/DesktopRightsection";
-import DesktopMiddle from "./Componets/DesktopMiddle/DesktopMiddle";
-import View from "./Componets/View/View";
+import "bootstrap/dist/css/bootstrap.min.css";
 
+import UserLogin from "./Componets/UserLogin/UserLogin";
+import UserSignupOtp from './Componets/UserSignupOtp/UserSignupOtp.jsx'
+import  Userloginwithname from './Componets/UserSignupwithname/UserSignupwithname.jsx'
+import AfterOtpSection1 from "./Componets/AfterOtpSection1/AfterOtpSection1.jsx";
+import UserSignupwithpasss from "./Componets/UserSignupwithpasss/UserSignupwithpasss.jsx";
+import DecktopView from './Componets/DesktopView/DesktopView.jsx'
+import Mobileview from './Componets/Mobileview/Mobileview.jsx'
 function App() {
   return (
-    <div className="app-container">
-
-      <View/>
+    <div>
+      <DecktopView/>
       
     </div>
+    // <Router>
+    //   <div className="app-container">
+    //     <Routes>
+    //       <Route path="/home" element={<UserLogin />} />
+    //       <Route path="/" element={<UserLogin />} />
+    //       <Route path="/signup" element={<Userloginwithname />} /> 
+    //       <Route path="/UserSignupOtp" element={<UserSignupOtp />} /> 
+    //       <Route path="/AfterOtpSection1" element={<AfterOtpSection1/>} /> 
+    //     </Routes>
+    //   </div>
+    // </Router>
   );
 }
 

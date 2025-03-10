@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.desktop-view-container {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - /* navbar height */);
+}
+
+.desktop-view-left {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  width: 25%; /* Adjust as needed */
+}
+
+.desktop-view-middle {
+  width: 50%; /* Adjust as needed */
+}
+
+.desktop-view-right {
+  width: 25%; /* Adjust as needed */
+}
+
+/* Ensure the left components stack properly */
+.desktop-view-left > * {
+  width: 100%;
+}
+
+/* Optional: Add specific heights if needed */
+.desktop-left2 {
+  flex: 1; /* Will take available space */
+}
+
+.desktop-left1 {
+  flex: 1; /* Will take available space */
+}
+
+/* Navbar styling */
+.desktop-navbar {
+  width: 100%;
+  /* Add any additional navbar styling here */
+}

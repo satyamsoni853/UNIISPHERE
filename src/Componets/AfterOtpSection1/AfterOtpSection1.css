@@ -1,0 +1,226 @@
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.otp-box {
+  max-width: 500px;
+  padding: 20px;
+  background: linear-gradient(to top, #88D1D6 25%, #C7EBEE 50%, #F3DA94 75%, #FAF3C4 100%);
+
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.otp-btn {
+  width: 100%;
+  margin-top: 10px;
+  background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%);
+  border: none;
+  color: #333;
+  transition: background 0.3s ease;
+}
+
+.otp-btn:hover {
+  background: linear-gradient(45deg, #F1E2A0 0%, #E1C86B 50%, #A3D8DC 50%, #44A9B1 100%);
+}
+
+/* Interest Section */
+.interest-search {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.interest-search .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.interest-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.interest-btn {
+  background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%);
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: #333;
+  cursor: pointer;
+}
+
+.interest-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.selected-interests {
+  margin: 15px 0;
+}
+
+.selected-interest {
+  display: inline-block;
+  /* background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%); */
+  background: linear-gradient(to top, #1976D2 0%, #E1C86B 100%);
+
+  padding: 5px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  color: #333;
+}
+
+.selected-interest span {
+  color: red;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* Skills Section */
+.skill-search {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.skill-search .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.skill-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.skill-btn {
+  background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%);
+  /* background-color: black; */
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: #333;
+  cursor: pointer;
+}
+
+.skill-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.selected-skills {
+  margin: 15px 0;
+}
+
+.selected-skill {
+  display: inline-block;
+  background: linear-gradient(to top, #1976D2 0%, #E1C86B 100%);
+
+  padding: 5px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  color: #333;
+}
+
+.selected-skill span {
+  color: red;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* Progress Indicator Inside the Box */
+.progress-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  /* background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%); */
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.step {
+  width: 17%; /* Adjusted for 5 steps */
+  height: 10px;
+  text-align: center;
+  line-height: 10px;
+  color: #333;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.step.completed {
+  background-color: red;
+}
+
+.step:not(.completed) {
+  background-color: #A3D8DC;
+}
+
+/* Profile Picture Section */
+.profile-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0 auto;
+  position: relative;
+}
+
+.circle-label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.circle-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.upload-text {
+  color: #333;
+  font-size: 16px;
+  text-align: center;
+}
+
+.image-note {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Label Alignment Fix */
+.form-label {
+  text-align: left !important; /* Override any centering */
+  margin-bottom: 5px; /* Ensure spacing below label */
+  display: block; /* Ensure it behaves as a block element */
+  font-size: 20px;
+  margin-left: 10px;
+}

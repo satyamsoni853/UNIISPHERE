@@ -1,0 +1,82 @@
+/* Navbar Container */
+.mobile-navbarr-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Navbar */
+.mobile-navbarr {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 2px solid #ddd;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  background: transparent; /* Make navbar transparent */
+  z-index: 100;
+}
+
+/* Navbar Icons */
+.mobile-navbarr-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+/* Search Bar */
+.mobile-navbarr-search {
+  display: flex;
+  align-items: center;
+  border: 1px solid grey;
+  padding: 5px 10px;
+  border-radius: 20px;
+  flex-grow: 1;
+  max-width: 250px;
+  margin: 0 10px;
+
+}
+
+/* Search Input */
+.mobile-navbarr-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 5px;
+  font-size: 14px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+/* Small Images (Decorative) */
+.small-image {
+  position: absolute;
+  width: 50px; /* Adjust size as needed */
+  height: auto;
+  opacity: 0.7; /* Slight transparency */
+  z-index: -1; /* Keep them behind other content */
+}
+
+/* Positioning the Images */
+.left {
+  left: 5px;
+  top: 5px;
+}
+
+.center {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 5px;
+}
+
+.right {
+  right: 5px;
+  top: 5px;
+}
