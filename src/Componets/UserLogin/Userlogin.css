@@ -1,77 +1,27 @@
-/* General Container */
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  
-}
 
-/* Logo */
-.logo {
-  width: 60px;
-  margin-bottom: 10px;
-}
-
-/* Title Section */
-.title-section {
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.unisphere-title {
-  font-size: 72px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: #333;
-}
-
-.u {
-  color: red;
-}
-.n {
-  color: green;
-}
-.i {
-  color: #ffcc00;
-}
-.s {
-  color: #666;
-}
-.p {
-  color: #ff6666;
-}
-.h {
-  color: #6699ff;
-}
-.e {
-  color: #66cc66;
-}
-.r {
-  color: #ff99cc;
-}
-
-/* Subtitle */
-.subtitle {
-  align-items: center;
-  width: 360px;
-  margin-top: 5px;
-}
 
 /* Login Box */
+/* Login Box (Bigger Size) */
 .login-box {
   background: linear-gradient(to right, rgba(68, 169, 177, 0.4) 0%, rgba(225, 200, 107, 0.4) 100%);
- 
-  padding: 20px;
-  border-radius: 10px;
+  padding: 30px; /* Increased padding */
+  border-radius: 15px; /* Slightly more rounded corners */
   text-align: center;
-  width: 500px;
+  width: 600px; /* Increased width */
   margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Added a subtle shadow */
 }
+
+.login-box input {
+  width: 100%;
+  padding: 12px; /* Slightly bigger input fields */
+  margin-bottom: 20px;
+  border: 2px solid grey;
+  /* background-color: white; */
+  border-radius: 8px;
+  font-size: 16px; /* Increased font size */
+}
+
 
 .login-box label {
   display: block;
@@ -205,6 +155,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  width: 70px;
+  width: 40px;
   background-color: transparent;
+  /* display: none; */
 }

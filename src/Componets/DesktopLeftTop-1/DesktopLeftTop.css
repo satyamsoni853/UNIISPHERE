@@ -44,3 +44,9 @@
   font-size: 10px;
   color: #555;
 }
+
+/* @media screen and (max-width: 767px) {  
+  .leftsectiontop-1 {
+    display: none;
+  }
+} */

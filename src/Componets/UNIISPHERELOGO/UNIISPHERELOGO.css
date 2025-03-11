@@ -1,0 +1,14 @@
+.Success-1{
+  text-align: center;
+}
+.login-container-1{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  /* margin-top: 60px; */
+  height: 80vh;
+}
+.unisphere-title-1{
+  font-size: 6rem;
+}

@@ -7,6 +7,7 @@ import Connectandsuccess from "./Success.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Background from "../Background/Background";
 import { FcGoogle } from "react-icons/fc";
+import UNIISPHERELOGO from "../UNIISPHERELOGO/UNIISPHERELOGO";
 
 function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +32,12 @@ function UserLogin() {
         navigate("/dashboard"); // Redirect after successful login
       }
     } catch (error) {
-      alert(`Login Failed: ${error.response?.data?.message || "An error occurred. Please try again."}`);
+      alert(
+        `Login Failed: ${
+          error.response?.data?.message ||
+          "An error occurred. Please try again."
+        }`
+      );
       console.error("Login Error:", error);
     }
   };
@@ -41,96 +47,74 @@ function UserLogin() {
   };
 
   return (
-    <div className="login-wrapper">
+    <div className="signup-Page-1">
       <Background />
-      <img src={Unispherelogo} alt="Unisphere Logo" className="top-left-logo" />
-      <div className="login-container">
-        <div className="title-section">
-          <h1 className="unisphere-title">
-            <span className="u">U</span>
-            <span className="n">N</span>
-            <span className="i">I</span>
-            <span className="i">I</span>
-            <span className="s">S</span>
-            <span className="p">P</span>
-            <span className="h">H</span>
-            <span className="e">E</span>
-            <span className="r">R</span>
-            <span className="e">E</span>
-          </h1>
-          <img
-            src={Connectandsuccess}
-            alt="Connect and Collaborate"
-            className="subtitle"
-          />
-        </div>
 
-        <div className="login-box">
-          <label htmlFor="email">Email or Phone Number</label>
+      <div className="login-box">
+        <label htmlFor="email">Email or Phone Number</label>
+        <input
+          id="email"
+          type="text"
+          placeholder="Enter your email or phone"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <label htmlFor="password">Password (6+ Characters)</label>
+        <div className="password-field">
           <input
-            id="email"
-            type="text"
-            placeholder="Enter your email or phone"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-
-          <label htmlFor="password">Password (6+ Characters)</label>
-          <div className="password-field">
-            <input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <span
-              className="eye-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
-
-          <div className="remember-me">
-            <input type="checkbox" id="remember" />
-            <label htmlFor="remember">Remember me</label>
-          </div>
-
-          <p className="terms">
-            By clicking Agree & Join or Continue, you agree to the Unisphere
-            User Agreement, Privacy Policy, and Cookie Policy.
-          </p>
-
-          <button type="button" className="login-btn" onClick={handleLogin}>
-            Continue
-          </button>
-
-          <div className="or-divider">
-            <span className="line"></span>
-            Or with
-            <span className="line"></span>
-          </div>
-
-          <div className="google-container">
-            <button className="google-btn" onClick={handleGoogleLogin}>
-              <FcGoogle className="google-icon" /> Google
-            </button>
-          </div>
-
-          <p className="signup-text">
-            Create an account on Unisphere{" "}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                navigate("/signup");
-              }}
-            >
-              Sign Up
-            </a>
-          </p>
+          <span
+            className="eye-icon"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
         </div>
+
+        <div className="remember-me">
+          <input type="checkbox" id="remember" />
+          <label htmlFor="remember">Remember me</label>
+        </div>
+
+        <p className="terms">
+          By clicking Agree & Join or Continue, you agree to the Unisphere User
+          Agreement, Privacy Policy, and Cookie Policy.
+        </p>
+
+        <button type="button" className="login-btn" onClick={handleLogin}>
+          Continue
+        </button>
+
+        <div className="or-divider">
+          <span className="line"></span>
+          Or with
+          <span className="line"></span>
+        </div>
+
+        <div className="google-container">
+          <button className="google-btn" onClick={handleGoogleLogin}>
+            <FcGoogle className="google-icon" /> Google
+          </button>
+        </div>
+
+        <p className="signup-text">
+          Create an account on Unisphere{" "}
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/signup");
+            }}
+          >
+            Sign Up
+          </a>
+        </p>
       </div>
     </div>
   );
