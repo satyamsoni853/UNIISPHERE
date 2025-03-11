@@ -5,6 +5,7 @@ import Background from "../Background/Background.jsx";
 import Unispherelogo from "./Unispherelogo.png";
 import Connectandsuccess from "./success.png";
 import axios from "axios";
+import UNIISPHERELOGO from '../UNIISPHERELOGO/UNIISPHERELOGO.jsx'
 
 function AfterOtpSection1() {
   const [step, setStep] = useState(1);
@@ -531,6 +532,7 @@ function AfterOtpSection1() {
   return (
     <div className="signup-Page-1">
       <Background />
+      <UNIISPHERELOGO/>
       <div className="otp-box">
         <div className="progress-indicator">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((s) => (
