@@ -530,9 +530,45 @@ function AfterOtpSection1() {
   );
 
   return (
-    <div className="signup-Page-1">
+    <div>
+            <div className="login-wrapper-1">
       <Background />
-      <UNIISPHERELOGO/>
+
+      {/* Left-side Unisphere Logo */}
+      <img
+        src={Unispherelogo}
+        alt="Unisphere Logo-1"
+        className="top-left-logo"
+      />
+
+      {/* Container for Title and Success Image */}
+      <div className="login-container-1">
+        <div>
+          <h1 className="unisphere-title-1">
+            <span className="u">U</span>
+            <span className="n">N</span>
+            <span className="i">I</span>
+            <span className="i">I</span>
+            <span className="s">S</span>
+            <span className="p">P</span>
+            <span className="h">H</span>
+            <span className="e">E</span>
+            <span className="r">R</span>
+            <span className="e">E</span>
+          </h1>
+        </div>
+        <div className="Success-1">
+          <h3>
+            <span>"Connect" </span>
+            <span>"Collbrate"</span>
+            <span>"Success"</span>
+          </h3>
+        </div>
+      </div>
+    </div>
+      <div className="signup-Page-1">
+      <Background />
+      
       <div className="otp-box">
         <div className="progress-indicator">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((s) => (
@@ -555,6 +591,7 @@ function AfterOtpSection1() {
           You can change your preference anytime.
         </p>
       </div>
+    </div>
     </div>
   );
 }
