@@ -171,7 +171,7 @@ function AfterOtpSection1() {
       username: username || null,
       email: email || "",
       PhoneNumber: PhoneNumber || null,
-      passwordHash: password,
+      password: password,
       firstName: firstName || null,
       lastName: lastName || null,
       Gender: Gender || null,
