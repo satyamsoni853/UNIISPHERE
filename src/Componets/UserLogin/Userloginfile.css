@@ -1,6 +1,5 @@
 /* Default styles */
 .login-box {
- 
   background: linear-gradient(to bottom, #dff2f6, #f4efda);
   padding: 30px; /* Increased padding */
   border-radius: 15px; /* Rounded corners */
@@ -17,9 +16,6 @@
   justify-content: center;
   flex-direction: column;
 }
-
-
-
 
 /* Input fields */
 .login-box input {
@@ -67,9 +63,6 @@
   align-items: center;
   justify-content: end; /* Pushes content to the right */
 }
-
-
-
 
 /* Terms */
 .terms {
@@ -160,12 +153,12 @@
   width: 80px;
   background-color: transparent;
 }
-.button-container{
+.button-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.unisphere-title-container{
+.unisphere-title-container {
   font-size: 5.2rem;
 }
 
@@ -174,11 +167,11 @@
     display: none; /* Hides logo on smaller screens */
   }
 
-  .unisphere-title-container{
-    font-size: 4.2rem;
+  .unisphere-title-container {
+    font-size: 3.6rem;
   }
   .login-box {
-    width: 70%; /* Make it responsive */
+    width: 80%; /* Make it responsive */
     padding: 20px;
   }
 
@@ -198,11 +191,6 @@
 }
 
 @media (max-width: 480px) {
-  .unisphere-title-1 {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-  }
-
   .login-btn {
     width: 90%;
     font-size: 14px;
