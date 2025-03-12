@@ -42,3 +42,10 @@
 .img-17 { top: 90%; left: 90%; }
 .img-18 { top: 95%; left: 10%; }
 .img-19 { top: 50%; left: 50%; } /* Centered */
+
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+  .img-11, .img-12, .img-13, .img-14, 
+  .img-15, .img-16, .img-17, .img-18, .img-19 {
+    display: none;
+  }
+}
