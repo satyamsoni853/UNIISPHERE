@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import Background from "../Background/Background.jsx";
 import "./AfterOtpSection1.css";
+import Unispherelogo from "./Unispherelogo.png";
 
 function AfterOtpSection1() {
   const [step, setStep] = useState(1);
@@ -33,16 +34,31 @@ function AfterOtpSection1() {
   const [searchInterest, setSearchInterest] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
   const interestSuggestions = [
-    "Sketching", "Sprinting", "JAVA", "Modeling", "Dancing",
-    "Painting", "Crafting", "Gardening", "Driving",
+    "Sketching",
+    "Sprinting",
+    "JAVA",
+    "Modeling",
+    "Dancing",
+    "Painting",
+    "Crafting",
+    "Gardening",
+    "Driving",
   ];
 
   // State for Step 5 (Skills)
   const [searchSkill, setSearchSkill] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const skillSuggestions = [
-    "HTML", "CSS", "JavaScript", "Java", "SQL",
-    "Python", "React", "Node.js", "MongoDB", "Git",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Java",
+    "SQL",
+    "Python",
+    "React",
+    "Node.js",
+    "MongoDB",
+    "Git",
   ];
 
   // State for Step 6 (About, Location)
@@ -67,7 +83,10 @@ function AfterOtpSection1() {
       setIsSubmitting(false);
       return;
     }
-    console.log("Step 1 - Registration:", JSON.stringify({ username, email, password, rePassword }, null, 2));
+    console.log(
+      "Step 1 - Registration:",
+      JSON.stringify({ username, email, password, rePassword }, null, 2)
+    );
     setError("");
     setStep(2);
     setIsSubmitting(false);
@@ -82,7 +101,10 @@ function AfterOtpSection1() {
       setIsSubmitting(false);
       return;
     }
-    console.log("Step 2 - Personal Info:", JSON.stringify({ firstName, lastName, PhoneNumber, Gender }, null, 2));
+    console.log(
+      "Step 2 - Personal Info:",
+      JSON.stringify({ firstName, lastName, PhoneNumber, Gender }, null, 2)
+    );
     setError("");
     setStep(3);
     setIsSubmitting(false);
@@ -97,7 +119,14 @@ function AfterOtpSection1() {
       setIsSubmitting(false);
       return;
     }
-    console.log("Step 3 - Education/Work:", JSON.stringify({ headline, college, degree, workorProject, startYear, endYear }, null, 2));
+    console.log(
+      "Step 3 - Education/Work:",
+      JSON.stringify(
+        { headline, college, degree, workorProject, startYear, endYear },
+        null,
+        2
+      )
+    );
     setError("");
     setStep(4);
     setIsSubmitting(false);
@@ -107,7 +136,10 @@ function AfterOtpSection1() {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
-    console.log("Step 4 - Interests:", JSON.stringify({ selectedInterests }, null, 2));
+    console.log(
+      "Step 4 - Interests:",
+      JSON.stringify({ selectedInterests }, null, 2)
+    );
     setError("");
     setStep(5);
     setIsSubmitting(false);
@@ -117,7 +149,10 @@ function AfterOtpSection1() {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
-    console.log("Step 5 - Skills:", JSON.stringify({ selectedSkills }, null, 2));
+    console.log(
+      "Step 5 - Skills:",
+      JSON.stringify({ selectedSkills }, null, 2)
+    );
     setError("");
     setStep(6);
     setIsSubmitting(false);
@@ -132,7 +167,10 @@ function AfterOtpSection1() {
       setIsSubmitting(false);
       return;
     }
-    console.log("Step 6 - About/Location:", JSON.stringify({ About, location }, null, 2));
+    console.log(
+      "Step 6 - About/Location:",
+      JSON.stringify({ About, location }, null, 2)
+    );
     setError("");
     setStep(7);
     setIsSubmitting(false);
@@ -152,7 +190,10 @@ function AfterOtpSection1() {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
-    console.log("Step 8 - Profile Picture:", JSON.stringify({ profilePictureUrl }, null, 2));
+    console.log(
+      "Step 8 - Profile Picture:",
+      JSON.stringify({ profilePictureUrl }, null, 2)
+    );
     setError("");
     setStep(9);
     setIsSubmitting(false);
@@ -168,27 +209,30 @@ function AfterOtpSection1() {
     const parsedEndYear = endYear ? parseInt(endYear, 10) : null;
 
     const userData = {
-      username: username || null,
+      username: username,
       email: email || "",
-      PhoneNumber: PhoneNumber || null,
+      PhoneNumber: PhoneNumber,
       password: password,
-      firstName: firstName || null,
-      lastName: lastName || null,
-      Gender: Gender || null,
-      profilePictureUrl: profilePictureUrl || null,
-      headline: headline || null,
-      location: location || null,
+      firstName: firstName,
+      lastName: lastName,
+      Gender: Gender,
+      profilePictureUrl: profilePictureUrl || "",
+      headline: headline || "",
+      location: location || "",
       Skills: selectedSkills,
       Interests: selectedInterests,
-      workorProject: workorProject || null,
-      About: About || null,
-      college: college || null,
-      degree: degree || null,
+      workorProject: workorProject || "",
+      About: About || "",
+      college: college || "",
+      degree: degree || "",
       startYear: parsedStartYear,
       endYear: parsedEndYear,
     };
 
-    console.log("Step 9 - Final Submission Data:", JSON.stringify(userData, null, 2));
+    console.log(
+      "Step 9 - Final Submission Data:",
+      JSON.stringify(userData, null, 2)
+    );
     try {
       const response = await axios.post(
         "https://uniisphere-1.onrender.com/auth/completeProfile",
@@ -198,11 +242,21 @@ function AfterOtpSection1() {
           timeout: 10000, // Set a 10-second timeout for the request
         }
       );
-      console.log("Profile completion successful:", JSON.stringify(response.data, null, 2));
+      console.log(
+        "Profile completion successful:",
+        JSON.stringify(response.data, null, 2)
+      );
       alert("Profile completed successfully!");
     } catch (err) {
-      console.error("Error details:", JSON.stringify(err.response ? err.response.data : err.message, null, 2));
-      setError(`Profile completion failed: ${err.response ? err.response.statusText : err.message}`);
+      console.error(
+        "Error details:",
+        JSON.stringify(err.response ? err.response.data : err.message, null, 2)
+      );
+      setError(
+        `Profile completion failed: ${
+          err.response ? err.response.statusText : err.message
+        }`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -215,7 +269,8 @@ function AfterOtpSection1() {
 
   // Interest and Skill Handlers
   const handleInterestSelect = (interest) => {
-    if (selectedInterests.includes(interest) || selectedInterests.length >= 5) return;
+    if (selectedInterests.includes(interest) || selectedInterests.length >= 5)
+      return;
     setSelectedInterests([...selectedInterests, interest]);
     setSearchInterest("");
   };
@@ -277,8 +332,17 @@ function AfterOtpSection1() {
           required
         />
       </Form.Group>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Signing Up..." : "Sign Up"}
       </Button>
     </Form>
@@ -328,11 +392,25 @@ function AfterOtpSection1() {
           <option value="other">Other</option>
         </Form.Select>
       </Form.Group>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Processing..." : "Next"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(1)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(1)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
@@ -401,11 +479,25 @@ function AfterOtpSection1() {
           />
         </Form.Group>
       </div>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Processing..." : "Next"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(2)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(2)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
@@ -428,7 +520,11 @@ function AfterOtpSection1() {
       </Form.Group>
       <div className="interest-suggestions">
         {interestSuggestions
-          .filter((interest) => interest.toLowerCase().includes(searchInterest.toLowerCase()) && !selectedInterests.includes(interest))
+          .filter(
+            (interest) =>
+              interest.toLowerCase().includes(searchInterest.toLowerCase()) &&
+              !selectedInterests.includes(interest)
+          )
           .map((interest, index) => (
             <Button
               key={index}
@@ -444,15 +540,30 @@ function AfterOtpSection1() {
       <div className="selected-interests">
         {selectedInterests.map((interest, index) => (
           <span key={index} className="selected-interest">
-            {interest} <span onClick={() => handleInterestRemove(interest)}>×</span>
+            {interest}{" "}
+            <span onClick={() => handleInterestRemove(interest)}>×</span>
           </span>
         ))}
       </div>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Processing..." : "Next"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(3)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(3)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
@@ -475,7 +586,11 @@ function AfterOtpSection1() {
       </Form.Group>
       <div className="skill-suggestions">
         {skillSuggestions
-          .filter((skill) => skill.toLowerCase().includes(searchSkill.toLowerCase()) && !selectedSkills.includes(skill))
+          .filter(
+            (skill) =>
+              skill.toLowerCase().includes(searchSkill.toLowerCase()) &&
+              !selectedSkills.includes(skill)
+          )
           .map((skill, index) => (
             <Button
               key={index}
@@ -495,11 +610,25 @@ function AfterOtpSection1() {
           </span>
         ))}
       </div>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Processing..." : "Next"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(4)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(4)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
@@ -527,11 +656,25 @@ function AfterOtpSection1() {
           onChange={(e) => setLocation(e.target.value)}
         />
       </Form.Group>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Processing..." : "Next"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(5)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(5)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
@@ -540,11 +683,25 @@ function AfterOtpSection1() {
   const renderSeventhStep = () => (
     <Form onSubmit={handleSeventhStepSubmit}>
       <p>Review your information before proceeding.</p>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Processing..." : "Next"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(6)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(6)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
@@ -573,11 +730,25 @@ function AfterOtpSection1() {
         )}
         <p className="image-note">Add a URL to your profile picture.</p>
       </Form.Group>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Processing..." : "Next"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(7)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(7)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
@@ -586,43 +757,105 @@ function AfterOtpSection1() {
   const renderNinthStep = () => (
     <Form onSubmit={handleNinthStepSubmit}>
       <p>Final step: Submit your profile.</p>
-      {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
-      <Button variant="primary" type="submit" className="otp-btn" disabled={isSubmitting}>
+      {error && (
+        <p className="error-text" style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
+      <Button
+        variant="primary"
+        type="submit"
+        className="otp-btn"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? "Submitting..." : "Complete Profile"}
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={handleSkip} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={handleSkip}
+        disabled={isSubmitting}
+      >
         Skip
       </Button>
-      <Button variant="secondary" className="otp-btn mt-2" onClick={() => setStep(8)} disabled={isSubmitting}>
+      <Button
+        variant="secondary"
+        className="otp-btn mt-2"
+        onClick={() => setStep(8)}
+        disabled={isSubmitting}
+      >
         Back
       </Button>
     </Form>
   );
 
   return (
-    <div className="signup-Page-1">
-      <Background />
-      <div className="otp-box">
-        <div className="progress-indicator">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((s) => (
-            <div key={s} className={`step ${step >= s ? "completed" : ""}`}>{s}</div>
-          ))}
+    <div>
+      <div className="login-wrapper-1">
+        <Background />
+        <img
+          src={Unispherelogo}
+          alt="Unisphere Logo-1"
+          className="top-left-logo"
+        />
+                <div className="login-container-1">
+          <div>
+            <h1 className="unisphere-title-1">
+              <span className="u">U</span>
+              <span className="n">N</span>
+              <span className="i">I</span>
+              <span className="i">I</span>
+              <span className="s">S</span>
+              <span className="p">P</span>
+              <span className="h">H</span>
+              <span className="e">E</span>
+              <span className="r">R</span>
+              <span className="e">E</span>
+            </h1>
+          </div>
+          <div className="Success-1">
+            <h3>
+              <span>"Connect" </span>
+              <span>"Collbrate"</span>
+              <span>"Success"</span>
+            </h3>
+          </div>
         </div>
-        {step === 1 ? renderFirstStep() :
-         step === 2 ? renderSecondStep() :
-         step === 3 ? renderThirdStep() :
-         step === 4 ? renderFourthStep() :
-         step === 5 ? renderFifthStep() :
-         step === 6 ? renderSixthStep() :
-         step === 7 ? renderSeventhStep() :
-         step === 8 ? renderEighthStep() :
-         renderNinthStep()}
-        <p className="privacy-text">
-          Your Privacy is Important <br />
-          We may send you member uploads, recruiter messages, job suggestions,
-          invitations, reminders, and promotional messages from us and our parents.
-          You can change your preference anytime.
-        </p>
+      </div>
+      <div className="signup-Page-1">
+        <Background />
+        <div className="otp-box">
+          <div className="progress-indicator">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((s) => (
+              <div key={s} className={`step ${step >= s ? "completed" : ""}`}>
+                {s}
+              </div>
+            ))}
+          </div>
+          {step === 1
+            ? renderFirstStep()
+            : step === 2
+            ? renderSecondStep()
+            : step === 3
+            ? renderThirdStep()
+            : step === 4
+            ? renderFourthStep()
+            : step === 5
+            ? renderFifthStep()
+            : step === 6
+            ? renderSixthStep()
+            : step === 7
+            ? renderSeventhStep()
+            : step === 8
+            ? renderEighthStep()
+            : renderNinthStep()}
+          <p className="privacy-text">
+            Your Privacy is Important <br />
+            We may send you member uploads, recruiter messages, job suggestions,
+            invitations, reminders, and promotional messages from us and our
+            parents. You can change your preference anytime.
+          </p>
+        </div>
       </div>
     </div>
   );

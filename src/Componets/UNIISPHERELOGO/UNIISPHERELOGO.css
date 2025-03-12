@@ -7,6 +7,33 @@
   align-items: center;
 
 }
-.unisphere-title-1{
-  font-size: 6rem;
+
+
+@media (max-width: 600px) {
+  .u, .e {
+    color: #DA3E39; /* U, E */
+   
+  }
+  
+  .n, .r {
+    color: #38A3AC; /* N, R */
+  }
+  
+  .i {
+    color: #DFC463; /* I, I */
+  }
+  
+  .s {
+    color: #889095; /* S */
+  }
+  
+  .p, .e {
+    color: #E9877A; /* P, E */
+  }
+  
+  .h {
+    color: #A7829D; /* H */
+  }
+  
+
 }

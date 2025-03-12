@@ -59,7 +59,7 @@ function UserLogin() {
         {/* Container for Title and Success Image */}
         <div className="login-container-1">
           <div>
-            <h1 className="unisphere-title-1">
+            <h1 className="unisphere-title-container">
               <span className="u">U</span>
               <span className="n">N</span>
               <span className="i">I</span>

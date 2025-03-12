@@ -1,10 +1,7 @@
 /* Default styles */
 .login-box {
-  background: linear-gradient(
-    to right,
-    rgba(68, 169, 177, 0.4) 0%,
-    rgba(225, 200, 107, 0.4) 100%
-  );
+ 
+  background: linear-gradient(to bottom, #dff2f6, #f4efda);
   padding: 30px; /* Increased padding */
   border-radius: 15px; /* Rounded corners */
   text-align: center;
@@ -21,13 +18,8 @@
   flex-direction: column;
 }
 
-/* Title styling */
-.unisphere-title-1 {
-  font-size: 5.2rem;
-  font-weight: bolder;
-  letter-spacing: 10px;
-  text-align: center;
-}
+
+
 
 /* Input fields */
 .login-box input {
@@ -173,14 +165,20 @@
   align-items: center;
   justify-content: center;
 }
+.unisphere-title-container{
+  font-size: 5.2rem;
+}
 
 @media (max-width: 768px) {
   .top-left-logo {
     display: none; /* Hides logo on smaller screens */
   }
 
+  .unisphere-title-container{
+    font-size: 4.2rem;
+  }
   .login-box {
-    width: 90%; /* Make it responsive */
+    width: 70%; /* Make it responsive */
     padding: 20px;
   }
 

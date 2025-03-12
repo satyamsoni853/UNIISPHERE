@@ -20,6 +20,7 @@
   justify-content: center;
   display: flex;
   flex-direction: column;
+  
   border: 2px solid blue; /* Debugging border */
 }
 
@@ -30,30 +31,30 @@
   color: #333;
 }
 
-.u {
-  color: red;
+.u, .e {
+  color: #DA3E39; /* U, E */
 }
-.n {
-  color: green;
+
+.n, .r {
+  color: #38A3AC; /* N, R */
 }
+
 .i {
-  color: #ffcc00;
+  color: #DFC463; /* I, I */
 }
+
 .s {
-  color: #666;
+  color: #889095; /* S */
 }
-.p {
-  color: #ff6666;
+
+.p, .e {
+  color: #E9877A; /* P, E */
 }
+
 .h {
-  color: #6699ff;
+  color: #A7829D; /* H */
 }
-.e {
-  color: #66cc66;
-}
-.r {
-  color: #ff99cc;
-}
+
 .subtitle-signup {
   align-items: center;
   width: 360px;

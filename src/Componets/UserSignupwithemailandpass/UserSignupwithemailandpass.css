@@ -14,11 +14,7 @@
 }
 
 .UserSignupwithemailandpass-container {
-  background: linear-gradient(
-    to right,
-    rgba(68, 169, 177, 0.4) 0%,
-    rgba(225, 200, 107, 0.4) 100%
-  );
+  background: linear-gradient(to bottom, #dff2f6, #f4efda);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,6 +184,7 @@ button:hover {
   .UserSignupwithemailandpass-container {
     max-width: 90%;
   }
+  
 
   input {
     font-size: 14px;
