@@ -148,11 +148,7 @@ function UserSignupwithemailandpass() {
               </button>
 
               {/* Privacy Message */}
-              <p className="privacy-message">
-                Your Privacy is Important. We may send you member updates,
-                recruiter messages, job suggestions, invitations, reminders, and
-                promotional messages. You can change your preference anytime.
-              </p>
+              
             </form>
           )}
 

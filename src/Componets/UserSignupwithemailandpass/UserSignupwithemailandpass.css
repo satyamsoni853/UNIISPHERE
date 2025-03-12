@@ -7,16 +7,18 @@
 }
 
 /* Centering the Container */
-.signup-Page-1{
+.signup-Page-1 {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  
 }
 
 .UserSignupwithemailandpass-container {
-  background: linear-gradient(to right, rgba(68, 169, 177, 0.4) 0%, rgba(225, 200, 107, 0.4) 100%);
+  background: linear-gradient(
+    to right,
+    rgba(68, 169, 177, 0.4) 0%,
+    rgba(225, 200, 107, 0.4) 100%
+  );
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +35,6 @@
   border-radius: 10px; /* Optional: Rounded corners */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Shadow effect */
 }
-
 
 /* Form */
 .Signup-form {
@@ -54,7 +55,7 @@
   font-size: 16px;
   transition: all 0.3s ease;
 }
-.Signup-form label{
+.Signup-form label {
   font-size: 18px;
   margin-left: 10px;
   margin-bottom: 10px;
@@ -95,7 +96,7 @@ button {
 button:hover {
   background-color: #e65c00;
 }
-.Login-here-sentence{
+.Login-here-sentence {
   margin-top: 20px;
 }
 
@@ -107,10 +108,13 @@ button:hover {
   justify-content: center;
   width: 100%;
   max-width: 600px;
+
+  /* margin-top: 40px; */
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
   text-align: center;
+  
 }
 
 /* Title */
@@ -178,7 +182,6 @@ button:hover {
   text-align: center;
   max-width: 300px;
 }
-
 
 /* Responsive Design */
 @media (max-width: 600px) {
