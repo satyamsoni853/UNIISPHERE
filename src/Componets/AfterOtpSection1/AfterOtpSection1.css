@@ -74,13 +74,7 @@
   /* display: none; */
   max-width: 600px;
   padding: 20px;
-  background: linear-gradient(
-    to top,
-    #88d1d6 25%,
-    #c7ebee 50%,
-    #f3da94 75%,
-    #faf3c4 100%
-  );
+  background: linear-gradient(to bottom, #dff2f6, #f4efda);
 
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -90,26 +84,21 @@
 .otp-btn {
   width: 100%;
   margin-top: 10px;
-  background: linear-gradient(
-    45deg,
-    #44a9b1 0%,
-    #a3d8dc 50%,
-    #e1c86b 50%,
-    #f1e2a0 100%
-  );
+  background: rgb(105, 105, 236);
   border: none;
-  color: #333;
+  color:white;
   transition: background 0.3s ease;
 }
 
 .otp-btn:hover {
   background: linear-gradient(
     45deg,
-    #f1e2a0 0%,
-    #e1c86b 50%,
-    #a3d8dc 50%,
-    #44a9b1 100%
+    #3a9ca1 0%,  /* Deep Aqua */
+    #79c7ca 40%, /* Light Teal */
+    #e6c57c 60%, /* Soft Gold */
+    #f4e1a1 100% /* Light Cream */
   );
+  
 }
 
 /* Interest Section */
@@ -135,13 +124,7 @@
 
 .interest-btn {
   width: 120px;
-  background: linear-gradient(
-    45deg,
-    #3a9ca1 0%,  /* Deep Aqua */
-    #79c7ca 40%, /* Light Teal */
-    #e6c57c 60%, /* Soft Gold */
-    #f4e1a1 100% /* Light Cream */
-  );
+  background: linear-gradient(to bottom, #ACCDF9, #BAFABC);
   
   border: none;
   padding: 8px 15px;
@@ -162,7 +145,7 @@
 .selected-interest {
   display: inline-block;
   /* background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%); */
-  background: linear-gradient(to top, #1976d2 0%, #e1c86b 100%);
+  background: linear-gradient(to bottom, #ACCDF9, #BAFABC);
 
   padding: 5px 10px;
   margin-right: 10px;
@@ -199,14 +182,7 @@
 }
 
 .skill-btn {
-  background: linear-gradient(
-    45deg,
-    #3a9ca1 0%,  /* Deep Aqua */
-    #79c7ca 40%, /* Light Teal */
-    #e6c57c 60%, /* Soft Gold */
-    #f4e1a1 100% /* Light Cream */
-  );
-  
+background: linear-gradient(to bottom, #ACCDF9, #BAFABC);
   /* background-color: black; */
   border: none;
   width: 120px;
@@ -227,7 +203,14 @@
 
 .selected-skill {
   display: inline-block;
-  background: linear-gradient(to top, #1976d2 0%, #e1c86b 100%);
+  background: linear-gradient(
+    45deg,
+    #3a9ca1 0%,  /* Deep Aqua */
+    #79c7ca 40%, /* Light Teal */
+    #e6c57c 60%, /* Soft Gold */
+    #f4e1a1 100% /* Light Cream */
+  );
+  
 
   padding: 5px 10px;
   margin-right: 10px;

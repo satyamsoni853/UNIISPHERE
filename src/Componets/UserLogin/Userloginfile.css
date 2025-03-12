@@ -2,7 +2,7 @@
 .login-box {
   background: linear-gradient(to bottom, #dff2f6, #f4efda);
   padding: 30px; /* Increased padding */
-  border-radius: 15px; /* Rounded corners */
+  border-radius: 20px; /* Rounded corners */
   text-align: center;
   width: 600px; /* Fixed width */
   margin-top: 20px;
@@ -160,6 +160,7 @@
 }
 .unisphere-title-container {
   font-size: 5.2rem;
+  font-weight: 600; 
 }
 
 @media (max-width: 768px) {
@@ -169,6 +170,7 @@
 
   .unisphere-title-container {
     font-size: 3.6rem;
+    font-weight: 600;
   }
   .login-box {
     width: 80%; /* Make it responsive */

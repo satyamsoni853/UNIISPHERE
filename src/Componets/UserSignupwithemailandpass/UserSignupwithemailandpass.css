@@ -28,7 +28,7 @@
   width: 100%;
   max-width: 600px;
   padding: 20px;
-  border-radius: 10px; /* Optional: Rounded corners */
+  border-radius: 20px; /* Optional: Rounded corners */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Shadow effect */
 }
 
@@ -107,7 +107,7 @@ button:hover {
 
   /* margin-top: 40px; */
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 20px;
   /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
   text-align: center;
   
