@@ -8,6 +8,7 @@ import AfterOtpSection1 from "./Componets/AfterOtpSection1/AfterOtpSection1.jsx"
 
 import DecktopView from "./Componets/DesktopView/DesktopView.jsx";
 import UserSignupwithemailandpass from "./Componets/UserSignupwithemailandpass/UserSignupwithemailandpass.jsx";
+import ForgotPassword from "./Componets/ForgotPassword/ForgotPassword.jsx";
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
           <Route path="/home" element={<UserLogin />} />
           <Route path="/dashboard" element={<DecktopView />} />
           <Route path="/" element={<UserLogin />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword/>} />
 
           <Route path="/signup" element={<UserSignupwithemailandpass />} />
 

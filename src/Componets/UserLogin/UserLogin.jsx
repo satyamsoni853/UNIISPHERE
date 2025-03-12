@@ -120,6 +120,9 @@ function UserLogin() {
               <label htmlFor="remember">Remember Me</label>
             </div>
           </div>
+          <p>
+        <Link to="/ForgotPassword">Forgot Password?</Link>
+      </p>
 
           <p className="terms">
             By clicking Agree & Join or Continue, you agree to the Unisphere
