@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For redirection
 import axios from "axios"; // Import axios
 import Unispherelogo from "./Unispherelogo.png";
-import Connectandsuccess from "./Success.png";
+
 import Background from "../Background/Background";
 import "./UserSignupwithemailandpass.css"; // Optional: for styling
 
@@ -53,118 +53,124 @@ function UserSignupwithemailandpass() {
 
   return (
     <div>
-            <div className="login-wrapper-1">
-      <Background />
-
-      {/* Left-side Unisphere Logo */}
-      <img
-        src={Unispherelogo}
-        alt="Unisphere Logo-1"
-        className="top-left-logo"
-      />
-
-      {/* Container for Title and Success Image */}
-      <div className="login-container-1">
-        <div>
-          <h1 className="unisphere-title-1">
-            <span className="u">U</span>
-            <span className="n">N</span>
-            <span className="i">I</span>
-            <span className="i">I</span>
-            <span className="s">S</span>
-            <span className="p">P</span>
-            <span className="h">H</span>
-            <span className="e">E</span>
-            <span className="r">R</span>
-            <span className="e">E</span>
-          </h1>
-        </div>
-        <div className="Success-1">
-          <h3>
-            <span>"Connect" </span>
-            <span>"Collbrate"</span>
-            <span>"Success"</span>
-          </h3>
-        </div>
-      </div>
-    </div>
-      <div className="signup-Page-1">
-      <div className="UserSignupwithemailandpass-container">
+      <div className="login-wrapper-1">
         <Background />
-        {/* Step 1: Email and Username Input */}
-        {step === 1 && (
-          <form onSubmit={handleRegister} className="Signup-form">
-            <div>
-              <label>Email:</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Enter your email"
-              />
-            </div>
-            <div>
-              <label>Username:</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                placeholder="Enter your username"
-              />
-            </div>
-            <button type="submit">Send OTP</button>
-          </form>
-        )}
 
-        {/* Step 2: OTP Verification */}
-        {step === 2 && (
-          <form onSubmit={handleVerifyOtp} className="otp-container">
-            <h2>Confirm your email</h2>
-            <p>We have sent a 6-digit verification code to {email}</p>
+        {/* Left-side Unisphere Logo */}
+        <img
+          src={Unispherelogo}
+          alt="Unisphere Logo-1"
+          className="top-left-logo"
+        />
 
-            {/* OTP Input Boxes */}
-            <div className="otp-input-container">
-              {[...Array(6)].map((_, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  maxLength="1"
-                  className="otp-input"
-                  value={otp[index] || ""}
-                  onChange={(e) => {
-                    const newOtp = [...otp];
-                    newOtp[index] = e.target.value;
-                    setOtp(newOtp.join(""));
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Submit Button */}
-            <button type="submit" className="otp-button">
-              Continue
-            </button>
-
-            {/* Privacy Message */}
-            <p className="privacy-message">
-              Your Privacy is Important. We may send you member updates,
-              recruiter messages, job suggestions, invitations, reminders, and
-              promotional messages. You can change your preference anytime.
-            </p>
-          </form>
-        )}
-
-        {/* Already have an account */}
-        <p className="Login-here-sentence">
-          Already have an account? <a href="/">Login here</a>
-        </p>
-
-        {/* Error Message */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {/* Container for Title and Success Image */}
+        <div className="login-container-1">
+          <div>
+            <h1 className="unisphere-title-1">
+              <span className="u">U</span>
+              <span className="n">N</span>
+              <span className="i">I</span>
+              <span className="i">I</span>
+              <span className="s">S</span>
+              <span className="p">P</span>
+              <span className="h">H</span>
+              <span className="e">E</span>
+              <span className="r">R</span>
+              <span className="e">E</span>
+            </h1>
+          </div>
+          <div className="Success-1">
+            <h3>
+              <span>"Connect" </span>
+              <span>"Collbrate"</span>
+              <span>"Success"</span>
+            </h3>
+          </div>
+        </div>
       </div>
-    </div>
+      <div className="signup-Page-1">
+        <div className="UserSignupwithemailandpass-container">
+          <Background />
+          {/* Step 1: Email and Username Input */}
+          {step === 1 && (
+            <form onSubmit={handleRegister} className="Signup-form">
+              <div>
+                <label>Email:</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div>
+                <label>Username:</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  placeholder="Enter your username"
+                />
+              </div>
+              <button type="submit">Send OTP</button>
+            </form>
+          )}
+
+          {/* Step 2: OTP Verification */}
+          {step === 2 && (
+            <form onSubmit={handleVerifyOtp} className="otp-container">
+              <h2>Confirm your email</h2>
+              <p>We have sent a 6-digit verification code to {email}</p>
+
+              {/* OTP Input Boxes */}
+              <div className="otp-input-container">
+                {[...Array(6)].map((_, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength="1"
+                    className="otp-input"
+                    value={otp[index] || ""}
+                    onChange={(e) => {
+                      const newOtp = [...otp];
+                      newOtp[index] = e.target.value;
+                      setOtp(newOtp.join(""));
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Submit Button */}
+              <button type="submit" className="otp-button">
+                Continue
+              </button>
+
+              {/* Privacy Message */}
+              <p className="privacy-message">
+                Your Privacy is Important. We may send you member updates,
+                recruiter messages, job suggestions, invitations, reminders, and
+                promotional messages. You can change your preference anytime.
+              </p>
+            </form>
+          )}
+
+          {/* Already have an account */}
+          <div className="Login-here-sentence " >
+          <p >
+            Already have an account? <a href="/">Login here</a>
+          </p>
+          <p>Your Privacy Is Important</p>
+          <p>
+          We may send you member updates, recruiter message, job suggestions, invitations, reminder and promotional messages from us and our parents. You can change your preference anytime.
+          </p>
+          </div>
+
+          {/* Error Message */}
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </div>
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@
   width: 60px;
   margin-bottom: 10px;
 }
-#signup-page-subtitle{
+#signup-page-subtitle {
   text-align: center;
   font-size: 20px;
 }
@@ -23,13 +23,11 @@
   border: 2px solid blue; /* Debugging border */
 }
 
-
 .unisphere-title-signup {
   font-size: 72px;
   font-weight: bold;
   letter-spacing: 2px;
   color: #333;
-  
 }
 
 .u {
@@ -56,17 +54,18 @@
 .r {
   color: #ff99cc;
 }
-.subtitle-signup{
+.subtitle-signup {
   align-items: center;
   width: 360px;
   margin-top: 5px;
   margin-bottom: 30px;
 }
 
-.year-of-clg{
+.year-of-clg {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   /* gap: 50px; */
 }
 
@@ -134,13 +133,15 @@
 }
 
 .interest-btn {
+  width: 120px;
   background: linear-gradient(
     45deg,
-    #44a9b1 0%,
-    #a3d8dc 50%,
-    #e1c86b 50%,
-    #f1e2a0 100%
+    #3a9ca1 0%,  /* Deep Aqua */
+    #79c7ca 40%, /* Light Teal */
+    #e6c57c 60%, /* Soft Gold */
+    #f4e1a1 100% /* Light Cream */
   );
+  
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
@@ -199,13 +200,15 @@
 .skill-btn {
   background: linear-gradient(
     45deg,
-    #44a9b1 0%,
-    #a3d8dc 50%,
-    #e1c86b 50%,
-    #f1e2a0 100%
+    #3a9ca1 0%,  /* Deep Aqua */
+    #79c7ca 40%, /* Light Teal */
+    #e6c57c 60%, /* Soft Gold */
+    #f4e1a1 100% /* Light Cream */
   );
+  
   /* background-color: black; */
   border: none;
+  width: 120px;
   padding: 8px 15px;
   border-radius: 5px;
   color: #333;
@@ -326,7 +329,7 @@
   font-size: 20px;
   margin-left: 10px;
 }
-.privacy-text{
+.privacy-text {
   text-align: center;
   font-size: 10px;
 }

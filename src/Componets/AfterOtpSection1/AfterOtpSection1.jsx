@@ -35,7 +35,9 @@ function AfterOtpSection1() {
   const interestSuggestions = [
     "Sketching", "Sprinting", "JAVA", "Modeling", "Dancing",
     "Painting", "Crafting", "Gardening", "Driving",
-  ];
+    "Photography", "Blogging", "Gaming" // Added three more
+];
+
 
   // State for Step 5 (Skills)
   const [searchSkill, setSearchSkill] = useState("");
@@ -336,7 +338,7 @@ function AfterOtpSection1() {
         />
       </Form.Group>
       <div className="year-of-clg">
-        <Form.Group controlId="startYear" className="mb-3">
+        <Form.Group controlId="startYear" >
           <Form.Label>Start Year</Form.Label>
           <Form.Control
             type="number"

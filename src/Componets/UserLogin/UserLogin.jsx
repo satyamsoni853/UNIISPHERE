@@ -112,9 +112,12 @@ function UserLogin() {
           </div>
 
           <div className="remember-container">
+            <div>
+            <input type="checkbox" id="remember" />
+            </div>
             <div className="remember-me">
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember">Remember me</label>
+             
+              <label htmlFor="remember">Remember Me</label>
             </div>
           </div>
 
