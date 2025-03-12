@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import "./AfterOtpSection1.css";
-import { Form, Button } from "react-bootstrap";
-import Background from "../Background/Background.jsx";
-import Unispherelogo from "./Unispherelogo.png";
 import axios from "axios";
+import React, { useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import Background from "../Background/Background.jsx";
+import "./AfterOtpSection1.css";
 
 function AfterOtpSection1() {
   const [step, setStep] = useState(1);
@@ -11,7 +10,7 @@ function AfterOtpSection1() {
 
   // State for Step 1
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState(""); // Added email
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
 
@@ -35,9 +34,7 @@ function AfterOtpSection1() {
   const interestSuggestions = [
     "Sketching", "Sprinting", "JAVA", "Modeling", "Dancing",
     "Painting", "Crafting", "Gardening", "Driving",
-    "Photography", "Blogging", "Gaming" // Added three more
-];
-
+  ];
 
   // State for Step 5 (Skills)
   const [searchSkill, setSearchSkill] = useState("");
@@ -54,13 +51,14 @@ function AfterOtpSection1() {
   // State for Step 8 (Profile Picture URL)
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
 
-  // Step Handlers
+  // Step Handlers with console logging
   const handleFirstStepSubmit = (e) => {
     e.preventDefault();
     if (password !== rePassword) {
       setError("Passwords do not match");
       return;
     }
+    console.log("Step 1 - Registration:", { username, email, password });
     setError("");
     setStep(2);
   };
@@ -71,6 +69,7 @@ function AfterOtpSection1() {
       setError("All required fields must be filled");
       return;
     }
+    console.log("Step 2 - Personal Info:", { firstName, lastName, phoneNumber, gender });
     setError("");
     setStep(3);
   };
@@ -81,26 +80,21 @@ function AfterOtpSection1() {
       setError("Headline is required");
       return;
     }
+    console.log("Step 3 - Education/Work:", { headline, college, degree, workorProject, startYear, endYear });
     setError("");
     setStep(4);
   };
 
   const handleFourthStepSubmit = (e) => {
     e.preventDefault();
-    if (selectedInterests.length < 2) {
-      setError("Please select at least 2 interests");
-      return;
-    }
+    console.log("Step 4 - Interests:", { selectedInterests });
     setError("");
     setStep(5);
   };
 
   const handleFifthStepSubmit = (e) => {
     e.preventDefault();
-    if (selectedSkills.length < 2) {
-      setError("Please select at least 2 skills");
-      return;
-    }
+    console.log("Step 5 - Skills:", { selectedSkills });
     setError("");
     setStep(6);
   };
@@ -111,18 +105,21 @@ function AfterOtpSection1() {
       setError("About section is required");
       return;
     }
+    console.log("Step 6 - About/Location:", { about, location });
     setError("");
     setStep(7);
   };
 
   const handleSeventhStepSubmit = (e) => {
     e.preventDefault();
+    console.log("Step 7 - Review: All previous data");
     setError("");
     setStep(8);
   };
 
   const handleEighthStepSubmit = (e) => {
     e.preventDefault();
+    console.log("Step 8 - Profile Picture:", { profilePictureUrl });
     setError("");
     setStep(9);
   };
@@ -131,33 +128,32 @@ function AfterOtpSection1() {
     e.preventDefault();
     console.log("Starting profile submission...");
 
-    // Convert startYear and endYear to integers or null
     const parsedStartYear = startYear ? parseInt(startYear, 10) : null;
     const parsedEndYear = endYear ? parseInt(endYear, 10) : null;
 
     const userData = {
       username: username || null,
-      email: email || "", // Required field
-      PhoneNumber: phoneNumber || null,
-      passwordHash: password, // Backend should hash this
+      email: email || "",
+      phoneNumber: phoneNumber || null,
+      passwordHash: password,
       firstName: firstName || null,
       lastName: lastName || null,
-      Gender: gender || null,
+      gender: gender || null,
       profilePictureUrl: profilePictureUrl || null,
       headline: headline || null,
       location: location || null,
-      Skills: selectedSkills,
-      Interests: selectedInterests,
+      skills: selectedSkills,
+      interests: selectedInterests,
       workorProject: workorProject || null,
-      About: about || null,
+      about: about || null,
       college: college || null,
       degree: degree || null,
       startYear: parsedStartYear,
       endYear: parsedEndYear,
     };
 
+    console.log("Step 9 - Final Submission Data:", userData);
     try {
-      console.log("Submitting user data:", userData);
       const response = await axios.post(
         "https://uniisphere-1.onrender.com/auth/completeProfile",
         userData,
@@ -167,10 +163,7 @@ function AfterOtpSection1() {
       alert("Profile completed successfully!");
     } catch (err) {
       console.error("Error details:", err.response || err.message);
-      setError(
-        "Profile completion failed: " +
-        (err.response?.data?.message || err.message)
-      );
+      setError("Profile completion failed. Please try again later.");
     }
   };
 
@@ -200,7 +193,7 @@ function AfterOtpSection1() {
     setSelectedSkills(selectedSkills.filter((s) => s !== skill));
   };
 
-  // Render Steps
+  // Render Steps (unchanged except for Step 4 and 5 labels)
   const renderFirstStep = () => (
     <Form onSubmit={handleFirstStepSubmit}>
       <Form.Group controlId="username" className="mb-3">
@@ -338,7 +331,7 @@ function AfterOtpSection1() {
         />
       </Form.Group>
       <div className="year-of-clg">
-        <Form.Group controlId="startYear" >
+        <Form.Group controlId="startYear" className="mb-3">
           <Form.Label>Start Year</Form.Label>
           <Form.Control
             type="number"
@@ -370,7 +363,7 @@ function AfterOtpSection1() {
   const renderFourthStep = () => (
     <Form onSubmit={handleFourthStepSubmit}>
       <Form.Group controlId="interest" className="mb-3">
-        <Form.Label>Interest*</Form.Label>
+        <Form.Label>Interests (Optional)</Form.Label>
         <div className="interest-search">
           <Form.Control
             type="text"
@@ -413,7 +406,7 @@ function AfterOtpSection1() {
   const renderFifthStep = () => (
     <Form onSubmit={handleFifthStepSubmit}>
       <Form.Group controlId="skill" className="mb-3">
-        <Form.Label>Skills*</Form.Label>
+        <Form.Label>Skills (Optional)</Form.Label>
         <div className="skill-search">
           <Form.Control
             type="text"
@@ -530,45 +523,8 @@ function AfterOtpSection1() {
   );
 
   return (
-    <div>
-            <div className="login-wrapper-1">
+    <div className="signup-Page-1">
       <Background />
-
-      {/* Left-side Unisphere Logo */}
-      <img
-        src={Unispherelogo}
-        alt="Unisphere Logo-1"
-        className="top-left-logo"
-      />
-
-      {/* Container for Title and Success Image */}
-      <div className="login-container-1">
-        <div>
-          <h1 className="unisphere-title-1">
-            <span className="u">U</span>
-            <span className="n">N</span>
-            <span className="i">I</span>
-            <span className="i">I</span>
-            <span className="s">S</span>
-            <span className="p">P</span>
-            <span className="h">H</span>
-            <span className="e">E</span>
-            <span className="r">R</span>
-            <span className="e">E</span>
-          </h1>
-        </div>
-        <div className="Success-1">
-          <h3>
-            <span>"Connect" </span>
-            <span>"Collbrate"</span>
-            <span>"Success"</span>
-          </h3>
-        </div>
-      </div>
-    </div>
-      <div className="signup-Page-1">
-      <Background />
-      
       <div className="otp-box">
         <div className="progress-indicator">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((s) => (
@@ -591,7 +547,6 @@ function AfterOtpSection1() {
           You can change your preference anytime.
         </p>
       </div>
-    </div>
     </div>
   );
 }
