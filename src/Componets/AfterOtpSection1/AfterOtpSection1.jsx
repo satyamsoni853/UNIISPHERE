@@ -3,9 +3,7 @@ import "./AfterOtpSection1.css";
 import { Form, Button } from "react-bootstrap";
 import Background from "../Background/Background.jsx";
 import Unispherelogo from "./Unispherelogo.png";
-import Connectandsuccess from "./success.png";
 import axios from "axios";
-import UNIISPHERELOGO from '../UNIISPHERELOGO/UNIISPHERELOGO.jsx'
 
 function AfterOtpSection1() {
   const [step, setStep] = useState(1);
