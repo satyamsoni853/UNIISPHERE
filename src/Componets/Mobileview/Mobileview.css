@@ -6,4 +6,6 @@
   max-width: 500px; /* Adjust as needed */
   margin: 0 auto;
   background-color: white;
+  overflow: hidden;
+  
 }

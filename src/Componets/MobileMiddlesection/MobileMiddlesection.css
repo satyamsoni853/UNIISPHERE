@@ -2,16 +2,12 @@
 .mobile-middlesection {
   max-width: 500px;
   width: 100%;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid black;
+  
 
-  padding-top: 0px; /* Prevents overlap with navbar */
-  padding-bottom: 80px; /* Prevents overlap with footer */
-  min-height: calc(100vh - 140px); /* Ensures proper height */
-  overflow-y: auto; /* Allows scrolling if needed */
 }
 
 /* Profile Section */
@@ -22,12 +18,9 @@
   width: 100%;
   padding: 10px;
   border-top: 2px solid grey;
-  background: white;
-  position: sticky;
-  top: 60px;
-  z-index: 50;
-}
+  
 
+}
 
 /* Profile Info */
 .mobile-profile-info {
@@ -51,7 +44,7 @@
 }
 
 .mobile-profile-name {
-  margin-top: 10px;
+  margin-top: 10px; /* Adjusted from original */
   font-size: 14px;
   font-weight: bold;
 }
@@ -77,7 +70,7 @@
 }
 
 .mobile-connect-image {
-  width: 70px;
+  width: 90px;
   height: 24px;
   cursor: pointer;
 }
@@ -90,14 +83,14 @@
 /* Main Image */
 .mobile-main-image {
   width: 100%;
-  align-items: center;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .mobile-content-image {
   width: 80%;
-  height: auto;
+  height: 70vh;
   border-radius: 5px;
 }
 
@@ -108,7 +101,7 @@
   align-items: center;
   width: 100%;
   padding: 10px;
-  border-top: 1px solid #ddd;
+  /* border-top: 1px solid #ddd; */
 }
 
 .mobile-like-count {
@@ -137,6 +130,7 @@
   padding: 10px;
   width: 100%;
   text-align: left;
+  padding-bottom: 60px;
 }
 
 .mobile-post-author {
@@ -146,4 +140,34 @@
 .mobile-see-more {
   color: blue;
   cursor: pointer;
+}
+
+
+
+.mobile-middlesection{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.side-images-left-images{
+  position: absolute;
+  left: 0;
+ display: flex;
+ /* align-items: center; */
+ /* justify-content: center; */
+ flex-direction: column;
+ gap: 100px;
+ width: 50px;
+
+}
+.side-images-right-images{
+  position: absolute;
+  right: 0;
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+  flex-direction: column;
+  gap: 100px;
+  width: 50px;
+
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './View.css';
-import DesktopView from '../DesktopView/DesktopView';
-import MobileView from '../MobileView/MobileView';
+import DesktopView from '../DesktopView/DesktopView.jsx';
+import MobileView from '../MobileView/MobileView.jsx';
 
 function View() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
