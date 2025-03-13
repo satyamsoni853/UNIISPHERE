@@ -32,13 +32,13 @@ function UNIISPHERELOGO() {
             <span className="e">E</span>
           </h1>
         </div>
-        <div className="Success-1">
-          <h3>
-            <span>"Connect" </span>
-            <span>"Collbrate"</span>
-            <span>"Success"</span>
-          </h3>
-        </div>
+        <div className="Succeed-1">
+            <h3>
+              <span>"Connect" </span>
+              <span>"Collbrate" </span>
+              <span>"Succeed"</span>
+            </h3>
+          </div>
       </div>
     </div>
   );

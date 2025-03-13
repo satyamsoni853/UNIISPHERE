@@ -9,12 +9,15 @@ import AfterOtpSection1 from "./Componets/AfterOtpSection1/AfterOtpSection1.jsx"
 import DecktopView from "./Componets/DesktopView/DesktopView.jsx";
 import UserSignupwithemailandpass from "./Componets/UserSignupwithemailandpass/UserSignupwithemailandpass.jsx";
 import ForgotPassword from "./Componets/ForgotPassword/ForgotPassword.jsx";
+ 
+
 function App() {
   return (
     <Router>
       <div className="app-container">
         <Routes>
           <Route path="/home" element={<UserLogin />} />
+          {/* <Route path="/ShowFollowersMiddleSection" element={<ShowFollowersMiddleSection />} /> */}
          
           <Route path="/DecktopView" element={<DecktopView />} />
           <Route path="/" element={<UserLogin />} />

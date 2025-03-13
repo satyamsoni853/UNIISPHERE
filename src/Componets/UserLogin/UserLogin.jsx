@@ -81,7 +81,7 @@ function UserLogin() {
               <span className="e">E</span>
             </h1>
           </div>
-          <div className="Success-1">
+          <div className="Succeed-1">
             <h3>
               <span>"Connect" </span>
               <span>"Collbrate" </span>
