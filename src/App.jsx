@@ -15,7 +15,8 @@ function App() {
       <div className="app-container">
         <Routes>
           <Route path="/home" element={<UserLogin />} />
-          <Route path="/dashboard" element={<DecktopView />} />
+         
+          <Route path="/DecktopView" element={<DecktopView />} />
           <Route path="/" element={<UserLogin />} />
           <Route path="/ForgotPassword" element={<ForgotPassword/>} />
 

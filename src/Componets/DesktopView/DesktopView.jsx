@@ -5,10 +5,12 @@ import Decklefttop from '../DesktopLeftTop-1/DesktopLeftTop.jsx'
 import DesktopMiddle from '../DesktopMiddle/DesktopMiddle.jsx'
 import DesktopRight from '../DesktopRight/DesktopRight.jsx'
 import './DesktopView.css';
+import Backgrund from '../Background/Background.jsx'
 
 function DesktopView() {
   return (
     <>
+    <Backgrund />
       {/* Navbar */}
       <div className="desktop-navbar">
         <DesktopNavbarr />

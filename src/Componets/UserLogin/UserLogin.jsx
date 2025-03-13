@@ -29,7 +29,7 @@ function UserLogin() {
 
       if (response.status === 200) {
         alert("Login Successful!");
-        navigate("/dashboard"); // Redirect after successful login
+        navigate("/DecktopView"); // Redirect after successful login
       }
     } catch (error) {
       alert(
@@ -84,8 +84,8 @@ function UserLogin() {
           <div className="Success-1">
             <h3>
               <span>"Connect" </span>
-              <span>"Collbrate"</span>
-              <span>"Success"</span>
+              <span>"Collbrate" </span>
+              <span>"Succeed"</span>
             </h3>
           </div>
         </div>
@@ -138,7 +138,7 @@ function UserLogin() {
           </p>
 
           <div className="button-container">
-            <button type="button" className="login-btn" onClick={handleLogin}>
+            <button className="login-singup-button "  type="button" className="login-btn" onClick={handleLogin}>
               Continue
             </button>
           </div>
@@ -150,7 +150,7 @@ function UserLogin() {
           </div>
 
           <div className="google-container">
-            <button className="google-btn" onClick={handleGoogleLogin}>
+            <button  className="google-btn" onClick={handleGoogleLogin}>
               <FcGoogle className="google-icon" /> Google
             </button>
           </div>

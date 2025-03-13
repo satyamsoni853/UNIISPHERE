@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import Unispherelogo from './Unispherelogo.png';
 import Background from '../Background/Background';
@@ -11,6 +12,8 @@ function ForgotPassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otpSent, setOtpSent] = useState(false);
 
+  const navigate = useNavigate(); // Initialize the navigate function
+
   // Function to send OTP
   const sendOtp = async () => {
     try {
@@ -22,7 +25,7 @@ function ForgotPassword() {
     }
   };
 
-  // Function to reset password
+  // Function to reset password and navigate to "/"
   const resetPassword = async () => {
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match");
@@ -35,6 +38,7 @@ function ForgotPassword() {
         newPassword,
       });
       alert(response.data.message || 'Password reset successfully');
+      navigate("/"); // Navigate to home page after successful reset
     } catch (error) {
       alert(error.response?.data?.error || 'Failed to reset password');
     }
@@ -72,7 +76,7 @@ function ForgotPassword() {
               onChange={(e) => setEmail(e.target.value)}
               className="email-input"
             />
-            <button type="button" className="send-otp-btn" onClick={sendOtp}>
+            <button type="button" className="send-otp-btn login-singup-button  " onClick={sendOtp}>
               Send OTP
             </button>
           </div>
@@ -100,7 +104,7 @@ function ForgotPassword() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="password-input"
               />
-              <button type="button" className="reset-password-btn" onClick={resetPassword}>
+              <button   type="button" className="reset-password-btn login-singup-button " onClick={resetPassword}>
                 Reset Password
               </button>
             </>

@@ -10,10 +10,11 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid grey;
   width: 100%;
-  max-width: 375px; /* Prevents it from getting too big */
+  max-width: 370px; /* Prevents it from getting too big */
   height: auto; /* Allow height to adjust */
   min-height: 353px; /* Prevents it from shrinking too much */
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 /* Heading */

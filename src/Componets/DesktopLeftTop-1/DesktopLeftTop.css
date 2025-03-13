@@ -3,7 +3,9 @@
   padding: 10px;
   border-radius: 8px;
   border: 1px solid black;
-  max-width: 380px;
+  max-width: 370px;
+  padding: 10px;
+  margin-left: 20px;
 }
 
 .leftsectiontop-1-heading {
@@ -14,14 +16,10 @@
 }
 
 .leftsectiontop-1-article {
-
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 10px;
-  border-radius: 5px;
+  margin-top: 10px;
 }
-
 
 .leftsectiontop-1-image {
   width: 60px;
@@ -30,10 +28,8 @@
   object-fit: cover;
 }
 
-
-
 .leftsectiontop-1-title {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
   color: #222;
   margin-bottom: 5px;
@@ -45,8 +41,15 @@
   color: #555;
 }
 
-/* @media screen and (max-width: 767px) {  
-  .leftsectiontop-1 {
-    display: none;
-  }
-} */
+.leftsectiontop-1-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-left: 10px;
+}
+
+.leftsectiontop-1-title,
+.leftsectiontop-1-author {
+  margin: 0;
+  
+}

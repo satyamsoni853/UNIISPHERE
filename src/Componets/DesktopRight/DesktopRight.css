@@ -1,4 +1,9 @@
 /* Right Section */
+.right-section-container {
+  margin-right: 20px;
+  
+}
+
 .rightsection {
   
   display: flex;
@@ -7,10 +12,8 @@
   background: linear-gradient(to bottom, #f4d6cc33, #e5be9e33);
   padding: 15px;
   border-radius: 10px;
-  width: 100%;  /* Take full width */
-  /* max-width: 500px; */
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  height: auto;
 
 }
 

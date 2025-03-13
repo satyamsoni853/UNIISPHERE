@@ -1,18 +1,22 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom"; // Import useLocation to get passed state
 import { Button, Form } from "react-bootstrap";
 import Background from "../Background/Background.jsx";
 import "./AfterOtpSection1.css";
 import Unispherelogo from "./Unispherelogo.png";
 
 function AfterOtpSection1() {
+  const location = useLocation(); // Get the passed state
+  const { email: passedEmail, username: passedUsername } = location.state || {}; // Extract email and username
+
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // State for Step 1
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  // State for Step 1 (Pre-filled with passed data)
+  const [username, setUsername] = useState(passedUsername || "");
+  const [email, setEmail] = useState(passedEmail || "");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
 
@@ -63,12 +67,13 @@ function AfterOtpSection1() {
 
   // State for Step 6 (About, Location)
   const [About, setAbout] = useState("");
-  const [location, setLocation] = useState("");
+  const [userLocation, setUserLocation] = useState("");
 
-  // State for Step 8 (Profile Picture URL)
-  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  // State for Step 8 (Profile Picture Upload)
+  const [profilePicture, setProfilePicture] = useState(null); // File object instead of URL
+  const [previewUrl, setPreviewUrl] = useState(""); // For image preview
 
-  // Step Handlers with expanded logging
+  // Step Handlers
   const handleFirstStepSubmit = (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -169,7 +174,7 @@ function AfterOtpSection1() {
     }
     console.log(
       "Step 6 - About/Location:",
-      JSON.stringify({ About, location }, null, 2)
+      JSON.stringify({ About, location: userLocation }, null, 2)
     );
     setError("");
     setStep(7);
@@ -190,10 +195,7 @@ function AfterOtpSection1() {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
-    console.log(
-      "Step 8 - Profile Picture:",
-      JSON.stringify({ profilePictureUrl }, null, 2)
-    );
+    console.log("Step 8 - Profile Picture Selected:", profilePicture?.name || "None");
     setError("");
     setStep(9);
     setIsSubmitting(false);
@@ -208,38 +210,36 @@ function AfterOtpSection1() {
     const parsedStartYear = startYear ? parseInt(startYear, 10) : null;
     const parsedEndYear = endYear ? parseInt(endYear, 10) : null;
 
-    const userData = {
-      username: username,
-      email: email || "",
-      PhoneNumber: PhoneNumber,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-      Gender: Gender,
-      profilePictureUrl: profilePictureUrl || "",
-      headline: headline || "",
-      location: location || "",
-      Skills: selectedSkills,
-      Interests: selectedInterests,
-      workorProject: workorProject || "",
-      About: About || "",
-      college: college || "",
-      degree: degree || "",
-      startYear: parsedStartYear,
-      endYear: parsedEndYear,
-    };
+    // Use FormData to handle file upload
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("email", email || "");
+    formData.append("PhoneNumber", PhoneNumber || "");
+    formData.append("password", password);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("Gender", Gender);
+    if (profilePicture) formData.append("profilePicture", profilePicture); // Append file
+    formData.append("headline", headline || "");
+    formData.append("location", userLocation || "");
+    formData.append("Skills", JSON.stringify(selectedSkills));
+    formData.append("Interests", JSON.stringify(selectedInterests));
+    formData.append("workorProject", workorProject || "");
+    formData.append("About", About || "");
+    formData.append("college", college || "");
+    formData.append("degree", degree || "");
+    formData.append("startYear", parsedStartYear);
+    formData.append("endYear", parsedEndYear);
 
-    console.log(
-      "Step 9 - Final Submission Data:",
-      JSON.stringify(userData, null, 2)
-    );
+    console.log("Step 9 - Final Submission Data:", formData);
+
     try {
       const response = await axios.post(
         "https://uniisphere-1.onrender.com/auth/completeProfile",
-        userData,
+        formData,
         {
-          headers: { "Content-Type": "application/json" },
-          timeout: 10000, // Set a 10-second timeout for the request
+          headers: { "Content-Type": "multipart/form-data" }, // Important for file upload
+          timeout: 10000, // 10-second timeout
         }
       );
       console.log(
@@ -289,6 +289,15 @@ function AfterOtpSection1() {
     setSelectedSkills(selectedSkills.filter((s) => s !== skill));
   };
 
+  // Handle Image Upload
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePicture(file);
+      setPreviewUrl(URL.createObjectURL(file)); // Generate preview URL
+    }
+  };
+
   // Render Steps
   const renderFirstStep = () => (
     <Form onSubmit={handleFirstStepSubmit}>
@@ -300,6 +309,7 @@ function AfterOtpSection1() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+          disabled={!!passedUsername} // Disable if pre-filled
         />
       </Form.Group>
       <Form.Group controlId="email" className="mb-3">
@@ -310,6 +320,7 @@ function AfterOtpSection1() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          disabled={!!passedEmail} // Disable if pre-filled
         />
       </Form.Group>
       <Form.Group controlId="password" className="mb-3">
@@ -652,8 +663,8 @@ function AfterOtpSection1() {
         <Form.Control
           type="text"
           placeholder="Enter your location (e.g., New York, NY)"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          value={userLocation}
+          onChange={(e) => setUserLocation(e.target.value)}
         />
       </Form.Group>
       {error && (
@@ -709,26 +720,24 @@ function AfterOtpSection1() {
 
   const renderEighthStep = () => (
     <Form onSubmit={handleEighthStepSubmit}>
-      <Form.Group controlId="profilePictureUrl" className="mb-3">
-        <Form.Label>Profile Picture URL (Optional)</Form.Label>
+      <Form.Group controlId="profilePicture" className="mb-3">
+        <Form.Label>Profile Picture (Optional)</Form.Label>
         <Form.Control
-          type="url"
-          placeholder="Enter the URL of your profile picture (e.g., https://example.com/image.jpg)"
-          value={profilePictureUrl}
-          onChange={(e) => setProfilePictureUrl(e.target.value)}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
         />
-        {profilePictureUrl && (
+        {previewUrl && (
           <div className="profile-preview mt-2">
             <img
-              src={profilePictureUrl}
+              src={previewUrl}
               alt="Profile Preview"
               className="circle-image"
               style={{ maxWidth: "100px", maxHeight: "100px" }}
-              onError={() => setError("Invalid image URL")}
             />
           </div>
         )}
-        <p className="image-note">Add a URL to your profile picture.</p>
+        <p className="image-note">Upload a profile picture.</p>
       </Form.Group>
       {error && (
         <p className="error-text" style={{ color: "red" }}>
@@ -798,7 +807,7 @@ function AfterOtpSection1() {
           alt="Unisphere Logo-1"
           className="top-left-logo"
         />
-                <div className="login-container-1">
+        <div className="login-container-1">
           <div>
             <h1 className="unisphere-title-1">
               <span className="u">U</span>

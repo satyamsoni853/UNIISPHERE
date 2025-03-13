@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For redirection
 import axios from "axios"; // Import axios
 import Unispherelogo from "./Unispherelogo.png";
-
 import Background from "../Background/Background";
 import "./UserSignupwithemailandpass.css"; // Optional: for styling
 
@@ -45,7 +44,8 @@ function UserSignupwithemailandpass() {
         { email, otp }
       );
       console.log("OTP verified:", response.data);
-      navigate("/AfterOtpSection1"); // Redirect to dashboard on success
+      // Pass email and username as state to the next page
+      navigate("/AfterOtpSection1", { state: { email, username } });
     } catch (err) {
       setError(err.response?.data?.message || "Invalid OTP. Please try again.");
     }
@@ -114,7 +114,9 @@ function UserSignupwithemailandpass() {
                   placeholder="Enter your username"
                 />
               </div>
-              <button type="submit">Send OTP</button>
+              <button className="login-singup-button" type="submit">
+                Send OTP
+              </button>
             </form>
           )}
 
@@ -143,24 +145,25 @@ function UserSignupwithemailandpass() {
               </div>
 
               {/* Submit Button */}
-              <button type="submit" className="otp-button">
+              <button className="login-singup-button" type="submit">
                 Continue
               </button>
 
               {/* Privacy Message */}
-              
             </form>
           )}
 
           {/* Already have an account */}
-          <div className="Login-here-sentence " >
-          <p >
-            Already have an account? <a href="/">Login here</a>
-          </p>
-          <p>Your Privacy Is Important</p>
-          <p>
-          We may send you member updates, recruiter message, job suggestions, invitations, reminder and promotional messages from us and our parents. You can change your preference anytime.
-          </p>
+          <div className="Login-here-sentence">
+            <p>
+              Already have an account? <a href="/">Login here</a>
+            </p>
+            <p>Your Privacy Is Important</p>
+            <p>
+              We may send you member updates, recruiter message, job
+              suggestions, invitations, reminder and promotional messages from
+              us and our parents. You can change your preference anytime.
+            </p>
           </div>
 
           {/* Error Message */}

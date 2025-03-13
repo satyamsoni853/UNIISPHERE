@@ -18,7 +18,8 @@ const suggestions = [
 
 function DesktopRightsection() {
   return (
-    <div className="rightsection">
+    <div className="right-section-container">
+      <div className="rightsection">
       {/* Profile Section */}
       <div className="profile-card">
         <img src={Profileimg} alt="Profile" className="profile-image" />
@@ -52,10 +53,11 @@ function DesktopRightsection() {
               <p className="suggestion-name">{suggestion.name}</p>
               <p className="suggestion-university">{suggestion.university}</p>
             </div>
-            <button ><img className="connect-btn" src={Connectimage} alt="" /></button>
+            <button><img className="connect-btn" src={Connectimage} alt="" /></button>
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 }
