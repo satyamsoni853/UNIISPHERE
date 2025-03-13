@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation to get passed state
+import { useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
 import { Button, Form } from "react-bootstrap";
 import Background from "../Background/Background.jsx";
 import "./AfterOtpSection1.css";
@@ -8,6 +8,7 @@ import Unispherelogo from "./Unispherelogo.png";
 
 function AfterOtpSection1() {
   const location = useLocation(); // Get the passed state
+  const navigate = useNavigate(); // Initialize useNavigate for redirection
   const { email: passedEmail, username: passedUsername } = location.state || {}; // Extract email and username
 
   const [step, setStep] = useState(1);
@@ -247,6 +248,7 @@ function AfterOtpSection1() {
         JSON.stringify(response.data, null, 2)
       );
       alert("Profile completed successfully!");
+      navigate("/view"); // Redirect to /view page after successful submission
     } catch (err) {
       console.error(
         "Error details:",
@@ -825,7 +827,7 @@ function AfterOtpSection1() {
           <div className="Succeed-1">
             <h3>
               <span>"Connect" </span>
-              <span>"Collbrate" </span>
+              <span>"Collaborate" </span>
               <span>"Succeed"</span>
             </h3>
           </div>

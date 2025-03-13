@@ -29,7 +29,7 @@ function UserLogin() {
 
       if (response.status === 200) {
         alert("Login Successful!");
-        navigate("/DecktopView"); // Redirect after successful login
+        navigate("/View"); // Redirect after successful login
       }
     } catch (error) {
       alert(
@@ -138,7 +138,7 @@ function UserLogin() {
           </p>
 
           <div className="button-container">
-            <button className="login-singup-button "  type="button" className="login-btn" onClick={handleLogin}>
+            <button className="login-singup-button login-btn "  type="button"  onClick={handleLogin}>
               Continue
             </button>
           </div>
