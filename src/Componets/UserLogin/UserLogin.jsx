@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import './Userloginfile.css'
+import "./Userloginfile.css";
 import { Link } from "react-router-dom";
 import Unispherelogo from "./Unispherelogo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Background from "../Background/Background";
 import { FcGoogle } from "react-icons/fc";
+import { IoReorderThreeOutline } from "react-icons/io5";
 
 function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,11 +52,18 @@ function UserLogin() {
         <Background />
 
         {/* Left-side Unisphere Logo */}
-        <img
-          src={Unispherelogo}
-          alt="Unisphere Logo-1"
-          className="top-left-logo"
-        />
+        <div className="top-left-container">
+         <div>
+         <img
+            src={Unispherelogo}
+            alt="Unisphere Logo-1"
+            className="top-left-logo"
+          />
+         </div>
+          <div>
+          <IoReorderThreeOutline className="top-menu-icon" />
+          </div>
+        </div>
 
         {/* Container for Title and Success Image */}
         <div className="login-container-1">
@@ -114,16 +122,15 @@ function UserLogin() {
 
           <div className="remember-container">
             <div>
-            <input type="checkbox" id="remember" />
+              <input type="checkbox" id="remember" />
             </div>
             <div className="remember-me">
-             
               <label htmlFor="remember">Remember Me</label>
             </div>
           </div>
           <p>
-        <Link to="/ForgotPassword">Forgot Password?</Link>
-      </p>
+            <Link to="/ForgotPassword">Forgot Password?</Link>
+          </p>
 
           <p className="terms">
             By clicking Agree & Join or Continue, you agree to the Unisphere

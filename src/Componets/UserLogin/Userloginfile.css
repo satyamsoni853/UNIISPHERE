@@ -7,6 +7,7 @@
   width: 600px; /* Fixed width */
   margin-top: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  border-radius: 40px;
 }
 
 /* Responsive container */
@@ -162,11 +163,29 @@
   font-size: 5.2rem;
   font-weight: 600; 
 }
+.top-menu-icon{
+  display: none;
+  
+}
+
+
 
 @media (max-width: 768px) {
-  .top-left-logo {
-    display: none; /* Hides logo on smaller screens */
+  .top-menu-icon{
+    display: block;
+    font-size: 3rem;
+    position: relative;
+    margin-top: 15px;
   }
+  .top-left-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 50px;
+  }
+  
+
+
 
   .unisphere-title-container {
     font-size: 3.6rem;
