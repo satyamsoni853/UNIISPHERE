@@ -1,11 +1,9 @@
 /* Right Section */
 .right-section-container {
   margin-right: 20px;
-  
 }
 
 .rightsection {
-  
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -14,15 +12,13 @@
   border-radius: 10px;
   width: 100%;
   height: auto;
-
 }
-
 
 /* Profile Card - Align Profile Image on Left & Connect/Numbers on Right */
 .profile-card {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -53,8 +49,6 @@
   width: 140px;
 }
 
-
-
 .profile-name {
   font-size: 26px;
   font-weight: 400;
@@ -70,7 +64,6 @@
 }
 
 .profile-bio {
- 
   font-size: 12px;
   color: #666;
 }
@@ -131,7 +124,6 @@
   width: 100px;
 }
 
-
 .profile-details p {
   margin: 2px 0; /* Reduce space between paragraphs */
   line-height: 1.2; /* Reduce line height */
@@ -141,7 +133,7 @@
   margin-bottom: 5px; /* Adjust spacing below the name */
 }
 
-.profile-company, 
+.profile-company,
 .profile-location {
   margin-bottom: 3px; /* Reduce bottom margin */
 }
@@ -163,12 +155,9 @@
   margin-top: 0; /* Remove extra top margin */
 }
 
-
-
 /* Responsive Design */
 /* @media screen and (max-width: 768px) {
   .rightsection {
     display: none; 
   }
 } */
-

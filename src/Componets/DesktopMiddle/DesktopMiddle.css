@@ -39,6 +39,11 @@
 
 .middle-options-icon {
   cursor: pointer;
+  font-size: 24px;
+  
+}
+.middle-post-time{
+  margin-left: 10px;
 }
 
 /* Main Image */
@@ -47,6 +52,7 @@
   display: flex;
   justify-content: center;
   padding: 10px 20;
+  height: 70vh;
 }
 
 .middle-content-image {
@@ -96,4 +102,30 @@
 .middle-see-more {
   color: blue;
   cursor: pointer;
+}
+.middle-icon-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.middle-icon {
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.middle-icon-count {
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+}
+
+.liked {
+  color: red;
+}
+.middle-post-text{
+  border-bottom: 5px solid grey;
+  width: 100%;
+  margin: 20px 0px;
 }
