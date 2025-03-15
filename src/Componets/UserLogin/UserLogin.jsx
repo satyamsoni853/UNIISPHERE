@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Userloginfile.css";
-import { Link } from "react-router-dom";
-import Unispherelogo from "./Unispherelogo.png";
+import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Background from "../Background/Background";
 import { FcGoogle } from "react-icons/fc";
 import { IoReorderThreeOutline } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+import Background from "../Background/Background";
+import Unispherelogo from "./Unispherelogo.png";
+import "./Userloginfile.css";
 
 function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,8 +27,25 @@ function UserLogin() {
       );
 
       if (response.status === 200) {
+        // Extract token and user ID from response
+        const token = response.data.token;
+        const userId = response.data.user.id;
+        
+        // Store in localStorage for persistence
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userId', userId);
+        
+        console.log("Authentication data saved:", { token: token.substring(0, 10) + "...", userId });
+        
         alert("Login Successful!");
-        navigate("/View"); // Redirect after successful login
+        
+        // Pass token in navigation state
+        navigate("/View", {
+          state: {
+            userToken: token,
+            userId: userId
+          }
+        });
       }
     } catch (error) {
       alert(
