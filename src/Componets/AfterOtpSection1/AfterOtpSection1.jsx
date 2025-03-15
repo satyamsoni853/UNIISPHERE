@@ -1,19 +1,31 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
 import Background from "../Background/Background.jsx";
 import "./AfterOtpSection1.css";
 import Unispherelogo from "./Unispherelogo.png";
 
 function AfterOtpSection1() {
-  const location = useLocation(); // Get the passed state
-  const navigate = useNavigate(); // Initialize useNavigate for redirection
-  const { email: passedEmail, username: passedUsername } = location.state || {}; // Extract email and username
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Extract state from location with fallback
+  const { email: passedEmail, username: passedUsername, token: passedToken } = location.state || {};
+  
+  // Debug token presence
+  useEffect(() => {
+    if (!passedToken) {
+      console.warn("Warning: No token received from previous page");
+    } else {
+      console.log("Token received successfully");
+    }
+  }, [passedToken]);
 
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [token, setToken] = useState(passedToken || "");
 
   // State for Step 1 (Pre-filled with passed data)
   const [username, setUsername] = useState(passedUsername || "");
@@ -202,70 +214,174 @@ function AfterOtpSection1() {
     setIsSubmitting(false);
   };
 
+  // First, add this helper function to convert File to Base64
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Add this function to resize and compress image before Base64 conversion
+  const resizeAndCompressImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const maxWidth = 500;
+      const maxHeight = 500;
+      const quality = 0.7; // 70% quality - adjust if needed
+  
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          // Create a canvas to resize the image
+          const canvas = document.createElement('canvas');
+          
+          // Calculate new dimensions while maintaining aspect ratio
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > height) {
+            if (width > maxWidth) {
+              height = Math.round(height * maxWidth / width);
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = Math.round(width * maxHeight / height);
+              height = maxHeight;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          // Draw the resized image
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Convert to Base64 with reduced quality
+          const resizedBase64 = canvas.toDataURL('image/jpeg', quality);
+          resolve(resizedBase64);
+        };
+        img.onerror = (error) => reject(error);
+        img.src = event.target.result;
+      };
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  };
+  
+  // Replace your compressImage function with this version
+  const compressImage = async (file) => {
+    console.log("Using file directly without compression");
+    return file; // Just return the original file
+  };
+
+  // Then update your handleNinthStepSubmit function
   const handleNinthStepSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
     console.log("Starting profile submission...");
-
-    const parsedStartYear = startYear ? parseInt(startYear, 10) : null;
-    const parsedEndYear = endYear ? parseInt(endYear, 10) : null;
-
-    // Use FormData to handle file upload
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("email", email || "");
-    formData.append("PhoneNumber", PhoneNumber || "");
-    formData.append("password", password);
-    formData.append("firstName", firstName);
-    formData.append("lastName", lastName);
-    formData.append("Gender", Gender);
-    if (profilePicture) formData.append("profilePicture", profilePicture); // Append file
-    formData.append("headline", headline || "");
-    formData.append("location", userLocation || "");
-    formData.append("Skills", JSON.stringify(selectedSkills));
-    formData.append("Interests", JSON.stringify(selectedInterests));
-    formData.append("workorProject", workorProject || "");
-    formData.append("About", About || "");
-    formData.append("college", college || "");
-    formData.append("degree", degree || "");
-    formData.append("startYear", parsedStartYear);
-    formData.append("endYear", parsedEndYear);
-
-    console.log("Step 9 - Final Submission Data:", formData);
-
+  
+    // Token validation
+    if (!token) {
+      setError("Authentication token is missing. Please go back to the login page and try again.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    // Check required fields
+    if (!username || !email || !password || !firstName || !lastName) {
+      setError("Required fields are missing");
+      setIsSubmitting(false);
+      return;
+    }
+  
     try {
+      // Convert profile picture to Base64 if it exists
+      let profilePictureUrl  = "";
+      if (profilePicture) {
+        try {
+          // Use the new function instead of convertImageToBase64
+          profilePictureUrl = await resizeAndCompressImage(profilePicture);
+          console.log("Profile picture compressed and resized successfully");
+          // Calculate size reduction for debugging
+          const originalSize = profilePicture.size;
+          const compressedSize = Math.round((profilePictureUrl.length * 3) / 4); // Approximate Base64 size
+          console.log(`Image size reduced from ${originalSize} to ~${compressedSize} bytes`);
+        } catch (imageError) {
+          console.error("Failed to process profile picture:", imageError);
+        }
+      }
+  
+      // Create a JSON payload with the Base64 image
+      const userData = {
+        email: email,
+        password: password,
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+        PhoneNumber: PhoneNumber || "",
+        Gender: Gender || "",
+        Skills: selectedSkills,
+        Interests: selectedInterests,
+        headline: headline || "",
+        location: userLocation || "",
+        About: About || "",
+        college: college || "",
+        degree: degree || "",
+        workorProject: workorProject || "",
+        startYear: startYear ? parseInt(startYear, 10) : null,
+        endYear: endYear ? parseInt(endYear, 10) : null,
+        profilePictureBase64: profilePictureUrl  // Renamed to match backend expectation
+      };
+      
+      // Log the JSON data being sent (truncate the Base64 string in logs)
+      const logData = {...userData};
+      if (logData.profilePictureBase64) {
+        logData.profilePictureBase64 = logData.profilePictureBase64.substring(0, 50) + '...';
+      }
+      console.log("Profile data being sent:", logData);
+  
+      // Send with application/json content type
       const response = await axios.post(
         "https://uniisphere-1.onrender.com/auth/completeProfile",
-        formData,
+        userData,
         {
-          headers: { "Content-Type": "multipart/form-data" }, // Important for file upload
-          timeout: 10000, // 10-second timeout
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          timeout: 30000,
         }
       );
-      console.log(
-        "Profile completion successful:",
-        JSON.stringify(response.data, null, 2)
-      );
+      
+      console.log("Profile completion successful:", response.data);
       alert("Profile completed successfully!");
-      navigate("/view"); // Redirect to /view page after successful submission
+      navigate("/view");
     } catch (err) {
-      console.error(
-        "Error details:",
-        JSON.stringify(err.response ? err.response.data : err.message, null, 2)
-      );
-      setError(
-        `Profile completion failed: ${
-          err.response ? err.response.statusText : err.message
-        }`
-      );
+      console.error("Error details:", err);
+      
+      // Error handling
+      if (err.response) {
+        console.error("Server response:", err.response.data);
+        setError(`Profile completion failed: ${err.response.data?.error || err.response.statusText}`);
+      } else if (err.request) {
+        setError("Network error. Please check your connection and try again.");
+      } else {
+        setError(`Request error: ${err.message}`);
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   const handleSkip = async () => {
-    const syntheticEvent = { preventDefault: () => {} };
+    const syntheticEvent = { preventDefault: () => { } };
     await handleNinthStepSubmit(syntheticEvent);
   };
 
@@ -846,20 +962,20 @@ function AfterOtpSection1() {
           {step === 1
             ? renderFirstStep()
             : step === 2
-            ? renderSecondStep()
-            : step === 3
-            ? renderThirdStep()
-            : step === 4
-            ? renderFourthStep()
-            : step === 5
-            ? renderFifthStep()
-            : step === 6
-            ? renderSixthStep()
-            : step === 7
-            ? renderSeventhStep()
-            : step === 8
-            ? renderEighthStep()
-            : renderNinthStep()}
+              ? renderSecondStep()
+              : step === 3
+                ? renderThirdStep()
+                : step === 4
+                  ? renderFourthStep()
+                  : step === 5
+                    ? renderFifthStep()
+                    : step === 6
+                      ? renderSixthStep()
+                      : step === 7
+                        ? renderSeventhStep()
+                        : step === 8
+                          ? renderEighthStep()
+                          : renderNinthStep()}
           <p className="privacy-text">
             Your Privacy is Important <br />
             We may send you member uploads, recruiter messages, job suggestions,
