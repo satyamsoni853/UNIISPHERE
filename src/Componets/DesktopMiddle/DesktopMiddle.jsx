@@ -8,33 +8,52 @@ import { CiHeart } from "react-icons/ci";
 import { TfiCommentsSmiley } from "react-icons/tfi";
 import { PiShareFatThin } from "react-icons/pi";
 import axios from "axios";
-
+import { useLocation } from "react-router-dom"; // Import useLocation to access state
 
 function DesktopMiddle() {
   // State to store the mediaUrl from the API
   const [mediaUrl, setMediaUrl] = useState(null);
   const [imageLoading, setImageLoading] = useState(true); // Separate loading state for the image
 
-  // Fetch data from the API when the component mounts
+  // Get token and userId from location state
+  const location = useLocation();
+  const { userToken, userId } = location.state || {};
+
+  // Fetch data from the API when the component mounts or when userId/token changes
   useEffect(() => {
     const fetchData = async () => {
-      setImageLoading(true); // Start loading when fetching begins
+      if (!userToken || !userId) {
+        console.error("Missing userToken or userId");
+        setImageLoading(false);
+        return;
+      }
+
+      setImageLoading(true);
+
       try {
-        const response = await axios.get("https://uniisphere-1.onrender.com/api/feed");
-        // Assuming the API response has a posts array and we want the first post's mediaUrl
+        const response = await axios.get(
+          `https://uniisphere-1.onrender.com/api/feed?userId=${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
+
+        // Check if response contains posts and update state
         if (response.data.posts && response.data.posts.length > 0) {
           setMediaUrl(response.data.posts[0].mediaUrl);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        setMediaUrl(null); // Ensure mediaUrl is null on error
+        setMediaUrl(null);
       } finally {
-        setImageLoading(false); // Stop loading regardless of success or failure
+        setImageLoading(false);
       }
     };
 
     fetchData();
-  }, []); // Empty dependency array means this runs once on mount
+  }, [userToken, userId]); // Dependencies include userToken and userId
 
   return (
     <div className="middle-middle-card">

@@ -1,0 +1,322 @@
+.Followers-middle-section-1-mainParent-privacy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.Followers-middle-section-1-middle-section-privacy {
+  padding: 20px;
+  box-shadow: 3px 3px 3px 3px rgb(220, 216, 216);
+  border-radius: 12px;
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+  gap: 5px;
+  width: 30vw;
+  /* min-height: 100vh; */
+  height:100vh;
+  position: relative;
+}
+
+.Followers-middle-section-1-profile-header-privacy {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: end;
+  gap: 40px;
+  align-items: center;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.Followers-middle-section-1-profile-info-privacy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Align content to the right */
+}
+
+.Followers-middle-section-1-profile-image-name-privacy {
+  display: flex;
+  justify-content: space-between; /* Push image and name to opposite sides */
+  align-items: center;
+  width: 100%;
+}
+
+.Followers-middle-section-1-profile-image-name-privacy img {
+  width: 100px; /* Adjust size as needed */
+  height: 30px;
+}
+
+.Followers-middle-section-1-profile-info-privacy h2 {
+  font-size: 20px;
+}
+
+.Followers-middle-section-1-imageContainer-privacy {
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  
+}
+
+.Followers-middle-section-1-profile-pic-privacy {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.Followers-middle-section-1-profile-header-privacy div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+
+.Followers-middle-section-1-profile-buttons-privacy {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+.Followers-middle-section-1-about-section-privacy p{
+  font-size: 14px;
+  
+}
+.Followers-middle-section-1-about-section-privacy h3{
+  /* height: 200px; */
+  text-align: start;
+  
+}
+
+.Followers-middle-section-1-collabs-section-privacy h4 {
+  /* height: 200px; */
+  text-align: start;
+  
+}
+
+.Followers-middle-section-1-collabratorCard-privacy {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* Align content at the top */
+  gap: 0; /* Remove any gap */
+}
+
+.Followers-middle-section-1-collab-image-privacy img {
+  width: 50px; /* Adjust size as needed */
+  height: 50px;
+  border-radius: 50%;
+}
+
+.Followers-middle-section-1-collabratorDetails-privacy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  
+}
+.Followers-middle-section-1-collabsDetails-privacy span{
+  font-size: 1.8rem;
+}
+.Followers-middle-section-1-connectionsDetails-privacy span{
+  font-size: 1.8rem;
+}
+
+.Followers-middle-section-1-subCollabrators-privacy {
+  display: flex;
+  flex-direction: row; /* Ensures items are in a single line */
+  flex-wrap: wrap; /* Allows wrapping if needed */
+  gap: 4px; /* Adds small space between names */
+}
+
+.Followers-middle-section-1-subCollabrators-privacy h6 {
+  display: inline; /* Ensures text stays in line */
+  margin: 0;
+  padding: 0;
+}
+.Followers-middle-section-1-subCollabrators-privacy h6 {
+  font-size: 8px;
+  margin: 0;  /* Removes any extra margin */
+  padding: 0; /* Removes any extra padding */
+  line-height: 0.2; /* Reduces space between lines */
+}
+
+.Followers-middle-section-1-subCollabrators-privacy {
+  font-size: 8px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2px; /* Reduces the gap between items */
+  align-items: center; /* Aligns text to the center */
+}
+
+.Followers-middle-section-1-education-privacy h6{
+  font-size: 12px;
+}
+
+
+.Followers-middle-section-1-paragraphAndArrow-privacy {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 5px;
+  align-items: center;
+}
+
+.Followers-middle-section-1-para-privacy {
+  text-align: start;
+  font-size: 14px;
+}
+.Followers-middle-section-1-para-privacy p{
+  width: 70%;
+}
+
+.Followers-middle-section-1-iconAndImage-privacy {
+  display: flex;
+  /* height: 120px; */
+  /* width: 110px; */
+  border-radius: 15px;
+  align-items: center;
+  
+}
+
+.Followers-middle-section-1-iconAndImage-privacy img {
+  height: 100%;
+  width: 200%;
+  border-radius: 10px;
+  
+}
+
+.Followers-middle-section-1-paragrapgh-icon-privacy {
+  font-size: 30px;
+}
+
+.Followers-middle-section-1-skills-section-privacy {
+  height: 200px;
+  text-align: start;
+}
+
+.Followers-middle-section-1-skill-list-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 5px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.Followers-middle-section-1-skill-list-privacy .Followers-middle-section-1-skillsMiniDiv-privacy {
+  background-color: #f3efef;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.Followers-middle-section-1-blur-privacy {
+  position: absolute;
+  backdrop-filter: blur(1px);
+  background-color: #ffffffbe;
+  /* height: 140px; */
+  width: 100%;
+  bottom: 0;
+  padding: 20px;
+  flex-direction: column;
+  display: flex;
+  gap: 15px;
+  left: 0;
+  align-items: center;
+  /* position: fixed; */
+}
+
+.Followers-middle-section-1-blur-privacy h2 {
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.Followers-middle-section-1-blur-privacy h3 {
+  font-weight: 100;
+  font-size: 22px;
+}
+
+.Followers-middle-section-1-blur-privacy .Followers-middle-section-1-lock-privacy {
+  border: 2px solid black;
+  border-radius: 50%;
+  height: fit-content;
+  width: fit-content;
+  padding: 10px;
+}
+
+.Followers-middle-section-1-lockIcon-privacy {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.Followers-middle-section-1-btn-privacy {
+  background: linear-gradient(to bottom, #ffe9ed, white);
+  color: black;
+  border: 1px solid black;
+  padding: 6px 8px;
+  width: 150px;
+  font-size: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .Followers-middle-section-1-middle-section-privacy {
+    width: 50vw;
+    padding: 20px;
+  }
+
+  .Followers-middle-section-1-profile-header-privacy {
+    font-size: 18px;
+  }
+
+  .Followers-middle-section-1-profile-info-privacy h2 {
+    font-size: 18px;
+  }
+
+  .Followers-middle-section-1-collabratorDetails-privacy {
+    width: 120px;
+  }
+}
+
+/* Responsive for Mobile */
+@media (max-width: 768px) {
+  .Followers-middle-section-1-middle-section-privacy {
+    width: 80vw;
+    padding: 15px;
+  }
+
+  .Followers-middle-section-1-profile-header-privacy {
+    /* flex-direction: column; */
+    gap: 10px;
+    font-size: 16px;
+  }
+
+  .Followers-middle-section-1-profile-info-privacy h2 {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .Followers-middle-section-1-profile-image-name-privacy {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .Followers-middle-section-1-imageContainer-privacy {
+    width: 70px;
+    height: 70px;
+  }
+
+  .Followers-middle-section-1-skill-list-privacy {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .Followers-middle-section-1-blur-privacy {
+    height: auto;
+    padding: 10px;
+  }
+
+  .Followers-middle-section-1-blur-privacy h2,
+  .Followers-middle-section-1-blur-privacy h3 {
+    font-size: 18px;
+  }
+}
