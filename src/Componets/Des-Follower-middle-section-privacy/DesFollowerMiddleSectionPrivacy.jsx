@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import "./FollowerMiddleSectionPrivacy.css";  
+import "./DesFollowerMiddleSectionPrivacy.css";  
 import { GoLock } from "react-icons/go";
 import { RiArrowDropRightLine } from "react-icons/ri";
 import Personimage from "./Person.png";
 import middleconnectimage from "./middleconnectimage.png";
-function FollowerMiddleSectionPrivacy() {
+function DesFollowerMiddleSectionPrivacy() {
   const [profilePic] = useState(Personimage);
   const [collabs] = useState(12);
   const [connections] = useState(34);
@@ -150,4 +150,4 @@ function FollowerMiddleSectionPrivacy() {
   );
 }
 
-export default FollowerMiddleSectionPrivacy;
+export default DesFollowerMiddleSectionPrivacy;
