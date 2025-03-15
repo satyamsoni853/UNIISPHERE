@@ -1,8 +1,8 @@
+import axios from "axios"; // Import axios
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For redirection
-import axios from "axios"; // Import axios
-import Unispherelogo from "./Unispherelogo.png";
 import Background from "../Background/Background";
+import Unispherelogo from "./Unispherelogo.png";
 import "./UserSignupwithemailandpass.css"; // Optional: for styling
 
 function UserSignupwithemailandpass() {
@@ -44,10 +44,28 @@ function UserSignupwithemailandpass() {
         { email, otp }
       );
       console.log("OTP verified:", response.data);
-      // Pass email and username as state to the next page
-      navigate("/AfterOtpSection1", { state: { email, username } });
+      
+      // Extract and verify token
+      const token = response.data.tempToken;
+      
+      if (!token) {
+        setError("No authentication token received from server. Please try again.");
+        return;
+      }
+      
+      console.log("Token received successfully:", token.substring(0, 10) + "...");
+      
+      // Pass it in the navigation state
+      navigate("/AfterOtpSection1", { 
+        state: { 
+          email, 
+          username, 
+          token 
+        } 
+      });
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid OTP. Please try again.");
+      console.error("OTP verification error:", err);
+      setError(err.response?.data?.error || "Invalid OTP. Please try again.");
     }
   };
 
