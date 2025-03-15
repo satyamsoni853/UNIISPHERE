@@ -1,51 +1,109 @@
-import React, { useState, useEffect } from "react";
-import "./DesktopMiddle.css";
-import ConnectMidlleimage from "./middleconnectimage.png";
-import MiddlemainImage from "./Middle-image-main.png";
-import Profileimage from "./Profile-image.png";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
-import { TfiCommentsSmiley } from "react-icons/tfi";
 import { PiShareFatThin } from "react-icons/pi";
-import axios from "axios";
-import { useLocation } from "react-router-dom"; // Import useLocation to access state
+import { TfiCommentsSmiley } from "react-icons/tfi";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./DesktopMiddle.css";
+import MiddlemainImage from "./Middle-image-main.png";
+import ConnectMidlleimage from "./middleconnectimage.png";
+import Profileimage from "./Profile-image.png";
 
 function DesktopMiddle() {
-  // State to store the mediaUrl from the API
   const [mediaUrl, setMediaUrl] = useState(null);
-  const [imageLoading, setImageLoading] = useState(true); // Separate loading state for the image
-
-  // Get token and userId from location state
+  const [imageLoading, setImageLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  // Access location state and navigation
   const location = useLocation();
-  const { userToken, userId } = location.state || {};
+  const navigate = useNavigate();
+  
+  // Try to get authentication data from multiple sources
+  const getAuthData = () => {
+    // First check location state (from direct navigation)
+    if (location.state?.userToken && location.state?.userId) {
+      return {
+        token: location.state.userToken,
+        userId: location.state.userId
+      };
+    }
+    
+    // Then try localStorage (for persistence across refreshes)
+    const storedToken = localStorage.getItem('authToken');
+    const storedUserId = localStorage.getItem('userId');
+    
+    if (storedToken && storedUserId) {
+      return {
+        token: storedToken,
+        userId: storedUserId
+      };
+    }
+    
+    // Return null if no auth data found
+    return null;
+  };
+  
+  // Get authentication data
+  const authData = getAuthData();
 
-  // Fetch data from the API when the component mounts or when userId/token changes
   useEffect(() => {
+    // Store authentication in localStorage if available in location state
+    if (location.state?.userToken) {
+      localStorage.setItem('authToken', location.state.userToken);
+    }
+    if (location.state?.userId) {
+      localStorage.setItem('userId', location.state.userId);
+    }
+    
     const fetchData = async () => {
-      if (!userToken || !userId) {
-        console.error("Missing userToken or userId");
+      // Check for authentication data
+      if (!authData) {
+        console.error("No authentication data available");
+        setError("You are not logged in. Please log in to view content.");
         setImageLoading(false);
+        // Optional: Redirect to login page
+        // navigate('/login');
         return;
       }
 
       setImageLoading(true);
-
+      
       try {
+        console.log(`Making API request with token: ${authData.token.substring(0, 15)}...`);
+        
         const response = await axios.get(
-          `https://uniisphere-1.onrender.com/api/feed?userId=${userId}`,
+          `https://uniisphere-1.onrender.com/api/feed`,
           {
             headers: {
-              Authorization: `Bearer ${userToken}`,
-            },
+              Authorization: `Bearer ${authData.token}`
+            }
           }
         );
-
-        // Check if response contains posts and update state
+        
+        console.log(response);
+        console.log("API response received:", response.data);
+        
         if (response.data.posts && response.data.posts.length > 0) {
           setMediaUrl(response.data.posts[0].mediaUrl);
+        } else {
+          console.log("No posts found in response");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+        
+        // Handle 401/403 errors specially
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          setError("Your session has expired. Please log in again.");
+          // Clear invalid tokens
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('userId');
+          // Optional: Redirect to login
+          // navigate('/login');
+        } else {
+          setError("Failed to load content. Please try again later.");
+        }
+        
         setMediaUrl(null);
       } finally {
         setImageLoading(false);
@@ -53,10 +111,18 @@ function DesktopMiddle() {
     };
 
     fetchData();
-  }, [userToken, userId]); // Dependencies include userToken and userId
+  }, [location.state]); // Dependencies include location.state to react to navigation changes
 
   return (
     <div className="middle-middle-card">
+      {/* Display error message if there's an error */}
+      {error && (
+        <div className="error-message" style={{ color: "red", padding: "10px", textAlign: "center" }}>
+          {error}
+        </div>
+      )}
+      
+      {/* Rest of your component remains the same */}
       {/* Profile Header */}
       <div className="middle-profile-header">
         <img src={Profileimage} alt="Profile" className="middle-profile-pic" />
@@ -71,29 +137,29 @@ function DesktopMiddle() {
         </div>
         <BsThreeDotsVertical className="middle-options-icon" />
       </div>
-
+      
       {/* Main Image Container with Loading State */}
       <div className="middle-main-image">
         {imageLoading ? (
-          <div>Loading image...</div> // Show loading text while fetching
+          <div>Loading image...</div>
         ) : mediaUrl ? (
           <img
             src={mediaUrl}
             alt="Main"
             className="middle-content-image"
             onError={(e) => {
-              e.target.src = "https://via.placeholder.com/300"; // Fallback if image fails to load
+              e.target.src = "https://via.placeholder.com/300";
             }}
           />
-        ) : (
+        ) : !error ? (
           <img
-            src={MiddlemainImage} // Fallback image if no mediaUrl
+            src={MiddlemainImage}
             alt="Main"
             className="middle-content-image"
           />
-        )}
+        ) : null}
       </div>
-
+      
       {/* Action Bar */}
       <div className="middle-action-bar">
         <img

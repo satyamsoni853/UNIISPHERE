@@ -337,9 +337,9 @@ function AfterOtpSection1() {
       // Pass token and userId to the next page
       navigate("/view", {
         state: {
-          userToken: token,
-          userId: returnedUserId,
-        },
+          userToken: response.data.token, // Make sure this matches what you're looking for
+          userId: response.data.user.id    // Make sure this matches what you're looking for
+        }
       });
     } catch (err) {
       console.error("Error details:", err);
