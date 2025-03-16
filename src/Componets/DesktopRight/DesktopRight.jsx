@@ -14,6 +14,8 @@ const suggestions = [
   { img: Sugestion1img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
   { img: Sugestion2img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
   { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
 ];
 
 function DesktopRightsection() {

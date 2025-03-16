@@ -79,6 +79,15 @@ function MobileMiddlesection() {
     fetchData();
   }, [location.state]);
 
+  const handleLike = (index) => {
+    setPosts((prevPosts) => {
+      const updatedPosts = [...prevPosts];
+      updatedPosts[index].isLiked = !updatedPosts[index].isLiked;
+      updatedPosts[index].likes += updatedPosts[index].isLiked ? 1 : -1;
+      return updatedPosts;
+    });
+  };
+
   return (
     <div className="middle-middle-card">
       {error && <div className="error-message">{error}</div>}
@@ -117,13 +126,13 @@ function MobileMiddlesection() {
               <div className="middle-action-icons">
                 {/* Like Button */}
                 <div className="middle-icon-container" onClick={() => handleLike(index)}>
-                  <span className="middle-icon-count">{post.likes}</span>
+                  <span className="middle-icon-count">{post.totalLikes}</span>
                   <CiHeart className={`middle-icon ${post.isLiked ? "liked" : ""}`} />
                 </div>
 
                 {/* Comments Count */}
                 <div className="middle-icon-container">
-                  <span className="middle-icon-count">{post.comments.length}</span>
+                  <span className="middle-icon-count">{post.totalComments}</span>
                   <TfiCommentsSmiley className="middle-icon" />
                 </div>
 
@@ -136,7 +145,7 @@ function MobileMiddlesection() {
 
             {/* Post Text */}
             <div className="middle-post-text">
-              <span className="middle-post-author">{post.authorName || "Unknown Author"}</span> {post.caption || "No caption available"}
+              <span className="middle-post-author">{post.content || "Unknown Author"}</span> {post.caption || "No caption available"}
               <span className="middle-see-more">...more</span>
             </div>
           </div>

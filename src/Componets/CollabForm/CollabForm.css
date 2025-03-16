@@ -1,0 +1,203 @@
+/* Main Container */
+.Collab-main-container {
+  display: flex;
+  justify-content: space-between; /* Distribute space between left, middle, and right */
+  align-items: flex-start; /* Align items at the top */
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  padding: 20px; 
+}
+
+/* Left Container */
+.Collab-left-main-container {
+  width: 30%; 
+  display: flex;
+  flex-direction: column;
+}
+
+/* Middle Container */
+.Collab-middle-main-container {
+  width: 50%; /* Adjust width as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Right Container */
+.Collab-right-main-container {
+  width: 30%; /* Adjust width as needed */
+  display: flex;
+  justify-content: flex-end; /* Align content to the right */
+}
+
+
+
+
+.middle-collab-container {
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  max-width: 500px; /* Sets a maximum width */
+  width: 90%; /* Adapts to screen size */
+  height: auto;
+  margin: auto;
+}
+
+.middle-collab-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: start;
+}
+
+.middle-collab-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 10px;
+}
+
+.middle-collab-form-Input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.middle-collab-input,
+.middle-collab-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.middle-collab-textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* Input focus effect */
+.middle-collab-input:focus,
+.middle-collab-textarea:focus,
+.middle-collab-date:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.middle-collab-searchAndSkillInput {
+  display: flex;
+  align-items: center;
+}
+
+.middle-collab-input-search {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid black;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+.middle-collab-search-icon {
+  background-color: black;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 10px 10px 0;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.middle-collab-search-icon:hover {
+  background-color: #007bff;
+}
+
+.middle-class-iconSearch {
+  font-size: 20px;
+  height: 32px;
+}
+
+.middle-collab-dates {
+  display: flex;
+  gap: 10px;
+}
+
+.middle-collab-date {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  /* Adjust layout for tablets */
+  .Collab-left-main-container,
+  .Collab-right-main-container {
+    width: 25%;
+  }
+  .Collab-middle-main-container {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hide Left & Right sections on mobile */
+  .Collab-left-main-container,
+  .Collab-right-main-container {
+    display: none;
+  }
+
+  /* Middle section takes full width */
+  .Collab-middle-main-container {
+    width: 100%;
+  }
+
+  .middle-collab-container {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .middle-collab-title {
+    font-size: 20px;
+  }
+
+  .middle-collab-input,
+  .middle-collab-textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .middle-collab-dates {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further adjustments for small screens */
+  .middle-collab-container {
+    padding: 15px;
+  }
+
+  .middle-collab-title {
+    font-size: 18px;
+  }
+
+  .middle-collab-input,
+  .middle-collab-textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .middle-class-iconSearch {
+    font-size: 18px;
+  }
+}

@@ -8,6 +8,10 @@ import UserSignupwithemailandpass from "./Componets/UserSignupwithemailandpass/U
 import ForgotPassword from "./Componets/ForgotPassword/ForgotPassword.jsx";
 import View from "./Componets/View/View.jsx";
 import DesFollowerMiddleSectionPrivacy from "./Componets/Des-Follower-middle-section-privacy/DesFollowerMiddleSectionPrivacy.jsx";
+import Interset from "./Componets/IntersetForm/Interset.jsx";
+import CollabForm from "./Componets/CollabForm/CollabForm.jsx";
+import AboutAndExperiance from "./Componets/AboutAndExperiance/AboutAndExperiance.jsx";
+import SkillForm from "./Componets/SkillForm/SkillForm.jsx";
 function App() {
   return (
     <Router>
@@ -20,6 +24,10 @@ function App() {
           <Route path="/AfterOtpSection1" element={<AfterOtpSection1 />} />
           <Route path="/View" element={<View />} />
           <Route path="/FollowerMiddleSectionPrivacy" element={<DesFollowerMiddleSectionPrivacy />} />
+          <Route path="/Interset" element={<Interset />} />
+          <Route path="/Collab" element={<CollabForm />} />
+          <Route path="/AboutAndExperiance" element={<AboutAndExperiance/>} />
+          <Route path="/SkillForm" element={<SkillForm/>} />
         </Routes>
       </div>
     </Router>

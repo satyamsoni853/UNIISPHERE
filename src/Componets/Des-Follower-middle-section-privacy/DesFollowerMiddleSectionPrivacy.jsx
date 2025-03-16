@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import "./DesFollowerMiddleSectionPrivacy.css";  
+import "./DesFollowerMiddleSectionPrivacy.css";
 import { GoLock } from "react-icons/go";
 import { RiArrowDropRightLine } from "react-icons/ri";
 import Personimage from "./Person.png";
@@ -9,16 +9,17 @@ function DesFollowerMiddleSectionPrivacy() {
   const [profilePic] = useState(Personimage);
   const [collabs] = useState(12);
   const [connections] = useState(34);
-  const [name] = useState("John Doe");
+  const [name] = useState("Himanshu Choudhary");
   const [title] = useState("Full Stack Developer | React & Node.js");
-  const [buttons] = useState(["Message", "Follow"]);
   const [about] = useState(
     "I am a passionate full-stack developer with expertise in React and Node.js."
   );
   const [collaboratorName] = useState("Jane Smith");
   const [education] = useState(["B.Tech in CS"]);
   const [subCollaborators] = useState(["Alice", "Bob", "Charlie"]);
-  const [paragraph] = useState("Founder Himanshu who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working.");
+  const [paragraph] = useState(
+    "Founder Himanshu who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working."
+  );
   const [skills] = useState(["JavaScript", "React", "Node.js", "MongoDB"]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullAboutText] = useState(
@@ -55,24 +56,20 @@ function DesFollowerMiddleSectionPrivacy() {
             </div>
 
             <div className="Followers-middle-section-1-profile-info-privacy">
-              
-             <div className="Followers-middle-section-1-profile-image-name-privacy" > <img src={middleconnectimage} alt="" /> <p>{name}</p></div>
-             <h2>{title}</h2>
+              <div className="Followers-middle-section-1-profile-image-name-privacy">
+                {" "}
+                <img src={middleconnectimage} alt="" /> <p>{name}</p>
+              </div>
+              <p>{title}</p>
             </div>
 
             <div className="Followers-middle-section-1-profile-buttons-privacy">
-              {buttons.map((btn, index) => (
-                <button
-                  key={index}
-                  className="Followers-middle-section-1-btn-privacy"
-                >
-                  {btn}
-                </button>
-              ))}
+              <button>Masters Union</button>
+              <button>SBM</button>
             </div>
 
             <div className="Followers-middle-section-1-about-section-privacy">
-              <h3>About</h3>
+              <p>About</p>
               <p>
                 {displayedText}
                 {fullAboutText.length > maxLength && (
@@ -87,7 +84,7 @@ function DesFollowerMiddleSectionPrivacy() {
             </div>
 
             <div className="Followers-middle-section-1-collabs-section-privacy">
-              <h4>Collabs</h4>
+              <p>Collabs</p>
               <div className="Followers-middle-section-1-collabratorCard-privacy">
                 <div className="Followers-middle-section-1-collab-image-privacy">
                   <img src={Personimage} alt="" />
@@ -97,15 +94,9 @@ function DesFollowerMiddleSectionPrivacy() {
                   <div className="Followers-middle-section-1-education-privacy">
                     {education.map((val, index) => (
                       <h6 key={index}>{val}</h6>
-                    ))}
+                    ))}                   
                   </div>
-                  <div className="Followers-middle-section-1-subCollabrators-privacy">
-                    (
-                    {subCollaborators.map((val, index) => (
-                      <h6 key={index}>{val},</h6>
-                    ))}
-                    )
-                  </div>
+                  
                 </div>
               </div>
             </div>

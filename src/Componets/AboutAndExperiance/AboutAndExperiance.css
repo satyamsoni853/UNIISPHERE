@@ -1,0 +1,205 @@
+/* Base styles (Mobile-first approach) */
+.AboutAndExperiance-main-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  padding: 10px;
+  gap: 15px;
+}
+
+/* Left Container - Hidden on mobile by default */
+.AboutAndExperiance-left-main-container {
+  display: none; /* Hidden on mobile */
+  width: 100%;
+  flex-direction: column;
+  order: 2;
+}
+
+/* Middle Container */
+.AboutAndExperiance-middle-main-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  order: 1;
+}
+
+/* Right Container - Hidden on mobile by default */
+.AboutAndExperiance-right-main-container {
+  display: none; /* Hidden on mobile */
+  width: 100%;
+  justify-content: center;
+  order: 3;
+}
+
+.middle-aboutExperience-mainParent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 10px;
+}
+
+.middle-aboutExperience-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 90vw;
+  min-height: auto;
+  border-radius: 10px;
+}
+
+.middle-aboutExperience-aboutSection,
+.middle-aboutExperience-experienceSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.middle-aboutExperience-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid black;
+  font-size: 12px;
+  resize: vertical;
+  min-height: 60px;
+  border-radius: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.middle-aboutExperience-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 25px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.middle-aboutExperience-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.middle-aboutExperience-inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.middle-aboutExperience-inputGroup label {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.middle-aboutExperience-cancel,
+.middle-aboutExperience-save {
+  padding: 8px 20px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  border-radius: 20px;
+  font-weight: bold;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.middle-aboutExperience-cancel {
+  background-color: #ccc;
+}
+
+.middle-aboutExperience-save {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Tablet screens (min-width: 768px) */
+@media screen and (min-width: 768px) {
+  .AboutAndExperiance-main-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .AboutAndExperiance-left-main-container {
+    display: flex; /* Visible on tablet and above */
+    width: 25%;
+    order: 0;
+  }
+
+  .AboutAndExperiance-middle-main-container {
+    width: 50%;
+    order: 0;
+  }
+
+  .AboutAndExperiance-right-main-container {
+    display: flex; /* Visible on tablet and above */
+    width: 25%;
+    justify-content: flex-end;
+    order: 0;
+  }
+
+  .middle-aboutExperience-container {
+    width: 32vw;
+    max-width: none;
+    min-height: 100vh;
+  }
+
+  .middle-aboutExperience-textarea {
+    min-height: 100px;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 25px;
+  }
+
+  .middle-aboutExperience-input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .middle-aboutExperience-buttons {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 15px;
+  }
+
+  .middle-aboutExperience-cancel,
+  .middle-aboutExperience-save {
+    padding: 10px 40px;
+    width: auto;
+  }
+}
+
+/* Desktop screens (min-width: 1024px) */
+@media screen and (min-width: 1024px) {
+  .AboutAndExperiance-left-main-container {
+    width: 30%;
+  }
+
+  .AboutAndExperiance-middle-main-container {
+    width: 50%;
+  }
+
+  .AboutAndExperiance-right-main-container {
+    width: 30%;
+  }
+
+  .middle-aboutExperience-aboutSection,
+  .middle-aboutExperience-experienceSection {
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .middle-aboutExperience-cancel,
+  .middle-aboutExperience-save {
+    padding: 10px 50px;
+  }
+}

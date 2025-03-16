@@ -1,7 +1,7 @@
 import React from 'react';
 import DesktopNavbarr from '../DesktopNavbarr/DesktopNavbarr.jsx';
 import Decktopleftbottom from '../DesktopLeftbottom/DesktopLeftbottom.jsx'
-import Decklefttop from '../DesktopLeftTop-1/DesktopLeftTop.jsx'
+import Decklefttop from '../DesktopLeftTop/DesktopLeftTop.jsx'
 import DesktopMiddle from '../DesktopMiddle/DesktopMiddle.jsx'
 import DesktopRight from '../DesktopRight/DesktopRight.jsx'
 import './DesktopView.css';

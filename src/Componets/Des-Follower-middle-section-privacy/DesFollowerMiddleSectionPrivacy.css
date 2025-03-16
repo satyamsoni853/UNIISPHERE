@@ -14,7 +14,6 @@
   display: flex;
   gap: 5px;
   width: 30vw;
-  /* min-height: 100vh; */
   height:100vh;
   position: relative;
 }
@@ -40,11 +39,16 @@
   justify-content: space-between; /* Push image and name to opposite sides */
   align-items: center;
   width: 100%;
+  font-weight: 600;
+}
+.Followers-middle-section-1-profile-image-name-privacy{
+  line-height: 0.2;
 }
 
 .Followers-middle-section-1-profile-image-name-privacy img {
-  width: 100px; /* Adjust size as needed */
-  height: 30px;
+  align-items: center; 
+  width: 80px; /* Adjust size as needed */
+  height: 25px;
 }
 
 .Followers-middle-section-1-profile-info-privacy h2 {
@@ -63,7 +67,7 @@
   height: 100%;
   width: 100%;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .Followers-middle-section-1-profile-header-privacy div {
@@ -72,32 +76,37 @@
 }
 
 
-.Followers-middle-section-1-profile-buttons-privacy {
-  display: flex;
-  justify-content: end;
-  gap: 20px;
-}
-.Followers-middle-section-1-about-section-privacy p{
-  font-size: 14px;
-  
-}
-.Followers-middle-section-1-about-section-privacy h3{
-  /* height: 200px; */
+
+.Followers-middle-section-1-about-section-privacy{
   text-align: start;
-  
+  line-height: 1;
+}
+.Followers-middle-section-1-about-section-privacy p:first-child{
+  font-size: 1.5rem;
+  line-height: 0.5;
+}
+.Followers-middle-section-1-collabs-section-privacy{
+  text-align: start;
+  margin-top: 20px;
+}
+.Followers-middle-section-1-collabs-section-privacy p:first-child{
+  font-size: 1.5rem;
+  line-height: 0.5;
+
 }
 
-.Followers-middle-section-1-collabs-section-privacy h4 {
-  /* height: 200px; */
-  text-align: start;
-  
+.Followers-middle-section-1-subCollabrators-privacy{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
 }
+
 
 .Followers-middle-section-1-collabratorCard-privacy {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start; /* Align content at the top */
-  gap: 0; /* Remove any gap */
+  align-items: flex-start; 
+  gap: 10px; 
 }
 
 .Followers-middle-section-1-collab-image-privacy img {
@@ -118,46 +127,18 @@
 .Followers-middle-section-1-connectionsDetails-privacy span{
   font-size: 1.8rem;
 }
-
-.Followers-middle-section-1-subCollabrators-privacy {
-  display: flex;
-  flex-direction: row; /* Ensures items are in a single line */
-  flex-wrap: wrap; /* Allows wrapping if needed */
-  gap: 4px; /* Adds small space between names */
-}
-
-.Followers-middle-section-1-subCollabrators-privacy h6 {
-  display: inline; /* Ensures text stays in line */
-  margin: 0;
-  padding: 0;
-}
-.Followers-middle-section-1-subCollabrators-privacy h6 {
-  font-size: 8px;
-  margin: 0;  /* Removes any extra margin */
-  padding: 0; /* Removes any extra padding */
-  line-height: 0.2; /* Reduces space between lines */
-}
-
-.Followers-middle-section-1-subCollabrators-privacy {
-  font-size: 8px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 2px; /* Reduces the gap between items */
-  align-items: center; /* Aligns text to the center */
-}
-
 .Followers-middle-section-1-education-privacy h6{
   font-size: 12px;
 }
-
-
 .Followers-middle-section-1-paragraphAndArrow-privacy {
   width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 2px 5px;
   align-items: center;
+  position: relative;
+  bottom: 
+  20px;
 }
 
 .Followers-middle-section-1-para-privacy {
@@ -165,15 +146,14 @@
   font-size: 14px;
 }
 .Followers-middle-section-1-para-privacy p{
-  width: 70%;
+  width: 100%;
 }
 
 .Followers-middle-section-1-iconAndImage-privacy {
   display: flex;
-  /* height: 120px; */
-  /* width: 110px; */
   border-radius: 15px;
   align-items: center;
+  
   
 }
 
@@ -181,6 +161,8 @@
   height: 100%;
   width: 200%;
   border-radius: 10px;
+  position: relative;
+  bottom: 40px;
   
 }
 
@@ -191,6 +173,8 @@
 .Followers-middle-section-1-skills-section-privacy {
   height: 200px;
   text-align: start;
+  
+  
 }
 
 .Followers-middle-section-1-skill-list-privacy {
@@ -247,16 +231,41 @@
   font-weight: 500;
 }
 
-.Followers-middle-section-1-btn-privacy {
-  background: linear-gradient(to bottom, #ffe9ed, white);
-  color: black;
-  border: 1px solid black;
-  padding: 6px 8px;
-  width: 150px;
-  font-size: 10px;
+.Followers-middle-section-1-profile-buttons-privacy {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+  align-items: center;
+  width: 100%; /* Ensure full width for proper alignment */
+}
+
+.Followers-middle-section-1-profile-buttons-privacy button {
+  border: none;
+  padding: 8px 8px;
+  font-size: 14px;
   border-radius: 5px;
   cursor: pointer;
+  width: 120px;
+  transition: transform 0.2s ease-in-out;
+  color: black;
 }
+
+/* First button - Light red to red gradient */
+.Followers-middle-section-1-profile-buttons-privacy button:first-child {
+  background: linear-gradient(to bottom, #ffcccc, #f5aeae);
+}
+
+/* Second button - White to green gradient */
+.Followers-middle-section-1-profile-buttons-privacy button:last-child {
+  background: linear-gradient(to bottom, #ffffff, #abebab);
+  color: black; /* Darker text for better contrast */
+}
+
+/* Hover effect */
+.Followers-middle-section-1-profile-buttons-privacy button:hover {
+  transform: scale(1.05);
+}
+
 
 @media (max-width: 1024px) {
   .Followers-middle-section-1-middle-section-privacy {
