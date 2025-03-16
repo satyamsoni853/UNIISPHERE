@@ -27,7 +27,7 @@ function App() {
           <Route path="/Interset" element={<Interset />} />
           <Route path="/Collab" element={<CollabForm />} />
           <Route path="/AboutAndExperiance" element={<AboutAndExperiance/>} />
-          <Route path="/SkillForm" element={<SkillForm/>} />
+          <Route path="/Skill" element={<SkillForm/>} />
         </Routes>
       </div>
     </Router>
