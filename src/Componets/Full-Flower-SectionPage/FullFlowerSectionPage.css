@@ -1,0 +1,327 @@
+/* Main Container */
+.mobile-followers-mobile-followers-container-privacy {
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  margin: auto;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #dadada;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.mobile-followers-first-section-privacy {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  border-radius: 10px;
+  gap: 2px;
+  background-color: #fff;
+}
+
+/* Profile Header */
+.mobile-followers-profile-header-privacy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.mobile-followers-connect-button-privacy {
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.mobile-followers-back-button-privacy {
+  font-size: 27px;
+}
+
+/* Profile Info */
+
+.mobile-followers-profile-main-privacy {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.mobile-followers-connections-and-collabs-privacy {
+  display: flex;
+  gap: 25px;
+
+  padding: 5px 20px;
+  align-items: center;
+}
+.mobile-followers-connections-and-collabs-privacy h5 {
+  font-size: 28px;
+  text-align: center;
+}
+.mobile-followers-connections-and-collabs-privacy h3 {
+  font-weight: lighter;
+  font-size: 18px;
+}
+.mobile-followers-image-section-privacy {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.mobile-followers-image-section-privacy img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+/* 
+   Name and Position */
+.mobile-followers-name-and-work-privacy {
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  flex-direction: column;
+}
+
+/* profile header Buttons section */
+.mobile-followers-all-buttons-privacy {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+
+.mobile-followers-single-btn-privacy {
+  background: linear-gradient(to bottom, #ffe9ed, white);
+  color: black;
+  border: 1px solid black;
+  padding: 8px 10px;
+  width: 196px;
+  font-size: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+ 
+
+/* Buttons */
+.mobile-followers-buttons-section-privacy {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.mobile-followers-btn-privacy {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.mobile-followers-btn-privacy:hover {
+  background: #0056b3;
+}
+
+/* About Section */
+.mobile-followers-about-section-privacy {
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  height: 100px;
+ 
+ 
+}
+
+.mobile-followers-about-para-section-privacy {
+  overflow: auto;
+
+}
+.mobile-followers-about-para-section-privacy::-webkit-scrollbar{
+  display: none;
+}
+
+ 
+.mobile-followers-about-section-privacy h3 {
+   font-size: 20px;
+
+}
+.mobile-followers-about-para-section-privacy p{
+  font-size: 15px;
+}
+
+.mobile-followers-about-button-privacy  {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: rgb(144, 143, 143);
+}
+
+/* Collabs Section */
+
+.mobile-followers-collab-lower-part-privacy {
+  display: flex;
+  gap: 10px;
+}
+.mobile-followers-collabs-section-privacy h3 {
+  text-align: start;
+}
+.mobile-followers-collab-section-privacy {
+  background-color: white;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.mobile-followers-collabratorCard-privacy {
+  padding: 2px 50px;
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.mobile-followers-collab-image-privacy {
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.mobile-followers-collab-image-privacy img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+.mobile-followers-collabratorDetails-privacy {
+  flex-direction: column;
+  display: flex;
+  width: 100px;
+}
+
+.mobile-followers-collabratorDetails-privacy h4 {
+  font-size: 15px;
+  font-weight: 500;
+  text-align: start;
+}
+
+.mobile-followers-collabratorDetails-privacy .mobile-followers-education-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* gap: 5px; */
+}
+
+.mobile-followers-collabratorDetails-privacy .mobile-followers-education-privacy h6 {
+  font-weight: 300;
+  color: #726d6dea;
+}
+
+.mobile-followers-collabratorDetails-privacy .mobile-followers-subCollabrators-privacy {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #514f4fea;
+}
+
+.mobile-followers-collabratorDetails-privacy .mobile-followers-subCollabrators-privacy h6 {
+  font-size: 7px;
+  font-weight: 100;
+  color: #828282ea;
+}
+
+.mobile-followers-para-privacy {
+  text-align: start;
+  font-size: 14px;
+}
+
+.mobile-followers-iconAndImage-privacy {
+  display: flex;
+  height: 90px;
+  width: 80px;
+  border-radius: 15px;
+  align-items: center;
+}
+
+.mobile-followers-iconAndImage-privacy img {
+  height: 100%;
+  width: 80%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.mobile-followers-paragrapgh-icon-privacy {
+  font-size: 30px;
+}
+
+/* skills section */
+
+.mobile-followers-skills-section-privacy {
+  height: 200px;
+  position: relative;
+}
+
+.mobile-followers-skill-list-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 10px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.mobile-followers-skill-list-privacy .mobile-followers-skillsMiniDiv-privacy {
+  background-color: #f3efef;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+/* Privacy Section */
+.mobile-followers-privacy-section-privacy {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #ffffffad;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  backdrop-filter: blur(1px);
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-followers-lock-icon-privacy {
+  font-size: 24px;
+  padding: 7px 10px;
+  border: 3px solid black;
+  border-radius: 50%;
+}
+.mobile-followers-lock-icon-privacy .mobile-followers-lock-privacy {
+  font-size: 40px;
+}
+
+.mobile-followers-privacy-text-privacy {
+  font-weight: bold;
+}
+
+.mobile-followers-connect-text-privacy {
+  color: gray;
+  font-size: 20px;
+}
+
+/* Bottom Navigation */
+.mobile-followers-bottom-nav-privacy {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background: #fff;
+  box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.548),
+    inset -2px -2px 2px rgba(0, 0, 0, 0.548);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.mobile-followers-nav-icon-privacy {
+  font-size: 30px;
+  cursor: pointer;
+}

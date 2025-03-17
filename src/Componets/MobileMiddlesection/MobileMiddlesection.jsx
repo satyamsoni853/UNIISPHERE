@@ -101,8 +101,8 @@ function MobileMiddlesection() {
               <img src={Profileimage} alt="Profile" className="middle-profile-pic" />
               <div className="middle-profile-info">
                 <div className="middle-profile-top">
-                  <span className="middle-profile-name">{post.name || "Unknown Author"}</span>
-                  <span className="middle-post-time">18h</span>
+                  <span className="middle-profile-name">{post.user.username || "Unknown Author"}</span>
+                  {/* <span className="middle-post-time">18h</span> */}
                 </div>
                 <p className="middle-profile-details">{post.authorDetails || "University of Delhi | Works at Google"}</p>
               </div>

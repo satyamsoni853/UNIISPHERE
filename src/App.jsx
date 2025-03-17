@@ -12,6 +12,8 @@ import Interset from "./Componets/IntersetForm/Interset.jsx";
 import CollabForm from "./Componets/CollabForm/CollabForm.jsx";
 import AboutAndExperiance from "./Componets/AboutAndExperiance/AboutAndExperiance.jsx";
 import SkillForm from "./Componets/SkillForm/SkillForm.jsx";
+import ProfileEditSection from "./Componets/ProfileEditSection/ProfileEditSection.jsx";
+import FullFlowerSectionPage from "./Componets/Full-Flower-SectionPage/FullFlowerSectionPage.jsx";
 function App() {
   return (
     <Router>
@@ -28,6 +30,8 @@ function App() {
           <Route path="/Collab" element={<CollabForm />} />
           <Route path="/AboutAndExperiance" element={<AboutAndExperiance/>} />
           <Route path="/Skill" element={<SkillForm/>} />
+          <Route path="/ProfileEditSection" element={<ProfileEditSection/>} />
+          <Route path="/FullFlowerSectionPage" element={<FullFlowerSectionPage/>} />
         </Routes>
       </div>
     </Router>
