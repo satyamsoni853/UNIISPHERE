@@ -13,7 +13,7 @@ import CollabForm from "./Componets/CollabForm/CollabForm.jsx";
 import AboutAndExperiance from "./Componets/AboutAndExperiance/AboutAndExperiance.jsx";
 import SkillForm from "./Componets/SkillForm/SkillForm.jsx";
 import ProfileEditSection from "./Componets/ProfileEditSection/ProfileEditSection.jsx";
-import FullFlowerSectionPage from "./Componets/FullFlowrSectionPage/FullFlowerSectionPage.jsx";
+import FullFlowerSectionPage from "./Componets/FullFlowerSectionPage/FullFlowerSectionPage.jsx";
 function App() {
   return (
     <Router>
