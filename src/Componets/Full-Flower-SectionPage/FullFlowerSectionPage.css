@@ -1,0 +1,831 @@
+.Profile-full-section-mainParent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.Profile-full-section-container {
+  width: 40vw;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 10px;
+  border: 2px solid black;
+}
+
+.Profile-full-section-whole-profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.Profile-full-section-whole-profile-section .Profile-full-section-back-logo-section {
+  width: 100%;
+  display: flex;
+  padding: 8px 5px;
+}
+
+.Profile-full-section-backLogo {
+  font-size: 35px;
+  color: #666;
+  cursor: pointer;
+}
+
+.Profile-full-section-profile-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 50px;
+  align-items: center;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.Profile-full-section-top-nav-section {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
+}
+
+.Profile-full-section-top-nav-section .Profile-full-section-backLogo,
+.Profile-full-section-top-nav-section .Profile-full-section-settingsLogo {
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+}
+
+.Profile-full-section-top-nav-section .Profile-full-section-settingsLogo {
+  height: 30px;
+  width: 30px;
+  color: #666;
+}
+
+.Profile-full-section-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 92%;
+}
+
+.Profile-full-section-search input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  font-size: 16px;
+}
+
+.Profile-full-section-search-icon {
+  position: absolute;
+  right: 15px;
+  color: gray;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.Profile-full-section-parent-collabs-connection {
+  display: flex;
+  justify-content: space-around;
+  width: 70%;
+  position: relative;
+}
+
+.Profile-full-section-parent-collabs-connection .Profile-full-section-connectionsDetails,
+.Profile-full-section-parent-collabs-connection .Profile-full-section-collabsDetails {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.Profile-full-section-connectionsDetails,
+.Profile-full-section-collabsDetails {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.Profile-full-section-collabsDetails h4,
+.Profile-full-section-connectionsDetails h4 {
+  font-size: 20px;
+  font-weight: 100;
+  color: #666;
+}
+
+.Profile-full-section-collabsDetails span,
+.Profile-full-section-connectionsDetails span {
+  font-size: 25px;
+  font-weight: 900;
+  color: #333;
+}
+
+.Profile-full-section-profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 0.5;
+}
+
+.Profile-full-section-profile-info p:first-child {
+  font-size: 23px;
+  font-weight: 500;
+  color: #222;
+}
+
+.Profile-full-section-imageContainer {
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.Profile-full-section-profile-pic {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.Profile-full-section-verified {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #2ecc71;
+  color: white;
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 10px;
+}
+
+.Profile-full-section-profile-buttons {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  justify-content: flex-end;
+  padding: 2px 8px;
+}
+
+.Profile-full-section-btn {
+  background: linear-gradient(to bottom, #ffe9ed, white);
+  color: black;
+  border: 1px solid black;
+  padding: 8px 12px;
+  width: 140px;
+  font-size: 17px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.Profile-full-section-btn:hover {
+  background: linear-gradient(to bottom, #ffd1d9, #f5f5f5);
+  transform: translateY(-1px);
+}
+
+.Profile-full-section-about-headingAndFull {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Profile-full-section-about-headingAndFull h3 {
+  font-size: 20px;
+  color: #333;
+}
+
+.Profile-full-section-aboutAndgoal-section {
+  padding: 5px 7px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.Profile-full-section-aboutAndgoal-button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: rgb(144, 143, 143);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.Profile-full-section-main-analytics-parent {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 7px;
+}
+
+.Profile-full-section-anlaytic-main-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Profile-full-section-anlaytic-main-section h3 {
+  font-size: 20px;
+  color: #333;
+}
+
+.Profile-full-section-analytics-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.Profile-full-section-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 10px solid skyblue;
+  border-bottom-color: transparent;
+  animation: spin 2s linear infinite;
+}
+
+.Profile-full-section-slider-box {
+  /* background-color: #fff; */
+  border-radius: 10px;
+  /* max-width: 700px; */
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.Profile-full-section-Back{
+  font-size: 30px;
+ 
+  
+}
+.Profile-full-section-Forward{
+  font-size: 30px;
+}
+
+.Profile-full-section-down-slider-con {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* width: 100%; */
+  /* position: relative; */
+}
+
+.Profile-full-section-slide-track {
+  display: flex;
+  /* width: 100%; */
+  gap: 20px;
+  /* overflow: hidden; */
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.Profile-full-section-slide-img {
+  width: 150px;
+  height: 100px;
+  
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.Profile-full-section-each-slide {
+  flex: 0 0 32%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Profile-full-section-each-slide p {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.Profile-full-section-left-btn,
+.Profile-full-section-right-btn {
+  font-size: 50px;
+  
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.Profile-full-section-left-btn:hover,
+.Profile-full-section-right-btn:hover {
+  color: #333;
+}
+
+.Profile-full-section-experince-inner-div {
+  text-align: center;
+  padding: 10px ;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px solid #eee;
+}
+
+.Profile-full-section-experince-inner-div h3 {
+  font-size: 12px;
+  color: #333;
+}
+
+.Profile-full-section-experince-inner-div h5 {
+  font-size: 10px;
+  color: rgb(144, 143, 143);
+}
+
+.Profile-full-section-experince-inner-div p {
+  font-size: 9px;
+  text-align: center;
+  color: #666;
+}
+
+.Profile-full-section-main-wrapper-section {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.Profile-full-section-suggested-tags {
+  display: flex;
+  padding: 7px;
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.Profile-full-section-heading-and-logos {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 5px;
+  align-items: center;
+}
+
+.Profile-full-section-heading-and-logos h3 {
+  font-size: 25px;
+  color: #333;
+}
+
+.Profile-full-section-content-and-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.Profile-full-section-content-and-arrow .Profile-full-section-left-btn,
+.Profile-full-section-content-and-arrow .Profile-full-section-right-btn {
+  font-size: 40px;
+  padding: 0 10px;
+}
+
+.Profile-full-section-logos {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+}
+
+.Profile-full-section-logos img {
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.Profile-full-section-tag {
+  text-align: center;
+  border-radius: 5px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  flex: 0 0 23%;
+  height: 40px;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+}
+
+.Profile-full-section-main-collabs-section {
+  display: flex;
+  background-color: #fff;
+  border-radius: 10px;
+  flex-direction: column;
+}
+
+.Profile-full-section-main-collabs-section h3 {
+  text-align: start;
+}
+
+.Profile-full-section-collabratorCard {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.Profile-full-section-collab-image {
+  height: 50px;
+  width: 50px;
+}
+
+.Profile-full-section-collab-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+.Profile-full-section-collabratorDetails {
+  flex-direction: column;
+  display: flex;
+  width: 100px;
+}
+
+.Profile-full-section-collabratorDetails h4 {
+  font-size: 15px;
+  font-weight: 500;
+  text-align: start;
+  color: #333;
+}
+
+.Profile-full-section-collabratorDetails .Profile-full-section-education {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.Profile-full-section-collabratorDetails .Profile-full-section-education h6 {
+  font-weight: 300;
+  color: #726d6dea;
+}
+
+.Profile-full-section-collabratorDetails .Profile-full-section-subCollabrators {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #514f4fea;
+}
+
+.Profile-full-section-collabratorDetails .Profile-full-section-subCollabrators h6 {
+  font-size: 7px;
+  font-weight: 100;
+  color: #828282ea;
+}
+
+.Profile-full-section-para {
+  text-align: start;
+  font-size: 14px;
+  color: #666;
+}
+
+.Profile-full-section-second-div-arrowAndContent {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.Profile-full-section-innerDiv-onlyContent {
+  height: 150px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  width: 100%;
+}
+
+.Profile-full-section-right {
+  width: 30%;
+  padding: 15px 2px;
+  display: flex;
+  justify-content: end;
+}
+
+.Profile-full-section-right img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.Profile-full-section-left {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.Profile-full-section-main-education {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.Profile-full-section-upper-education {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+}
+
+.Profile-full-section-education-headingAndFull {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Profile-full-section-education-headingAndFull h3 {
+  font-size: 20px;
+  color: #333;
+}
+
+.Profile-full-section-buttons-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.btn-left {
+  background-color: #ff5733;
+  color: white;
+}
+
+.btn-middle {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-right {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.Profile-full-section-public-logo {
+  height: 30px;
+  width: 200px;
+  object-fit: contain;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Media Queries */
+@media (max-width: 320px) {
+  .Profile-full-section-container {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .Profile-full-section-profile-header .Profile-full-section-collabsDetails h4,
+  .Profile-full-section-profile-header .Profile-full-section-connectionsDetails h4 {
+    font-size: 15px;
+  }
+
+  .Profile-full-section-profile-info {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .Profile-full-section-imageContainer h5 {
+    font-size: 12px;
+  }
+
+  .Profile-full-section-parent-collabs-connection {
+    justify-content: start;
+    gap: 20px;
+    align-items: end;
+  }
+
+  .Profile-full-section-parent-collabs-connection .Profile-full-section-full-logo {
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: -20px;
+    left: -10px;
+  }
+
+  .Profile-full-section-profile-header {
+    justify-content: space-evenly;
+  }
+
+  .Profile-full-section-top-nav-section .Profile-full-section-settingsLogo {
+    height: 22px;
+    width: 22px;
+  }
+
+  .Profile-full-section-search input {
+    height: 30px;
+  }
+
+  .Profile-full-section-search input::placeholder {
+    font-size: 15px;
+  }
+
+  .Profile-full-section-collabsDetails,
+  .Profile-full-section-connectionsDetails {
+    flex-direction: column-reverse;
+  }
+
+  .Profile-full-section-collabsDetails span,
+  .Profile-full-section-connectionsDetails span {
+    font-size: 20px;
+  }
+
+  .Profile-full-section-whole-profile-section {
+    align-items: start;
+  }
+
+  .Profile-full-section-imageContainer {
+    width: 50px;
+    height: 50px;
+  }
+
+  .Profile-full-section-profile-buttons {
+    gap: 5px;
+  }
+
+  .Profile-full-section-btn {
+    font-size: 14px;
+    padding: 6px 14px;
+    min-width: 50%;
+  }
+
+  .Profile-full-section-upper-education {
+    height: 100px;
+  }
+
+  .Profile-full-section-upper-education button {
+    width: 10px;
+    height: 20px;
+    padding: 0;
+    font-size: 10px;
+  }
+
+  .Profile-full-section-full-logo,
+  .Profile-full-section-add-logo {
+    height: 18px;
+    width: 18px;
+  }
+
+  .Profile-full-section-slide-img {
+    width: 70px;
+    height: 100px;
+  }
+
+  .Profile-full-section-aboutAndgoal-section {
+    padding: 3px 5px;
+  }
+
+  .Profile-full-section-circle {
+    width: 50px;
+    height: 50px;
+  }
+
+  .Profile-full-section-experince-inner-div {
+    width: 130px !important;
+  }
+
+  .Profile-full-section-experince-inner-div p {
+    font-size: 7px;
+  }
+
+  .Profile-full-section-tag {
+    width: 80px;
+    height: 30px;
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .Profile-full-section-container {
+    width: 100%;
+    padding: 5px;
+  }
+}
+
+@media (min-width: 480px) {
+  .Profile-full-section-container {
+    width: 90%;
+    max-width: 450px;
+  }
+
+  .Profile-full-section-profile-header {
+    font-size: 20px;
+  }
+
+  .Profile-full-section-imageContainer {
+    height: 75px;
+    width: 75px;
+  }
+
+  .Profile-full-section-profile-buttons {
+    flex-direction: row;
+  }
+
+  .Profile-full-section-btn {
+    width: 140px;
+  }
+
+  .Profile-full-section-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .Profile-full-section-slide-img {
+    width: 100px;
+    height: 150px;
+  }
+}
+
+@media (min-width: 740px) {
+  .Profile-full-section-container {
+    width: 80%;
+  }
+
+  .Profile-full-section-whole-profile-section {
+    align-items: flex-end;
+  }
+
+  .Profile-full-section-profile-header {
+    flex-direction: row-reverse;
+  }
+
+  .Profile-full-section-top-nav-section {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .Profile-full-section-profile-buttons {
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 900px) {
+  .Profile-full-section-container {
+    width: 70%;
+  }
+}
+
+@media (min-width: 1062px) {
+  .Profile-full-section-container {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .Profile-full-section-container {
+    width: 50%;
+  }
+}
+
+@media (min-width: 450px) {
+  .Profile-full-section-verified {
+    display: none;
+  }
+
+  .Profile-full-section-full-logo,
+  .Profile-full-section-add-logo {
+    display: none;
+  }
+
+  .Profile-full-section-whole-profile-section .Profile-full-section-top-nav-section {
+    display: none;
+  }
+}
