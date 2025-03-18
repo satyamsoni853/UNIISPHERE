@@ -39,7 +39,6 @@ function UserLogin() {
         
         alert("Login Successful!");
         
-        // Pass token in navigation state
         navigate("/View", {
           state: {
             userToken: token,

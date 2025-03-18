@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import ConnectandCollbrate from "./Connect&coll.png";
+import Connectimage from "./Connect.png";
 import "./DesktopRight.css";
 import Profileimg from "./Profile.jpeg";
-import ConnectandCollbrate from "./Connect&coll.png";
 import Sugestion1img from "./Sugestion1.png";
 import Sugestion2img from "./Sugestion2.png";
 import Sugestion3img from "./Sugestion3.png";
-import Connectimage from "./Connect.png";
 
 const suggestions = [
   { img: Sugestion1img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
@@ -19,46 +19,72 @@ const suggestions = [
 ];
 
 function DesktopRightsection() {
-  const [connections, setConnections] = useState(0); // State for total connections
-  const [followers, setFollowers] = useState(0);    // State for total followers (optional)
-  const [userId, setUserId] = useState(null);       // State to store fetched userId
+  const [connections, setConnections] = useState(0);
+  const [followers, setFollowers] = useState(0);
+  const [userId, setUserId] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Fetch user connections when component mounts
+  // Get authentication data from localStorage
+  const getAuthData = () => {
+    const storedToken = localStorage.getItem("authToken");
+    const storedUserId = localStorage.getItem("userId");
+    return storedToken && storedUserId ? { token: storedToken, userId: storedUserId } : null;
+  };
+
   useEffect(() => {
     const fetchConnections = async () => {
+      // Get auth data
+      const authData = getAuthData();
+
+      if (!authData) {
+        console.error("No authentication data available");
+        setError("Authentication required");
+        return;
+      }
+
       try {
+        // Using fetch API
         const response = await fetch("https://uniisphere-1.onrender.com/api/connections", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`, 
-          },
-          body: JSON.stringify({ userId: userId || "7be6aac4-b786-4b9f-b3ba-f911e2f89a04" }), // Default userId or fetched userId
+            "Authorization": `Bearer ${authData.token}` // Use token from localStorage
+          }
+          // Note: For GET requests, don't include body parameter
         });
 
+        // Alternative using axios:
+        // const response = await axios.get("https://uniisphere-1.onrender.com/api/connections", {
+        //   headers: { Authorization: `Bearer ${authData.token}` }
+        // });
+
+
+        console.log("response is:", response);
         if (!response.ok) {
-          throw new Error("Failed to fetch connections");
+          throw new Error(`Failed to fetch connections: ${response.status}`);
         }
 
         const data = await response.json();
-        // Extract the first userId from the connections array as the current user's ID
-        const currentUserId = data.connections[0]?.userId || "7be6aac4-b786-4b9f-b3ba-f911e2f89a04";
+
+        // Set user ID from auth data or response
+        const currentUserId = authData.userId || data.connections[0]?.userId;
         setUserId(currentUserId);
 
-        // Calculate total connections based on the length of the connections array
-        const totalConnections = data.connections.length || 0;
+        // Calculate total connections
+        const totalConnections = data.connections?.length || 0;
         setConnections(totalConnections);
 
-        // Assuming followers are not directly provided, you might need a separate API call
-        setFollowers(0); // Update this if the API provides followers data
+        // Assuming followers are calculated elsewhere
+        setFollowers(0);
 
       } catch (error) {
         console.error("Error fetching connections:", error);
+        setError("Failed to load connections");
       }
     };
 
     fetchConnections();
-  }, [userId]); // Re-run if userId changes
+  }, []); // Only run once on component mount
 
   return (
     <div className="right-section-container">
