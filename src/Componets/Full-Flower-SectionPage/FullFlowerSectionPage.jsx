@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./FullFlowerSectionPage.css";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import uploadimage1 from "./uploadImage.png";
+import uploadimage1 from "./uploadImage1.png";
 import uploadimage2 from "./uploadImage2.png";
 import uploadimage3 from "./uploadImage3.png";
 import Collab from "./Collab.png";
