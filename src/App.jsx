@@ -14,6 +14,7 @@ import AboutAndExperiance from "./Componets/AboutAndExperiance/AboutAndExperianc
 import SkillForm from "./Componets/SkillForm/SkillForm.jsx";
 import ProfileEditSection from "./Componets/ProfileEditSection/ProfileEditSection.jsx";
 import FullFlowerSectionPage from "./Componets/FullFlowerSectionPage/FullFlowerSectionPage.jsx";
+import PersonalInfoUpdate from "./Componets/PersonalInfoUpdate/PersonalInfoUpdate.jsx";
 function App() {
   return (
     <Router>
@@ -32,6 +33,7 @@ function App() {
           <Route path="/Skill" element={<SkillForm/>} />
           <Route path="/ProfileEditSection" element={<ProfileEditSection/>} />
           <Route path="/FullFlowerSectionPage" element={<FullFlowerSectionPage/>} />
+          <Route path="/PersonalInfoUpdate" element={<PersonalInfoUpdate/>} />
         </Routes>
       </div>
     </Router>

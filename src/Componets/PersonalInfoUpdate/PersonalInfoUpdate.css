@@ -1,0 +1,196 @@
+/* Main Container */
+.PersonalInfoUpdate-main-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 100vh; /* Use min-height instead of height for better responsiveness */
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative; /* Ensure Background can be positioned absolutely if needed */
+}
+
+/* Left Container */
+.PersonalInfoUpdate-left-main-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Middle Container */
+.PersonalInfoUpdate-middle-main-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to top instead of center for better mobile view */
+}
+
+/* Right Container */
+.PersonalInfoUpdate-right-main-container {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Profile Card */
+.PersonalInfoUpdate-profile-card {
+  width: 100%;
+  max-width: 500px; /* Limit the width for larger screens */
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Photo Section */
+.PersonalInfoUpdate-photo-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.PersonalInfoUpdate-profile-photo {
+  width: 100px;
+  height: 100px;
+  background-color: #ccc; 
+  border-radius: 50%;
+  margin-right: 15px; /* Space between photo and buttons */
+}
+
+.PersonalInfoUpdate-button-group {
+  display: flex;
+  align-items: center;
+}
+
+.PersonalInfoUpdate-edit-photo {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-right: 10px;
+  width: 130px;
+}
+
+.PersonalInfoUpdate-edit-photo:hover {
+  background-color: #0056b3;
+}
+
+.PersonalInfoUpdate-remove-photo {
+  background: none;
+  color: #dc3545;
+  border-radius: 20px;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.PersonalInfoUpdate-remove-photo:hover {
+  color: #a71d2a;
+}
+
+/* Info Section */
+.PersonalInfoUpdate-info-section {
+  text-align: left;
+}
+
+.PersonalInfoUpdate-info-item {
+  margin-bottom: 15px;
+}
+
+.PersonalInfoUpdate-info-item input {
+  border: 2px solid black;
+  border-radius: 20px;
+  font-size: 22px;
+}
+.PersonalInfoUpdate-info-item input value{
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+label {
+  font-size: 20px;
+  color: black;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.PersonalInfoUpdate-info-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Decorations */
+.PersonalInfoUpdate-decorations {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.PersonalInfoUpdate-decoration {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #ff9999;
+  border-radius: 50%;
+  margin-left: 5px;
+  opacity: 0.7;
+}
+
+.PersonalInfoUpdate-decoration:nth-child(2) {
+  background-color: #99ccff;
+}
+
+.PersonalInfoUpdate-decoration:nth-child(3) {
+  background-color: #99ff99;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .PersonalInfoUpdate-main-container {
+    flex-direction: column;
+    padding: 10px; /* Reduce padding on mobile */
+  }
+
+  .PersonalInfoUpdate-left-main-container,
+  .PersonalInfoUpdate-right-main-container {
+    display: none; /* Hide left and right sections on mobile */
+  }
+
+  .PersonalInfoUpdate-middle-main-container {
+    width: 100%; /* Take full width on mobile */
+    align-items: center; /* Center the profile card */
+  }
+
+  .PersonalInfoUpdate-profile-card {
+    max-width: 100%; /* Allow the card to take full width on mobile */
+    width: 90%; /* Slightly reduce width for padding */
+  }
+
+  .PersonalInfoUpdate-photo-section {
+    flex-direction: row; /* Keep photo and buttons in a row */
+    justify-content: flex-start;
+  }
+
+  .PersonalInfoUpdate-profile-photo {
+    width: 80px; /* Slightly smaller photo on mobile */
+    height: 80px;
+  }
+
+  label {
+    font-size: 12px; /* Smaller font size for labels on mobile */
+    margin-left: 5px;
+  }
+
+  .PersonalInfoUpdate-info-box {
+    font-size: 14px; /* Smaller font size for inputs on mobile */
+    padding: 8px;
+  }
+}

@@ -85,6 +85,11 @@ function DesktopRightsection() {
 
     fetchConnections();
   }, []); // Only run once on component mount
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleBio = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <div className="right-section-container">
@@ -103,14 +108,18 @@ function DesktopRightsection() {
 
         {/* Profile Details */}
         <div className="profile-details">
-          <h3 className="profile-name">Rahul Verma</h3>
-          <p className="profile-company">Uniisphere</p>
-          <p className="profile-location">New Delhi, Delhi</p>
-          <p className="profile-bio">
-            The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all time ....
-            <span className="see-more"> see more</span>
-          </p>
-        </div>
+      <h3 className="profile-name">Rahul Verma</h3>
+      <p className="profile-company">Uniisphere</p>
+      <p className="profile-location">New Delhi, Delhi</p>
+      <p className="profile-bio">
+        {isExpanded
+          ? "The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all-time dream and made it a success with the team and resources they gathered together."
+          : "The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all-time ...."}  
+        <span className="see-more" onClick={toggleBio} style={{ color: "blue", cursor: "pointer" }}>
+          {isExpanded ? " see less" : " see more"}
+        </span>
+      </p>
+    </div>
 
         {/* Suggested Connections Section */}
         <div className="suggested-cards">
