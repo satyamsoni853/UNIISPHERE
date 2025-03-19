@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+
 import "./FullFlowerSectionPage.css";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import uploadimage1 from "./UploadImage1.png";
 import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
-import Collab from "./Collab.png";
-import CollabProfile from "./CollabProfile.png";
+ 
 import Profileandview from "./Profileandview.png";
 import Profile from "./Profile.png";
 import { FaEdit } from "react-icons/fa";
@@ -14,6 +14,7 @@ import { FiSearch } from "react-icons/fi";
 import { IoSettings } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
 
+
 function FullFlowerSectionPage() {
   const [profilePic] = useState(Profile);
   const [collabs] = useState(10);
@@ -21,7 +22,7 @@ function FullFlowerSectionPage() {
   const [name] = useState("Himanshu Choudhary");
   const [title] = useState("Software Engineer || Web Developer");
   const [address] = useState("Gurgaon , Haryana, India");
-  const [buttons] = useState(["Message", "Connect"]);
+ 
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [fullAboutText] = useState(
@@ -203,23 +204,21 @@ function FullFlowerSectionPage() {
             </div>
 
             <div className="Profile-full-section-profile-buttons">
-              {buttons.map((btn, index) => (
-                <button key={index} className="Profile-full-section-btn">
-                  {btn}
-                </button>
-              ))}
+            
+            <button className="Profile-full-section-btn" >Message</button>
+            <button className="Profile-full-section-btn" >Connect</button>
             </div>
           </div>
 
           {/* Goal Section */}
-          <div className="Profile-full-section-aboutAndgoal-section">
+          <div className="Profile-full-section-goal-section">
             <h3>Your Plan and Goal</h3>
             <p>
               {displayedText}
               <span>
                 {fullAboutText.length > maxLength && (
                   <button
-                    className="Profile-full-section-aboutAndgoal-button"
+                    className="Profile-full-section-goal-button"
                     onClick={toggleExpand}
                   >
                     {isExpanded ? "See Less" : "See More"}
@@ -243,7 +242,7 @@ function FullFlowerSectionPage() {
           </div>
 
           {/* About Section */}
-          <div className="Profile-full-section-aboutAndgoal-section">
+          <div className="Profile-full-section-about-section">
             <div className="Profile-full-section-about-headingAndFull">
               <h3>About</h3>
             </div>
@@ -263,9 +262,9 @@ function FullFlowerSectionPage() {
           </div>
 
           {/* Upload Section */}
-          <div className="Profile-full-section-slider-box">
+          <div className="Profile-full-section-upload-slider-box">
             <h2>Upload</h2>
-            <div className="Profile-full-section-down-slider-con">
+            <div className="Profile-full-section-down-upload-slider-con">
               <IoIosArrowBack
                 className="Profile-full-section-Back"
                 onClick={prevImageSlide}
@@ -295,9 +294,9 @@ function FullFlowerSectionPage() {
           </div>
 
           {/* Experience Section */}
-          <div className="Profile-full-section-slider-box-experience">
+          <div className="Profile-full-section-experience-slider-box">
             <h2>Experience</h2>
-            <div className="Profile-full-section-down-slider-con">
+            <div className="Profile-full-section-down-experience-slider-con">
               <IoIosArrowBack
                  className="Profile-full-section-Back"
                 onClick={prevExpSlide}
@@ -374,7 +373,10 @@ function FullFlowerSectionPage() {
                     </div>
                     <div className="Profile-full-section-collabratorDetails">
                       <h4>{collaboratorName}</h4>
-                      <div className="Profile-full-section-education"></div>
+                      <div className="Profile-full-section-education">
+                        <h6>M.Tech in CS</h6>
+                        <h6>B.tech in AI</h6>
+                      </div>
                       <div className="Profile-full-section-subCollabrators">
                         (
                         {subCollaborators.map((val, index) => (

@@ -1,4 +1,3 @@
-/* Main Container */
 .ProfileEditSection-main-container {
   display: flex;
   justify-content: space-between;
@@ -9,14 +8,12 @@
   box-sizing: border-box;
 }
 
-/* Left Container */
 .ProfileEditSection-left-main-container {
   width: 30%;
   display: flex;
   flex-direction: column;
 }
 
-/* Middle Container */
 .ProfileEditSection-middle-main-container {
   width: 50%;
   display: flex;
@@ -24,22 +21,17 @@
   align-items: center;
 }
 
-/* Right Container */
 .ProfileEditSection-right-main-container {
   width: 30%;
   display: flex;
   justify-content: flex-end;
-  
-  
 }
 
 .Followers-middle-section-2-middle-section-public {
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  /* flex-direction: column; */
-  /* display: flex; */
-  max-width: 500px; 
+  max-width: 500px;
   gap: 20px;
   height: auto;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
@@ -48,15 +40,15 @@
 .Followers-middle-section-2-profile-header-public {
   display: flex;
   flex-direction: row-reverse;
-  gap: 20px; 
+  gap: 20px;
   align-items: center;
   padding: 5px;
-  font-size: 18px; /* Reduce font size for smaller screens */
+  font-size: 18px;
 }
 
 .Followers-middle-section-2-collabsDetails-public h4,
 .Followers-middle-section-2-connectionsDetails-public h4 {
-  font-size: 25px; /* Reduce font size for smaller screens */
+  font-size: 25px;
   font-weight: 200;
 }
 
@@ -80,8 +72,8 @@
 }
 
 .Followers-middle-section-2-imageContainer-public {
-  height: 90px; /* Reduce size for smaller screens */
-  width: 90px; /* Reduce size for smaller screens */
+  height: 90px;
+  width: 90px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -101,7 +93,7 @@
 .Followers-middle-section-2-profile-buttons-public {
   display: flex;
   justify-content: flex-end;
-  gap: 10px; /* Reduce gap for smaller screens */
+  gap: 10px;
 }
 
 .Followers-middle-section-2-about-button-public {
@@ -129,15 +121,14 @@
   color: black;
   border: 1px solid black;
   padding: 8px 12px;
-  width: 100%; /* Full width for smaller screens */
-  max-width: 170px; /* Limit width for larger screens */
-  font-size: 16px; /* Reduce font size for smaller screens */
+  width: 100%;
+  max-width: 170px;
+  font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
   outline: none;
 }
 
-/* Scroll container for skills and interests */
 .Followers-middle-section-2-scroll-container {
   display: flex;
   align-items: center;
@@ -145,42 +136,36 @@
   width: 100%;
 }
 
-/* Skill and interest list styles */
 .Followers-middle-section-2-skill-list-public {
   display: flex;
-  flex-wrap: nowrap; /* Prevents wrapping to new lines */
-  overflow-x: auto; /* Enables horizontal scrolling */
-  scroll-behavior: smooth; /* Smooth scrolling effect */
-  gap: 10px; /* Space between items */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 10px;
   padding: 5px 0;
-  white-space: nowrap; /* Keeps items in one line */
-  width: 100%; /* Ensure it takes full width */
+  white-space: nowrap;
+  width: 100%;
 }
 
-/* Skill and interest item styles */
-.Followers-middle-section-2-skill-list-public
-  .Followers-middle-section-2-skillsMiniDiv-public {
+.Followers-middle-section-2-skill-list-public .Followers-middle-section-2-skillsMiniDiv-public {
   background: linear-gradient(to top, #f3eeee, #e8a4a4);
   border-radius: 5px;
   padding: 10px 15px;
-  display: inline-block; /* Ensures items stay in one line */
-  flex-shrink: 0; /* Prevents items from shrinking */
+  display: inline-block;
+  flex-shrink: 0;
 }
-
-/* Scroll button styles */
 
 .Followers-middle-section-2-scroll-btn:hover {
   background-color: #0056b3;
 }
 
-/* Hide scrollbar for cleaner look */
 .Followers-middle-section-2-skill-list-public::-webkit-scrollbar {
   display: none;
 }
 
 .Followers-middle-section-2-skill-list-public {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .Followers-middle-section-2-headingAndIcons-public {
@@ -210,6 +195,7 @@
   justify-content: space-between;
   padding: 2px;
 }
+
 .Followers-middle-section-2-headingAndEdit-public p {
   font-size: 24px;
   font-weight: 200;
@@ -223,12 +209,12 @@
 .Followers-middle-section-2-upload-section-public h6 {
   text-align: start;
   font-weight: 100;
-  font-size: 14px; /* Reduce font size for smaller screens */
+  font-size: 14px;
 }
 
 .Followers-middle-section-2-upload-section-public h3 {
   text-align: start;
-  font-size: 18px; /* Reduce font size for smaller screens */
+  font-size: 18px;
 }
 
 .Followers-middle-section-2-buttons-section-public {
@@ -251,7 +237,6 @@
   text-align: center;
 }
 
-/* Button gradients */
 .mit {
   background: linear-gradient(to top, #ff7e5f, #feb47b);
 }
@@ -268,82 +253,151 @@
   background: linear-gradient(to top, #11998e, #eeeeee);
 }
 
-/* Hover effect */
 .btn:hover {
   opacity: 0.8;
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .Followers-middle-section-2-skill-list-public{
-    width: 50%;
+@media (max-width: 1439px) {
+  .ProfileEditSection-main-container {
+    padding: 15px;
   }
+  
   .Followers-middle-section-2-middle-section-public {
-    /* width: 95%; */
+    max-width: 450px;
+    padding: 15px;
   }
-  .ProfileEditSectionll-left-main-container,
-  .ProfileEditSection-right-main-container {
-    display: none; /* Hide left and right sections */
-  }
-
   
-
-  .Followers-middle-section-2-scroll-btn {
-    padding: 4px 8px; /* Slightly smaller buttons */
-    font-size: 14px;
+  .Followers-middle-section-2-nameAndEdit-public {
+    font-size: 24px;
   }
-  .Followers-middle-section-2-buttons-section-public button {
-    flex: 1 1 calc(50% - 10px);
-    padding: 10px 10px;
   
-  }
-
-  .Followers-middle-section-2-skillsMiniDiv-public {
-    padding: 4px 8px; /* Adjust padding for smaller screens */
+  .Followers-middle-section-2-btn-public {
+    max-width: 150px;
   }
 }
 
-@media (max-width: 480px) {
-  .Followers-middle-section-2-buttons-section-public button {
-    flex: 1 1 calc(50% - 10px);
-    padding: 10px 10px;
-    font-size: 16px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    text-align: center;
+@media (max-width: 1023px) {
+  .ProfileEditSection-main-container {
+    flex-wrap: wrap;
+    height: auto;
   }
-  
+
+  .ProfileEditSection-left-main-container,
+  .ProfileEditSection-right-main-container {
+    width: 50%;
+  }
+
+  .ProfileEditSection-middle-main-container {
+    width: 100%;
+    order: 3;
+    margin-top: 20px;
+  }
+
   .Followers-middle-section-2-middle-section-public {
-    padding: 10px; /* Reduce padding for smaller screens */
+    max-width: 100%;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
   }
 
   .Followers-middle-section-2-profile-header-public {
-    font-size: 16px; /* Reduce font size for smaller screens */
+    gap: 15px;
   }
 
-  .Followers-middle-section-2-btn-public {
-    font-size: 14px; /* Reduce font size for smaller screens */
+  .Followers-middle-section-2-imageContainer-public {
+    height: 80px;
+    width: 80px;
+  }
+}
+
+@media (max-width: 767px) {
+  .ProfileEditSection-main-container {
+    flex-direction: column;
+    padding: 10px;
+    height: auto;
+  }
+  
+  .ProfileEditSection-left-main-container,
+  .ProfileEditSection-right-main-container {
+    display: none;
   }
 
-  .Followers-middle-section-2-scroll-btn {
-    padding: 3px 6px; /* Even smaller buttons */
-    font-size: 12px;
+  .ProfileEditSection-middle-main-container {
+    width: 100% !important;
+    padding: 10px 0;
   }
 
-  .Followers-middle-section-2-skillsMiniDiv-public {
-    padding: 3px 6px; /* Further adjust padding */
-    font-size: 12px; /* Smaller text */
+  .Followers-middle-section-2-middle-section-public {
+    box-shadow: none;
+    padding: 10px;
+    border-radius: 8px;
   }
 
-  .Followers-middle-section-2-collabsDetails-public h4,
-  .Followers-middle-section-2-connectionsDetails-public h4 {
-    font-size: 20px; /* Adjust font size */
+  .Followers-middle-section-2-profile-header-public {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .Followers-middle-section-2-profile-info-public {
+    align-items: center;
+    line-height: 1.2;
   }
 
   .Followers-middle-section-2-nameAndEdit-public {
-    font-size: 20px; /* Adjust font size */
+    font-size: 20px;
+    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .Followers-middle-section-2-imageContainer-public {
+    height: 70px;
+    width: 70px;
+  }
+
+  .Followers-middle-section-2-btn-public {
+    max-width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .Followers-middle-section-2-skill-list-public {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .Followers-middle-section-2-skillsMiniDiv-public {
+    flex-shrink: 1;
+    padding: 8px 12px;
+  }
+
+  .Followers-middle-section-2-buttons-section-public button {
+    flex: 1 1 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 319px) {
+  .Followers-middle-section-2-nameAndEdit-public {
+    font-size: 18px;
+  }
+
+  .Followers-middle-section-2-imageContainer-public {
+    height: 60px;
+    width: 60px;
+  }
+
+  .Followers-middle-section-2-btn-public {
+    font-size: 13px;
+  }
+
+  .Followers-middle-section-2-skillsMiniDiv-public {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .ProfileEditSection-left-main-container,
+  .ProfileEditSection-right-main-container {
+    display: none;
   }
 }

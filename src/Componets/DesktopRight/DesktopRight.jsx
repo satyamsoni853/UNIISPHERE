@@ -24,8 +24,6 @@ function DesktopRightsection() {
   const [followers, setFollowers] = useState(0);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
-  const [profileData, setProfileData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   // Get authentication data from localStorage
   const getAuthData = () => {
@@ -34,8 +32,9 @@ function DesktopRightsection() {
     return storedToken && storedUserId ? { token: storedToken, userId: storedUserId } : null;
   };
 
+  // Fetch connections
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchConnections = async () => {
       // Get auth data
       const authData = getAuthData();
 
@@ -49,45 +48,38 @@ function DesktopRightsection() {
       setUserId(authData.userId);
 
       try {
-        // Fetch profile data with userId as query parameter
-        const profileResponse = await axios.get(
-          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authData.userId}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${authData.token}`
-            }
+        // Using fetch API
+        const response = await fetch("https://uniisphere-1.onrender.com/api/connections", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authData.token}` // Use token from localStorage
           }
-        );
+          // Note: For GET requests, don't include body parameter
+        });
 
-        console.log("Full profile response:", profileResponse.data);
-        
-        // Set profile data from response
-        if (profileResponse.data && profileResponse.data.length > 0) {
-          const userData = profileResponse.data[0];
-          
-          // Log what profile picture fields are available
-          console.log("Available profile data fields:", Object.keys(userData));
-          
-          setProfileData(userData);
+        // Alternative using axios:
+        // const response = await axios.get("https://uniisphere-1.onrender.com/api/connections", {
+        //   headers: { Authorization: `Bearer ${authData.token}` }
+        // });
+
+
+        console.log("response is:", response);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch connections: ${response.status}`);
         }
 
-        // Fetch connections count
-        const connectionsResponse = await axios.get(
-          "https://uniisphere-1.onrender.com/api/connections",
-          {
-            headers: {
-              "Authorization": `Bearer ${authData.token}`
-            }
-          }
-        );
+        const data = await response.json();
 
-        console.log("Connections response:", connectionsResponse.data);
-        
-        // Calculate total connections from response
-        const connectionCount = connectionsResponse.data.connections?.length || 0;
-        setConnections(connectionCount);
-        
-        // For now, set followers to 0 or get from another API
+        // Set user ID from auth data or response
+        const currentUserId = authData.userId || data.connections[0]?.userId;
+        setUserId(currentUserId);
+
+        // Calculate total connections
+        const totalConnections = data.connections?.length || 0;
+        setConnections(totalConnections);
+
+        // Assuming followers are calculated elsewhere
         setFollowers(0);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -97,27 +89,8 @@ function DesktopRightsection() {
       }
     };
 
-    fetchData();
+    fetchConnections();
   }, []); // Only run once on component mount
-
-  // Calculate full name from profile data
-  const getFullName = () => {
-    if (!profileData) return "Loading...";
-    return `${profileData.firstName || ""} ${profileData.lastName || ""}`.trim();
-  };
-
-  // Function to get the profile picture URL with multiple fallback options
-  const getProfilePictureUrl = () => {
-    if (!profileData) return Profileimg;
-    
-    // Try different possible field names for profile picture
-    return profileData.profilePictureUrl || 
-           profileData.profileImageUrl || 
-           profileData.avatarUrl || 
-           profileData.photoUrl ||
-           profileData.profilePicture || 
-           Profileimg;
-  };
 
   return (
     <div className="right-section-container">
@@ -147,11 +120,11 @@ function DesktopRightsection() {
 
         {/* Profile Details */}
         <div className="profile-details">
-          <h3 className="profile-name">{getFullName()}</h3>
-          <p className="profile-company">{profileData?.headline || "Uniisphere"}</p>
-          <p className="profile-location">{profileData?.location || "Location not specified"}</p>
+          <h3 className="profile-name">Rahul Verma</h3>
+          <p className="profile-company">Uniisphere</p>
+          <p className="profile-location">New Delhi, Delhi</p>
           <p className="profile-bio">
-            {profileData?.About || "Bio not available"}
+            The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all time ....
             <span className="see-more"> see more</span>
           </p>
         </div>
@@ -166,7 +139,9 @@ function DesktopRightsection() {
                 <p className="suggestion-name">{suggestion.name}</p>
                 <p className="suggestion-university">{suggestion.university}</p>
               </div>
-              <button><img className="connect-btn" src={Connectimage} alt="" /></button>
+              <button>
+                <img className="connect-btn" src={Connectimage} alt="" />
+              </button>
             </div>
           ))}
         </div>

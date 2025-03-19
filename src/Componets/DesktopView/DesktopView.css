@@ -7,7 +7,7 @@
 .desktop-view-container {
   display: flex;
   width: 100%;
-  height: calc(100vh - /* navbar height */);
+  height: calc(100vh - navbar height);
 }
 
 .desktop-view-left {
@@ -21,7 +21,7 @@
 }
 
 .desktop-view-right {
-  width: 25%; /* Adjust as needed */
+  width: 25%; 
 }
 
 /* Ensure the left components stack properly */
