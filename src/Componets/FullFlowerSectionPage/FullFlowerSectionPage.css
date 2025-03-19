@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  
   min-height: 100vh;
 }
 
@@ -31,11 +32,7 @@
   padding: 8px 5px;
 }
 
-.Profile-full-section-backLogo {
-  font-size: 35px;
-  color: #666;
-  cursor: pointer;
-}
+
 
 .Profile-full-section-profile-header {
   width: 100%;
@@ -199,13 +196,27 @@
   color: #333;
 }
 
-.Profile-full-section-aboutAndgoal-section {
+.Profile-full-section-goal-section {
   padding: 5px 7px;
   background-color: #fff;
   border-radius: 5px;
 }
 
-.Profile-full-section-aboutAndgoal-button {
+.Profile-full-section-goal-button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: rgb(144, 143, 143);
+  cursor: pointer;
+  font-size: 14px;
+}
+.Profile-full-section-about-section {
+  padding: 5px 7px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.Profile-full-section-about-button {
   border: none;
   outline: none;
   background-color: transparent;
@@ -247,7 +258,18 @@
   animation: spin 2s linear infinite;
 }
 
-.Profile-full-section-slider-box {
+.Profile-full-section-experience-slider-box {
+  /* background-color: #fff; */
+  border-radius: 10px;
+  /* max-width: 700px; */
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.Profile-full-section-upload-slider-box {
   /* background-color: #fff; */
   border-radius: 10px;
   /* max-width: 700px; */
@@ -258,14 +280,25 @@
 }
 .Profile-full-section-Back{
   font-size: 30px;
- 
-  
+}
+.Profile-full-section-down-experience-slider-con .Profile-full-section-Forward{
+  font-size: 50px;
+}
+.Profile-full-section-down-experience-slider-con .Profile-full-section-Back{
+  font-size: 50px;
 }
 .Profile-full-section-Forward{
   font-size: 30px;
 }
 
-.Profile-full-section-down-slider-con {
+.Profile-full-section-down-experience-slider-con {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* width: 100%; */
+  /* position: relative; */
+}
+.Profile-full-section-down-upload-slider-con {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -460,11 +493,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 2px;
 }
 
 .Profile-full-section-collabratorDetails .Profile-full-section-education h6 {
   font-weight: 300;
+  font-size: 9px;
   color: #726d6dea;
 }
 
@@ -703,7 +737,10 @@
     height: 100px;
   }
 
-  .Profile-full-section-aboutAndgoal-section {
+  .Profile-full-section-goal-section {
+    padding: 3px 5px;
+  }
+  .Profile-full-section-about-section {
     padding: 3px 5px;
   }
 
@@ -809,11 +846,7 @@
   }
 }
 
-@media (min-width: 1440px) {
-  .Profile-full-section-container {
-    width: 50%;
-  }
-}
+
 
 @media (min-width: 450px) {
   .Profile-full-section-verified {
