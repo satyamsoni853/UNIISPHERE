@@ -1,3 +1,4 @@
+import axios from "axios"; // Make sure to import axios
 import React, { useEffect, useState } from "react";
 import ConnectandCollbrate from "./Connect&coll.png";
 import Connectimage from "./Connect.png";
@@ -23,12 +24,6 @@ function DesktopRightsection() {
   const [followers, setFollowers] = useState(0);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
-  const [profileData, setProfileData] = useState({
-    fullName: "Rahul Verma", // Default value
-    location: "New Delhi, Delhi", // Default value
-    about: "The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all-time dream and made it a success with the team and resources they gathered together.", // Default value
-    college: "Uniisphere", // Default value
-  });
 
   // Get authentication data from localStorage
   const getAuthData = () => {
@@ -40,95 +35,80 @@ function DesktopRightsection() {
   // Fetch connections
   useEffect(() => {
     const fetchConnections = async () => {
+      // Get auth data
       const authData = getAuthData();
 
       if (!authData) {
         console.error("No authentication data available");
         setError("Authentication required");
+        setLoading(false);
         return;
       }
 
+      setUserId(authData.userId);
+
       try {
+        // Using fetch API
         const response = await fetch("https://uniisphere-1.onrender.com/api/connections", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${authData.token}`,
-          },
+            "Authorization": `Bearer ${authData.token}` // Use token from localStorage
+          }
+          // Note: For GET requests, don't include body parameter
         });
 
+        // Alternative using axios:
+        // const response = await axios.get("https://uniisphere-1.onrender.com/api/connections", {
+        //   headers: { Authorization: `Bearer ${authData.token}` }
+        // });
+
+
+        console.log("response is:", response);
         if (!response.ok) {
           throw new Error(`Failed to fetch connections: ${response.status}`);
         }
 
         const data = await response.json();
+
+        // Set user ID from auth data or response
         const currentUserId = authData.userId || data.connections[0]?.userId;
         setUserId(currentUserId);
 
+        // Calculate total connections
         const totalConnections = data.connections?.length || 0;
         setConnections(totalConnections);
+
+        // Assuming followers are calculated elsewhere
         setFollowers(0);
       } catch (error) {
-        console.error("Error fetching connections:", error);
-        setError("Failed to load connections");
+        console.error("Error fetching data:", error);
+        setError("Failed to load profile data");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchConnections();
-  }, []);
-
-  // Fetch profile data
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const authData = getAuthData();
-
-      if (!authData) {
-        console.error("No authentication data available");
-        setError("Authentication required");
-        return;
-      }
-
-      try {
-        const response = await fetch(`https://uniisphere-1.onrender.com/getProfile/profile/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "user-id": authData.userId, // Pass userId in the header
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch profile: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setProfileData({
-          fullName: `${data.firstName} ${data.lastName}`,
-          location: data.location,
-          about: data.About,
-          college: data.college,
-        });
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-        setError("Failed to load profile");
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const toggleBio = () => {
-    setIsExpanded(!isExpanded);
-  };
+  }, []); // Only run once on component mount
 
   return (
     <div className="right-section-container">
       <div className="rightsection">
+        {/* Loading state */}
+        {loading && <div className="loading">Loading profile data...</div>}
+        
+        {/* Error state */}
+        {error && <div className="error-message">{error}</div>}
+        
         {/* Profile Section */}
         <div className="profile-card">
-          <img src={Profileimg} alt="Profile" className="profile-image" />
+          <img 
+            src={getProfilePictureUrl()} 
+            alt="Profile" 
+            className="profile-image"
+            onError={(e) => {e.target.src = Profileimg}}
+          />
           <div className="profile-right">
             <div className="profile-numbers">
               <span>{connections}</span>
@@ -140,20 +120,12 @@ function DesktopRightsection() {
 
         {/* Profile Details */}
         <div className="profile-details">
-          <h3 className="profile-name">{profileData.fullName}</h3>
-          <p className="profile-company">{profileData.college}</p>
-          <p className="profile-location">{profileData.location}</p>
+          <h3 className="profile-name">Rahul Verma</h3>
+          <p className="profile-company">Uniisphere</p>
+          <p className="profile-location">New Delhi, Delhi</p>
           <p className="profile-bio">
-            {isExpanded
-              ? profileData.about
-              : `${profileData.about.substring(0, 100)}...`}
-            <span
-              className="see-more"
-              onClick={toggleBio}
-              style={{ color: "blue", cursor: "pointer" }}
-            >
-              {isExpanded ? " see less" : " see more"}
-            </span>
+            The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all time ....
+            <span className="see-more"> see more</span>
           </p>
         </div>
 
