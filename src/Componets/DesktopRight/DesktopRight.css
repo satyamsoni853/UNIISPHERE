@@ -1,7 +1,10 @@
 /* Right Section */
 .right-section-container {
-  margin-right: 20px;
-  /* width: 25vw; */
+  position: fixed;
+  top: 110px;
+  bottom: 10px;
+  width: 25vw; 
+  overflow-y: auto; 
 }
 
 .rightsection {

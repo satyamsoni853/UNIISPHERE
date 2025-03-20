@@ -16,6 +16,8 @@ const suggestions = [
   { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
   { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
   { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  // { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  // { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
 ];
 
 function DesktopRightsection() {
@@ -39,6 +41,7 @@ function DesktopRightsection() {
 
   // Fetch connections
   useEffect(() => {
+    const abortController = new AbortController(); // Create an AbortController
     const fetchConnections = async () => {
       const authData = getAuthData();
 
@@ -55,6 +58,7 @@ function DesktopRightsection() {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${authData.token}`,
           },
+          signal: abortController.signal, // Pass the abort signal
         });
 
         if (!response.ok) {
@@ -69,16 +73,26 @@ function DesktopRightsection() {
         setConnections(totalConnections);
         setFollowers(0);
       } catch (error) {
-        console.error("Error fetching connections:", error);
-        setError("Failed to load connections");
+        if (error.name === "AbortError") {
+          console.log("Fetch connections aborted");
+        } else {
+          console.error("Error fetching connections:", error);
+          setError("Failed to load connections");
+        }
       }
     };
 
     fetchConnections();
+
+    // Cleanup: Abort the fetch on unmount
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   // Fetch profile data
   useEffect(() => {
+    const abortController = new AbortController(); // Create an AbortController
     const fetchProfile = async () => {
       const authData = getAuthData();
 
@@ -95,6 +109,7 @@ function DesktopRightsection() {
             "Content-Type": "application/json",
             "user-id": authData.userId, // Pass userId in the header
           },
+          signal: abortController.signal, // Pass the abort signal
         });
 
         if (!response.ok) {
@@ -109,12 +124,21 @@ function DesktopRightsection() {
           college: data.college,
         });
       } catch (error) {
-        console.error("Error fetching profile:", error);
-        setError("Failed to load profile");
+        if (error.name === "AbortError") {
+          console.log("Fetch profile aborted");
+        } else {
+          console.error("Error fetching profile:", error);
+          setError("Failed to load profile");
+        }
       }
     };
 
     fetchProfile();
+
+    // Cleanup: Abort the fetch on unmount
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   const [isExpanded, setIsExpanded] = useState(false);

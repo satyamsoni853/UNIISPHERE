@@ -5,12 +5,12 @@
   align-items: flex-start; /* Align items at the top */
   width: 100%;
   height: 100vh; /* Full viewport height */
-  padding: 20px; 
+  padding: 20px;
 }
 
 /* Left Container */
 .Interest-left-main-container {
-  width: 30%; 
+  width: 30%;
   display: flex;
   flex-direction: column;
 }
@@ -30,10 +30,6 @@
   justify-content: flex-end; /* Align content to the right */
 }
 
-
-
-
-
 /* Main container  */
 /* Middle Interest Container (Existing Styles) */
 .middle-interest-mainParent {
@@ -47,12 +43,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 100%;
-  max-width: 800px;
+  max-width: 35vw;
+  margin-top: 90px;
+  margin-left: 60px;
   border-radius: 10px;
-  
 }
-
-
 
 .middle-interest-mainParent {
   display: flex;
@@ -61,7 +56,6 @@
 }
 
 .middle-interest-container {
-  
   padding: 20px;
   height: 100vh;
   width: 40vw;
@@ -159,9 +153,8 @@
   justify-content: center;
   align-items: center;
 }
-.middle-interest-description p{
+.middle-interest-description p {
   width: 90%;
-
 }
 
 .middle-interest-searchAndIconMain {

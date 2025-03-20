@@ -10,6 +10,7 @@
   position: relative; /* Ensure Background can be positioned absolutely if needed */
 }
 
+
 /* Left Container */
 .PersonalInfoUpdate-left-main-container {
   width: 30%;
@@ -35,8 +36,10 @@
 /* Profile Card */
 .PersonalInfoUpdate-profile-card {
   width: 100%;
-  max-width: 500px; /* Limit the width for larger screens */
+  max-width:35vw; /* Limit the width for larger screens */
   border-radius: 15px;
+  margin-top: 90px;
+  margin-left: 90px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -194,3 +197,7 @@ label {
     padding: 8px;
   }
 }
+
+
+
+

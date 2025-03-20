@@ -1,3 +1,4 @@
+/* Main Container */
 .ProfileEditSection-main-container {
   display: flex;
   justify-content: space-between;
@@ -8,18 +9,38 @@
   box-sizing: border-box;
 }
 
+/* Left Container */
 .ProfileEditSection-left-main-container {
   width: 30%;
   display: flex;
   flex-direction: column;
 }
 
+/* Middle Container */
 .ProfileEditSection-middle-main-container {
-  width: 50%;
+  /* width: 35vw; */
+  margin-top: 90px;
+  margin-left: 35%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+/* Right Container */
+.ProfileEditSection-right-main-container {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.ProfileEditSection-left-main-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 .ProfileEditSection-right-main-container {
   width: 30%;
@@ -31,9 +52,10 @@
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  max-width: 500px;
+  /* max-width: 32vw; */
+  max-width: 32vw;
   gap: 20px;
-  height: auto;
+  /* height: auto; */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -309,6 +331,13 @@
 }
 
 @media (max-width: 767px) {
+  .ProfileEditSectionll-left-main-container{
+    display: none;
+    margin-left: 0;
+    margin-top: 0;
+   
+  }
+  
   .ProfileEditSection-main-container {
     flex-direction: column;
     padding: 10px;

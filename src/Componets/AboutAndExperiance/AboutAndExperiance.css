@@ -22,24 +22,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  order: 1;
+  
 }
 
 /* Right Container - Hidden on mobile by default */
 .AboutAndExperiance-right-main-container {
-  display: none; /* Hidden on mobile */
+  display: none; 
   width: 100%;
   justify-content: center;
-  order: 3;
 }
 
 .middle-aboutExperience-mainParent {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 35vw;
   min-height: 100vh;
   padding: 10px;
+  margin-top: 90px;
+  margin-left: 60px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .middle-aboutExperience-container {

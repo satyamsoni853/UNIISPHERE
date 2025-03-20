@@ -9,6 +9,7 @@ import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
+import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 
 function ProfileEditSection() {
   // State variables
@@ -84,6 +85,7 @@ function ProfileEditSection() {
 
   return (
     <div>
+      
       <div className="ProfileEditSection-main-container">
         <Background />
         <div className="ProfileEditSectionll-left-main-container">

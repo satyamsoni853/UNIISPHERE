@@ -6,6 +6,7 @@ import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
+import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 
 function SkillForm() {
   const [skills] = useState([
@@ -53,6 +54,7 @@ function SkillForm() {
 
   return (
     <div>
+      {/* <DesktopNavbarr/> */}
       <div className="Skill-main-container">
         <Background />
         <div className="Skill-left-main-container">

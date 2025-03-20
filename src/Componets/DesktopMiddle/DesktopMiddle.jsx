@@ -20,7 +20,9 @@ function DesktopMiddle() {
   const getAuthData = () => {
     const storedToken = localStorage.getItem("authToken");
     const storedUserId = localStorage.getItem("userId");
-    return storedToken && storedUserId ? { token: storedToken, userId: storedUserId } : null;
+    return storedToken && storedUserId
+      ? { token: storedToken, userId: storedUserId }
+      : null;
   };
 
   const authData = getAuthData();
@@ -42,13 +44,16 @@ function DesktopMiddle() {
 
       setImageLoading(true);
       try {
-        const response = await axios.get("https://uniisphere-1.onrender.com/api/feed", {
-          headers: { Authorization: `Bearer ${authData.token}` },
-        });
+        const response = await axios.get(
+          "https://uniisphere-1.onrender.com/api/feed",
+          {
+            headers: { Authorization: `Bearer ${authData.token}` },
+          }
+        );
         console.log(response.data);
 
         if (response.data.posts && response.data.posts.length > 0) {
-          const updatedPosts = response.data.posts.map(post => ({
+          const updatedPosts = response.data.posts.map((post) => ({
             ...post,
             likes: post.likes || 0,
             isLiked: false, // Initial like state per post
@@ -63,8 +68,6 @@ function DesktopMiddle() {
         setImageLoading(false);
       }
     };
-    
-    
 
     fetchData();
   }, [location.state]);
@@ -73,80 +76,116 @@ function DesktopMiddle() {
     setPosts((prevPosts) =>
       prevPosts.map((post, i) =>
         i === index
-          ? { ...post, isLiked: !post.isLiked, likes: post.isLiked ? post.likes - 1 : post.likes + 1 }
+          ? {
+              ...post,
+              isLiked: !post.isLiked,
+              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
+            }
           : post
       )
     );
   };
 
   return (
-    <div className="middle-middle-card">
-      {error && <div className="error-message">{error}</div>}
+    <div className="middle-container"> 
+      <div className="middle-middle-card">
+        {error && <div className="error-message">{error}</div>}
 
-      {posts.length > 0 ? (
-        posts.map((post, index) => (
-          <div key={index} className="post-container">
-            {/* Profile Header */}
-            <div className="middle-profile-header">
-              <img src={Profileimage} alt="Profile" className="middle-profile-pic" />
-              <div className="middle-profile-info">
-                <div className="middle-profile-top">
-                  <span className="middle-profile-name">{post.authorName || "Unknown Author"}</span>
-                  <span className="middle-post-time">18h</span>
+        {posts.length > 0 ? (
+          posts.map((post, index) => (
+            <div key={index} className="post-container">
+              {/* Profile Header */}
+              <div className="middle-profile-header">
+                <img
+                  src={Profileimage}
+                  alt="Profile"
+                  className="middle-profile-pic"
+                />
+                <div className="middle-profile-info">
+                  <div className="middle-profile-top">
+                    <span className="middle-profile-name">
+                      {post.authorName || "Unknown Author"}
+                    </span>
+                    <span className="middle-post-time">18h</span>
+                  </div>
+                  <p className="middle-profile-details">
+                    {post.authorDetails ||
+                      "University of Delhi | Works at Google"}
+                  </p>
                 </div>
-                <p className="middle-profile-details">{post.authorDetails || "University of Delhi | Works at Google"}</p>
+                <BsThreeDotsVertical className="middle-options-icon" />
               </div>
-              <BsThreeDotsVertical className="middle-options-icon" />
-            </div>
 
-            {/* Main Image */}
-            <div className="middle-main-image">
-              {imageLoading ? (
-                <div>Loading image...</div>
-              ) : post.mediaUrl ? (
-                <img src={post.mediaUrl} alt={`Post ${index + 1}`} className="middle-content-image" onError={(e) => (e.target.src = "https://via.placeholder.com/300")} />
-              ) : (
-                <img src={MiddlemainImage} alt="Default Post" className="middle-content-image" />
-              )}
-            </div>
+              {/* Main Image */}
+              <div className="middle-main-image">
+                {imageLoading ? (
+                  <div>Loading image...</div>
+                ) : post.mediaUrl ? (
+                  <img
+                    src={post.mediaUrl}
+                    alt={`Post ${index + 1}`}
+                    className="middle-content-image"
+                    onError={(e) =>
+                      (e.target.src = "https://via.placeholder.com/300")
+                    }
+                  />
+                ) : (
+                  <img
+                    src={MiddlemainImage}
+                    alt="Default Post"
+                    className="middle-content-image"
+                  />
+                )}
+              </div>
 
-            {/* Action Bar */}
-            <div className="middle-action-bar">
-              <img src={ConnectMidlleimage} alt="Connect" className="middle-connect-image" />
-              <div className="middle-action-icons">
-                {/* Like Button */}
-                <div className="middle-icon-container" onClick={() => handleLike(index)}>
-                  
-                  <span className="middle-icon-count">{post.likes}</span>
-                  <CiHeart className={`middle-icon ${post.isLiked ? "liked" : ""}`} />
-                </div>
+              {/* Action Bar */}
+              <div className="middle-action-bar">
+                <img
+                  src={ConnectMidlleimage}
+                  alt="Connect"
+                  className="middle-connect-image"
+                />
+                <div className="middle-action-icons">
+                  {/* Like Button */}
+                  <div
+                    className="middle-icon-container"
+                    onClick={() => handleLike(index)}
+                  >
+                    <span className="middle-icon-count">{post.likes}</span>
+                    <CiHeart
+                      className={`middle-icon ${post.isLiked ? "liked" : ""}`}
+                    />
+                  </div>
 
-                {/* Comments Count */}
-                <div className="middle-icon-container">
-                 
-                  <span className="middle-icon-count">{post.comments.length}</span>
-                  <TfiCommentsSmiley className="middle-icon" />
-                </div>
+                  {/* Comments Count */}
+                  <div className="middle-icon-container">
+                    <span className="middle-icon-count">
+                      {post.comments.length}
+                    </span>
+                    <TfiCommentsSmiley className="middle-icon" />
+                  </div>
 
-                {/* Share Placeholder */}
-                <div className="middle-icon-container">
-                  <PiShareFatThin className="middle-icon" />
-                  
+                  {/* Share Placeholder */}
+                  <div className="middle-icon-container">
+                    <PiShareFatThin className="middle-icon" />
+                  </div>
                 </div>
               </div>
-            </div>
-          
 
-            {/* Post Text */}
-            <div className="middle-post-text">
-              <span className="middle-post-author">{post.authorName || "Unknown Author"}</span> {post.caption || "No caption available"}
-              <span className="middle-see-more">...more</span>
+              {/* Post Text */}
+              <div className="middle-post-text">
+                <span className="middle-post-author">
+                  {post.authorName || "Unknown Author"}
+                </span>{" "}
+                {post.caption || "No caption available"}
+                <span className="middle-see-more">...more</span>
+              </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <p>No posts available</p>
-      )}
+          ))
+        ) : (
+          <p>No posts available</p>
+        )}
+      </div>
     </div>
   );
 }

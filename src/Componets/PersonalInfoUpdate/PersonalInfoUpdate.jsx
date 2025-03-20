@@ -24,8 +24,8 @@ function PersonalInfoUpdate() {
 
   return (
     <div>
-      <DesktopNavbarr />
-      
+      {/* <DesktopNavbarr /> */}
+
       <div className="PersonalInfoUpdate-main-container">
         <Background />
         <div className="PersonalInfoUpdate-left-main-container">
