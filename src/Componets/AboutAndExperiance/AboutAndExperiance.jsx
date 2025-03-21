@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AboutAndExperiance.css";
 import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function AboutAndExperiance() {
+   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+  
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
   const [title, setTitle] = useState(""); // Title for the experience section
   const [name, setName] = useState(""); // Organization/Company name
   const [aboutDesc, setaboutDesc] = useState(""); // About description content
@@ -28,7 +40,15 @@ function AboutAndExperiance() {
             <div className="middle-aboutExperience-container">
               {/* About Section */}
               <div className="middle-aboutExperience-aboutSection">
-                <h3>About</h3>
+                  <div className="middle-interest-header">
+                                {isMobile && (
+                                  <span>
+                                    <IoArrowBackCircleOutline />
+                                  </span>
+                                )}
+                             
+                                <span>About</span>
+                              </div>
                 <textarea
                   className="middle-aboutExperience-textarea"
                   // Default value as fallback for the about section
@@ -106,6 +126,7 @@ function AboutAndExperiance() {
                     Cancel
                   </button>
                   <button className="middle-aboutExperience-save">Save</button>
+                  {isMobile && <MobileFooter />}
                 </div>
               </div>
             </div>

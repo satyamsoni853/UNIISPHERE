@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import "./ProfileEditSection.css";
 import { FiEdit } from "react-icons/fi";
 import image from "./Person.png";
@@ -10,8 +10,20 @@ import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function ProfileEditSection() {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+  
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
   // State variables
   const [profilePic, setProfilePic] = useState(image);
   const [collabs, setCollabs] = useState(10);
@@ -85,7 +97,7 @@ function ProfileEditSection() {
 
   return (
     <div>
-      
+      <DesktopNavbarr />
       <div className="ProfileEditSection-main-container">
         <Background />
         <div className="ProfileEditSectionll-left-main-container">
@@ -261,6 +273,7 @@ function ProfileEditSection() {
                     <button className="harvard">Harvard</button>
                     <button className="tenth">10th</button>
                     <button className="twelfth">12th</button>
+                    {isMobile && <MobileFooter />}
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import "./SkillForm.css";
@@ -7,8 +7,19 @@ import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
-
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 function SkillForm() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+  
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
   const [skills] = useState([
     "UI/UX",
     "JAVA",
@@ -54,7 +65,7 @@ function SkillForm() {
 
   return (
     <div>
-      {/* <DesktopNavbarr/> */}
+      <DesktopNavbarr/>
       <div className="Skill-main-container">
         <Background />
         <div className="Skill-left-main-container">
@@ -63,8 +74,18 @@ function SkillForm() {
         </div>
         <div className="Skill-middle-main-container">
           <div className="middle-skills-mainParent">
-            <div className="middle-skills-container">
-              <h2 className="middle-skills-header">Skills</h2>
+             <div className="middle-skills-container">
+                          {/* Header */}
+            
+                          <div className="middle-skills-header">
+                            {isMobile && (
+                              <span>
+                                <IoArrowBackCircleOutline />
+                              </span>
+                            )}
+                         
+                            <span>Skills</span>
+                          </div>
 
               <div className="middle-skills-searchAndIconMain">
                 <div className="middle-skills-search">
@@ -147,6 +168,7 @@ function SkillForm() {
               <div className="middle-skills-last-buttons">
                 <button className="middle-skills-cancel">Cancel</button>
                 <button className="middle-skills-save">Save</button>
+                {isMobile && <MobileFooter />}
               </div>
             </div>
           </div>

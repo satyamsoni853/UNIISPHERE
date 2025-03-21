@@ -11,15 +11,15 @@ import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function CollabForm() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  
-    useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
-      };
-  
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const [projectName, setProjectName] = useState("");
   const [peoples, setPeoples] = useState("");
   const [about, setAbout] = useState("");
@@ -38,15 +38,15 @@ function CollabForm() {
         </div>
         <div className="Collab-middle-main-container">
           <div className="middle-collab-container">
-            <div className="middle-interest-header">
-                           {isMobile && (
-                             <span>
-                               <IoArrowBackCircleOutline />
-                             </span>
-                           )}
-                        
-                           <span>Collab</span>
-                         </div>
+            <div className="middle-collab-header">
+              {isMobile && (
+                <span>
+                  <IoArrowBackCircleOutline />
+                </span>
+              )}
+
+              <span>Collab</span>
+            </div>
             <form className="middle-collab-form">
               <div className="middle-collab-form-Input">
                 <label htmlFor="name">Name of Project</label>
@@ -125,11 +125,8 @@ function CollabForm() {
                   <button className="middle-interest-save">Save</button>
                   {isMobile && <MobileFooter />}
                 </div>
-                
               </div>
-              
             </form>
-            
           </div>
         </div>
         <div className="Collab-right-main-container">

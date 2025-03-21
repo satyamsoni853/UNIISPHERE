@@ -34,6 +34,7 @@
   min-height: 100vh;
   padding: 15px;
   margin-top: 80px;
+  margin-left: 90px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
@@ -89,6 +90,8 @@
 .middle-aboutExperience-buttons {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 10px 0;
 }
@@ -114,41 +117,6 @@
   color: white;
 }
 
-/* Tablet screens (min-width: 768px) */
-@media screen and (min-width: 768px) {
-  .AboutAndExperiance-main-container {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
-  }
-
-  .AboutAndExperiance-left-main-container,
-  .AboutAndExperiance-right-main-container {
-    display: flex;
-    width: 25%;
-  }
-
-  .AboutAndExperiance-middle-main-container {
-    width: 50%;
-  }
-
-  .middle-aboutExperience-mainParent {
-    max-width: 40vw;
-    min-height: 100vh;
-  }
-
-  .middle-aboutExperience-buttons {
-    flex-direction: row;
-    justify-content: space-around;
-  }
-
-  .middle-aboutExperience-cancel,
-  .middle-aboutExperience-save {
-    width: auto;
-    padding: 10px 30px;
-  }
-}
 
 /* Desktop screens (min-width: 1024px) */
 @media screen and (min-width: 1024px) {
@@ -176,5 +144,55 @@
   .middle-aboutExperience-cancel,
   .middle-aboutExperience-save {
     padding: 12px 40px;
+  }
+}
+/* Tablet screens (min-width: 768px) */
+@media screen and (min-width: 768px) {
+  .middle-aboutExperience-mainParent {
+  
+    width: 100%;
+    
+  }
+  .AboutAndExperiance-main-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .AboutAndExperiance-left-main-container,
+  .AboutAndExperiance-right-main-container {
+    display: flex;
+    width: 25%;
+  }
+
+  .AboutAndExperiance-middle-main-container {
+    width: 50%;
+  }
+
+  .middle-aboutExperience-mainParent {
+    
+    min-height: 100vh;
+  }
+
+  .middle-aboutExperience-buttons {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .middle-aboutExperience-cancel,
+  .middle-aboutExperience-save {
+    width: auto;
+    padding: 10px 30px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .middle-aboutExperience-mainParent {
+  
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 50px;
+    margin-left: 0px;
+    
   }
 }

@@ -318,6 +318,7 @@
    
     margin-top: 0px;
     margin-left: 0px;
+    margin-bottom: 50px;
    
   }
 
@@ -381,9 +382,9 @@
     flex-shrink: 1;
     padding: 8px 12px;
   }
-
+  
   .Followers-middle-section-2-buttons-section-public button {
-    flex: 1 1 100%;
+    /* flex: 2 2  100%; */
     padding: 12px;
     font-size: 14px;
   }
