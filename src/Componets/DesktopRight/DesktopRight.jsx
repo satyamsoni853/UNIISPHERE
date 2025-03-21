@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"; // Make sure to import axios
 import React, { useEffect, useState } from "react";
 import ConnectandCollbrate from "./Connect&coll.png";
 import Connectimage from "./Connect.png";
@@ -22,15 +22,10 @@ const suggestions = [
 function DesktopRightsection() {
   const [connections, setConnections] = useState(0);
   const [followers, setFollowers] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
-  const [profileData, setProfileData] = useState({
-    fullName: "",
-    location: "",
-    about: "",
-    college: "",
-  });
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Get authentication data from localStorage
   const getAuthData = () => {
@@ -39,150 +34,142 @@ function DesktopRightsection() {
     return storedToken && storedUserId ? { token: storedToken, userId: storedUserId } : null;
   };
 
-  // Fetch data (combined connections and profile)
   useEffect(() => {
-    const abortController = new AbortController();
     const fetchData = async () => {
+      // Get auth data
       const authData = getAuthData();
-      
+
       if (!authData) {
+        console.error("No authentication data available");
         setError("Authentication required");
         setLoading(false);
         return;
       }
 
-      setLoading(true);
       setUserId(authData.userId);
 
       try {
-        // Fetch connections
-        const connectionsResponse = await fetch("https://uniisphere-1.onrender.com/api/connections", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${authData.token}`,
-          },
-          signal: abortController.signal,
-        });
+        // Fetch profile data with userId as query parameter
+        const profileResponse = await axios.get(
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authData.userId}`,
+          {
+            headers: {
+              "Authorization": `Bearer ${authData.token}`
+            }
+          }
+        );
 
-        if (!connectionsResponse.ok) {
-          throw new Error(`Failed to fetch connections: ${connectionsResponse.status}`);
+        console.log("Full profile response:", profileResponse.data);
+
+        // Set profile data from response
+        if (profileResponse.data && profileResponse.data.length > 0) {
+          const userData = profileResponse.data[0];
+
+          // Log what profile picture fields are available
+          console.log("Available profile data fields:", Object.keys(userData));
+
+          setProfileData(userData);
         }
 
-        const connectionsData = await connectionsResponse.json();
-        setConnections(connectionsData.connections?.length || 0);
+        // Fetch connections count
+        const connectionsResponse = await axios.get(
+          "https://uniisphere-1.onrender.com/api/connections",
+          {
+            headers: {
+              "Authorization": `Bearer ${authData.token}`
+            }
+          }
+        );
 
-        // Fetch profile
-        const profileResponse = await fetch(`https://uniisphere-1.onrender.com/getProfile/profile/`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "user-id": authData.userId,
-          },
-          signal: abortController.signal,
-        });
+        console.log("Connections response:", connectionsResponse.data);
 
-        if (!profileResponse.ok) {
-          throw new Error(`Failed to fetch profile: ${profileResponse.status}`);
-        }
+        // Calculate total connections from response
+        const connectionCount = connectionsResponse.data.connections?.length || 0;
+        setConnections(connectionCount);
 
-        const profileData = await profileResponse.json();
-        setProfileData({
-          fullName: `${profileData.firstName} ${profileData.lastName}`,
-          location: profileData.location,
-          about: profileData.About,
-          college: profileData.college,
-        });
-
+        // For now, set followers to 0 or get from another API
+        setFollowers(0);
       } catch (error) {
-        if (error.name !== 'AbortError') {
-          console.error("Error fetching data:", error);
-          setError("Failed to load data");
-        }
+        console.error("Error fetching data:", error);
+        setError("Failed to load profile data");
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
+  }, []); // Only run once on component mount
 
-    // Cleanup
-    return () => {
-      abortController.abort();
-    };
-  }, []);
-
-  const getProfilePictureUrl = () => {
-    // Assuming the API returns a profile picture URL, or fallback to default
-    return profileData.profilePicture || Profileimg;
+  // Calculate full name from profile data
+  const getFullName = () => {
+    if (!profileData) return "Loading...";
+    return `${profileData.firstName || ""} ${profileData.lastName || ""}`.trim();
   };
 
-  const [isExpanded, setIsExpanded] = useState(false);
-  const toggleBio = () => setIsExpanded(!isExpanded);
+  // Function to get the profile picture URL with multiple fallback options
+  const getProfilePictureUrl = () => {
+    if (!profileData) return Profileimg;
+
+    // Try different possible field names for profile picture
+    return profileData.profilePictureUrl ||
+      profileData.profileImageUrl ||
+      profileData.avatarUrl ||
+      profileData.photoUrl ||
+      profileData.profilePicture ||
+      Profileimg;
+  };
 
   return (
     <div className="right-section-container">
       <div className="rightsection">
         {/* Loading state */}
         {loading && <div className="loading">Loading profile data...</div>}
-        
+
         {/* Error state */}
         {error && <div className="error-message">{error}</div>}
-        
+
         {/* Profile Section */}
-        {!loading && !error && (
-          <>
-            <div className="profile-card">
-              <img 
-                src={getProfilePictureUrl()} 
-                alt="Profile" 
-                className="profile-image"
-                onError={(e) => { e.target.src = Profileimg; }}
-              />
-              <div className="profile-right">
-                <div className="profile-numbers">
-                  <span>{connections}</span>
-                  <span>{followers}</span>
-                </div>
-                <img src={ConnectandCollbrate} alt="Connect & Collaborate" className="connect-collaborate-img" />
+        <div className="profile-card">
+          <img
+            src={getProfilePictureUrl()}
+            alt="Profile"
+            className="profile-image"
+            onError={(e) => { e.target.src = Profileimg }}
+          />
+          <div className="profile-right">
+            <div className="profile-numbers">
+              <span>{connections}</span>
+              <span>{followers}</span>
+            </div>
+            <img src={ConnectandCollbrate} alt="Connect & Collaborate" className="connect-collaborate-img" />
+          </div>
+        </div>
+
+        {/* Profile Details */}
+        <div className="profile-details">
+          <h3 className="profile-name">{getFullName()}</h3>
+          <p className="profile-company">{profileData?.headline || "Uniisphere"}</p>
+          <p className="profile-location">{profileData?.location || "Location not specified"}</p>
+          <p className="profile-bio">
+            {profileData?.About || "Bio not available"}
+            <span className="see-more"> see more</span>
+          </p>
+        </div>
+
+        {/* Suggested Connections Section */}
+        <div className="suggested-cards">
+          <h4 className="suggested-title">Suggestions</h4>
+          {suggestions.map((suggestion, index) => (
+            <div key={index} className="suggestion-card">
+              <img src={suggestion.img} alt={suggestion.name} className="suggestion-img" />
+              <div className="suggestion-info">
+                <p className="suggestion-name">{suggestion.name}</p>
+                <p className="suggestion-university">{suggestion.university}</p>
               </div>
+              <button><img className="connect-btn" src={Connectimage} alt="" /></button>
             </div>
-
-            {/* Profile Details */}
-            <div className="profile-details">
-              <h3 className="profile-name">{profileData.fullName || "Rahul Verma"}</h3>
-              <p className="profile-company">{profileData.college || "Uniisphere"}</p>
-              <p className="profile-location">{profileData.location || "New Delhi, Delhi"}</p>
-              <p className="profile-bio">
-                {isExpanded 
-                  ? profileData.about 
-                  : (profileData.about || "The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all time ....").slice(0, 100)}
-                {profileData.about?.length > 100 && (
-                  <span className="see-more" onClick={toggleBio}>
-                    {isExpanded ? " see less" : " see more"}
-                  </span>
-                )}
-              </p>
-            </div>
-
-            {/* Suggested Connections Section */}
-            <div className="suggested-cards">
-              <h4 className="suggested-title">Suggestions</h4>
-              {suggestions.map((suggestion, index) => (
-                <div key={index} className="suggestion-card">
-                  <img src={suggestion.img} alt={suggestion.name} className="suggestion-img" />
-                  <div className="suggestion-info">
-                    <p className="suggestion-name">{suggestion.name}</p>
-                    <p className="suggestion-university">{suggestion.university}</p>
-                  </div>
-                  <button>
-                    <img className="connect-btn" src={Connectimage} alt="Connect" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+          ))}
+        </div>
       </div>
     </div>
   );
