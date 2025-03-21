@@ -312,13 +312,13 @@
     display: none;
     margin-left: 0;
     margin-top: 0;
+    
   }
   .Followers-middle-section-2-middle-section-public {
    
    
     margin-top: 0px;
     margin-left: 0px;
-    margin-bottom: 50px;
    
   }
 
@@ -336,6 +336,7 @@
   .ProfileEditSection-middle-main-container {
     width: 100% !important;
     padding: 10px 0;
+    margin-bottom: 50px;
   }
 
   .Followers-middle-section-2-middle-section-public {
@@ -373,21 +374,65 @@
     padding: 10px;
   }
 
-  .Followers-middle-section-2-skill-list-public {
-    flex-wrap: wrap;
-    overflow-x: visible;
-  }
-
+ 
+  
   .Followers-middle-section-2-skillsMiniDiv-public {
     flex-shrink: 1;
+    height: 40px;
+   
     padding: 8px 12px;
   }
-  
-  .Followers-middle-section-2-buttons-section-public button {
-    /* flex: 2 2  100%; */
+
+  /* .Followers-middle-section-2-buttons-section-public button {
+    flex: 1 1 100%;
     padding: 12px;
     font-size: 14px;
   }
+ */
+
+
+  .Followers-middle-section-2-skill-list-public {
+    display: grid;
+    width: 70vw;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 5px 0;
+  }
+  
+  .Followers-middle-section-2-skillsMiniDiv-public {
+   
+    
+    padding: 8px 12px;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    
+    text-align: center;
+  }
+
+   .Followers-middle-section-2-buttons-section-public {
+    
+    width: 80vw;
+  }
+
+  .Followers-middle-section-2-buttons-section-public button {
+    max-width: 200px; /* Ensures consistent width */
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+    white-space: nowrap; /* Prevents text wrapping */
+  }
+  
 }
 
 @media (max-width: 319px) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 
 import "./FullFlowerSectionPage.css";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -18,8 +18,20 @@ import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function FullFlowerSectionPage() {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+  
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
   const [profilePic] = useState(Profile);
   const [collabs] = useState(10);
   const [connections] = useState(50);
@@ -170,6 +182,7 @@ function FullFlowerSectionPage() {
 
   return (
     <div>
+      <DesktopNavbarr />
       <div className="Interest-main-container">
         <Background />
         <div className="Interest-left-main-container">
@@ -183,11 +196,7 @@ function FullFlowerSectionPage() {
           {/* Profile Section */}
           <div className="Profile-full-section-whole-profile-section">
             <div className="Profile-full-section-top-nav-section">
-              {/* <IoArrowBack  className="Profile-full-section-Back" /> */}
-              {/* <div className="Profile-full-section-search">
-                <FiSearch className="Profile-full-section-search-icon" />
-                <input type="text" placeholder="Search" />
-              </div> */}
+              
             </div>
             <div className="Profile-full-section-profile-header">
               <div className="Profile-full-section-imageContainer">
@@ -468,6 +477,8 @@ function FullFlowerSectionPage() {
               src={Profileandview}
               alt=""
             />
+             {/* Conditionally render MobileFooter only on mobile screens */}
+             {isMobile && <MobileFooter />}
           </div>
         </div>
       </div>

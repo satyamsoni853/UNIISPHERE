@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./PersonalInfoUpdate.css";
 import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
@@ -6,8 +6,20 @@ import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function PersonalInfoUpdate() {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+  
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+  
   const [profileData, setProfileData] = useState({
     username: "Himanshu Choudhary",
     headline: "Building Unisphere | Masters Union",
@@ -25,7 +37,7 @@ function PersonalInfoUpdate() {
 
   return (
     <div>
-      {/* <DesktopNavbarr /> */}
+      <DesktopNavbarr />
 
       <div className="PersonalInfoUpdate-main-container">
         <Background />
@@ -87,9 +99,13 @@ function PersonalInfoUpdate() {
                   value={profileData.location}
                   onChange={(e) => handleChange("location", e.target.value)}
                 />
+                
               </div>
+             
             </div>
+            
           </div>
+          {isMobile && <MobileFooter />}
         </div>
         <div className="PersonalInfoUpdate-right-main-container">
           <DesktopRight />

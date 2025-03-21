@@ -17,7 +17,7 @@
 
 /* Middle Container */
 .FullFlowerSectionPage-middle-main-container {
-  width: 50%;
+  /* width: 50%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,7 +25,7 @@
 
 /* Right Container */
 .FullFlowerSectionPage-right-main-container {
-  width: 30%;
+  /* width: 30%; */
   display: flex;
   justify-content: flex-end;
 }
@@ -35,6 +35,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+ 
 }
 
 .Profile-full-section-container {
@@ -442,20 +443,20 @@
 .Profile-full-section-tag {
   text-align: center;
   border-radius: 5px;
-  font-size: 25px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px 15px;
+  padding: 10px 10px;
   flex: 0 0 23%;
-  height: 60px;
+  height: 50px;
   box-sizing: border-box;
   border: 1px solid #eee;
 }
 
 .Profile-full-section-main-collabs-section {
   display: flex;
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 10px;
   flex-direction: column;
   height: 250px;
@@ -667,6 +668,7 @@
   height: 30px;
   width: 200px;
   object-fit: contain;
+  margin-bottom: 50px;
 }
 
 @keyframes spin {
@@ -722,8 +724,26 @@
     padding: 15px;
   }
 }
+.Profile-full-section-heading-and-logos h3{
+  margin-top: 30px;
+  font-size: 2rem;
+  font-weight: 600;
+}
 
 @media (max-width: 740px) {
+  .Profile-full-section-mainParent {
+    width: 420px;
+  }
+  .Profile-full-section-heading-and-logos h3{
+    margin-top: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  .Profile-full-section-tag{
+
+    font-size: 15px;
+    padding: 0px 0px;
+  }
   .FullFlowerSectionPage-main-container {
     flex-direction: column;
     padding: 10px;
@@ -741,7 +761,7 @@
 
   .Profile-full-section-container {
     width: 90%;
-    margin: 20px auto 0; /* Center with reduced top margin */
+    margin: 20px auto 0; 
     padding: 10px;
   }
 
