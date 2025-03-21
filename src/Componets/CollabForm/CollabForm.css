@@ -155,6 +155,13 @@
   .Collab-right-main-container {
     display: none;
   }
+  .middle-collab-container {
+    
+    margin-top: 0px;
+    margin-left: 0px;
+  
+    
+  }
 
   /* Middle section takes full width */
   .Collab-middle-main-container {

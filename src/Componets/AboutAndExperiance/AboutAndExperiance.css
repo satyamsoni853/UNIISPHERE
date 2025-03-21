@@ -8,12 +8,12 @@
   gap: 15px;
 }
 
-/* Left Container - Hidden on mobile by default */
-.AboutAndExperiance-left-main-container {
-  display: none; /* Hidden on mobile */
+/* Left and Right Containers - Hidden on Mobile */
+.AboutAndExperiance-left-main-container,
+.AboutAndExperiance-right-main-container {
+  display: none;
   width: 100%;
   flex-direction: column;
-  order: 2;
 }
 
 /* Middle Container */
@@ -22,37 +22,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
-/* Right Container - Hidden on mobile by default */
-.AboutAndExperiance-right-main-container {
-  display: none; 
-  width: 100%;
-  justify-content: center;
-}
-
+/* Main Content Box */
 .middle-aboutExperience-mainParent {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35vw;
+  width: 90%;
+  max-width: 400px;
   min-height: 100vh;
-  padding: 10px;
-  margin-top: 90px;
-  margin-left: 60px;
+  padding: 15px;
+  margin-top: 80px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
+/* Content Wrapper */
 .middle-aboutExperience-container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 90vw;
-  min-height: auto;
   border-radius: 10px;
 }
 
+/* Sections */
 .middle-aboutExperience-aboutSection,
 .middle-aboutExperience-experienceSection {
   display: flex;
@@ -62,34 +56,24 @@
   border-radius: 8px;
 }
 
-.middle-aboutExperience-textarea {
+/* Input & Textarea Styling */
+.middle-aboutExperience-textarea,
+.middle-aboutExperience-input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border: 2px solid black;
-  font-size: 12px;
-  resize: vertical;
-  min-height: 60px;
+  font-size: 14px;
   border-radius: 15px;
   outline: none;
   box-sizing: border-box;
 }
 
-.middle-aboutExperience-input {
-  width: 100%;
-  padding: 8px;
-  border: 2px solid black;
-  border-radius: 25px;
-  font-size: 12px;
-  box-sizing: border-box;
+.middle-aboutExperience-textarea {
+  resize: vertical;
+  min-height: 60px;
 }
 
-.middle-aboutExperience-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px 0;
-}
-
+/* Input Group */
 .middle-aboutExperience-inputGroup {
   display: flex;
   flex-direction: column;
@@ -101,16 +85,24 @@
   font-size: 14px;
 }
 
+/* Buttons */
+.middle-aboutExperience-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+}
+
 .middle-aboutExperience-cancel,
 .middle-aboutExperience-save {
-  padding: 8px 20px;
+  padding: 10px;
   border: none;
   cursor: pointer;
   outline: none;
   border-radius: 20px;
   font-weight: bold;
-  width: 100%;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .middle-aboutExperience-cancel {
@@ -131,52 +123,30 @@
     padding: 20px;
   }
 
-  .AboutAndExperiance-left-main-container {
-    display: flex; /* Visible on tablet and above */
+  .AboutAndExperiance-left-main-container,
+  .AboutAndExperiance-right-main-container {
+    display: flex;
     width: 25%;
-    order: 0;
   }
 
   .AboutAndExperiance-middle-main-container {
     width: 50%;
-    order: 0;
   }
 
-  .AboutAndExperiance-right-main-container {
-    display: flex; /* Visible on tablet and above */
-    width: 25%;
-    justify-content: flex-end;
-    order: 0;
-  }
-
-  .middle-aboutExperience-container {
-    width: 32vw;
-    max-width: none;
+  .middle-aboutExperience-mainParent {
+    max-width: 40vw;
     min-height: 100vh;
-  }
-
-  .middle-aboutExperience-textarea {
-    min-height: 100px;
-    font-size: 14px;
-    padding: 10px;
-    border-radius: 25px;
-  }
-
-  .middle-aboutExperience-input {
-    padding: 10px;
-    font-size: 14px;
   }
 
   .middle-aboutExperience-buttons {
     flex-direction: row;
     justify-content: space-around;
-    gap: 15px;
   }
 
   .middle-aboutExperience-cancel,
   .middle-aboutExperience-save {
-    padding: 10px 40px;
     width: auto;
+    padding: 10px 30px;
   }
 }
 
@@ -194,14 +164,17 @@
     width: 30%;
   }
 
+  .middle-aboutExperience-mainParent {
+    max-width: 35vw;
+  }
+
   .middle-aboutExperience-aboutSection,
   .middle-aboutExperience-experienceSection {
-    gap: 10px;
     padding: 15px;
   }
 
   .middle-aboutExperience-cancel,
   .middle-aboutExperience-save {
-    padding: 10px 50px;
+    padding: 12px 40px;
   }
 }

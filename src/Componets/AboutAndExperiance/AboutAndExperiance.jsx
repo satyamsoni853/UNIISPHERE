@@ -15,7 +15,7 @@ function AboutAndExperiance() {
   const [description, setDescription] = useState(""); // Detailed description for experience
   return (
     <div>
-      {/* <DesktopNavbarr/> */}
+      <DesktopNavbarr/>
       <div className="AboutAndExperiance-main-container">
         <Background />
         <div className="AboutAndExperiance-left-main-container">

@@ -5,6 +5,7 @@ import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 
 function PersonalInfoUpdate() {
   const [profileData, setProfileData] = useState({
@@ -34,6 +35,7 @@ function PersonalInfoUpdate() {
         </div>
         <div className="PersonalInfoUpdate-middle-main-container">
           <div className="PersonalInfoUpdate-profile-card">
+            <IoArrowBackCircleOutline className="PersonalInfoUpdate-IoArrowBackCircleOutline" />
             <div className="PersonalInfoUpdate-photo-section">
               <div className="PersonalInfoUpdate-profile-photo"></div>
               <div className="PersonalInfoUpdate-button-group">

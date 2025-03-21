@@ -243,6 +243,13 @@
     padding: 15px;
   }
 
+  .Skill-middle-main-container {
+    
+    margin-top: 0px;
+    margin-left: 0px;
+ 
+  }
+  
   .Skill-left-main-container,
   .Skill-right-main-container {
     width: 25%;

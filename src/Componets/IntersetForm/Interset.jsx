@@ -122,7 +122,7 @@ function Interset() {
 
   return (
     <div>
-      {/* <DesktopNavbarr/> */}
+      <DesktopNavbarr/>
       <div className="Interest-main-container">
         <Background />
         <div className="Interest-left-main-container">

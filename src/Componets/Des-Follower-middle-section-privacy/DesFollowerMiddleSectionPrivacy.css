@@ -291,8 +291,16 @@
 /* Responsive for Mobile */
 @media (max-width: 768px) {
   .Followers-middle-section-1-middle-section-privacy {
-    width: 80vw;
+    width: 100%;
     padding: 15px;
+  }
+  .Followers-middle-section-1-mainParent-privacy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+    margin-left: 0px;
+    
   }
 
   .Followers-middle-section-1-profile-header-privacy {
@@ -300,7 +308,7 @@
     gap: 10px;
     font-size: 16px;
   }
-
+  
   .Followers-middle-section-1-profile-info-privacy h2 {
     font-size: 16px;
     text-align: center;
@@ -323,7 +331,9 @@
 
   .Followers-middle-section-1-blur-privacy {
     height: auto;
-    padding: 10px;
+    /* padding: 10px; */
+    /* padding-bottom: 20px; */
+    margin-bottom: 100px;
   }
 
   .Followers-middle-section-1-blur-privacy h2,
