@@ -24,6 +24,8 @@ function DesktopRightsection() {
   const [followers, setFollowers] = useState(0);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Get authentication data from localStorage
   const getAuthData = () => {
@@ -32,9 +34,8 @@ function DesktopRightsection() {
     return storedToken && storedUserId ? { token: storedToken, userId: storedUserId } : null;
   };
 
-  // Fetch connections
   useEffect(() => {
-    const fetchConnections = async () => {
+    const fetchData = async () => {
       // Get auth data
       const authData = getAuthData();
 
@@ -48,38 +49,45 @@ function DesktopRightsection() {
       setUserId(authData.userId);
 
       try {
-        // Using fetch API
-        const response = await fetch("https://uniisphere-1.onrender.com/api/connections", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${authData.token}` // Use token from localStorage
+        // Fetch profile data with userId as query parameter
+        const profileResponse = await axios.get(
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authData.userId}`,
+          {
+            headers: {
+              "Authorization": `Bearer ${authData.token}`
+            }
           }
-          // Note: For GET requests, don't include body parameter
-        });
+        );
 
-        // Alternative using axios:
-        // const response = await axios.get("https://uniisphere-1.onrender.com/api/connections", {
-        //   headers: { Authorization: `Bearer ${authData.token}` }
-        // });
+        console.log("Full profile response:", profileResponse.data);
 
+        // Set profile data from response
+        if (profileResponse.data && profileResponse.data.length > 0) {
+          const userData = profileResponse.data[0];
 
-        console.log("response is:", response);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch connections: ${response.status}`);
+          // Log what profile picture fields are available
+          console.log("Available profile data fields:", Object.keys(userData));
+
+          setProfileData(userData);
         }
 
-        const data = await response.json();
+        // Fetch connections count
+        const connectionsResponse = await axios.get(
+          "https://uniisphere-1.onrender.com/api/connections",
+          {
+            headers: {
+              "Authorization": `Bearer ${authData.token}`
+            }
+          }
+        );
 
-        // Set user ID from auth data or response
-        const currentUserId = authData.userId || data.connections[0]?.userId;
-        setUserId(currentUserId);
+        console.log("Connections response:", connectionsResponse.data);
 
-        // Calculate total connections
-        const totalConnections = data.connections?.length || 0;
-        setConnections(totalConnections);
+        // Calculate total connections from response
+        const connectionCount = connectionsResponse.data.connections?.length || 0;
+        setConnections(connectionCount);
 
-        // Assuming followers are calculated elsewhere
+        // For now, set followers to 0 or get from another API
         setFollowers(0);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -89,25 +97,44 @@ function DesktopRightsection() {
       }
     };
 
-    fetchConnections();
+    fetchData();
   }, []); // Only run once on component mount
+
+  // Calculate full name from profile data
+  const getFullName = () => {
+    if (!profileData) return "Loading...";
+    return `${profileData.firstName || ""} ${profileData.lastName || ""}`.trim();
+  };
+
+  // Function to get the profile picture URL with multiple fallback options
+  const getProfilePictureUrl = () => {
+    if (!profileData) return Profileimg;
+
+    // Try different possible field names for profile picture
+    return profileData.profilePictureUrl ||
+      profileData.profileImageUrl ||
+      profileData.avatarUrl ||
+      profileData.photoUrl ||
+      profileData.profilePicture ||
+      Profileimg;
+  };
 
   return (
     <div className="right-section-container">
       <div className="rightsection">
         {/* Loading state */}
         {loading && <div className="loading">Loading profile data...</div>}
-        
+
         {/* Error state */}
         {error && <div className="error-message">{error}</div>}
-        
+
         {/* Profile Section */}
         <div className="profile-card">
-          <img 
-            src={getProfilePictureUrl()} 
-            alt="Profile" 
+          <img
+            src={getProfilePictureUrl()}
+            alt="Profile"
             className="profile-image"
-            onError={(e) => {e.target.src = Profileimg}}
+            onError={(e) => { e.target.src = Profileimg }}
           />
           <div className="profile-right">
             <div className="profile-numbers">
@@ -120,11 +147,11 @@ function DesktopRightsection() {
 
         {/* Profile Details */}
         <div className="profile-details">
-          <h3 className="profile-name">Rahul Verma</h3>
-          <p className="profile-company">Uniisphere</p>
-          <p className="profile-location">New Delhi, Delhi</p>
+          <h3 className="profile-name">{getFullName()}</h3>
+          <p className="profile-company">{profileData?.headline || "Uniisphere"}</p>
+          <p className="profile-location">{profileData?.location || "Location not specified"}</p>
           <p className="profile-bio">
-            The actual idea of Uniisphere was of The Founder Himanshu who worked for months to this all time ....
+            {profileData?.About || "Bio not available"}
             <span className="see-more"> see more</span>
           </p>
         </div>
@@ -139,9 +166,7 @@ function DesktopRightsection() {
                 <p className="suggestion-name">{suggestion.name}</p>
                 <p className="suggestion-university">{suggestion.university}</p>
               </div>
-              <button>
-                <img className="connect-btn" src={Connectimage} alt="" />
-              </button>
+              <button><img className="connect-btn" src={Connectimage} alt="" /></button>
             </div>
           ))}
         </div>
