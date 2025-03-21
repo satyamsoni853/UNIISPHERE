@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./CollabForm.css";
 import { IoIosSearch } from "react-icons/io";
 import DesktopRight from "../DesktopRight/DesktopRight";
@@ -6,8 +6,20 @@ import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function CollabForm() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+  
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
   const [projectName, setProjectName] = useState("");
   const [peoples, setPeoples] = useState("");
   const [about, setAbout] = useState("");
@@ -26,7 +38,15 @@ function CollabForm() {
         </div>
         <div className="Collab-middle-main-container">
           <div className="middle-collab-container">
-            <h2 className="middle-collab-title">Collabs</h2>
+            <div className="middle-interest-header">
+                           {isMobile && (
+                             <span>
+                               <IoArrowBackCircleOutline />
+                             </span>
+                           )}
+                        
+                           <span>Collab</span>
+                         </div>
             <form className="middle-collab-form">
               <div className="middle-collab-form-Input">
                 <label htmlFor="name">Name of Project</label>
@@ -103,9 +123,13 @@ function CollabForm() {
                 <div className="middle-interest-last-buttons">
                   <button className="middle-interest-cancel">Cancel</button>
                   <button className="middle-interest-save">Save</button>
+                  {isMobile && <MobileFooter />}
                 </div>
+                
               </div>
+              
             </form>
+            
           </div>
         </div>
         <div className="Collab-right-main-container">

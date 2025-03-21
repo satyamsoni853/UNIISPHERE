@@ -4,7 +4,6 @@
   align-items: center;
   margin-top: 90px;
   margin-left: 60px;
-  
 }
 
 .Followers-middle-section-1-middle-section-privacy {
@@ -16,7 +15,7 @@
   display: flex;
   gap: 5px;
   width: 30vw;
-  height:100vh;
+  height: 100vh;
   position: relative;
 }
 
@@ -43,12 +42,12 @@
   width: 100%;
   font-weight: 600;
 }
-.Followers-middle-section-1-profile-image-name-privacy{
+.Followers-middle-section-1-profile-image-name-privacy {
   line-height: 0.2;
 }
 
 .Followers-middle-section-1-profile-image-name-privacy img {
-  align-items: center; 
+  align-items: center;
   width: 80px; /* Adjust size as needed */
   height: 25px;
 }
@@ -62,7 +61,6 @@
   width: 90px;
   border-radius: 50%;
   overflow: hidden;
-  
 }
 
 .Followers-middle-section-1-profile-pic-privacy {
@@ -77,38 +75,33 @@
   flex-direction: column-reverse;
 }
 
-
-
-.Followers-middle-section-1-about-section-privacy{
+.Followers-middle-section-1-about-section-privacy {
   text-align: start;
   line-height: 1;
 }
-.Followers-middle-section-1-about-section-privacy p:first-child{
+.Followers-middle-section-1-about-section-privacy p:first-child {
   font-size: 1.5rem;
   line-height: 0.5;
 }
-.Followers-middle-section-1-collabs-section-privacy{
+.Followers-middle-section-1-collabs-section-privacy {
   text-align: start;
   margin-top: 20px;
 }
-.Followers-middle-section-1-collabs-section-privacy p:first-child{
+.Followers-middle-section-1-collabs-section-privacy p:first-child {
   font-size: 1.5rem;
   line-height: 0.5;
-
 }
 
-.Followers-middle-section-1-subCollabrators-privacy{
+.Followers-middle-section-1-subCollabrators-privacy {
   display: flex;
   align-items: center;
   justify-content: center;
- 
 }
-
 
 .Followers-middle-section-1-collabratorCard-privacy {
   display: flex;
-  align-items: flex-start; 
-  gap: 10px; 
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .Followers-middle-section-1-collab-image-privacy img {
@@ -121,15 +114,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  
 }
-.Followers-middle-section-1-collabsDetails-privacy span{
+.Followers-middle-section-1-collabsDetails-privacy span {
   font-size: 1.8rem;
 }
-.Followers-middle-section-1-connectionsDetails-privacy span{
+.Followers-middle-section-1-connectionsDetails-privacy span {
   font-size: 1.8rem;
 }
-.Followers-middle-section-1-education-privacy h6{
+.Followers-middle-section-1-education-privacy h6 {
   font-size: 12px;
 }
 .Followers-middle-section-1-paragraphAndArrow-privacy {
@@ -139,15 +131,14 @@
   padding: 2px 5px;
   align-items: center;
   position: relative;
-  bottom: 
-  20px;
+  bottom: 20px;
 }
 
 .Followers-middle-section-1-para-privacy {
   text-align: start;
   font-size: 14px;
 }
-.Followers-middle-section-1-para-privacy p{
+.Followers-middle-section-1-para-privacy p {
   width: 100%;
 }
 
@@ -155,8 +146,6 @@
   display: flex;
   border-radius: 15px;
   align-items: center;
-  
-  
 }
 
 .Followers-middle-section-1-iconAndImage-privacy img {
@@ -165,7 +154,6 @@
   border-radius: 10px;
   position: relative;
   bottom: 40px;
-  
 }
 
 .Followers-middle-section-1-paragrapgh-icon-privacy {
@@ -175,8 +163,6 @@
 .Followers-middle-section-1-skills-section-privacy {
   height: 200px;
   text-align: start;
-  
-  
 }
 
 .Followers-middle-section-1-skill-list-privacy {
@@ -188,7 +174,8 @@
   gap: 20px;
 }
 
-.Followers-middle-section-1-skill-list-privacy .Followers-middle-section-1-skillsMiniDiv-privacy {
+.Followers-middle-section-1-skill-list-privacy
+  .Followers-middle-section-1-skillsMiniDiv-privacy {
   background-color: #f3efef;
   border-radius: 5px;
   padding: 5px 10px;
@@ -220,7 +207,8 @@
   font-size: 22px;
 }
 
-.Followers-middle-section-1-blur-privacy .Followers-middle-section-1-lock-privacy {
+.Followers-middle-section-1-blur-privacy
+  .Followers-middle-section-1-lock-privacy {
   border: 2px solid black;
   border-radius: 50%;
   height: fit-content;
@@ -268,7 +256,6 @@
   transform: scale(1.05);
 }
 
-
 @media (max-width: 1024px) {
   .Followers-middle-section-1-middle-section-privacy {
     width: 50vw;
@@ -300,7 +287,6 @@
     align-items: center;
     margin-top: 0px;
     margin-left: 0px;
-    
   }
 
   .Followers-middle-section-1-profile-header-privacy {
@@ -308,7 +294,7 @@
     gap: 10px;
     font-size: 16px;
   }
-  
+
   .Followers-middle-section-1-profile-info-privacy h2 {
     font-size: 16px;
     text-align: center;
@@ -329,15 +315,9 @@
     gap: 10px;
   }
 
-  .Followers-middle-section-1-blur-privacy {
-    height: auto;
-    /* padding: 10px; */
-    /* padding-bottom: 20px; */
-    margin-bottom: 100px;
-  }
-
   .Followers-middle-section-1-blur-privacy h2,
   .Followers-middle-section-1-blur-privacy h3 {
     font-size: 18px;
   }
 }
+

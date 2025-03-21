@@ -14,6 +14,8 @@ function DesktopMiddle() {
   const [posts, setPosts] = useState([]);
   const [imageLoading, setImageLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null); // Track which post's comments are open
+  const [newComment, setNewComment] = useState(""); // Store new comment input
 
   const location = useLocation();
 
@@ -56,7 +58,7 @@ function DesktopMiddle() {
           const updatedPosts = response.data.posts.map((post) => ({
             ...post,
             likes: post.likes || 0,
-            isLiked: false, // Initial like state per post
+            isLiked: false,
             comments: post.comments || [],
           }));
           setPosts(updatedPosts);
@@ -86,8 +88,33 @@ function DesktopMiddle() {
     );
   };
 
+  const handleCommentClick = (index) => {
+    setActiveCommentPostIndex(index);
+    setNewComment(""); // Reset input when opening
+  };
+
+  const handleCloseCommentModal = () => {
+    setActiveCommentPostIndex(null);
+  };
+
+  const handleCommentSubmit = (index) => {
+    if (!newComment.trim()) return; // Ignore empty comments
+
+    setPosts((prevPosts) =>
+      prevPosts.map((post, i) =>
+        i === index
+          ? {
+              ...post,
+              comments: [...post.comments, { text: newComment, author: "You" }],
+            }
+          : post
+      )
+    );
+    setNewComment(""); // Clear input after submission
+  };
+
   return (
-    <div className="middle-container"> 
+    <div className="middle-container">
       <div className="middle-middle-card">
         {error && <div className="error-message">{error}</div>}
 
@@ -157,8 +184,11 @@ function DesktopMiddle() {
                     />
                   </div>
 
-                  {/* Comments Count */}
-                  <div className="middle-icon-container">
+                  {/* Comment Button */}
+                  <div
+                    className="middle-icon-container"
+                    onClick={() => handleCommentClick(index)}
+                  >
                     <span className="middle-icon-count">
                       {post.comments.length}
                     </span>
@@ -184,6 +214,59 @@ function DesktopMiddle() {
           ))
         ) : (
           <p>No posts available</p>
+        )}
+
+        {/* Comment Modal */}
+        {activeCommentPostIndex !== null && (
+          <div className="middle-comment-modal-overlay">
+            <div className="middle-comment-modal">
+              <div className="middle-comment-modal-header">
+                <h3>Comments</h3>
+                <button
+                  className="middle-comment-modal-close"
+                  onClick={handleCloseCommentModal}
+                >
+                  ×
+                </button>
+              </div>
+              <div className="middle-comment-modal-content">
+                {/* Existing Comments */}
+                <div className="middle-comment-list">
+                  {posts[activeCommentPostIndex].comments.length > 0 ? (
+                    posts[activeCommentPostIndex].comments.map(
+                      (comment, idx) => (
+                        <div key={idx} className="middle-comment">
+                          <span className="middle-comment-author">
+                            {comment.author}:
+                          </span>{" "}
+                          {comment.text}
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <p>No comments yet</p>
+                  )}
+                </div>
+
+                {/* Comment Input */}
+                <div className="middle-comment-input-section">
+                  <textarea
+                    className="middle-comment-input"
+                    placeholder="Add a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                  />
+                  <button
+                    className="middle-comment-submit"
+                    onClick={() => handleCommentSubmit(activeCommentPostIndex)}
+                    disabled={!newComment.trim()}
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

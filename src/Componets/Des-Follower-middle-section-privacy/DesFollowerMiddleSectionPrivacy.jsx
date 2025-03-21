@@ -152,7 +152,9 @@ function DesFollowerMiddleSectionPrivacy() {
                     </div>
                   </div>
                 </div>
-                <MobileFooter />
+                <div className="Interest-section-Mobile-Footer">
+                <MobileFooter  />
+                </div>
               </div>
              
             </div>

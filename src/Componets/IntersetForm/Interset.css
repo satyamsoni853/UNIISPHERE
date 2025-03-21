@@ -69,6 +69,10 @@
   font-weight: bold;
   text-align: start;
   margin-left: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap:20px;
 }
 
 .main-left-arrow,
@@ -217,6 +221,7 @@
   color: white;
 }
 @media screen and (max-width: 768px) {
+  
   /* Main Container */
   .Interest-main-container {
     padding: 10px;
@@ -319,4 +324,9 @@
   .middle-interest-save {
     font-size: 14px;
   }
+}
+
+.middle-interest-header span:first-child {
+  font-size: 2rem;
+
 }
