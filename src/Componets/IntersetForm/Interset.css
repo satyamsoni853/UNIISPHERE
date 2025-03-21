@@ -1,16 +1,16 @@
 /* Main Container */
 .Interest-main-container {
   display: flex;
-  justify-content: space-between; /* Distribute space between left, middle, and right */
-  align-items: flex-start; /* Align items at the top */
+  justify-content: space-between; 
+  align-items: flex-start; 
   width: 100%;
-  height: 100vh; /* Full viewport height */
-  padding: 20px; 
+  height: 100vh; 
+  padding: 20px;
 }
 
 /* Left Container */
 .Interest-left-main-container {
-  width: 30%; 
+  width: 30%;
   display: flex;
   flex-direction: column;
 }
@@ -30,10 +30,6 @@
   justify-content: flex-end; /* Align content to the right */
 }
 
-
-
-
-
 /* Main container  */
 /* Middle Interest Container (Existing Styles) */
 .middle-interest-mainParent {
@@ -47,12 +43,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 100%;
-  max-width: 800px;
+  max-width: 35vw;
+  margin-top: 90px;
+  margin-left: 60px;
   border-radius: 10px;
-  
 }
-
-
 
 .middle-interest-mainParent {
   display: flex;
@@ -61,7 +56,6 @@
 }
 
 .middle-interest-container {
-  
   padding: 20px;
   height: 100vh;
   width: 40vw;
@@ -75,6 +69,10 @@
   font-weight: bold;
   text-align: start;
   margin-left: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap:20px;
 }
 
 .main-left-arrow,
@@ -159,9 +157,8 @@
   justify-content: center;
   align-items: center;
 }
-.middle-interest-description p{
+.middle-interest-description p {
   width: 90%;
-
 }
 
 .middle-interest-searchAndIconMain {
@@ -224,10 +221,16 @@
   color: white;
 }
 @media screen and (max-width: 768px) {
+  
   /* Main Container */
   .Interest-main-container {
     padding: 10px;
     height: auto;
+  }
+  .middle-interest-container {
+    
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   /* Hide Left and Right Containers */
@@ -321,4 +324,9 @@
   .middle-interest-save {
     font-size: 14px;
   }
+}
+
+.middle-interest-header span:first-child {
+  font-size: 2rem;
+
 }

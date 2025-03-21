@@ -1,3 +1,4 @@
+/* Main Container */
 .ProfileEditSection-main-container {
   display: flex;
   justify-content: space-between;
@@ -8,17 +9,31 @@
   box-sizing: border-box;
 }
 
+/* Left Container */
 .ProfileEditSection-left-main-container {
   width: 30%;
   display: flex;
   flex-direction: column;
 }
 
+/* Middle Container */
 .ProfileEditSection-middle-main-container {
-  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Right Container */
+.ProfileEditSection-right-main-container {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ProfileEditSection-left-main-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
 }
 
 .ProfileEditSection-right-main-container {
@@ -27,14 +42,15 @@
   justify-content: flex-end;
 }
 
+
 .Followers-middle-section-2-middle-section-public {
+  width: 100%;
+  max-width: 35vw;
+  border-radius: 15px;
+  margin-top: 90px;
+  margin-left: 47%;
   padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 500px;
-  gap: 20px;
-  height: auto;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .Followers-middle-section-2-profile-header-public {
@@ -147,7 +163,8 @@
   width: 100%;
 }
 
-.Followers-middle-section-2-skill-list-public .Followers-middle-section-2-skillsMiniDiv-public {
+.Followers-middle-section-2-skill-list-public
+  .Followers-middle-section-2-skillsMiniDiv-public {
   background: linear-gradient(to top, #f3eeee, #e8a4a4);
   border-radius: 5px;
   padding: 10px 15px;
@@ -257,24 +274,6 @@
   opacity: 0.8;
 }
 
-@media (max-width: 1439px) {
-  .ProfileEditSection-main-container {
-    padding: 15px;
-  }
-  
-  .Followers-middle-section-2-middle-section-public {
-    max-width: 450px;
-    padding: 15px;
-  }
-  
-  .Followers-middle-section-2-nameAndEdit-public {
-    font-size: 24px;
-  }
-  
-  .Followers-middle-section-2-btn-public {
-    max-width: 150px;
-  }
-}
 
 @media (max-width: 1023px) {
   .ProfileEditSection-main-container {
@@ -309,12 +308,26 @@
 }
 
 @media (max-width: 767px) {
+  .ProfileEditSectionll-left-main-container {
+    display: none;
+    margin-left: 0;
+    margin-top: 0;
+  }
+  .Followers-middle-section-2-middle-section-public {
+   
+   
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 50px;
+   
+  }
+
   .ProfileEditSection-main-container {
     flex-direction: column;
     padding: 10px;
     height: auto;
   }
-  
+
   .ProfileEditSection-left-main-container,
   .ProfileEditSection-right-main-container {
     display: none;
@@ -332,7 +345,7 @@
   }
 
   .Followers-middle-section-2-profile-header-public {
-    flex-direction: column;
+    /* flex-direction: column; */
     text-align: center;
     gap: 10px;
   }
@@ -345,7 +358,7 @@
   .Followers-middle-section-2-nameAndEdit-public {
     font-size: 20px;
     width: 100%;
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 5px;
   }
 
@@ -369,9 +382,9 @@
     flex-shrink: 1;
     padding: 8px 12px;
   }
-
+  
   .Followers-middle-section-2-buttons-section-public button {
-    flex: 1 1 100%;
+    /* flex: 2 2  100%; */
     padding: 12px;
     font-size: 14px;
   }
@@ -395,7 +408,7 @@
     padding: 6px 10px;
     font-size: 13px;
   }
-  
+
   .ProfileEditSection-left-main-container,
   .ProfileEditSection-right-main-container {
     display: none;

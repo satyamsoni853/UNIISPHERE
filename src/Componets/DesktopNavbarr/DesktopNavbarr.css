@@ -10,6 +10,9 @@
   width: 100%;
   margin: auto;
   margin-bottom: 20px;
+  position: fixed;
+  background-color: white;
+  z-index: 1000;
 }
 
 .desktop-icon {
@@ -41,8 +44,8 @@
   height: 40px;
 }
 
-/* @media screen and (max-width: 767px) {  
+@media screen and (max-width: 767px) {  
   .desktop-navbar-1{
     display: none;
   }
-} */
+}

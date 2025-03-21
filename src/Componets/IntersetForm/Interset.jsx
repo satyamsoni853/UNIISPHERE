@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi"; // Importing search icon
 import "./Interset.css";
@@ -7,7 +7,20 @@ import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 function Interset() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [interest, setInterest] = useState([
     "UI/UX",
     "JAVA",
@@ -122,6 +135,7 @@ function Interset() {
 
   return (
     <div>
+      <DesktopNavbarr />
       <div className="Interest-main-container">
         <Background />
         <div className="Interest-left-main-container">
@@ -132,7 +146,17 @@ function Interset() {
           <div className="middle-interest-mainParent">
             <div className="middle-interest-container">
               {/* Header */}
-              <h2 className="middle-interest-header">Interest</h2>
+
+              <div className="middle-interest-header">
+                {isMobile && (
+                  <span>
+                    <IoArrowBackCircleOutline />
+                  </span>
+                )}
+             
+                <span>Interest</span>
+              </div>
+             
 
               {/* Search Bar with Icon */}
               <div className="middle-interest-searchAndIconMain">
@@ -219,6 +243,9 @@ function Interset() {
               <div className="middle-interest-last-buttons">
                 <button className="middle-interest-cancel">Cancel</button>
                 <button className="middle-interest-save">Save</button>
+
+                {/* Conditionally render MobileFooter only on mobile screens */}
+                {isMobile && <MobileFooter />}
               </div>
             </div>
           </div>

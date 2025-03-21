@@ -22,7 +22,7 @@
   width: 50%;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align to top instead of center for better mobile view */
+  align-items: flex-start;
 }
 
 /* Right Container */
@@ -32,11 +32,24 @@
   justify-content: flex-end;
 }
 
+.PersonalInfoUpdate-IoArrowBackCircleOutline {
+  font-size: 30px;
+  font-weight: 500;
+  /* position: relative; */
+
+  height: 30px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  display: none;
+}
+
 /* Profile Card */
 .PersonalInfoUpdate-profile-card {
   width: 100%;
-  max-width: 500px; /* Limit the width for larger screens */
+  max-width: 35vw;
   border-radius: 15px;
+  margin-top: 90px;
+  margin-left: 90px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -51,7 +64,7 @@
 .PersonalInfoUpdate-profile-photo {
   width: 100px;
   height: 100px;
-  background-color: #ccc; 
+  background-color: #ccc;
   border-radius: 50%;
   margin-right: 15px; /* Space between photo and buttons */
 }
@@ -103,7 +116,7 @@
   border-radius: 20px;
   font-size: 22px;
 }
-.PersonalInfoUpdate-info-item input value{
+.PersonalInfoUpdate-info-item input value {
   border: 2px solid black;
   border-radius: 20px;
 }
@@ -154,6 +167,13 @@ label {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .PersonalInfoUpdate-IoArrowBackCircleOutline {
+    display: block;
+  }
+  .PersonalInfoUpdate-profile-card {
+    margin-top: 0px;
+    margin-left: 0px;
+  }
   .PersonalInfoUpdate-main-container {
     flex-direction: column;
     padding: 10px; /* Reduce padding on mobile */

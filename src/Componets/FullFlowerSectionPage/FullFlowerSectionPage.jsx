@@ -5,7 +5,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import uploadimage1 from "./UploadImage1.png";
 import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
- 
+
 import Profileandview from "./Profileandview.png";
 import Profile from "./Profile.png";
 import { FaEdit } from "react-icons/fa";
@@ -13,7 +13,11 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { IoSettings } from "react-icons/io5";
 import { IoArrowBack } from "react-icons/io5";
-
+import DesktopRight from "../DesktopRight/DesktopRight";
+import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
+import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
+import Background from "../Background/Background.jsx";
+import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 
 function FullFlowerSectionPage() {
   const [profilePic] = useState(Profile);
@@ -22,7 +26,7 @@ function FullFlowerSectionPage() {
   const [name] = useState("Himanshu Choudhary");
   const [title] = useState("Software Engineer || Web Developer");
   const [address] = useState("Gurgaon , Haryana, India");
- 
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [fullAboutText] = useState(
@@ -160,20 +164,30 @@ function FullFlowerSectionPage() {
   // Collab Data
   const [collaboratorName] = useState("Jane Smith");
   const [subCollaborators] = useState(["Alice", "Bob", "Charlie"]);
-  const [paragraph] = useState("Passionate about coding and problem-solving.");
+  const [paragraph] = useState(
+    "Founder Himanshu who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working."
+  );
 
   return (
     <div>
+      <div className="Interest-main-container">
+        <Background />
+        <div className="Interest-left-main-container">
+          <DesktopLeftTop />
+          <DesktopLeftbottom />
+        </div>
+        <div className="Interest-middle-main-container">
+        <div>
       <div className="Profile-full-section-mainParent">
         <div className="Profile-full-section-container">
           {/* Profile Section */}
           <div className="Profile-full-section-whole-profile-section">
             <div className="Profile-full-section-top-nav-section">
-              <IoArrowBack  className="Profile-full-section-Back" />
-              <div className="Profile-full-section-search">
+              {/* <IoArrowBack  className="Profile-full-section-Back" /> */}
+              {/* <div className="Profile-full-section-search">
                 <FiSearch className="Profile-full-section-search-icon" />
                 <input type="text" placeholder="Search" />
-              </div>
+              </div> */}
             </div>
             <div className="Profile-full-section-profile-header">
               <div className="Profile-full-section-imageContainer">
@@ -182,7 +196,7 @@ function FullFlowerSectionPage() {
                   alt="Profile"
                   className="Profile-full-section-profile-pic"
                 />
-                <h5 className="Profile-full-section-verified">Verified</h5>
+               
               </div>
               <div className="Profile-full-section-parent-collabs-connection">
                 <div className="Profile-full-section-collabsDetails">
@@ -212,7 +226,7 @@ function FullFlowerSectionPage() {
 
           {/* Goal Section */}
           <div className="Profile-full-section-goal-section">
-            <h3>Your Plan and Goal</h3>
+            <p className="Profile-full-section-heading">Your Plan and Goal</p>
             <p>
               {displayedText}
               <span>
@@ -231,7 +245,7 @@ function FullFlowerSectionPage() {
           {/* Analytics Section */}
           <div className="Profile-full-section-main-analytics-parent">
             <div className="Profile-full-section-anlaytic-main-section">
-              <h3>Analytics</h3>
+              <p className="Profile-full-section-heading">Analytics</p>
               <div className="Profile-full-section-analytics-container">
                 <div className="Profile-full-section-circle"></div>
                 <div className="Profile-full-section-circle"></div>
@@ -244,7 +258,7 @@ function FullFlowerSectionPage() {
           {/* About Section */}
           <div className="Profile-full-section-about-section">
             <div className="Profile-full-section-about-headingAndFull">
-              <h3>About</h3>
+              <p className="Profile-full-section-heading">About</p>
             </div>
             <p>
               {displayedText}
@@ -263,7 +277,7 @@ function FullFlowerSectionPage() {
 
           {/* Upload Section */}
           <div className="Profile-full-section-upload-slider-box">
-            <h2>Upload</h2>
+            <p className="Profile-full-section-heading">Upload</p>
             <div className="Profile-full-section-down-upload-slider-con">
               <IoIosArrowBack
                 className="Profile-full-section-Back"
@@ -295,7 +309,7 @@ function FullFlowerSectionPage() {
 
           {/* Experience Section */}
           <div className="Profile-full-section-experience-slider-box">
-            <h2>Experience</h2>
+            <p className="Profile-full-section-heading">Experience</p>
             <div className="Profile-full-section-down-experience-slider-con">
               <IoIosArrowBack
                  className="Profile-full-section-Back"
@@ -326,7 +340,7 @@ function FullFlowerSectionPage() {
           {/* Skills Section */}
           <div className="Profile-full-section-main-wrapper-section">
             <div className="Profile-full-section-heading-and-logos">
-              <h3>Skills</h3>
+              <p className="Profile-full-section-heading">Skills</p>
               <div className="Profile-full-section-logos"></div>
             </div>
             <div className="Profile-full-section-content-and-arrow">
@@ -357,12 +371,13 @@ function FullFlowerSectionPage() {
           {/* Collab Section */}
           <div className="Profile-full-section-main-collabs-section">
             <div className="Profile-full-section-heading-and-logos">
-              <h3>Collabs</h3>
+              <p
+               className="Profile-full-section-heading">Collabs</p>
               <div className="Profile-full-section-logos"></div>
             </div>
             <div className="Profile-full-section-second-div-arrowAndContent">
               <IoIosArrowBack
-                className="Profile-full-section-left-btn"
+                className="Profile-full-section-Back"
                 onClick={prevImageSlide}
               />
               <div className="Profile-full-section-innerDiv-onlyContent">
@@ -372,16 +387,19 @@ function FullFlowerSectionPage() {
                       <img src={uploadimage1} alt="" />
                     </div>
                     <div className="Profile-full-section-collabratorDetails">
-                      <h4>{collaboratorName}</h4>
+                      <p>{collaboratorName}</p>
                       <div className="Profile-full-section-education">
-                        <h6>M.Tech in CS</h6>
-                        <h6>B.tech in AI</h6>
+                        <p>M.Tech </p>
+                        <p>B.tech </p>
                       </div>
                       <div className="Profile-full-section-subCollabrators">
                         (
-                        {subCollaborators.map((val, index) => (
-                          <h6 key={index}>{val},</h6>
+                        <div className="Profile-full-section-sunCollabrators-name">
+                          
+                          {subCollaborators.map((val, index) => (
+                          <p key={index}>{val},</p>
                         ))}
+                        </div>
                         )
                       </div>
                     </div>
@@ -390,12 +408,12 @@ function FullFlowerSectionPage() {
                     <p>{paragraph}</p>
                   </div>
                 </div>
-                <div className="Profile-full-section-right">
+                <div className="Profile-collab-full-section-right">
                   <img src={uploadimage2} alt="" />
                 </div>
               </div>
               <IoIosArrowForward
-                className="Profile-full-section-right-btn"
+                className="Profile-full-section-Forward"
                 onClick={nextImageSlide}
               />
             </div>
@@ -436,7 +454,7 @@ function FullFlowerSectionPage() {
           <div className="Profile-full-section-main-education">
             <div className="Profile-full-section-upper-education">
               <div className="Profile-full-section-education-headingAndFull">
-                <h3>Education</h3>
+                <p className="Profile-full-section-heading">Education</p>
               </div>
               <div className="Profile-full-section-buttons-section">
                 <button className="btn btn-left">Hansraj College</button>
@@ -451,6 +469,12 @@ function FullFlowerSectionPage() {
               alt=""
             />
           </div>
+        </div>
+      </div>
+    </div>
+        </div>
+        <div className="Interest-right-main-container">
+          <DesktopRight />
         </div>
       </div>
     </div>
