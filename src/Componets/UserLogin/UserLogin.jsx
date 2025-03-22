@@ -30,20 +30,23 @@ function UserLogin() {
         // Extract token and user ID from response
         const token = response.data.token;
         const userId = response.data.user.id;
-        
+
         // Store in localStorage for persistence
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('userId', userId);
-        
-        console.log("Authentication data saved:", { token: token.substring(0, 10) + "...", userId });
-        
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("userId", userId);
+
+        console.log("Authentication data saved:", {
+          token: token.substring(0, 10) + "...",
+          userId,
+        });
+
         alert("Login Successful!");
-        
+
         navigate("/View", {
           state: {
             userToken: token,
-            userId: userId
-          }
+            userId: userId,
+          },
         });
       }
     } catch (error) {
@@ -68,15 +71,15 @@ function UserLogin() {
 
         {/* Left-side Unisphere Logo */}
         <div className="top-left-container">
-         <div>
-         <img
-            src={Unispherelogo}
-            alt="Unisphere Logo-1"
-            className="top-left-logo"
-          />
-         </div>
           <div>
-          <IoReorderThreeOutline className="top-menu-icon" />
+            <img
+              src={Unispherelogo}
+              alt="Unisphere Logo-1"
+              className="top-left-logo"
+            />
+          </div>
+          <div>
+            <IoReorderThreeOutline className="top-menu-icon" />
           </div>
         </div>
 
@@ -153,7 +156,11 @@ function UserLogin() {
           </p>
 
           <div className="button-container">
-            <button className="login-singup-button login-btn "  type="button"  onClick={handleLogin}>
+            <button
+              className="login-singup-button login-btn "
+              type="button"
+              onClick={handleLogin}
+            >
               Continue
             </button>
           </div>
@@ -165,7 +172,7 @@ function UserLogin() {
           </div>
 
           <div className="google-container">
-            <button  className="google-btn" onClick={handleGoogleLogin}>
+            <button className="google-btn" onClick={handleGoogleLogin}>
               <FcGoogle className="google-icon" /> Google
             </button>
           </div>

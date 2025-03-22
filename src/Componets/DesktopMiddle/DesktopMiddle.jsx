@@ -3,33 +3,31 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { PiShareFatThin } from "react-icons/pi";
-import { TfiCommentsSmiley } from "react-icons/tfi";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
 import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
-import Commenticonsvg from  './Commenticon.svg'
+import Commenticonsvg from "./Commenticon.svg";
+
 function DesktopMiddle() {
   const [posts, setPosts] = useState([]);
   const [imageLoading, setImageLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null); // Track which post's comments are open
-  const [newComment, setNewComment] = useState(""); // Store new comment input
+  const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
+  const [newComment, setNewComment] = useState("");
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getAuthData = () => {
     const storedToken = localStorage.getItem("authToken");
     const storedUserId = localStorage.getItem("userId");
-    return storedToken && storedUserId
-      ? { token: storedToken, userId: storedUserId }
-      : null;
+    return storedToken && storedUserId ? { token: storedToken, userId: storedUserId } : null;
   };
 
-  const authData = getAuthData();
-
   useEffect(() => {
+    // Update localStorage if new auth data comes from location.state
     if (location.state?.userToken) {
       localStorage.setItem("authToken", location.state.userToken);
     }
@@ -38,6 +36,7 @@ function DesktopMiddle() {
     }
 
     const fetchData = async () => {
+      const authData = getAuthData(); // Fetch fresh auth data inside effect
       if (!authData) {
         setError("You are not logged in. Please log in to view content.");
         setImageLoading(false);
@@ -57,6 +56,7 @@ function DesktopMiddle() {
         if (response.data.posts && response.data.posts.length > 0) {
           const updatedPosts = response.data.posts.map((post) => ({
             ...post,
+            authorId: post.authorId || "unknown", // Ensure authorId is never undefined
             likes: post.likes || 0,
             isLiked: false,
             comments: post.comments || [],
@@ -65,14 +65,14 @@ function DesktopMiddle() {
         }
       } catch (error) {
         setError("Failed to load content. Please try again later.");
-        setPosts([]);
+        console.error("Fetch error:", error); // Log error for debugging
       } finally {
         setImageLoading(false);
       }
     };
 
     fetchData();
-  }, [location.state]);
+  }, [location.state]); // Dependency on location.state is fine
 
   const handleLike = (index) => {
     setPosts((prevPosts) =>
@@ -90,7 +90,7 @@ function DesktopMiddle() {
 
   const handleCommentClick = (index) => {
     setActiveCommentPostIndex(index);
-    setNewComment(""); // Reset input when opening
+    setNewComment("");
   };
 
   const handleCloseCommentModal = () => {
@@ -98,7 +98,7 @@ function DesktopMiddle() {
   };
 
   const handleCommentSubmit = (index) => {
-    if (!newComment.trim()) return; // Ignore empty comments
+    if (!newComment.trim()) return;
 
     setPosts((prevPosts) =>
       prevPosts.map((post, i) =>
@@ -110,7 +110,11 @@ function DesktopMiddle() {
           : post
       )
     );
-    setNewComment(""); // Clear input after submission
+    setNewComment("");
+  };
+
+  const handleProfileClick = (userId) => {
+    navigate(`/FullFlowerSectionPage/${userId || "unknown"}`);
   };
 
   return (
@@ -118,16 +122,22 @@ function DesktopMiddle() {
       <div className="middle-middle-card">
         {error && <div className="error-message">{error}</div>}
 
-        {posts.length > 0 ? (
+        {imageLoading ? (
+          <p>Loading posts...</p>
+        ) : posts.length > 0 ? (
           posts.map((post, index) => (
             <div key={index} className="post-container">
-              {/* Profile Header */}
               <div className="middle-profile-header">
-                <img
-                  src={Profileimage}
-                  alt="Profile"
-                  className="middle-profile-pic"
-                />
+                <div
+                  onClick={() => handleProfileClick(post.authorId)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={Profileimage}
+                    alt="Profile"
+                    className="middle-profile-pic"
+                  />
+                </div>
                 <div className="middle-profile-info">
                   <div className="middle-profile-top">
                     <span className="middle-profile-name">
@@ -136,25 +146,19 @@ function DesktopMiddle() {
                     <span className="middle-post-time">18h</span>
                   </div>
                   <p className="middle-profile-details">
-                    {post.authorDetails ||
-                      "University of Delhi | Works at Google"}
+                    {post.authorDetails || "University of Delhi | Works at Google"}
                   </p>
                 </div>
                 <BsThreeDotsVertical className="middle-options-icon" />
               </div>
 
-              {/* Main Image */}
               <div className="middle-main-image">
-                {imageLoading ? (
-                  <div>Loading image...</div>
-                ) : post.mediaUrl ? (
+                {post.mediaUrl ? (
                   <img
                     src={post.mediaUrl}
                     alt={`Post ${index + 1}`}
                     className="middle-content-image"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/300")
-                    }
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/300")}
                   />
                 ) : (
                   <img
@@ -165,7 +169,6 @@ function DesktopMiddle() {
                 )}
               </div>
 
-              {/* Action Bar */}
               <div className="middle-action-bar">
                 <img
                   src={ConnectMidlleimage}
@@ -173,37 +176,23 @@ function DesktopMiddle() {
                   className="middle-connect-image"
                 />
                 <div className="middle-action-icons">
-                  {/* Like Button */}
-                  <div
-                    className="middle-icon-container"
-                    onClick={() => handleLike(index)}
-                  >
+                  <div className="middle-icon-container" onClick={() => handleLike(index)}>
                     <span className="middle-icon-count">{post.likes}</span>
-                    <CiHeart
-                      className={`middle-icon ${post.isLiked ? "liked" : ""}`}
-                    />
+                    <CiHeart className={`middle-icon ${post.isLiked ? "liked" : ""}`} />
                   </div>
-
-                  {/* Comment Button */}
                   <div
                     className="middle-icon-container"
                     onClick={() => handleCommentClick(index)}
                   >
-                    <span className="middle-icon-count">
-                      {post.comments.length}
-                    </span>
-                    {/* <TfiCommentsSmiley className="middle-icon" /> */}
-                    <img src={Commenticonsvg} alt="" />
+                    <span className="middle-icon-count">{post.comments.length}</span>
+                    <img src={Commenticonsvg} alt="Comment" />
                   </div>
-
-                  {/* Share Placeholder */}
                   <div className="middle-icon-container">
                     <PiShareFatThin className="middle-icon" />
                   </div>
                 </div>
               </div>
 
-              {/* Post Text */}
               <div className="middle-post-text">
                 <span className="middle-post-author">
                   {post.authorName || "Unknown Author"}
@@ -217,39 +206,28 @@ function DesktopMiddle() {
           <p>No posts available</p>
         )}
 
-        {/* Comment Modal */}
         {activeCommentPostIndex !== null && (
           <div className="middle-comment-modal-overlay">
             <div className="middle-comment-modal">
               <div className="middle-comment-modal-header">
                 <h3>Comments</h3>
-                <button
-                  className="middle-comment-modal-close"
-                  onClick={handleCloseCommentModal}
-                >
+                <button className="middle-comment-modal-close" onClick={handleCloseCommentModal}>
                   ×
                 </button>
               </div>
               <div className="middle-comment-modal-content">
-                {/* Existing Comments */}
                 <div className="middle-comment-list">
                   {posts[activeCommentPostIndex].comments.length > 0 ? (
-                    posts[activeCommentPostIndex].comments.map(
-                      (comment, idx) => (
-                        <div key={idx} className="middle-comment">
-                          <span className="middle-comment-author">
-                            {comment.author}:
-                          </span>{" "}
-                          {comment.text}
-                        </div>
-                      )
-                    )
+                    posts[activeCommentPostIndex].comments.map((comment, idx) => (
+                      <div key={idx} className="middle-comment">
+                        <span className="middle-comment-author">{comment.author}:</span>{" "}
+                        {comment.text}
+                      </div>
+                    ))
                   ) : (
                     <p>No comments yet</p>
                   )}
                 </div>
-
-                {/* Comment Input */}
                 <div className="middle-comment-input-section">
                   <textarea
                     className="middle-comment-input"

@@ -33,7 +33,7 @@ function App() {
           <Route path="/AboutAndExperiance" element={<AboutAndExperiance/>} />
           <Route path="/Skill" element={<SkillForm/>} />
           <Route path="/ProfileEditSection" element={<ProfileEditSection/>} />
-          <Route path="/FullFlowerSectionPage" element={<FullFlowerSectionPage/>} />
+          <Route path="/FullFlowerSectionPage/:userId" element={<FullFlowerSectionPage />} />
           <Route path="/PersonalInfoUpdate" element={<PersonalInfoUpdate/>} />
           <Route path="/MessageFinalclass" element={<MessageFinalclass/>} />
         </Routes>
