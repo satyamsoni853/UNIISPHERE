@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Added for route params and navigation
 import axios from "axios"; // Added for API calls
+import React, { useEffect, useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoArrowBack } from "react-icons/io5";
+import { useNavigate, useParams } from "react-router-dom"; // Added for route params and navigation
+import Background from "../Background/Background.jsx";
+import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
+import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
+import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopRight from "../DesktopRight/DesktopRight";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 import "./FullFlowerSectionPage.css";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import Profile from "./Profile.png";
+import Profileandview from "./Profileandview.png";
 import uploadimage1 from "./UploadImage1.png";
 import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
-import Profileandview from "./Profileandview.png";
-import Profile from "./Profile.png";
-import { FaEdit } from "react-icons/fa";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { FiSearch } from "react-icons/fi";
-import { IoSettings } from "react-icons/io5";
-import { IoArrowBack } from "react-icons/io5";
-import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
-import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
-import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function FullFlowerSectionPage() {
   const { userId } = useParams(); // Get userId from URL
@@ -97,32 +92,39 @@ function FullFlowerSectionPage() {
         setError(null);
 
         const response = await axios.get(
-          `https://uniisphere-1.onrender.com/getProfile/profile/?userid=${userId}`,
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`,
           {
             headers: { Authorization: `Bearer ${authToken}` },
           }
         );
 
-        const data = response.data;
+        // Debug response
+        console.log("API response:", response.data);
+
+        // Check if data is an array and has at least one item
+        const data = Array.isArray(response.data) && response.data.length > 0 
+          ? response.data[0] 
+          : response.data;
+
         if (!data || Object.keys(data).length === 0) {
           throw new Error("No data returned from API");
         }
 
+        console.log("Profile data:", data);
+
         // Update state with API data or dummy defaults
-        setProfilePic(data.profilePic || dummyData.profilePic);
-        setCollabs(data.collabs || dummyData.collabs);
-        setConnections(data.connections || dummyData.connections);
+        setProfilePic(data.profilePictureUrl || dummyData.profilePic);
+        setCollabs(data._count?.connections1 || dummyData.collabs);
+        setConnections((data._count?.connections1 || 0) + (data._count?.connections2 || 0) || dummyData.connections);
         setName(
-          `${data.firstName || dummyData.name.split(" ")[0]} ${
-            data.lastName || dummyData.name.split(" ")[1]
-          }`
+          `${data.firstName || dummyData.name.split(" ")[0]} ${data.lastName || dummyData.name.split(" ")[1]}`
         );
-        setTitle(data.title || dummyData.title);
-        setAddress(data.address || dummyData.address);
-        setFullAboutText(data.about || dummyData.about);
-        setSkill(data.skills && data.skills.length > 0 ? data.skills : dummyData.skills);
+        setTitle(data.headline || dummyData.title);
+        setAddress(data.location || dummyData.address);
+        setFullAboutText(data.About || dummyData.about);
+        setSkill(data.Skills && data.Skills.length > 0 ? data.Skills : dummyData.skills);
         setInterest(
-          data.interests && data.interests.length > 0 ? data.interests : dummyData.interests
+          data.Interests && data.Interests.length > 0 ? data.Interests : dummyData.interests
         );
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -155,7 +157,7 @@ function FullFlowerSectionPage() {
   const displayedText = isExpanded
     ? fullAboutText
     : fullAboutText.slice(0, maxLength) +
-      (fullAboutText.length > maxLength ? "..." : "");
+    (fullAboutText.length > maxLength ? "..." : "");
 
   // Image Slider Functionality
   const images = [uploadimage1, uploadimage2, uploadimage3, uploadimage2, uploadimage3];

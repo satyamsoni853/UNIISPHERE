@@ -1,4 +1,4 @@
-import axios from "axios"; // Make sure to import axios
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ConnectandCollbrate from "./Connect&coll.png";
 import Connectimage from "./Connect.png";
@@ -27,7 +27,6 @@ function DesktopRightsection() {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Get authentication data from localStorage
   const getAuthData = () => {
     const storedToken = localStorage.getItem("authToken");
     const storedUserId = localStorage.getItem("userId");
@@ -36,7 +35,6 @@ function DesktopRightsection() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Get auth data
       const authData = getAuthData();
 
       if (!authData) {
@@ -49,7 +47,6 @@ function DesktopRightsection() {
       setUserId(authData.userId);
 
       try {
-        // Fetch profile data with userId as query parameter
         const profileResponse = await axios.get(
           `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authData.userId}`,
           {
@@ -61,17 +58,13 @@ function DesktopRightsection() {
 
         console.log("Full profile response:", profileResponse.data);
 
-        // Set profile data from response
         if (profileResponse.data && profileResponse.data.length > 0) {
           const userData = profileResponse.data[0];
 
-          // Log what profile picture fields are available
           console.log("Available profile data fields:", Object.keys(userData));
 
           setProfileData(userData);
         }
-
-        // Fetch connections count
         const connectionsResponse = await axios.get(
           "https://uniisphere-1.onrender.com/api/connections",
           {
@@ -82,12 +75,8 @@ function DesktopRightsection() {
         );
 
         console.log("Connections response:", connectionsResponse.data);
-
-        // Calculate total connections from response
         const connectionCount = connectionsResponse.data.connections?.length || 0;
         setConnections(connectionCount);
-
-        // For now, set followers to 0 or get from another API
         setFollowers(0);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -98,19 +87,16 @@ function DesktopRightsection() {
     };
 
     fetchData();
-  }, []); // Only run once on component mount
+  }, []);
 
-  // Calculate full name from profile data
   const getFullName = () => {
     if (!profileData) return "Loading...";
     return `${profileData.firstName || ""} ${profileData.lastName || ""}`.trim();
   };
 
-  // Function to get the profile picture URL with multiple fallback options
   const getProfilePictureUrl = () => {
     if (!profileData) return Profileimg;
 
-    // Try different possible field names for profile picture
     return profileData.profilePictureUrl ||
       profileData.profileImageUrl ||
       profileData.avatarUrl ||
@@ -122,13 +108,10 @@ function DesktopRightsection() {
   return (
     <div className="right-section-container">
       <div className="rightsection">
-        {/* Loading state */}
         {loading && <div className="loading">Loading profile data...</div>}
 
-        {/* Error state */}
         {error && <div className="error-message">{error}</div>}
 
-        {/* Profile Section */}
         <div className="profile-card">
           <img
             src={getProfilePictureUrl()}
@@ -145,7 +128,6 @@ function DesktopRightsection() {
           </div>
         </div>
 
-        {/* Profile Details */}
         <div className="profile-details">
           <h3 className="profile-name">{getFullName()}</h3>
           <p className="profile-company">{profileData?.headline || "Uniisphere"}</p>
@@ -156,7 +138,6 @@ function DesktopRightsection() {
           </p>
         </div>
 
-        {/* Suggested Connections Section */}
         <div className="suggested-cards">
           <h4 className="suggested-title">Suggestions</h4>
           {suggestions.map((suggestion, index) => (
