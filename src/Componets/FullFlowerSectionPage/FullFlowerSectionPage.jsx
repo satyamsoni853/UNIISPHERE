@@ -5,6 +5,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import uploadimage1 from "./UploadImage1.png";
 import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
+import CollabSvg from './Collab.svg'
 
 import Profileandview from "./Profileandview.png";
 import Profile from "./Profile.png";
@@ -18,8 +19,9 @@ import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
+
 import MobileFooter from "../Mobilefooter/MobileFooter";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 
 function FullFlowerSectionPage() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -194,6 +196,11 @@ function FullFlowerSectionPage() {
       <div className="Profile-full-section-mainParent">
         <div className="Profile-full-section-container">
           {/* Profile Section */}
+          <div className="Mobile-Navbar-Collab" >
+          <IoArrowBackCircleOutline className="Collab-IoArrowBackCircleOutline"/>
+          <input type="text" placeholder="Message" />
+          <img src={CollabSvg} alt="" />
+          </div>
           <div className="Profile-full-section-whole-profile-section">
             <div className="Profile-full-section-top-nav-section">
               

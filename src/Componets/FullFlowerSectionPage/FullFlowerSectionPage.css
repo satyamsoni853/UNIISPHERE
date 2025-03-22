@@ -454,6 +454,8 @@
   border: 1px solid #eee;
 }
 
+
+
 .Profile-full-section-main-collabs-section {
   display: flex;
   /* background-color: #fff; */
@@ -670,7 +672,9 @@
   object-fit: contain;
   margin-bottom: 50px;
 }
-
+.Mobile-Navbar-Collab{
+  display: none;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -703,6 +707,31 @@
 }
 
 @media (max-width: 900px) {
+  .Mobile-Navbar-Collab{
+    display: block;
+  }
+  .Mobile-Navbar-Collab {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust spacing between elements */
+  }
+ 
+  
+  .Mobile-Navbar-Collab input {
+    flex: 1; /* Allows input to take available space */
+    padding: 5px;
+    border: 2px solid grey;
+    border-radius: 5px;
+    border-radius: 20px;
+  }
+  .Collab-IoArrowBackCircleOutline{
+    font-size: 40px;
+  }
+  
+  .Mobile-Navbar-Collab img {
+    width: 120px; /* Adjust size as needed */
+    height: 120px;
+  }
   .FullFlowerSectionPage-main-container {
     flex-wrap: wrap;
     height: auto; /* Allow height to adjust */
