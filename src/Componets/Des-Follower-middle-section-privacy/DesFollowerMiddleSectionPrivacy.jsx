@@ -55,6 +55,11 @@ function DesFollowerMiddleSectionPrivacy() {
               <div className="Followers-middle-section-1-mainParent-privacy">
                 <div className="Followers-middle-section-1-middle-container-privacy">
                   <div className="Followers-middle-section-1-middle-section-privacy">
+                  <div className="Followers-middle-section-1-top-nav">
+                    < IoArrowBackCircleOutline className="Followers-middle-section-1-Circle-back-icon" />
+                    <img src={middleconnectimage} alt=""  />
+                  </div>
+                     
                     <div className="Followers-middle-section-1-profile-header-privacy">
                       <div className="Followers-middle-section-1-imageContainer-privacy">
                         <img
@@ -73,10 +78,7 @@ function DesFollowerMiddleSectionPrivacy() {
                     </div>
 
                     <div className="Followers-middle-section-1-profile-info-privacy">
-                      <div className="Followers-middle-section-1-profile-image-name-privacy">
-                        {" "}
-                        <img src={middleconnectimage} alt="" /> <p>{name}</p>
-                      </div>
+                      
                       <p>{title}</p>
                     </div>
 
