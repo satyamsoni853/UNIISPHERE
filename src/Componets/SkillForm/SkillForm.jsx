@@ -80,7 +80,7 @@ function SkillForm() {
                           <div className="middle-skills-header">
                             {isMobile && (
                               <span>
-                                <IoArrowBackCircleOutline />
+                                <IoArrowBackCircleOutline className="middle-skills-header-icon" />
                               </span>
                             )}
                          
