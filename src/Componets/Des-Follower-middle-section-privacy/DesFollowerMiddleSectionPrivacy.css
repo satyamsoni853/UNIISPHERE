@@ -19,6 +19,20 @@
   position: relative;
 }
 
+.Followers-middle-section-1-top-nav{
+  display: flex;
+  justify-content: space-between;
+   padding: 10px;
+  height: 45px;
+ 
+}
+
+.Followers-middle-section-1-Circle-back-icon{
+  font-size: 35px;
+}
+
+ 
+
 .Followers-middle-section-1-profile-header-privacy {
   display: flex;
   flex-direction: row-reverse;
