@@ -6,19 +6,22 @@
     /* #C9E4CA with 50% opacity */ rgba(207, 232, 239, 0.2)
       /* #CFE8EF with 20% opacity */
   );
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid grey;
   width: 100%;
+  
   max-width: 28vw;
 
   height: auto; /* Allow height to adjust */
-  min-height: 353px; /* Prevents it from shrinking too much */
+  /* min-height: 353px;  */
+  height: 330px;
+  overflow: hidden;
   margin-top: 10px;
   margin-left: 20px;
   position: fixed;
-  top: 520px; 
+  top: 460px; 
 }
 
 /* Heading */
@@ -35,7 +38,7 @@
   align-items: center;
   justify-content: space-between; /* Keeps "Read More" aligned */
   gap: 10px;
-  padding: 10px 0;
+  /* padding: 10px 0; */
 }
 
 /* Image */

@@ -9,7 +9,7 @@ import "./DesktopMiddle.css";
 import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
-
+import Commenticonsvg from  './Commenticon.svg'
 function DesktopMiddle() {
   const [posts, setPosts] = useState([]);
   const [imageLoading, setImageLoading] = useState(true);
@@ -192,7 +192,8 @@ function DesktopMiddle() {
                     <span className="middle-icon-count">
                       {post.comments.length}
                     </span>
-                    <TfiCommentsSmiley className="middle-icon" />
+                    {/* <TfiCommentsSmiley className="middle-icon" /> */}
+                    <img src={Commenticonsvg} alt="" />
                   </div>
 
                   {/* Share Placeholder */}

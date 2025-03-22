@@ -6,6 +6,21 @@
   width: 25vw; 
   overflow-y: auto; 
 }
+/* Right Section */
+.right-section-container {
+  position: fixed;
+  top: 110px;
+  bottom: 10px;
+  width: 25vw;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Edge, IE */
+}
+
+.right-section-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
 
 .rightsection {
   display: flex;
