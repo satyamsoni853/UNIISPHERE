@@ -235,6 +235,15 @@
   transform: scale(1.05);
 }
 
+.middle-skills-header{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.middle-skills-header-icon{
+  font-size: 30px;
+}
+
 /* Responsive Design */
 
 /* Large Tablets and Small Desktops (769px - 1024px) */

@@ -108,6 +108,11 @@ function ProfileEditSection() {
           <div className="Followers-middle-section-2-mainParent-public">
             <div className="Followers-middle-section-2-middle-container-public">
               <div className="Followers-middle-section-2-middle-section-public">
+
+              <div className="Followers-middle-section-2-top-nav-Icon">
+                <IoArrowBackCircleOutline className="Followers-middle-section-2-backLogo"/>
+              </div>
+
                 {/* Profile Details */}
                 <div className="Followers-middle-section-2-profile-header-public">
                   <div className="Followers-middle-section-2-imageContainer-public">
