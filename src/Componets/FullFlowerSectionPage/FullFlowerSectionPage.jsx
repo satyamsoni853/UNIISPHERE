@@ -17,10 +17,10 @@ import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
 
 function FullFlowerSectionPage() {
-  const { userId } = useParams();
+  const { userId } = useParams(); // Extracts "07d3b55a-6908-4d5d-be94-79f8f6e0539b" from URL
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null);
 
   const [profilePic, setProfilePic] = useState(Profile);
@@ -61,17 +61,27 @@ function FullFlowerSectionPage() {
   useEffect(() => {
     const fetchProfileData = async () => {
       const authToken = localStorage.getItem("authToken");
-      console.log("Fetching profile for userId:", userId, "Token:", authToken);
+      console.log("Starting fetch for userId:", userId, "with token:", authToken);
+
       if (!authToken) {
+        console.log("No auth token found, using dummy data");
         setError("Authentication required. Using dummy data.");
         applyDummyData();
         setLoading(false);
         return;
       }
 
+      if (!userId || userId === "unknown") {
+        console.log("Invalid userId, using dummy data");
+        setError("Invalid user ID. Using dummy data.");
+        applyDummyData();
+        setLoading(false);
+        return;
+      }
+
       try {
-        setLoading(true);
-        setError(null);
+        setLoading(true); // Set loading to true before fetching
+        console.log("Fetching data from API...");
 
         const response = await axios.get(
           `https://uniisphere-1.onrender.com/getProfile/profile/${userId}`,
@@ -89,6 +99,7 @@ function FullFlowerSectionPage() {
 
         console.log("Processed profile data:", data);
 
+        // Update state with API data
         setProfilePic(data.profilePictureUrl || dummyData.profilePic);
         setCollabs(data._count?.connections1 || dummyData.collabs);
         setConnections(
@@ -103,11 +114,12 @@ function FullFlowerSectionPage() {
         setSkill(data.skills || dummyData.skills);
         setInterest(data.interests || dummyData.interests);
       } catch (error) {
-        console.error("Error fetching profile data for userId", userId, ":", error);
+        console.error("Error fetching profile data for userId", userId, ":", error.message);
         setError("Failed to load profile data. Showing dummy data.");
         applyDummyData();
       } finally {
         setLoading(false);
+        console.log("Fetch complete, loading set to false");
       }
     };
 
@@ -262,7 +274,7 @@ function FullFlowerSectionPage() {
                     <p>{name}</p>
                     <p>{title}</p>
                     <p>{address}</p>
-                    <p>User ID: {userId}</p> {/* Added for verification */}
+                    <p>User ID: {userId}</p> {/* Displays 07d3b55a-6908-4d5d-be94-79f8f6e0539b */}
                   </div>
 
                   <div className="Profile-full-section-profile-buttons">
