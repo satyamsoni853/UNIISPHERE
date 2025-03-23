@@ -7,6 +7,7 @@ import Profileimg from "./Profile.jpeg";
 import Sugestion1img from "./Sugestion1.png";
 import Sugestion2img from "./Sugestion2.png";
 import Sugestion3img from "./Sugestion3.png";
+import ConnectandCollbrateSvg from './CollabConnection.svg'
 
 const suggestions = [
   { img: Sugestion1img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
@@ -124,7 +125,7 @@ function DesktopRightsection() {
               <span>{connections}</span>
               <span>{followers}</span>
             </div>
-            <img src={ConnectandCollbrate} alt="Connect & Collaborate" className="connect-collaborate-img" />
+            <img src={ConnectandCollbrateSvg} alt="Connect & Collaborate" className="connect-collaborate-img" />
           </div>
         </div>
 
