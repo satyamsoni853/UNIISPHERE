@@ -10,7 +10,58 @@ import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
 import Commenticonsvg from "./Commenticon.svg";
 
+// Comment box data
+import profilePhoto from "./profilePhoto.png";
+import Threedot from "./Threedot.svg";
+import Connect from "./Connect.png";
+import ShareIcon from "./Share.svg";
+import LikeIcon from "./Like.svg";
+import CommentIcon from "./Comment.svg";
+
 function DesktopMiddle() {
+  // Full comment box data
+
+  // Static user data
+  const userData = {
+    profilePicture: profilePhoto,
+    name: "VIJAY PRASAD",
+    education: " University of Delhi ",
+    workPlace: " Works at Google",
+  };
+
+  // Static comments data
+  const comments = [
+    {
+      profilePicture: profilePhoto,
+      username: "Updesh",
+      timestamp: "1d ago",
+      text: "It's so true men.",
+      likes: 10054,
+    },
+    {
+      profilePicture: profilePhoto,
+      username: "Ajiket",
+      timestamp: "5d ago",
+      text: "Damnn.",
+      likes: 2457,
+    },
+    {
+      profilePicture: profilePhoto,
+      username: "Rohit",
+      timestamp: "1w ago",
+      text: "I am with you brother",
+      likes: 150,
+    },
+    {
+      profilePicture: profilePhoto,
+      username: "Anjali",
+      timestamp: "1m ago",
+      text: "There is no way in which they will now.",
+      likes: 91,
+    },
+  ];
+  const [showComment, setShowComment] = useState(false);
+  //
   const [posts, setPosts] = useState([]);
   const [imageLoading, setImageLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -213,7 +264,10 @@ function DesktopMiddle() {
                   </div>
                   <div
                     className="middle-icon-container"
-                    onClick={() => handleCommentClick(index)}
+                    onClick={() => {
+                      setShowComment((prev) => !prev);
+                      handleCommentClick(index);
+                    }}
                   >
                     <span className="middle-icon-count">
                       {post.comments.length}
@@ -239,55 +293,151 @@ function DesktopMiddle() {
           <p>No posts available</p>
         )}
 
-        {activeCommentPostIndex !== null && (
-          <div className="middle-comment-modal-overlay">
-            <div className="middle-comment-modal">
-              <div className="middle-comment-modal-header">
-                <h3>Comments</h3>
-                <button
-                  className="middle-comment-modal-close"
-                  onClick={handleCloseCommentModal}
-                >
-                  ×
-                </button>
-              </div>
-              <div className="middle-comment-modal-content">
-                <div className="middle-comment-list">
-                  {posts[activeCommentPostIndex].comments.length > 0 ? (
-                    posts[activeCommentPostIndex].comments.map(
-                      (comment, idx) => (
-                        <div key={idx} className="middle-comment">
-                          <span className="middle-comment-author">
-                            {comment.author}:
-                          </span>{" "}
-                          {comment.text}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <p>No comments yet</p>
-                  )}
+        
+      </div>
+
+      {/* ## *******************Comment Box CODE ******************##  */}
+
+      {showComment && (
+        <div className="Full-comment-section-main-container">
+          {/* Left Section */}
+          <div className="Full-comment-section-left-section">
+            <div className="Full-comment-section-user-profile-header">
+               
+              <img
+                src={userData.profilePicture  }
+                alt="Profile"
+                className="Full-comment-section-profile-picture"
+              />
+              <div className="Full-comment-section-user-info">
+                <div className="Full-comment-section-name-and-postTime">
+                  <span className="Full-comment-section-user-name">
+                    {userData.name}
+                  </span>
+                  <span className="Full-comment-section-user-details">18h</span>
                 </div>
-                <div className="middle-comment-input-section">
-                  <textarea
-                    className="middle-comment-input"
-                    placeholder="Add a comment..."
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                <div className="Full-comment-section-work-and-education">
+                  <span className="Full-comment-section-user-details">
+                    {userData.education}
+                  </span>
+                  <span className="Full-comment-section-user-details">||</span>
+                  <span className="Full-comment-section-user-details">
+                    {" "}
+                    {userData.workPlace}{" "}
+                  </span>
+                </div>
+              </div>
+              <img
+                src={Threedot}
+                className="Full-comment-section-menu-icon"
+                alt=""
+              />
+            </div>
+            <div className="Full-comment-section-photo-container">
+              <img
+                src={userData.profilePicture}
+                alt="Post"
+                className="Full-comment-section-post-photo"
+              />
+              <div className="Full-comment-section-action-buttons">
+                <div className="Full-comment-section-connect-div">
+                  <img
+                    src={Connect}
+                    className="Full-comment-section-connect-icon"
+                    alt=""
                   />
-                  <button
-                    className="middle-comment-submit"
-                    onClick={() => handleCommentSubmit(activeCommentPostIndex)}
-                    disabled={!newComment.trim()}
-                  >
-                    Post
-                  </button>
+                </div>
+                <div className="Full-comment-section-share-like-comment-icon">
+                  <img
+                    src={ShareIcon}
+                    className="Full-comment-section-post-icons"
+                    alt=""
+                  />
+                  <img
+                    src={CommentIcon}
+                    className="Full-comment-section-post-icons"
+                    alt=""
+                  />
+                  <img
+                    src={LikeIcon}
+                    className="Full-comment-section-post-icons"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
           </div>
-        )}
-      </div>
+
+          {/* Right Section */}
+          <div className="Full-comment-section-right-section">
+            <div className="Full-comment-section-comments-header">
+              <h1 className="Full-comment-section-heading">Comments</h1>
+            </div>
+            <div className="Full-comment-section-comments-list">
+              {comments.map((comment, index) => (
+                <div
+                  className="Full-comment-section-comment-main-parent"
+                  key={index}
+                >
+                  <div className="Full-comment-section-comment">
+                    <img
+                      src={comment.profilePicture}
+                      alt="Profile"
+                      className="Full-comment-section-comment-profile-picture"
+                    />
+                    <div className="Full-comment-section-comment-content">
+                      <div className="Full-comment-section-comment-user-info">
+                        <span className="Full-comment-section-comment-username">
+                          {comment.username}
+                        </span>
+                        <span className="Full-comment-section-comment-timestamp">
+                          {comment.timestamp}
+                        </span>
+                      </div>
+                      <div className="Full-comment-section-comment-text">
+                        {comment.text}
+                      </div>
+                      <div className="Full-comment-section-comment-actions">
+                        <span className="Full-comment-section-reply-link">
+                          REPLY
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="Full-comment-section-comment-likes">
+                    <img
+                      src={LikeIcon}
+                      alt=""
+                      className="Full-comment-section-like-button"
+                    />
+                    <span>{comment.likes} </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="Full-comment-section-comment-input-and-image">
+              <img
+                src={profilePhoto}
+                className="Full-comment-section-commentPerson-image"
+                alt=""
+              />
+              <input
+                type="text"
+                placeholder="Write a comment to VIJAY PRASAD"
+              />
+            </div>
+            <button
+              onClick={() => {
+                setShowComment((prev) => !prev);
+              }}
+              className="Full-comment-section-cross-button"
+            >
+              {" "}
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
