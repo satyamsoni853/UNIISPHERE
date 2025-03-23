@@ -3,8 +3,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 25px 20px;
-  border-radius: 0 0 40px 40px; 
-
+  border-radius: 0 0 40px 40px;
   border: 5px solid grey;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -44,8 +43,133 @@
   height: 40px;
 }
 
-@media screen and (max-width: 767px) {  
-  .desktop-navbar-1{
+/* Container for user icon and dropdown */
+.user-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Profile card dropdown */
+.SelfProfile-card {
+  position: absolute;
+  top: 100%; /* Below the user icon */
+  /* right: 0;  */
+  width: 350px;
+  background-color: white;
+  border: 2px solid grey; /* Matches navbar border */
+  border-radius: 15px; /* Slightly rounded to complement navbar */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Matches navbar shadow */
+  padding: 15px;
+  z-index: 1001; /* Above navbar */
+}
+
+/* Profile header */
+.SelfProfile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.SelfProfile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #f76b6b; /* Matches user icon background */
+}
+
+.SelfProfile-info {
+  flex-grow: 1;
+}
+
+.SelfProfile-name {
+  font-size: 16px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.SelfProfile-label {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
+/* Edit profile button */
+.SelfProfile-edit-button {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  background-color: rgb(114, 114, 214);
+  border: 1px solid grey; /* Matches navbar border */
+  border-radius: 10px; /* Slightly rounded */
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+
+.SelfProfile-edit-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Stats section */
+.SelfProfile-stats {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 20px;
+  margin: 10px 50px;
+}
+
+.SelfProfile-stat {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.SelfProfile-stat span {
+  display: block;
+  font-size: 18px;
+  color: #666;
+}
+
+.SelfProfile-stat-value {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Menu section */
+.SelfProfile-menu-item {
+  padding: 8px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #333;
+}
+
+.SelfProfile-menu-item:hover {
+  color: #f76b6b; /* Matches user icon background */
+}
+
+.SelfProfile-divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 5px 0;
+}
+
+.SelfProfile-sign-out {
+  color: #f76b6b; /* Red to indicate sign-out */
+}
+
+.SelfProfile-sign-out:hover {
+  color: #d9534f; /* Darker red on hover */
+}
+
+/* Media query for responsiveness */
+@media screen and (max-width: 767px) {
+  .desktop-navbar-1 {
     display: none;
   }
 }

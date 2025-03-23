@@ -1,0 +1,186 @@
+.self-setting-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.settings-menu {
+  width: 20vw;  /* Changed from 300px to 20vw */
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1001;
+  height: 100vh;
+  position: fixed;  /* Added to fix position */
+  left: 0;  /* Added to position at left */
+  overflow-y: auto;  /* Added to handle overflow */
+}
+
+.settings-submenu {
+  width: 80vw;  /* Added width for right container */
+  height: 100vh;  /* Added full height */
+  position: fixed;  
+  top: 120px;
+  right: 0;  /* Added to position at right */
+  padding: 20px;  /* Added padding to match left container */
+  /* overflow-y: auto;   */
+}
+
+/* Header */
+.settings-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Search Bar */
+.settings-search {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.settings-search-bar {
+  width: 100%;
+  padding: 8px 30px 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.settings-search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #666;
+}
+
+/* Menu Items */
+.settings-menu-items {
+  max-height: 400px;
+}
+
+.settings-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Alternating background colors for menu items */
+.settings-menu-item:nth-child(odd) {
+  background-color: #ffe6e6;
+}
+
+.settings-menu-item:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.settings-menu-item:hover {
+  background-color: #e0e0e0;
+}
+
+.settings-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  color: #666;
+}
+
+.settings-arrow {
+  margin-left: auto;
+  width: 16px;
+  height: 16px;
+  color: #999;
+}
+
+/* Submenu Items */
+.settings-submenu-item {
+  display: flex;
+  align-items: center;
+  padding: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Alternating background colors for submenu items */
+.settings-submenu-item:nth-child(odd) {
+  background-color: #ffe6e6;
+}
+
+.settings-submenu-item:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.settings-submenu-item:hover {
+  background-color: #e0e0e0;
+}
+
+/* Toggle Switch */
+.settings-toggle {
+  margin-left: auto;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+  position: relative;
+}
+
+.settings-toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.settings-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.settings-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.settings-toggle-input:checked + .settings-toggle-slider {
+  background-color: #4caf50;
+}
+
+.settings-toggle-input:checked + .settings-toggle-slider:before {
+  transform: translateX(14px);
+}
+
+
+
+
+.settings-sign-out {
+  color: #ff4444;
+  margin-top: 50px;
+  
+  /* width: 100%; */
+}
+

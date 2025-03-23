@@ -16,6 +16,8 @@ import ProfileEditSection from "./Componets/ProfileEditSection/ProfileEditSectio
 import FullFlowerSectionPage from "./Componets/FullFlowerSectionPage/FullFlowerSectionPage.jsx";
 import PersonalInfoUpdate from "./Componets/PersonalInfoUpdate/PersonalInfoUpdate.jsx";
 import MessageFinalclass from "./Componets/MessageFinalClass/MessageFinalclass.jsx";
+import SelfProfile from "./Componets/Self-Profile/SelfProfile.jsx";
+import SelfSetting from "./Componets/SelfSetting/SelfSetting.jsx";
 function App() {
   return (
     <Router>
@@ -36,6 +38,8 @@ function App() {
           <Route path="/FullFlowerSectionPage/:userId" element={<FullFlowerSectionPage />} />
           <Route path="/PersonalInfoUpdate" element={<PersonalInfoUpdate/>} />
           <Route path="/MessageFinalclass" element={<MessageFinalclass/>} />
+          <Route path="/SelfProfile" element={<SelfProfile/>} />
+          <Route path="/SelfSetting" element={<SelfSetting/>} />
         </Routes>
       </div>
     </Router>

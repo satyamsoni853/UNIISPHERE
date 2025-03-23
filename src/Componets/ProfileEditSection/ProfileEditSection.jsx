@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef,useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./ProfileEditSection.css";
 import { FiEdit } from "react-icons/fi";
 import image from "./Person.png";
@@ -14,16 +15,16 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function ProfileEditSection() {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  
-    useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
-      };
-  
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   // State variables
   const [profilePic, setProfilePic] = useState(image);
   const [collabs, setCollabs] = useState(10);
@@ -108,10 +109,9 @@ function ProfileEditSection() {
           <div className="Followers-middle-section-2-mainParent-public">
             <div className="Followers-middle-section-2-middle-container-public">
               <div className="Followers-middle-section-2-middle-section-public">
-
-              <div className="Followers-middle-section-2-top-nav-Icon">
-                <IoArrowBackCircleOutline className="Followers-middle-section-2-backLogo"/>
-              </div>
+                <div className="Followers-middle-section-2-top-nav-Icon">
+                  <IoArrowBackCircleOutline className="Followers-middle-section-2-backLogo" />
+                </div>
 
                 {/* Profile Details */}
                 <div className="Followers-middle-section-2-profile-header-public">
@@ -134,7 +134,9 @@ function ProfileEditSection() {
                 {/* Name and Details */}
                 <div className="Followers-middle-section-2-profile-info-public">
                   <div className="Followers-middle-section-2-nameAndEdit-public">
-                    <FiEdit className="Followers-middle-section-2-icon-public" />
+                  <Link to="/PersonalInfoUpdate">
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
                     <p>{name}</p>
                   </div>
                   <p>{title}</p>
@@ -183,7 +185,9 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-upload-section-public">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
                     <p>Experience</p>
-                    <FiEdit className="Followers-middle-section-2-icon-public" />
+                    <Link to="/AboutAndExperiance">
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
                   </div>
                   <h6>No Experience yet.</h6>
                 </div>
@@ -192,7 +196,9 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-skills-section-public">
                   <div className="Followers-middle-section-2-headingAndIcons-public">
                     <h3>Skills</h3>
-                    <FiEdit className="Followers-middle-section-2-icon-public" />
+                    <Link to="/Skill">
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
                   </div>
                   <div className="Followers-middle-section-2-scroll-container">
                     <button
@@ -227,7 +233,10 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-upload-section-public">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
                     <p>Collabs</p>
-                    <FiEdit className="Followers-middle-section-2-icon-public" />
+                    {/* <FiEdit className="Followers-middle-section-2-icon-public" /> */}
+                    <Link to="/Collab">
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
                   </div>
                   <h6>No Collab yet.</h6>
                 </div>
@@ -236,7 +245,9 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-skills-section-public">
                   <div className="Followers-middle-section-2-headingAndIcons-public">
                     <h3>Interests</h3>
-                    <FiEdit className="Followers-middle-section-2-icon-public" />
+                    <Link to="/Interset">
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
                   </div>
                   <div className="Followers-middle-section-2-scroll-container">
                     <button
@@ -271,7 +282,9 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-main-education-public">
                   <div className="Followers-middle-section-2-education-headingAndEdit-public">
                     <h3>Education</h3>
-                    <FiEdit className="Followers-middle-section-2-icon-public" />
+                    <Link to="/Collab">
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
                   </div>
                   <div className="Followers-middle-section-2-buttons-section-public">
                     <button className="mit">MIT</button>

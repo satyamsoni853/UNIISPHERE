@@ -277,6 +277,9 @@
 .Followers-middle-section-2-backLogo{
   font-size: 30px;
 }
+.Followers-middle-section-2-icon-public{
+  color: black;
+}
 
 
 @media (max-width: 1023px) {
