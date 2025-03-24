@@ -23,8 +23,14 @@ function DesktopNavbarr() {
     // Add your sign-out logic here (e.g., clear auth token, redirect)
     console.log("User signed out");
   };
+
   const handleEditProfile = () => {
-    navigate("/ProfileEditSection"); // Navigate to /editpage
+    const userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
+    if (userId) {
+      navigate(`/ProfileEditSection/${userId}`); // Pass userId in the URL
+    } else {
+      console.error("User ID not found in localStorage.");
+    }
   };
 
   return (

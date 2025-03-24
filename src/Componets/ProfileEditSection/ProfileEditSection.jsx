@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./ProfileEditSection.css";
 import { FiEdit } from "react-icons/fi";
 import image from "./Person.png";
@@ -16,6 +16,9 @@ import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function ProfileEditSection() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,44 +28,67 @@ function ProfileEditSection() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const storedUserId = localStorage.getItem("userId");
+        if (!storedUserId) {
+          throw new Error("User ID not found in localStorage.");
+        }
+        setUserId(storedUserId);
+        console.log("the stored user id id"+storedUserId);
+        
+
+        const response = await axios.get(
+          `https://uniisphere-1.onrender.com/users/profile/${storedUserId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          setUserData(response.data);
+          console.log("API Response:", response.data); // Debugging
+          alert("Data loaded successfully!");
+        }
+      } catch (err) {
+        alert("Failed to load data. Please try again later.");
+        console.error("Error fetching user data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Update state variables when userData changes
+  useEffect(() => {
+    if (userData) {
+      setName(userData.username || "John Doe");
+      setTitle(userData.headline || "Building Uniisphere|Masters Union");
+      setAddress(userData.location || "New York, USA");
+      setSkills(userData.skills || []);
+      setInterests(userData.interests || []);
+      setEducation(userData.education || []);
+      setFullAboutText(userData.about || "Passionate developer...");
+    }
+  }, [userData]);
+
   // State variables
-  const [profilePic, setProfilePic] = useState(image);
-  const [collabs, setCollabs] = useState(10);
-  const [connections, setConnections] = useState(50);
+  const [profilePic, setProfilePic] = useState(userData?.profilePicture || image);
+  const [collabs, setCollabs] = useState(userData?.collabs || 10);
+  const [connections, setConnections] = useState(userData?.connections || 50);
   const [name, setName] = useState("John Doe");
   const [title, setTitle] = useState("Building Uniisphere|Masters Union");
   const [address, setAddress] = useState("New York, USA");
   const [buttons, setButtons] = useState(["Message", "Connect"]);
-  const [skills, setSkills] = useState([
-    "React",
-    "Node.js",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "JavaScript",
-    "React",
-  ]);
-  const [interests, setInterests] = useState([
-    "React",
-    "Node.js",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "JavaScript",
-    "React",
-  ]);
-  const [education, setEducation] = useState([
-    "MIT",
-    "Harvard",
-    "10th",
-    "12th",
-  ]);
+  const [skills, setSkills] = useState([]);
+  const [interests, setInterests] = useState([]);
+  const [education, setEducation] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Refs for scrolling
@@ -71,7 +97,7 @@ function ProfileEditSection() {
 
   // About Section with "See More" Feature
   const [fullAboutText, setFullAboutText] = useState(
-    "Passionate developer with experience in web and mobile development. I specialize in React, Node.js, and building scalable applications. Love to work on open-source projects and contribute to the tech community."
+    "Passionate developer with experience in web and mobile development."
   );
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
@@ -96,6 +122,8 @@ function ProfileEditSection() {
     }
   };
 
+  if (loading) return <p>Loading...</p>;
+
   return (
     <div>
       <DesktopNavbarr />
@@ -117,24 +145,24 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-profile-header-public">
                   <div className="Followers-middle-section-2-imageContainer-public">
                     <img
-                      src={profilePic}
+                      src={userData?.profilePicture || profilePic}
                       alt="Profile"
                       className="Followers-middle-section-2-profile-pic-public"
                     />
                   </div>
                   <div className="Followers-middle-section-2-collabsDetails-public">
-                    <h4>Collabs</h4> <span>{collabs}</span>
+                    <h4>Collabs</h4> <span>{userData?.collabs || collabs}</span>
                   </div>
                   <div className="Followers-middle-section-2-connectionsDetails-public">
                     <h4>Connections</h4>
-                    <span>{connections}</span>
+                    <span>{userData?.connections || connections}</span>
                   </div>
                 </div>
 
                 {/* Name and Details */}
                 <div className="Followers-middle-section-2-profile-info-public">
                   <div className="Followers-middle-section-2-nameAndEdit-public">
-                  <Link to="/PersonalInfoUpdate">
+                    <Link to={`/PersonalInfoUpdate/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                     <p>{name}</p>
@@ -185,7 +213,7 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-upload-section-public">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
                     <p>Experience</p>
-                    <Link to="/AboutAndExperiance">
+                    <Link to={`/AboutAndExperiance/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
@@ -196,7 +224,7 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-skills-section-public">
                   <div className="Followers-middle-section-2-headingAndIcons-public">
                     <h3>Skills</h3>
-                    <Link to="/Skill">
+                    <Link to={`/Skill/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
@@ -233,8 +261,7 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-upload-section-public">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
                     <p>Collabs</p>
-                    {/* <FiEdit className="Followers-middle-section-2-icon-public" /> */}
-                    <Link to="/Collab">
+                    <Link to={`/Collab/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
@@ -245,7 +272,7 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-skills-section-public">
                   <div className="Followers-middle-section-2-headingAndIcons-public">
                     <h3>Interests</h3>
-                    <Link to="/Interset">
+                    <Link to={`/Interset/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
@@ -282,7 +309,7 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-main-education-public">
                   <div className="Followers-middle-section-2-education-headingAndEdit-public">
                     <h3>Education</h3>
-                    <Link to="/Collab">
+                    <Link to={`/Collab/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
