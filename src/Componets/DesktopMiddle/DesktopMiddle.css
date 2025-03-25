@@ -94,7 +94,7 @@
 }
 
 .middle-icon {
-  font-size: 20px;
+  height: 20px;
   transition: color 0.3s, transform 0.3s; /* Combined transitions */
 }
 
@@ -718,244 +718,183 @@
 }
 
 
+ 
+/* 
+##=========================SHARE BOX CSS=========================## */
 
-/* Media Query for Mobile View (max-width: 768px) */
-@media (max-width: 768px) {
-  /* Main Container */
-  .Full-comment-section-main-container {
-    flex-direction: column;
-    max-width: 100%;
-    border-radius: 0;
-    box-shadow: none;
-  }
 
-  /* Hide Left Section */
-  .Full-comment-section-left-section {
-    display: none;
-  }
+/* Main Container */
+.Full-share-section-main-container {
+z-index: 99;
+  width: 1193px;
+  height: 693px;
+  position: fixed;
+  left: 12%;
+  bottom: 0;
+   display: flex;
+   flex-direction: row;
+   padding: 10px;
+   background-color: white;
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+ }
+ 
+ /* Left Section */
+ .Full-share-section-left-section {
+   flex: 0 0 60%;
+   display: flex;
+   flex-direction: column;
+   padding: 20px;
+ }
+ 
+ .Full-share-section-user-profile-header {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+  justify-content: space-between;
+ }
+ .Full-share-section-top-image-and-names {
+   display: flex;
+   gap: 3px;
+ }
+ 
+ .Full-share-section-profile-picture {
+   width: 40px;
+   height: 40px;
+   border-radius: 50%;
+ }
+  
+ 
+ .Full-share-section-user-info {
+   display: flex;
+   flex-direction: column;
+   gap: 0;
+ }
+ 
+ .Full-share-section-user-name {
+   font-weight: bold;
+   font-size: 16px;
+ }
+ 
+ .Full-share-section-user-details {
+   font-size: 14px;
+   color: gray;
+ }
+ 
+ .Full-share-section-menu-icon {
+   height: 25px;
+ }
+ 
+ .Full-share-section-photo-container {
+   padding-top: 20px;
+ }
+ 
+ .Full-share-section-post-photo {
+   width: 100%;
+   height: 75%;
+   border-radius: 10px;
+   object-fit: cover;
+ }
+ 
+ /* Right Section */
+ .Full-share-section-right-section {
+   width: 50%;
+   position: relative;
+   flex: 0 0 40%;
+   gap: 15px;
+   display: flex;
+   flex-direction: column;
+   padding: 20px;
+   border-left: 2px solid #9d9c9c;
+ }
+ .Full-share-section-heading{
+   font-size: 30px;
+ }
 
-  /* Right Section */
-  .Full-comment-section-right-section {
-    width: 50%;
-    background-color: blue;
-    flex: 1;
-    padding: 15px;
-    border-left: none;
-  }
-
-  /* Comments Header */
-  .Full-comment-section-comments-heading {
-    font-size: 20px;
-    
-  }
-
-  /* Comments List */
-  .Full-comment-section-comments-list {
-    max-height: 400px;
-  }
-
-  /* Comment Main Parent */
-  .Full-comment-section-comment-main-parent {
-    width: 100%;
-    gap: 8px;
-  }
-
-  /* Comment */
-  .Full-comment-section-comment {
-    width: 75%;
-    gap: 8px;
-  }
-
-  /* Comment Profile Picture */
-  .Full-comment-section-comment-profile-picture {
-    width: 25px;
-    height: 25px;
-  }
-
-  /* Comment Content */
-  .Full-comment-section-comment-content {
-    width: 100%;
-  }
-
-  /* Comment User Info */
-  .Full-comment-section-comment-user-info {
-    gap: 4px;
-  }
-
-  /* Comment Username */
-  .Full-comment-section-comment-username {
-    font-size: 14px;
-  }
-
-  /* Comment Timestamp */
-  .Full-comment-section-comment-timestamp {
-    font-size: 10px;
-  }
-
-  /* Comment Text */
-  .Full-comment-section-comment-text {
-    font-size: 12px;
-  }
-
-  /* Comment Actions */
-  .Full-comment-section-comment-actions {
-    gap: 8px;
-  }
-
-  /* Reply Link */
-  .Full-comment-section-reply-link {
-    font-size: 10px;
-  }
-
-  /* Comment Likes */
-  .Full-comment-section-comment-likes {
-    width: 25%;
-    gap: 4px;
-  }
-
-  /* Like Button */
-  .Full-comment-section-like-button {
-    height: 0.8rem;
-    width: 0.8rem;
-  }
-
-  /* Likes Count */
-  .Full-comment-section-comment-likes span {
-    font-size: 0.7rem;
-  }
-
-  /* Comment Input and Image */
-  .Full-comment-section-comment-input-and-image {
-    padding-top: 15px;
-    gap: 8px;
-  }
-
-  /* Comment Person Image */
-  .Full-comment-section-commentPerson-image {
-    height: 35px;
-    width: 35px;
-  }
-
-  /* Comment Input */
-  .Full-comment-section-comment-input-and-image input {
-    padding: 8px;
-    font-size: 12px;
-    border-radius: 15px;
-  }
-
-  .Full-comment-section-comment-input-and-image input::placeholder {
-    font-size: 12px;
-  }
+ .Full-share-section-innerDiv{
+   display: flex;
+ }
+ .Full-share-section-AvtaarAndName-collection{
+   display: flex;
+   flex-wrap: wrap;
+   width: 80%;
+ }
+ 
+ 
+.Full-share-section-AvtaarAndName{
+   width: 100px;
+   height: 100px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
 }
-
-/* Additional Media Query for Smaller Screens (max-width: 480px) */
-@media (max-width: 480px) {
-  /* Right Section */
-  .Full-comment-section-right-section {
-    padding: 10px;
-  }
-
-  /* Comments Header */
-  .Full-comment-section-comments-header {
-    font-size: 12px;
-    padding-bottom: 6px;
-  }
-
-  /* Comment */
-  .Full-comment-section-comment {
-    width: 70%;
-    gap: 6px;
-  }
-
-  /* Comment Profile Picture */
-  .Full-comment-section-comment-profile-picture {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Comment Username */
-  .Full-comment-section-comment-username {
-    font-size: 12px;
-  }
-
-  /* Comment Timestamp */
-  .Full-comment-section-comment-timestamp {
-    font-size: 8px;
-  }
-
-  /* Comment Text */
-  .Full-comment-section-comment-text {
-    font-size: 10px;
-  }
-
-  /* Reply Link */
-  .Full-comment-section-reply-link {
-    font-size: 8px;
-  }
-
-  /* Comment Likes */
-  .Full-comment-section-comment-likes {
-    width: 30%;
-    gap: 3px;
-  }
-
-  /* Like Button */
-  .Full-comment-section-like-button {
-    height: 0.6rem;
-    width: 0.6rem;
-  }
-
-  /* Likes Count */
-  .Full-comment-section-comment-likes span {
-    font-size: 0.6rem;
-  }
-
-  /* Comment Input and Image */
-  .Full-comment-section-comment-input-and-image {
-    padding-top: 10px;
-    gap: 6px;
-  }
-
-  /* Comment Person Image */
-  .Full-comment-section-commentPerson-image {
-    height: 30px;
-    width: 30px;
-  }
-
-  /* Comment Input */
-  .Full-comment-section-comment-input-and-image input {
-    padding: 6px;
-    font-size: 10px;
-    border-radius: 12px;
-  }
-
-  .Full-comment-section-comment-input-and-image input::placeholder {
-    font-size: 10px;
-  }
-  .Full-comment-section-main-container {
-      display: flex;
-      width: 3/4;
-      justify-content: center;
-      align-items: center;
-  }
-  .Full-comment-section-right-section {
-      width: 80vw;
-  }
-  .Full-comment-section-comment-input-and-image input {
-      width: 80%;
-  }
+.Full-share-section-AvtaarAndName img{
+   height: 65%;
+   width: 65%;
+   border-radius: 50%;
 }
-
-@media (width<=768px) {
-  .Full-comment-section-main-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  .Full-comment-section-right-section {
-      width: 80vw;
-  }
-  .Full-comment-section-comment-input-and-image input {
-      width: 80%;
-  }
+.Full-share-section-AvtaarAndName h1{
+   font-size: 18px;
 }
+.Full-share-section-AllIcons{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+}
+.Full-share-section-AllIcons img{
+   height: 45px;
+}
+ 
+ .Full-share-section-share-input-and-image {
+   padding-top: 20px;
+   display: flex;
+   gap: 10px;
+ }
+ 
+ .Full-share-section-share-input-and-image input {
+   width: 100%;
+   padding: 0 10px;
+   box-shadow: inset 2px 2px 4px #00000040, inset -2px -2px 4px #00000040;
+   background-color: #fdf9f9;
+   border-radius: 20px;
+   font-size: 14px;
+ }
+ 
+ .Full-share-section-share-input-and-image input::placeholder {
+   color: #000;
+   font-size: 0.9rem;
+ }
+ 
+ .Full-share-section-sharePerson-image {
+   height: 40px;
+   width: 40px;
+   border-radius: 50%;
+ }
+ 
+  
+ 
+ .Full-share-section-action-buttons {
+   display: flex;
+  
+   flex-direction: row;
+   justify-content: space-between;
+   padding-top: 10px;
+   align-items: center;
+ }
+ 
+ .Full-share-section-share-like-share-icon
+ 
+ {
+   display: flex;
+   gap: 13px;
+ }
+ 
+  
+ 
+ .Full-share-section-cross-button{
+   position: absolute;
+   top: 0 ;
+   right: 1rem;
+   font-size: 2.3rem;
+ }
