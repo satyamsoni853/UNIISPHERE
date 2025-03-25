@@ -30,6 +30,9 @@ function UserLogin() {
         // Extract token and user ID from response
         const token = response.data.token;
         const userId = response.data.user.id;
+        // Print user ID and token to the console
+        console.log("User ID:", userId);
+        console.log("Token:", token);
 
         // Store in localStorage for persistence
         localStorage.setItem("authToken", token);

@@ -18,28 +18,51 @@ import PersonalInfoUpdate from "./Componets/PersonalInfoUpdate/PersonalInfoUpdat
 import MessageFinalclass from "./Componets/MessageFinalClass/MessageFinalclass.jsx";
 import SelfProfile from "./Componets/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Componets/SelfSetting/SelfSetting.jsx";
+import MessageFinalClass2 from "./Componets/MessageFinalclass-2/MessageFinalClass2.jsx";
+
 function App() {
   return (
     <Router>
       <div className="app-container">
         <Routes>
-          <Route path="/home" element={<UserLogin />} />
+          {/* Public Routes */}
           <Route path="/" element={<UserLogin />} />
+          <Route path="/home" element={<UserLogin />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/signup" element={<UserSignupwithemailandpass />} />
           <Route path="/AfterOtpSection1" element={<AfterOtpSection1 />} />
+
+          {/* Protected Routes (require userId) */}
           <Route path="/View" element={<View />} />
-          <Route path="/FollowerMiddleSectionPrivacy" element={<DesFollowerMiddleSectionPrivacy />} />
-          <Route path="/Interset" element={<Interset />} />
-          <Route path="/Collab" element={<CollabForm />} />
-          <Route path="/AboutAndExperiance" element={<AboutAndExperiance/>} />
-          <Route path="/Skill" element={<SkillForm/>} />
-          <Route path="/ProfileEditSection" element={<ProfileEditSection/>} />
-          <Route path="/FullFlowerSectionPage/:userId" element={<FullFlowerSectionPage />} />
-          <Route path="/PersonalInfoUpdate" element={<PersonalInfoUpdate/>} />
-          <Route path="/MessageFinalclass" element={<MessageFinalclass/>} />
-          <Route path="/SelfProfile" element={<SelfProfile/>} />
-          <Route path="/SelfSetting" element={<SelfSetting/>} />
+          <Route
+            path="/FollowerMiddleSectionPrivacy"
+            element={<DesFollowerMiddleSectionPrivacy />}
+          />
+          <Route
+            path="/ProfileEditSection/:userId"
+            element={<ProfileEditSection />}
+          />
+          <Route
+            path="/FullFlowerSectionPage/:userId"
+            element={<FullFlowerSectionPage />}
+          />
+          <Route
+            path="/PersonalInfoUpdate/:userId"
+            element={<PersonalInfoUpdate />}
+          />
+          <Route path="/Skill/:userId" element={<SkillForm />} />
+          <Route path="/Collab/:userId" element={<CollabForm />} />
+          <Route path="/Interset/:userId" element={<Interset />} />
+          <Route
+            path="/AboutAndExperiance/:userId"
+            element={<AboutAndExperiance />}
+          />
+
+          {/* Other Routes */}
+          <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
+          <Route path="/SelfProfile" element={<SelfProfile />} />
+          <Route path="/SelfSetting" element={<SelfSetting />} />
+          <Route path="/MessageFinalClass2" element={<MessageFinalClass2 />} />
         </Routes>
       </div>
     </Router>
