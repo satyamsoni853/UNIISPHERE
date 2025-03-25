@@ -11,7 +11,7 @@ import Profileimage from "./Profile-image.png";
 import Commenticonsvg from "./Commenticon.svg";
 
 // Comment box data
-import profilePhoto from "./profilePhoto.png";
+//import profilePhoto from "./profilePhoto.png";
 import Threedot from "./Threedot.svg";
 import Connect from "./Connect.png";
 import ShareIcon from "./Share.svg";
