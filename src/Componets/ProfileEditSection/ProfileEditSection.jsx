@@ -20,6 +20,11 @@ function ProfileEditSection() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Use a ref to track if the alert has been shown
+  const hasAlerted = useRef(false);
+  // Use a ref to track if the data has been fetched
+  const hasFetched = useRef(false);
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -29,16 +34,50 @@ function ProfileEditSection() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Function to log user details in a structured way
+  const logUserDetails = (data) => {
+    // Check if data is an array and extract the first object if necessary
+    const user = Array.isArray(data) ? data[0] : data;
+
+    console.log("=== User Details ===");
+    console.log("User ID:", user.id || user._id); // Handle both `id` and `_id` (in case the API uses `_id`)
+    console.log("Username:", user.username);
+    console.log("Email:", user.email);
+    console.log("First Name:", user.firstName);
+    console.log("Last Name:", user.lastName);
+    console.log("Phone Number:", user.phoneNumber);
+    console.log("Profile Picture URL:", user.profilePictureUrl);
+    console.log("Headline:", user.headline);
+    console.log("Location:", user.location);
+    console.log("Gender:", user.gender);
+    console.log("Skills:", user.Skills || user.skills); // Handle case sensitivity
+    console.log("Python:", user.python);
+    console.log("About:", user.About || user.about); // Handle case sensitivity
+    console.log("Interests:", user.Interests || user.interests); // Handle case sensitivity
+    console.log("Work or Project:", user.workorProject);
+    console.log("College:", user.college);
+    console.log("Degree:", user.degree);
+    console.log("Connections Count:", user._count?.connections); // Handle nested `_count` field
+    console.log("===================");
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
+      // Prevent duplicate fetching
+      if (hasFetched.current) {
+        console.log("Data already fetched, skipping...");
+        return;
+      }
+      hasFetched.current = true;
+
+      console.log("Fetching user data...");
       try {
         const storedUserId = localStorage.getItem("userId");
         if (!storedUserId) {
           throw new Error("User ID not found in localStorage.");
         }
         setUserId(storedUserId);
-        console.log("the stored user id id"+storedUserId);
-        
+        console.log("The stored user ID is:", storedUserId);
 
         const response = await axios.get(
           `https://uniisphere-1.onrender.com/users/profile/${storedUserId}`,
@@ -51,8 +90,7 @@ function ProfileEditSection() {
 
         if (response.status === 200) {
           setUserData(response.data);
-          console.log("API Response:", response.data); // Debugging
-          alert("Data loaded successfully!");
+          logUserDetails(response.data);
         }
       } catch (err) {
         alert("Failed to load data. Please try again later.");
@@ -65,16 +103,26 @@ function ProfileEditSection() {
     fetchUserData();
   }, []);
 
+  // Show alert when userData is updated, but only once
+  useEffect(() => {
+    if (userData && !hasAlerted.current) {
+      hasAlerted.current = true;
+      alert("Data loaded successfully!");
+    }
+  }, [userData]);
+
   // Update state variables when userData changes
   useEffect(() => {
     if (userData) {
-      setName(userData.username || "John Doe");
-      setTitle(userData.headline || "Building Uniisphere|Masters Union");
-      setAddress(userData.location || "New York, USA");
-      setSkills(userData.skills || []);
-      setInterests(userData.interests || []);
-      setEducation(userData.education || []);
-      setFullAboutText(userData.about || "Passionate developer...");
+      // Handle array response by extracting the first object
+      const user = Array.isArray(userData) ? userData[0] : userData;
+      setName(user.username || "John Doe");
+      setTitle(user.headline || "Building Uniisphere|Masters Union");
+      setAddress(user.location || "New York, USA");
+      setSkills(user.Skills || user.skills || []);
+      setInterests(user.Interests || user.interests || []);
+      setEducation(user.education || []);
+      setFullAboutText(user.About || user.about || "Passionate developer...");
     }
   }, [userData]);
 

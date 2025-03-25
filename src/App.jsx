@@ -18,6 +18,7 @@ import PersonalInfoUpdate from "./Componets/PersonalInfoUpdate/PersonalInfoUpdat
 import MessageFinalclass from "./Componets/MessageFinalClass/MessageFinalclass.jsx";
 import SelfProfile from "./Componets/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Componets/SelfSetting/SelfSetting.jsx";
+import MessageFinalClass2 from "./Componets/MessageFinalclass-2/MessageFinalClass2.jsx";
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
           <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
           <Route path="/SelfProfile" element={<SelfProfile />} />
           <Route path="/SelfSetting" element={<SelfSetting />} />
+          <Route path="/MessageFinalClass2" element={<MessageFinalClass2 />} />
         </Routes>
       </div>
     </Router>
