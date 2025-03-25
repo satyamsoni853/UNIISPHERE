@@ -123,30 +123,7 @@ const [showShare,setshowShare]=useState(false)
       name: "Rohit",
       avatar: profilePhoto,
     },
-    {
-      name: "Anjali",
-      avatar: profilePhoto,
-    },
-    {
-      name: "Rohit",
-      avatar: profilePhoto,
-    },
-    {
-      name: "Anjali",
-      avatar: profilePhoto,
-    },
-    {
-      name: "Rohit",
-      avatar: profilePhoto,
-    },
-    {
-      name: "Anjali",
-      avatar: profilePhoto,
-    },
-    {
-      name: "Rohit",
-      avatar: profilePhoto,
-    },
+   
   ];
 
   const [posts, setPosts] = useState([]);
