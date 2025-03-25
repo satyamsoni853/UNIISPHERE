@@ -40,7 +40,7 @@ function ProfileEditSection() {
     const user = Array.isArray(data) ? data[0] : data;
 
     console.log("=== User Details ===");
-    console.log("User ID:", user.id || user._id); // Handle both `id` and `_id` (in case the API uses `_id`)
+    console.log("User ID:", user.userId || user._id); // Handle both `id` and `_id` (in case the API uses `_id`)
     console.log("Username:", user.username);
     console.log("Email:", user.email);
     console.log("First Name:", user.firstName);
@@ -49,15 +49,15 @@ function ProfileEditSection() {
     console.log("Profile Picture URL:", user.profilePictureUrl);
     console.log("Headline:", user.headline);
     console.log("Location:", user.location);
-    console.log("Gender:", user.gender);
-    console.log("Skills:", user.Skills || user.skills); // Handle case sensitivity
+    console.log("Gender:", user.Gender);
+    console.log("Skills:", user.Skills || user.Skills); // Handle case sensitivity
     console.log("Python:", user.python);
-    console.log("About:", user.About || user.about); // Handle case sensitivity
-    console.log("Interests:", user.Interests || user.interests); // Handle case sensitivity
+    console.log("About:", user.About || user.About); // Handle case sensitivity
+    console.log("Interests:", user.Interests || user.Interests); // Handle case sensitivity
     console.log("Work or Project:", user.workorProject);
     console.log("College:", user.college);
     console.log("Degree:", user.degree);
-    console.log("Connections Count:", user._count?.connections); // Handle nested `_count` field
+    console.log("Connections Count:", user._count?.connections1); // Handle nested `_count` field
     console.log("===================");
   };
 
