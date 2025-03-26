@@ -378,7 +378,8 @@ function DesktopMiddle() {
           {/* Left Section */}
           <div className="Full-comment-desktop-section-left-section">
             <div className="Full-comment-desktop-section-user-profile-header">
-              <img
+      <div className="Full-comment-desktop-profile-dot-name">
+      <img
                 src={userData.profilePicture}
                 alt="Profile"
                 className="Full-comment-desktop-section-profile-picture"
@@ -401,6 +402,7 @@ function DesktopMiddle() {
                   </span>
                 </div>
               </div>
+      </div>
               <img
                 src={Threedot}
                 className="Full-comment-desktop-section-menu-icon"
