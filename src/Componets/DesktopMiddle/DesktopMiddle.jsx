@@ -403,6 +403,8 @@ function DesktopMiddle() {
                 </div>
               </div>
       </div>
+
+
               <img
                 src={Threedot}
                 className="Full-comment-desktop-section-menu-icon"
@@ -508,7 +510,7 @@ function DesktopMiddle() {
               }}
               className="Full-comment-desktop-section-cross-button"
             >
-              {" "}
+             
               ×
             </button>
           </div>
