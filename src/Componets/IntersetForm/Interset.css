@@ -185,6 +185,18 @@
   font-size: 16px;
   outline: none;
 }
+.middle-interest-tag {
+  padding: 8px 16px;
+  margin: 4px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.middle-interest-tag.selected {
+  background-color: #007bff; /* Example: blue background for selected */
+  color: white; /* White text for contrast */
+}
 
 .search-icon {
   position: absolute;
@@ -243,6 +255,18 @@
   .Interest-middle-main-container {
     width: 100%;
   }
+  .middle-interest-tag {
+  padding: 8px 16px;
+  margin: 4px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.middle-interest-tag.selected {
+  background-color: #007bff; /* Example: blue background for selected */
+  color: white; /* White text for contrast */
+}
 
   .middle-interest-container {
     max-width: 100%;

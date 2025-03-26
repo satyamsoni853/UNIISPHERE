@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { FiSearch } from "react-icons/fi"; // Importing search icon
+import { FiSearch } from "react-icons/fi";
 import "./Interset.css";
 import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
@@ -9,115 +9,46 @@ import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
+import axios from "axios"; // Import axios for API calls
+import { useNavigate } from "react-router-dom"; // For navigation
+
 function Interset() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const navigate = useNavigate(); // Hook for navigation
 
+  // Initial interests and selected interests state
+  const [interest, setInterest] = useState([
+    "UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop", "Swift",
+    "Kotlin", "SQL", "MongoDB", "React", "Angular", "Node.js", "Java", "HTML",
+    "JavaScript", "TypeScript", "Next.js", "Vue.js", "Bootstrap", "Tailwind CSS",
+    "Material UI", "Chakra UI", "Redux", "Express.js", "Spring Boot", "Django",
+    "Flask", "Ruby on Rails", "ASP.NET", "GraphQL", "REST API", "Firebase",
+    "PostgreSQL", "Redis", "Docker", "Kubernetes", "AWS", "Google Cloud", "Azure",
+    "Linux", "Git", "Go", "Rust",
+  ]);
+  const [Slideinterest, setSlideInterest] = useState([
+    "UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop", "Swift",
+    "Kotlin", "SQL", "MongoDB", "React", "Angular", "Node.js", "Java",
+  ]);
+  const [selectedInterests, setSelectedInterests] = useState([]); // Track selected interests
+
+  const [color] = useState(["#F3FDF4", "#FDF9F9", "#eaead6", "#F7F7F7"]);
+
+  const tagsRef1 = useRef(null);
+  const tagsRef2 = useRef(null);
+
+  // Handle window resize
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const [interest, setInterest] = useState([
-    "UI/UX",
-    "JAVA",
-    "CSS",
-    "C++",
-    "Python",
-    "V+",
-    "Figma",
-    "Photoshop",
-    "Swift",
-    "Kotlin",
-    "SQL",
-    "MongoDB",
-    "React",
-    "Angular",
-    "Node.js",
-    "UI/UX",
-    "Java",
-    "CSS",
-    "C++",
-    "Python",
-    "V+",
-    "Figma",
-    "Photoshop",
-    "Swift",
-    "Kotlin",
-    "SQL",
-    "MongoDB",
-    "React",
-    "Angular",
-    "Node.js",
-    "Java",
-    "HTML",
-    "JavaScript",
-    "TypeScript",
-    "Next.js",
-    "Vue.js",
-    "Bootstrap",
-    "Tailwind CSS",
-    "Material UI",
-    "Chakra UI",
-    "Redux",
-    "Express.js",
-    "Spring Boot",
-    "Django",
-    "Flask",
-    "Ruby on Rails",
-    "ASP.NET",
-    "GraphQL",
-    "REST API",
-    "Firebase",
-    "PostgreSQL",
-    "Redis",
-    "Docker",
-    "Kubernetes",
-    "AWS",
-    "Google Cloud",
-    "Azure",
-    "Linux",
-    "Git",
-    "Go",
-    "Rust",
-  ]);
-  const [Slideinterest, setSlideInterest] = useState([
-    "UI/UX",
-    "JAVA",
-    "CSS",
-    "C++",
-    "Python",
-    "V+",
-    "Figma",
-    "Photoshop",
-    "Swift",
-    "Kotlin",
-    "SQL",
-    "MongoDB",
-    "React",
-    "Angular",
-    "Node.js",
-    "Java",
-  ]);
-
-  const [color, setColor] = useState([
-    "#F3FDF4",
-    "#FDF9F9",
-    "#eaead6",
-    "#F7F7F7",
-  ]);
-
-  const tagsRef1 = useRef(null); // Ref for the first row
-  const tagsRef2 = useRef(null); // Ref for the second row
-
-  // Split the interest array into two rows
+  // Split interests into two rows
   const row1 = interest.slice(0, Math.ceil(interest.length / 2));
   const row2 = interest.slice(Math.ceil(interest.length / 2));
 
-  // Scroll Left for both rows
+  // Scroll functions
   const scrollLeft = () => {
     if (tagsRef1.current && tagsRef2.current) {
       tagsRef1.current.scrollBy({ left: -200, behavior: "smooth" });
@@ -125,11 +56,61 @@ function Interset() {
     }
   };
 
-  // Scroll Right for both rows
   const scrollRight = () => {
     if (tagsRef1.current && tagsRef2.current) {
       tagsRef1.current.scrollBy({ left: 200, behavior: "smooth" });
       tagsRef2.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
+  // Handle interest selection
+  const handleInterestClick = (skill) => {
+    if (selectedInterests.includes(skill)) {
+      setSelectedInterests(selectedInterests.filter((item) => item !== skill));
+    } else {
+      setSelectedInterests([...selectedInterests, skill]);
+    }
+  };
+
+  // Cancel button functionality
+  const handleCancel = () => {
+    setSelectedInterests([]); // Reset selected interests
+    navigate(-1); // Navigate back to the previous page
+  };
+
+  // Save button functionality
+  const handleSave = async () => {
+    if (selectedInterests.length === 0) {
+      alert("Please select at least one interest to save.");
+      return;
+    }
+
+    try {
+      const userId = localStorage.getItem("userId");
+      const authToken = localStorage.getItem("authToken");
+
+      if (!userId || !authToken) {
+        throw new Error("User not authenticated.");
+      }
+
+      // Placeholder API call to save interests
+      const response = await axios.post(
+        `https://uniisphere-1.onrender.com/users/profile/${userId}/interests`,
+        { interests: selectedInterests },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Interests saved successfully!");
+        navigate("/profile"); // Redirect to profile page after saving
+      }
+    } catch (error) {
+      console.error("Error saving interests:", error);
+      alert("Failed to save interests. Please try again.");
     }
   };
 
@@ -146,22 +127,19 @@ function Interset() {
           <div className="middle-interest-mainParent">
             <div className="middle-interest-container">
               {/* Header */}
-
               <div className="middle-interest-header">
                 {isMobile && (
                   <span>
                     <IoArrowBackCircleOutline />
                   </span>
                 )}
-             
                 <span>Interest</span>
               </div>
-             
 
               {/* Search Bar with Icon */}
               <div className="middle-interest-searchAndIconMain">
                 <div className="middle-interest-search">
-                  <FiSearch className="search-icon" /> {/* Search Icon */}
+                  <FiSearch className="search-icon" />
                   <input type="text" placeholder="Search" />
                 </div>
               </div>
@@ -179,10 +157,13 @@ function Interset() {
                       {row1.map((skill, index) => (
                         <div
                           key={index}
-                          className="middle-interest-tag"
+                          className={`middle-interest-tag ${
+                            selectedInterests.includes(skill) ? "selected" : ""
+                          }`}
                           style={{
                             backgroundColor: color[index % color.length],
                           }}
+                          onClick={() => handleInterestClick(skill)}
                         >
                           {skill}
                         </div>
@@ -193,11 +174,14 @@ function Interset() {
                     <div className="middle-interest-tags-row" ref={tagsRef2}>
                       {row2.map((skill, index) => (
                         <div
-                          key={index + row1.length} // Ensure unique keys
-                          className="middle-interest-tag"
+                          key={index + row1.length}
+                          className={`middle-interest-tag ${
+                            selectedInterests.includes(skill) ? "selected" : ""
+                          }`}
                           style={{
                             backgroundColor: color[index % color.length],
                           }}
+                          onClick={() => handleInterestClick(skill)}
                         >
                           {skill}
                         </div>
@@ -223,8 +207,11 @@ function Interset() {
                 {Slideinterest.map((skill, index) => (
                   <div
                     key={index}
+                    className={`middle-interest-tag ${
+                      selectedInterests.includes(skill) ? "selected" : ""
+                    }`}
                     style={{ backgroundColor: color[index % color.length] }}
-                    className="middle-interest-tag"
+                    onClick={() => handleInterestClick(skill)}
                   >
                     {skill}
                   </div>
@@ -241,10 +228,16 @@ function Interset() {
 
               {/* Buttons */}
               <div className="middle-interest-last-buttons">
-                <button className="middle-interest-cancel">Cancel</button>
-                <button className="middle-interest-save">Save</button>
+                <button
+                  className="middle-interest-cancel"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button className="middle-interest-save" onClick={handleSave}>
+                  Save
+                </button>
 
-                {/* Conditionally render MobileFooter only on mobile screens */}
                 {isMobile && <MobileFooter />}
               </div>
             </div>
