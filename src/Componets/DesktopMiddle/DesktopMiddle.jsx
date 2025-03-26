@@ -9,7 +9,7 @@ import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
 import Commenticonsvg from "./Commenticon.svg";
-import profilePhoto from './profilephoto.png'
+
 // Comment box data
 import profilePhoto  from "./profilephoto.png";
 import Threedot from "./Threedot.svg";
@@ -374,69 +374,68 @@ function DesktopMiddle() {
       {/* ## *******************COMMENT BOX CODE *********************##  */}
 
       {showComment && (
-        <div className="Full-comment-section-main-container">
+        <div className="Comment-box-container" >
+          <div className="Full-comment-section-main-container">
           {/* Left Section */}
-          <div className="Full-comment-desktop-section-left-section">
-            <div className="Full-comment-desktop-section-user-profile-header">
-      <div className="Full-comment-desktop-profile-dot-name">
-      <img
+          <div className="Full-comment-section-left-section">
+            <div className="Full-comment-section-user-profile-header">
+              <img
                 src={userData.profilePicture}
                 alt="Profile"
-                className="Full-comment-desktop-section-profile-picture"
+                className="Full-comment-section-profile-picture"
               />
-              <div className="Full-comment-desktop-section-user-info">
-                <div className="Full-comment-desktop-section-name-and-postTime">
-                  <span className="Full-comment-desktop-section-user-name">
+              <div className="Full-comment-section-user-info">
+                <div className="Full-comment-section-name-and-postTime">
+                  <span className="Full-comment-section-user-name">
                     {userData.name}
                   </span>
-                  <span className="Full-comment-desktop-section-user-details">18h</span>
+                  <span className="Full-comment-section-user-details">18h</span>
                 </div>
-                <div className="Full-comment-desktop-section-work-and-education">
-                  <span className="Full-comment-desktop-section-user-details">
+                <div className="Full-comment-section-work-and-education">
+                  <span className="Full-comment-section-user-details">
                     {userData.education}
                   </span>
-                  <span className="Full-comment-desktop-section-user-details">||</span>
-                  <span className="Full-comment-desktop-section-user-details">
+                  <span className="Full-comment-section-user-details">||</span>
+                  <span className="Full-comment-section-user-details">
                     {" "}
                     {userData.workPlace}{" "}
                   </span>
                 </div>
               </div>
-      </div>
               <img
                 src={Threedot}
-                className="Full-comment-desktop-section-menu-icon"
+                className="Full-comment-section-menu-icon"
                 alt=""
               />
             </div>
-            <div className="Full-comment-desktop-section-photo-container">
+            <div className="Full-comment-section-photo-container">
               <img
                 src={userData.profilePicture}
                 alt="Post"
-                className="Full-comment-desktop-section-post-photo"
+                className="Full-comment-section-post-photo"
               />
-              <div className="Full-comment-desktop-section-action-buttons">
-                <div className="Full-comment-desktop-section-connect-div">
+              <div className="Full-comment-section-action-buttons">
+                <div className="Full-comment-section-connect-div">
                   <img
                     src={Connect}
-                    className="Full-comment-desktop-section-connect-icon"
+                    className="Full-comment-section-connect-icon"
                     alt=""
                   />
                 </div>
-                <div className="Full-comment-desktop-section-share-like-comment-desktop-icon">
+                <div className="Full-comment-section-share-like-comment-icon">
                   <img
                     src={ShareIcon}
-                    className="Full-comment-desktop-section-post-icons"
+                    className="Full-comment-section-post-icons"
                     alt=""
                   />
                   <img
                     src={CommentIcon}
-                    className="Full-comment-desktop-section-post-icons"
+                    className="Full-comment-section-post-icons"
                     alt=""
                   />
                   <img
                     src={LikeIcon}
-                    className="Full-comment-desktop-section-post-icons"
+                    className="Full-comment-section-post-icons"
                     alt=""
                   />
                 </div>
@@ -445,7 +444,7 @@ function DesktopMiddle() {
           </div>
 
           {/* Right Section */}
-          <div className="Full-comment-desktop-section-right-section">
+          <div className="Full-comment-section-right-section">
             <div className="Full-comment-section-comments-header">
               <h1 className="Full-comment-section-heading">Comments</h1>
             </div>
@@ -506,7 +505,7 @@ function DesktopMiddle() {
               onClick={() => {
                 setShowComment((prev) => !prev);
               }}
-              className="Full-comment-desktop-section-cross-button"
+              className="Full-comment-section-cross-button"
             >
               {" "}
               ×
@@ -519,29 +518,29 @@ function DesktopMiddle() {
       {/* ## ===================SHARE BOX   ======================## */}
 
       {showShare && (
-        <div className="Full-share-desktop-section-main-container">
+        <div className="Full-share-section-main-container">
           {/* Left Section */}
-          <div className="Full-share-desktop-section-left-section">
-            <div className="Full-share-desktop-section-user-profile-header">
-              <div className="Full-share-desktop-section-top-image-and-names">
+          <div className="Full-share-section-left-section">
+            <div className="Full-share-section-user-profile-header">
+              <div className="Full-share-section-top-image-and-names">
                 <img
                   src={userData.profilePicture}
                   alt="Profile"
-                  className="Full-share-desktop-section-profile-picture"
+                  className="Full-share-section-profile-picture"
                 />
-                <div className="Full-share-desktop-section-user-info">
-                  <div className="Full-share-desktop-section-name-and-postTime">
-                    <span className="Full-share-desktop-section-user-name">
+                <div className="Full-share-section-user-info">
+                  <div className="Full-share-section-name-and-postTime">
+                    <span className="Full-share-section-user-name">
                       {userData.name}
                     </span>
-                    <span className="Full-share-desktop-section-user-details">18h</span>
+                    <span className="Full-share-section-user-details">18h</span>
                   </div>
-                  <div className="Full-share-desktop-section-work-and-education">
-                    <span className="Full-share-desktop-section-user-details">
+                  <div className="Full-share-section-work-and-education">
+                    <span className="Full-share-section-user-details">
                       {userData.education}
                     </span>
-                    <span className="Full-share-desktop-section-user-details">||</span>
-                    <span className="Full-share-desktop-section-user-details">
+                    <span className="Full-share-section-user-details">||</span>
+                    <span className="Full-share-section-user-details">
                       {" "}
                       {userData.workPlace}{" "}
                     </span>
@@ -550,25 +549,25 @@ function DesktopMiddle() {
               </div>
               <img
                 src={Threedot}
-                className="Full-share-desktop-section-menu-icon"
+                className="Full-share-section-menu-icon"
                 alt=""
               />
             </div>
-            <div className="Full-share-desktop-section-photo-container">
+            <div className="Full-share-section-photo-container">
               <img
                 src={userData.profilePicture}
                 alt="Post"
-                className="Full-share-desktop-section-post-photo"
+                className="Full-share-section-post-photo"
               />
-              <div className="Full-share-desktop-section-action-buttons">
-                <div className="Full-share-desktop-section-connect-div">
+              <div className="Full-share-section-action-buttons">
+                <div className="Full-share-section-connect-div">
                   <img
                     src={Connect}
-                    className="Full-share-desktop-section-connect-icon"
+                    className="Full-share-section-connect-icon"
                     alt=""
                   />
                 </div>
-                <div className="Full-share-desktop-section-share-like-share-icon">
+                <div className="Full-share-section-share-like-share-icon">
                   <img
                     src={ShareIcon}
                     className="Full-share-section-post-icons"
@@ -623,7 +622,7 @@ function DesktopMiddle() {
               onClick={() => {
                 setShowshare(false);
               }}
-              className="Full-share-desktop-section-cross-button"
+              className="Full-share-section-cross-button"
             >
               {" "}
               ×
