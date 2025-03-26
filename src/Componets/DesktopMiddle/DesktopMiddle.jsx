@@ -9,9 +9,9 @@ import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
 import Commenticonsvg from "./Commenticon.svg";
-import profilePhoto from './profilephoto.png'
+
 // Comment box data
-//import profilePhoto from "./profilePhoto.png";
+import profilePhoto from "./profilephoto.png";
 import Threedot from "./Threedot.svg";
 import Connect from "./Connect.png";
 import ShareIcon from "./Share.svg";
@@ -214,10 +214,10 @@ function DesktopMiddle() {
       prevPosts.map((post, i) =>
         i === index
           ? {
-              ...post,
-              isLiked: !post.isLiked,
-              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-            }
+            ...post,
+            isLiked: !post.isLiked,
+            likes: post.isLiked ? post.likes - 1 : post.likes + 1,
+          }
           : post
       )
     );
@@ -239,9 +239,9 @@ function DesktopMiddle() {
       prevPosts.map((post, i) =>
         i === index
           ? {
-              ...post,
-              comments: [...post.comments, { text: newComment, author: "You" }],
-            }
+            ...post,
+            comments: [...post.comments, { text: newComment, author: "You" }],
+          }
           : post
       )
     );
@@ -374,145 +374,143 @@ function DesktopMiddle() {
       {/* ## *******************COMMENT BOX CODE *********************##  */}
 
       {showComment && (
-        <div className="Full-comment-desktop-section-main-container">
-          {/* Left Section */}
-          <div className="Full-comment-desktop-section-left-section">
-            <div className="Full-comment-desktop-section-user-profile-header">
-      <div className="Full-comment-desktop-profile-dot-name">
-      <img
-                src={userData.profilePicture}
-                alt="Profile"
-                className="Full-comment-desktop-section-profile-picture"
-              />
-              <div className="Full-comment-desktop-section-user-info">
-                <div className="Full-comment-desktop-section-name-and-postTime">
-                  <span className="Full-comment-desktop-section-user-name">
-                    {userData.name}
-                  </span>
-                  <span className="Full-comment-desktop-section-user-details">18h</span>
-                </div>
-                <div className="Full-comment-desktop-section-work-and-education">
-                  <span className="Full-comment-desktop-section-user-details">
-                    {userData.education}
-                  </span>
-                  <span className="Full-comment-desktop-section-user-details">||</span>
-                  <span className="Full-comment-desktop-section-user-details">
-                    {" "}
-                    {userData.workPlace}{" "}
-                  </span>
-                </div>
-              </div>
-      </div>
-
-
-              <img
-                src={Threedot}
-                className="Full-comment-desktop-section-menu-icon"
-                alt=""
-              />
-            </div>
-            <div className="Full-comment-desktop-section-photo-container">
-              <img
-                src={userData.profilePicture}
-                alt="Post"
-                className="Full-comment-desktop-section-post-photo"
-              />
-              <div className="Full-comment-desktop-section-action-buttons">
-                <div className="Full-comment-desktop-section-connect-div">
-                  <img
-                    src={Connect}
-                    className="Full-comment-desktop-section-connect-icon"
-                    alt=""
-                  />
-                </div>
-                <div className="Full-comment-desktop-section-share-like-comment-desktop-icon">
-                  <img
-                    src={ShareIcon}
-                    className="Full-comment-desktop-section-post-icons"
-                    alt=""
-                  />
-                  <img
-                    src={CommentIcon}
-                    className="Full-comment-desktop-section-post-icons"
-                    alt=""
-                  />
-                  <img
-                    src={LikeIcon}
-                    className="Full-comment-desktop-section-post-icons"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Section */}
-          <div className="Full-comment-desktop-section-right-section">
-            <div className="Full-comment-section-comments-header">
-              <h1 className="Full-comment-section-heading">Comments</h1>
-            </div>
-            <div className="Full-comment-section-comments-list">
-              {comments.map((comment, index) => (
-                <div
-                  className="Full-comment-section-comment-main-parent"
-                  key={index}
-                >
-                  <div className="Full-comment-section-comment">
-                    <img
-                      src={comment.profilePicture}
-                      alt="Profile"
-                      className="Full-comment-section-comment-profile-picture"
-                    />
-                    <div className="Full-comment-section-comment-content">
-                      <div className="Full-comment-section-comment-user-info">
-                        <span className="Full-comment-section-comment-username">
-                          {comment.username}
-                        </span>
-                        <span className="Full-comment-section-comment-timestamp">
-                          {comment.timestamp}
-                        </span>
-                      </div>
-                      <div className="Full-comment-section-comment-text">
-                        {comment.text}
-                      </div>
-                      <div className="Full-comment-section-comment-actions">
-                        <span className="Full-comment-section-reply-link">
-                          REPLY
-                        </span>
-                      </div>
-                    </div>
+        <div className="Comment-box-container" >
+          <div className="Full-comment-section-main-container">
+            {/* Left Section */}
+            <div className="Full-comment-section-left-section">
+              <div className="Full-comment-section-user-profile-header">
+                <img
+                  src={userData.profilePicture}
+                  alt="Profile"
+                  className="Full-comment-section-profile-picture"
+                />
+                <div className="Full-comment-section-user-info">
+                  <div className="Full-comment-section-name-and-postTime">
+                    <span className="Full-comment-section-user-name">
+                      {userData.name}
+                    </span>
+                    <span className="Full-comment-section-user-details">18h</span>
                   </div>
-                  <div className="Full-comment-section-comment-likes">
+                  <div className="Full-comment-section-work-and-education">
+                    <span className="Full-comment-section-user-details">
+                      {userData.education}
+                    </span>
+                    <span className="Full-comment-section-user-details">||</span>
+                    <span className="Full-comment-section-user-details">
+                      {" "}
+                      {userData.workPlace}{" "}
+                    </span>
+                  </div>
+                </div>
+                <img
+                  src={Threedot}
+                  className="Full-comment-section-menu-icon"
+                  alt=""
+                />
+              </div>
+              <div className="Full-comment-section-photo-container">
+                <img
+                  src={userData.profilePicture}
+                  alt="Post"
+                  className="Full-comment-section-post-photo"
+                />
+                <div className="Full-comment-section-action-buttons">
+                  <div className="Full-comment-section-connect-div">
+                    <img
+                      src={Connect}
+                      className="Full-comment-section-connect-icon"
+                      alt=""
+                    />
+                  </div>
+                  <div className="Full-comment-section-share-like-comment-icon">
+                    <img
+                      src={ShareIcon}
+                      className="Full-comment-section-post-icons"
+                      alt=""
+                    />
+                    <img
+                      src={CommentIcon}
+                      className="Full-comment-section-post-icons"
+                      alt=""
+                    />
                     <img
                       src={LikeIcon}
+                      className="Full-comment-section-post-icons"
                       alt=""
-                      className="Full-comment-section-like-button"
                     />
-                    <span>{comment.likes} </span>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-            <div className="Full-comment-section-comment-input-and-image">
-              <img
-                src={profilePhoto}
-                className="Full-comment-section-commentPerson-image"
-                alt=""
-              />
-              <input
-                type="text"
-                placeholder="Write a comment to VIJAY PRASAD"
-              />
+
+            {/* Right Section */}
+            <div className="Full-comment-section-right-section">
+              <div className="Full-comment-section-comments-header">
+                <h1 className="Full-comment-section-heading">Comments</h1>
+              </div>
+              <div className="Full-comment-section-comments-list">
+                {comments.map((comment, index) => (
+                  <div
+                    className="Full-comment-section-comment-main-parent"
+                    key={index}
+                  >
+                    <div className="Full-comment-section-comment">
+                      <img
+                        src={comment.profilePicture}
+                        alt="Profile"
+                        className="Full-comment-section-comment-profile-picture"
+                      />
+                      <div className="Full-comment-section-comment-content">
+                        <div className="Full-comment-section-comment-user-info">
+                          <span className="Full-comment-section-comment-username">
+                            {comment.username}
+                          </span>
+                          <span className="Full-comment-section-comment-timestamp">
+                            {comment.timestamp}
+                          </span>
+                        </div>
+                        <div className="Full-comment-section-comment-text">
+                          {comment.text}
+                        </div>
+                        <div className="Full-comment-section-comment-actions">
+                          <span className="Full-comment-section-reply-link">
+                            REPLY
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="Full-comment-section-comment-likes">
+                      <img
+                        src={LikeIcon}
+                        alt=""
+                        className="Full-comment-section-like-button"
+                      />
+                      <span>{comment.likes} </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="Full-comment-section-comment-input-and-image">
+                <img
+                  src={profilePhoto}
+                  className="Full-comment-section-commentPerson-image"
+                  alt=""
+                />
+                <input
+                  type="text"
+                  placeholder="Write a comment to VIJAY PRASAD"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  setShowComment((prev) => !prev);
+                }}
+                className="Full-comment-section-cross-button"
+              >
+                {" "}
+                ×
+              </button>
             </div>
-            <button
-              onClick={() => {
-                setShowComment((prev) => !prev);
-              }}
-              className="Full-comment-desktop-section-cross-button"
-            >
-             
-              ×
-            </button>
           </div>
         </div>
       )}
@@ -520,29 +518,29 @@ function DesktopMiddle() {
       {/* ## ===================SHARE BOX   ======================## */}
 
       {showShare && (
-        <div className="Full-share-desktop-section-main-container">
+        <div className="Full-share-section-main-container">
           {/* Left Section */}
-          <div className="Full-share-desktop-section-left-section">
-            <div className="Full-share-desktop-section-user-profile-header">
-              <div className="Full-share-desktop-section-top-image-and-names">
+          <div className="Full-share-section-left-section">
+            <div className="Full-share-section-user-profile-header">
+              <div className="Full-share-section-top-image-and-names">
                 <img
                   src={userData.profilePicture}
                   alt="Profile"
-                  className="Full-share-desktop-section-profile-picture"
+                  className="Full-share-section-profile-picture"
                 />
-                <div className="Full-share-desktop-section-user-info">
-                  <div className="Full-share-desktop-section-name-and-postTime">
-                    <span className="Full-share-desktop-section-user-name">
+                <div className="Full-share-section-user-info">
+                  <div className="Full-share-section-name-and-postTime">
+                    <span className="Full-share-section-user-name">
                       {userData.name}
                     </span>
-                    <span className="Full-share-desktop-section-user-details">18h</span>
+                    <span className="Full-share-section-user-details">18h</span>
                   </div>
-                  <div className="Full-share-desktop-section-work-and-education">
-                    <span className="Full-share-desktop-section-user-details">
+                  <div className="Full-share-section-work-and-education">
+                    <span className="Full-share-section-user-details">
                       {userData.education}
                     </span>
-                    <span className="Full-share-desktop-section-user-details">||</span>
-                    <span className="Full-share-desktop-section-user-details">
+                    <span className="Full-share-section-user-details">||</span>
+                    <span className="Full-share-section-user-details">
                       {" "}
                       {userData.workPlace}{" "}
                     </span>
@@ -551,25 +549,25 @@ function DesktopMiddle() {
               </div>
               <img
                 src={Threedot}
-                className="Full-share-desktop-section-menu-icon"
+                className="Full-share-section-menu-icon"
                 alt=""
               />
             </div>
-            <div className="Full-share-desktop-section-photo-container">
+            <div className="Full-share-section-photo-container">
               <img
                 src={userData.profilePicture}
                 alt="Post"
-                className="Full-share-desktop-section-post-photo"
+                className="Full-share-section-post-photo"
               />
-              <div className="Full-share-desktop-section-action-buttons">
-                <div className="Full-share-desktop-section-connect-div">
+              <div className="Full-share-section-action-buttons">
+                <div className="Full-share-section-connect-div">
                   <img
                     src={Connect}
-                    className="Full-share-desktop-section-connect-icon"
+                    className="Full-share-section-connect-icon"
                     alt=""
                   />
                 </div>
-                <div className="Full-share-desktop-section-share-like-share-icon">
+                <div className="Full-share-section-share-like-share-icon">
                   <img
                     src={ShareIcon}
                     className="Full-share-section-post-icons"
@@ -624,7 +622,7 @@ function DesktopMiddle() {
               onClick={() => {
                 setShowshare(false);
               }}
-              className="Full-share-desktop-section-cross-button"
+              className="Full-share-section-cross-button"
             >
               {" "}
               ×
