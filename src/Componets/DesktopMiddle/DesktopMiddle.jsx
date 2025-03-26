@@ -11,7 +11,7 @@ import Profileimage from "./Profile-image.png";
 import Commenticonsvg from "./Commenticon.svg";
 
 // Comment box data
-//import profilePhoto from "./profilePhoto.png";
+import profilePhoto  from "./profilephoto.png";
 import Threedot from "./Threedot.svg";
 import Connect from "./Connect.png";
 import ShareIcon from "./Share.svg";
@@ -374,7 +374,8 @@ function DesktopMiddle() {
       {/* ## *******************COMMENT BOX CODE *********************##  */}
 
       {showComment && (
-        <div className="Full-comment-section-main-container">
+        <div className="Comment-box-container" >
+          <div className="Full-comment-section-main-container">
           {/* Left Section */}
           <div className="Full-comment-section-left-section">
             <div className="Full-comment-section-user-profile-header">
@@ -510,6 +511,7 @@ function DesktopMiddle() {
               ×
             </button>
           </div>
+        </div>
         </div>
       )}
 

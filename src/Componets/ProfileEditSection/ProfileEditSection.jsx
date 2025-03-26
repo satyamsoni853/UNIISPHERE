@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./ProfileEditSection.css";
 import { FiEdit } from "react-icons/fi";
-import image from "./Person.png";
+import image from "./Person.png"; // Fallback image
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import DesktopRight from "../DesktopRight/DesktopRight";
@@ -19,51 +19,38 @@ function ProfileEditSection() {
   const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profilePic, setProfilePic] = useState(image); // Default to fallback image
+  const [collabs, setCollabs] = useState(10);
+  const [connections, setConnections] = useState(50);
+  const [name, setName] = useState("John Doe");
+  const [title, setTitle] = useState("Building Uniisphere|Masters Union");
+  const [address, setAddress] = useState("New York, USA");
+  const [buttons, setButtons] = useState(["Message", "Connect"]);
+  const [skills, setSkills] = useState([]);
+  const [interests, setInterests] = useState([]);
+  const [education, setEducation] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [fullAboutText, setFullAboutText] = useState(
+    "Passionate developer with experience in web and mobile development."
+  );
 
-  // Use a ref to track if the alert has been shown
   const hasAlerted = useRef(false);
-  // Use a ref to track if the data has been fetched
   const hasFetched = useRef(false);
+  const skillsRef = useRef(null);
+  const interestsRef = useRef(null);
 
+  // Handle window resize for mobile detection
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Function to log user details in a structured way
-  const logUserDetails = (data) => {
-    // Check if data is an array and extract the first object if necessary
-    const user = Array.isArray(data) ? data[0] : data;
-
-    console.log("=== User Details ===");
-    console.log("User ID:", user.userId || user._id); // Handle both `id` and `_id` (in case the API uses `_id`)
-    console.log("Username:", user.username);
-    console.log("Email:", user.email);
-    console.log("First Name:", user.firstName);
-    console.log("Last Name:", user.lastName);
-    console.log("Phone Number:", user.phoneNumber);
-    console.log("Profile Picture URL:", user.profilePictureUrl);
-    console.log("Headline:", user.headline);
-    console.log("Location:", user.location);
-    console.log("Gender:", user.Gender);
-    console.log("Skills:", user.Skills || user.Skills); // Handle case sensitivity
-    console.log("Python:", user.python);
-    console.log("About:", user.About || user.About); // Handle case sensitivity
-    console.log("Interests:", user.Interests || user.Interests); // Handle case sensitivity
-    console.log("Work or Project:", user.workorProject);
-    console.log("College:", user.college);
-    console.log("Degree:", user.degree);
-    console.log("Connections Count:", user._count?.connections1); // Handle nested `_count` field
-    console.log("===================");
-  };
-
+  // Fetch user data
   useEffect(() => {
     const fetchUserData = async () => {
-      // Prevent duplicate fetching
       if (hasFetched.current) {
         console.log("Data already fetched, skipping...");
         return;
@@ -103,19 +90,38 @@ function ProfileEditSection() {
     fetchUserData();
   }, []);
 
-  // Show alert when userData is updated, but only once
-  useEffect(() => {
-    if (userData && !hasAlerted.current) {
-      hasAlerted.current = true;
-      alert("Data loaded successfully!");
-    }
-  }, [userData]);
+  // Log user details
+  const logUserDetails = (data) => {
+    const user = Array.isArray(data) ? data[0] : data;
+    console.log("=== User Details ===");
+    console.log("User ID:", user.userId || user._id);
+    console.log("Username:", user.username);
+    console.log("Email:", user.email);
+    console.log("First Name:", user.firstName);
+    console.log("Last Name:", user.lastName);
+    console.log("Phone Number:", user.phoneNumber);
+    console.log("Profile Picture URL:", user.profilePictureUrl);
+    console.log("Headline:", user.headline);
+    console.log("Location:", user.location);
+    console.log("Gender:", user.Gender);
+    console.log("Skills:", user.Skills || user.skills);
+    console.log("Python:", user.python);
+    console.log("About:", user.About || user.about);
+    console.log("Interests:", user.Interests || user.interests);
+    console.log("Work or Project:", user.workorProject);
+    console.log("College:", user.college);
+    console.log("Degree:", user.degree);
+    console.log("Connections Count:", user._count?.connections1);
+    console.log("===================");
+  };
 
-  // Update state variables when userData changes
+  // Update state when userData changes
   useEffect(() => {
     if (userData) {
-      // Handle array response by extracting the first object
       const user = Array.isArray(userData) ? userData[0] : userData;
+      setProfilePic(user.profilePictureUrl || image); // Use profilePictureUrl
+      setCollabs(user.collabs || 10);
+      setConnections(user._count?.connections1 || 50); // Adjust based on API response
       setName(user.username || "John Doe");
       setTitle(user.headline || "Building Uniisphere|Masters Union");
       setAddress(user.location || "New York, USA");
@@ -123,52 +129,29 @@ function ProfileEditSection() {
       setInterests(user.Interests || user.interests || []);
       setEducation(user.education || []);
       setFullAboutText(user.About || user.about || "Passionate developer...");
+      if (!hasAlerted.current) {
+        hasAlerted.current = true;
+        alert("Data loaded successfully!");
+      }
     }
   }, [userData]);
 
-  // State variables
-  const [profilePic, setProfilePic] = useState(userData?.profilePicture || image);
-  const [collabs, setCollabs] = useState(userData?.collabs || 10);
-  const [connections, setConnections] = useState(userData?.connections || 50);
-  const [name, setName] = useState("John Doe");
-  const [title, setTitle] = useState("Building Uniisphere|Masters Union");
-  const [address, setAddress] = useState("New York, USA");
-  const [buttons, setButtons] = useState(["Message", "Connect"]);
-  const [skills, setSkills] = useState([]);
-  const [interests, setInterests] = useState([]);
-  const [education, setEducation] = useState([]);
-  const [isExpanded, setIsExpanded] = useState(false);
+  // Scroll functions
+  const scrollLeft = (ref) => {
+    if (ref.current) ref.current.scrollBy({ left: -200, behavior: "smooth" });
+  };
 
-  // Refs for scrolling
-  const skillsRef = useRef(null);
-  const interestsRef = useRef(null);
+  const scrollRight = (ref) => {
+    if (ref.current) ref.current.scrollBy({ left: 200, behavior: "smooth" });
+  };
 
-  // About Section with "See More" Feature
-  const [fullAboutText, setFullAboutText] = useState(
-    "Passionate developer with experience in web and mobile development."
-  );
-
+  // About section toggle
   const toggleExpand = () => setIsExpanded(!isExpanded);
-
-  // Limiting text length before showing "See More"
   const maxLength = 100;
   const displayedText = isExpanded
     ? fullAboutText
     : fullAboutText.slice(0, maxLength) +
       (fullAboutText.length > maxLength ? "..." : "");
-
-  // Scroll functions
-  const scrollLeft = (ref) => {
-    if (ref.current) {
-      ref.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = (ref) => {
-    if (ref.current) {
-      ref.current.scrollBy({ left: 200, behavior: "smooth" });
-    }
-  };
 
   if (loading) return <p>Loading...</p>;
 
@@ -193,17 +176,16 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-profile-header-public">
                   <div className="Followers-middle-section-2-imageContainer-public">
                     <img
-                      src={userData?.profilePicture || profilePic}
+                      src={userData?.profilePictureUrl || profilePic}
                       alt="Profile"
                       className="Followers-middle-section-2-profile-pic-public"
                     />
                   </div>
                   <div className="Followers-middle-section-2-collabsDetails-public">
-                    <h4>Collabs</h4> <span>{userData?.collabs || collabs}</span>
+                    <h4>Collabs</h4> <span>{collabs}</span>
                   </div>
                   <div className="Followers-middle-section-2-connectionsDetails-public">
-                    <h4>Connections</h4>
-                    <span>{userData?.connections || connections}</span>
+                    <h4>Connections</h4> <span>{connections}</span>
                   </div>
                 </div>
 
@@ -230,21 +212,19 @@ function ProfileEditSection() {
                   ))}
                 </div>
 
-                {/* About Section with Expandable Content */}
+                {/* About Section */}
                 <div className="Followers-middle-section-2-about-section-public">
                   <h3>About</h3>
                   <p>
                     {displayedText}
-                    <span>
-                      {fullAboutText.length > maxLength && (
-                        <button
-                          className="Followers-middle-section-2-about-button-public"
-                          onClick={toggleExpand}
-                        >
-                          {isExpanded ? "See Less" : "See More"}
-                        </button>
-                      )}
-                    </span>
+                    {fullAboutText.length > maxLength && (
+                      <button
+                        className="Followers-middle-section-2-about-button-public"
+                        onClick={toggleExpand}
+                      >
+                        {isExpanded ? "See Less" : "See More"}
+                      </button>
+                    )}
                   </p>
                 </div>
 
