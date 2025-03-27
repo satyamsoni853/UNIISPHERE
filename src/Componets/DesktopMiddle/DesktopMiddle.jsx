@@ -9,7 +9,7 @@ import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
 import Commenticonsvg from "./Commenticon.svg";
-
+//heloo
 // Comment box data
 import profilePhoto from "./profilephoto.png";
 import Threedot from "./Threedot.svg";
@@ -378,31 +378,31 @@ function DesktopMiddle() {
           {/* Left Section */}
           <div className="Full-comment-desktop-section-left-section">
             <div className="Full-comment-desktop-section-user-profile-header">
-      <div className="Full-comment-desktop-profile-dot-name">
-      <img
-                src={userData.profilePicture}
-                alt="Profile"
-                className="Full-comment-desktop-section-profile-picture"
-              />
-              <div className="Full-comment-desktop-section-user-info">
-                <div className="Full-comment-desktop-section-name-and-postTime">
-                  <span className="Full-comment-desktop-section-user-name">
-                    {userData.name}
-                  </span>
-                  <span className="Full-comment-desktop-section-user-details">18h</span>
-                </div>
-                <div className="Full-comment-desktop-section-work-and-education">
-                  <span className="Full-comment-desktop-section-user-details">
-                    {userData.education}
-                  </span>
-                  <span className="Full-comment-desktop-section-user-details">||</span>
-                  <span className="Full-comment-desktop-section-user-details">
-                    {" "}
-                    {userData.workPlace}{" "}
-                  </span>
+              <div className="Full-comment-desktop-profile-dot-name">
+                <img
+                  src={userData.profilePicture}
+                  alt="Profile"
+                  className="Full-comment-desktop-section-profile-picture"
+                />
+                <div className="Full-comment-desktop-section-user-info">
+                  <div className="Full-comment-desktop-section-name-and-postTime">
+                    <span className="Full-comment-desktop-section-user-name">
+                      {userData.name}
+                    </span>
+                    <span className="Full-comment-desktop-section-user-details">18h</span>
+                  </div>
+                  <div className="Full-comment-desktop-section-work-and-education">
+                    <span className="Full-comment-desktop-section-user-details">
+                      {userData.education}
+                    </span>
+                    <span className="Full-comment-desktop-section-user-details">||</span>
+                    <span className="Full-comment-desktop-section-user-details">
+                      {" "}
+                      {userData.workPlace}{" "}
+                    </span>
+                  </div>
                 </div>
               </div>
-      </div>
 
 
               <img
@@ -510,7 +510,7 @@ function DesktopMiddle() {
               }}
               className="Full-comment-desktop-section-cross-button"
             >
-             
+
               ×
             </button>
           </div>
