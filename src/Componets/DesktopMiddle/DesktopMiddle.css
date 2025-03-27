@@ -241,43 +241,6 @@
 .middle-comment-submit:hover:not(:disabled) {
   background: #0056b3;
 }
-.options-container {
-  position: relative;
-  display: inline-block;
-}
-
-.middle-options-icon {
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.options-menu {
-  position: absolute;
-  right: 0;
-  margin-top: 5px;
-  width: 150px;
-  background: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 8px 0;
-}
-
-.options-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.options-menu li {
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 14px;
-  color: black;
-}
-
-.options-menu li:hover {
-  background: #f1f1f1;
-}
 
 /* Responsive Adjustments */
 @media (max-width: 1200px) {
@@ -535,11 +498,11 @@
 /* ## *******************Comment Box CSS ******************## */
 
 /* Main Container */
-.Full-comment-section-main-container {
-  bottom: 0;
+.Full-comment-section-main-container-desktop {
+  bottom: 1%;
   left: 12%;
-  width: 1193px;
-  height: 693px;
+  width: 1500px;
+  height: 820px;
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -550,87 +513,93 @@
   z-index: 99;
 }
 
-/* Left Section */
-.Full-comment-desktop-section-left-section {
+.Full-comment-section-left-section-desktop {
   flex: 0 0 60%;
   display: flex;
   flex-direction: column;
   padding: 20px;
 }
 
-.Full-comment-desktop-section-user-profile-header {
+.Full-comment-section-user-profile-header-desktop {
   display: flex;
   flex-direction: row;
   align-items: center;
-
   gap: 10px;
 }
 
-.Full-comment-desktop-profile-dot-name {
+.Full-comment-profile-dot-name-desktop {
   display: flex;
   gap: 2px;
 }
-.Full-comment-desktop-section-profile-picture {
+
+.Full-comment-section-profile-picture-desktop {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
 
-.Full-comment-desktop-section-user-info {
+.Full-comment-section-user-info-desktop {
   display: flex;
   flex-direction: column;
   gap: 0;
+  
 }
 
-.Full-comment-desktop-section-user-name {
+.Full-comment-section-user-name-desktop {
   font-weight: bold;
   font-size: 16px;
 }
 
-.Full-comment-desktop-section-user-details {
+.Full-comment-section-user-details-desktop {
   font-size: 14px;
   color: gray;
 }
 
-.Full-comment-desktop-section-menu-icon {
-  height: 25px;
+
+.Full-comment-section-menu-icon-desktop {
+  height: 30px;
+  margin-left:auto;
+  
 }
 
-.Full-comment-desktop-section-photo-container {
+.Full-comment-section-photo-container-desktop {
   height: 100%;
 }
 
-.Full-comment-desktop-section-post-photo {
+.Full-comment-section-post-photo-desktop {
   width: 100%;
   height: 85%;
   border-radius: 10px;
   object-fit: cover;
 }
 
-/* Right Section */
-.Full-comment-desktop-section-right-section {
+.Full-comment-section-right-section-desktop {
   width: 50%;
   position: relative;
   flex: 0 0 40%;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  margin-top: 10px;
+  /* padding-top: 50px; */
+  padding: 40px 30px;
   border-left: 2px solid #9d9c9c;
 }
 
-.Full-comment-desktop-section-comment-desktops-list {
+.Full-comment-section-comment-desktops-list-desktop {
   flex: 1;
 }
 
-.Full-comment-section-heading {
-  font-size: 25px ();
+.Full-comment-section-heading-desktop {
+  font-size: 35px;
+  margin-bottom: 50px;
 }
-.Full-comment-desktop-section-comment-desktop-main-parent {
+
+.Full-comment-section-comment-main-parent-desktop {
   display: flex;
   justify-content: space-between;
 }
 
-.Full-comment-desktop-section-comment-desktop {
+.Full-comment-section-comment-desktop {
   width: 80%;
   display: flex;
   flex-direction: row;
@@ -638,61 +607,59 @@
   padding-bottom: 10px;
 }
 
-
-
-.Full-comment-desktop-section-comment-desktop-profile-picture {
+.Full-comment-section-comment-profile-picture-desktop {
   width: 30px;
   height: 30px;
   border-radius: 50%;
 }
 
-.Full-comment-desktop-section-comment-desktop-content {
+.Full-comment-section-comment-content-desktop {
   display: flex;
   flex-direction: column;
 }
 
-.Full-comment-desktop-section-comment-desktop-user-info {
+.Full-comment-section-comment-user-info-desktop {
   display: flex;
   flex-direction: row;
   gap: 5px;
 }
 
-.Full-comment-desktop-section-comment-desktop-username {
+.Full-comment-section-comment-username-desktop {
   font-weight: bold;
   font-size: 18px;
 }
 
-.Full-comment-desktop-section-comment-desktop-timestamp {
+.Full-comment-section-comment-timestamp-desktop {
   font-size: 12px;
   color: gray;
 }
 
-.Full-comment-desktop-section-comment-desktop-text {
+.Full-comment-section-comment-text-desktop {
   font-size: 16px;
   line-height: 1;
   white-space: 0;
 }
 
-.Full-comment-desktop-section-comment-desktop-actions {
+.Full-comment-section-comment-actions-desktop {
   display: flex;
   flex-direction: row;
   gap: 10px;
   font-size: 12px;
 }
 
-.Full-comment-desktop-section-reply-link {
+.Full-comment-section-reply-link-desktop {
   color: #5b5b5b;
   cursor: pointer;
   font-size: 11px;
 }
 
-.Full-comment-desktop-section-comment-desktop-input-and-image {
+.Full-comment-section-comment-input-and-image-desktop {
   padding-top: 20px;
   display: flex;
   gap: 10px;
 }
 
-.Full-comment-desktop-section-comment-desktop-input-and-image input {
+.Full-comment-section-comment-input-and-image-desktop input {
   width: 100%;
   padding: 0 10px;
   box-shadow: inset 2px 2px 4px #00000040, inset -2px -2px 4px #00000040;
@@ -701,19 +668,18 @@
   font-size: 14px;
 }
 
-.Full-comment-desktop-section-comment-desktop-input-and-image
-  input::placeholder {
+.Full-comment-section-comment-input-and-image-desktop input::placeholder {
   color: #000;
   font-size: 0.9rem;
 }
 
-.Full-comment-desktop-section-comment-desktopPerson-image {
+.Full-comment-section-commentPerson-image-desktop {
   height: 40px;
   width: 40px;
   border-radius: 50%;
 }
 
-.Full-comment-section-comment-likes {
+.Full-comment-section-comment-likes-desktop {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -721,30 +687,29 @@
   gap: 6px;
 }
 
-.Full-comment-desktop-section-like-button {
+.Full-comment-section-like-button-desktop {
   height: 1.6rem;
   width: 1.6rem;
 }
 
-.Full-comment-desktop-section-comment-desktop-likes span {
+.Full-comment-section-comment-likes-desktop span {
   font-size: 0.8rem;
 }
 
-.Full-comment-desktop-section-action-buttons {
+.Full-comment-section-action-buttons-desktop {
   display: flex;
-
   flex-direction: row;
   justify-content: space-between;
   padding-top: 10px;
   align-items: center;
 }
 
-.Full-comment-section-share-like-comment-icon {
+.Full-comment-section-share-like-comment-icon-desktop {
   display: flex;
   gap: 13px;
 }
 
-.Full-comment-section-cross-button {
+.Full-comment-section-cross-button-desktop {
   position: absolute;
   top: 0;
   right: 1rem;
@@ -753,81 +718,136 @@
   background-color: red;
   border-radius: 50%;
 }
-
-/* 
-##=========================SHARE BOX CSS=========================## */
+/* ##=========================SHARE BOX CSS=========================##  */
 
 /* Main Container */
-.Full-share-section-main-container {
+.Full-share-section-main-container-desktop {
   z-index: 99;
-  width: 1193px;
-  height: 600px;
+  width: 1500px;
+  height: 800px;
   position: fixed;
   left: 12%;
-  bottom: 0;
+  bottom: 2%;
   display: flex;
   flex-direction: row;
   padding: 10px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Prevent content overflow */
 }
 
 /* Left Section */
-.Full-share-section-left-section {
+.Full-share-section-left-section-desktop {
   flex: 0 0 60%;
   display: flex;
   flex-direction: column;
   padding: 20px;
+  height: 100%; /* Ensure it takes full height of container */
 }
 
-.Full-share-section-user-profile-header {
+.Full-share-section-user-profile-header-desktop {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-}
-.Full-share-section-top-image-and-names {
-  display: flex;
-  gap: 3px;
+  margin-bottom: 15px; /* Space below header */
 }
 
-.Full-share-section-profile-picture {
+.Full-share-section-top-image-and-names-desktop {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Increased gap for better spacing */
+}
+
+.Full-share-section-profile-picture-desktop {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover; /* Ensure image fits nicely */
 }
 
-.Full-share-section-user-info {
+.Full-share-section-user-info-desktop {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 2px; /* Slight gap for readability */
 }
 
-.Full-share-section-user-name {
+.Full-share-section-name-and-postTime-desktop {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between name and time */
+}
+
+.Full-share-section-user-name-desktop {
   font-weight: bold;
   font-size: 16px;
+  color: #333; /* Darker color for contrast */
 }
 
-.Full-share-section-user-details {
+.Full-share-section-user-details-desktop {
   font-size: 14px;
   color: gray;
 }
 
-.Full-share-section-menu-icon {
+.Full-share-section-work-and-education-desktop {
+  display: flex;
+  gap: 5px; /* Space between education and work details */
+}
+
+.Full-share-section-menu-icon-desktop {
   height: 25px;
+  cursor: pointer; /* Indicate interactivity */
 }
 
-.Full-share-section-photo-container {
+.Full-share-section-photo-container-desktop {
+  flex: 1; /* Allow it to grow and fill remaining space */
   padding-top: 20px;
+  position: relative; /* For positioning action buttons */
 }
 
-.Full-share-section-post-photo {
+.Full-share-section-post-photo-desktop {
   width: 100%;
-  height: 75%;
+  height: 75%; /* Adjusted to fit well within container */
   border-radius: 10px;
   object-fit: cover;
+  display: block; /* Ensure it behaves as a block element */
 }
+
+.Full-share-section-action-buttons-desktop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 10px; /* Position at bottom of photo container */
+  width: 100%;
+  left: 0;
+}
+
+.Full-share-section-connect-div-desktop {
+  display: flex;
+  align-items: center;
+}
+
+.Full-share-section-connect-icon-desktop {
+  height: 24px;
+  width: 24px;
+  cursor: pointer; /* Indicate interactivity */
+}
+
+.Full-share-section-share-like-share-icon-desktop {
+  display: flex;
+  gap: 15px; /* Space between icons */
+}
+
+.Full-share-section-post-icons-desktop {
+  height: 24px;
+  width: 24px;
+  cursor: pointer; /* Indicate interactivity */
+}
+
 
 /* Right Section */
 .Full-share-section-right-section {
