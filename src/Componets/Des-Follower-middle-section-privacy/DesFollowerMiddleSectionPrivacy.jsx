@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import "./DesFollowerMiddleSectionPrivacy.css";
 import { GoLock } from "react-icons/go";
 import { RiArrowDropRightLine } from "react-icons/ri";
@@ -15,7 +14,8 @@ import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 
 function DesFollowerMiddleSectionPrivacy() {
-  const { userId } = useParams(); // Get userId from URL params
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get("userId"); // Get userId from query parameters (e.g., /profile?userId=...)
   const [profileData, setProfileData] = useState(null); // State to store API data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -43,43 +43,43 @@ function DesFollowerMiddleSectionPrivacy() {
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!userId) {
-        console.log("Error: userId is missing!");
-        setError("No user ID provided");
+        setError("No user ID provided in query parameters");
         setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch(`https://uniisphere-1.onrender.com/getProfile/profile/${userId}`);
+        setLoading(true); // Reset loading state
+        const response = await fetch(`https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch profile data");
+          throw new Error(`Failed to fetch profile data: ${response.status}`);
         }
         const data = await response.json();
         const profile = data[0]; // Assuming data is an array with one object
-        setProfileData(profile);
+        setProfileData(profile || defaultData); // Fallback to default if profile is null
         setLoading(false);
 
-        // Print only API data to console
-        console.log("API Data Received:");
-        console.log("Username:", profile.username ?? "N/A");
-        console.log("First Name:", profile.firstName ?? "N/A");
-        console.log("Last Name:", profile.lastName ?? "N/A");
-        console.log("Location:", profile.location ?? "N/A");
-        console.log("About:", profile.About ?? "N/A");
-        console.log("Skills:", profile.Skills ?? "N/A");
-        console.log("Interests:", profile.Interests ?? "N/A");
-        console.log("Headline:", profile.headline ?? "N/A");
-        console.log("Profile Picture URL:", profile.profilePictureUrl ?? "N/A");
-        console.log("Work or Project:", profile.workorProject ?? "N/A");
-        console.log("College:", profile.college ?? "N/A");
-        console.log("Degree:", profile.degree ?? "N/A");
-        console.log("Email:", profile.email ?? "N/A");
-        console.log("Count:", profile._count ?? "N/A");
+        // Structured console logging for API data
+        console.log("API Data Received:", {
+          Username: profile?.username ?? "N/A",
+          FirstName: profile?.firstName ?? "N/A",
+          LastName: profile?.lastName ?? "N/A",
+          Location: profile?.location ?? "N/A",
+          About: profile?.About ?? "N/A",
+          Skills: profile?.Skills ?? "N/A",
+          Interests: profile?.Interests ?? "N/A",
+          Headline: profile?.headline ?? "N/A",
+          ProfilePictureUrl: profile?.profilePictureUrl ?? "N/A",
+          WorkOrProject: profile?.workorProject ?? "N/A",
+          College: profile?.college ?? "N/A",
+          Degree: profile?.degree ?? "N/A",
+          Email: profile?.email ?? "N/A",
+          Count: profile?._count ?? "N/A",
+        });
       } catch (err) {
         console.error("Error fetching profile data:", err);
         setError(err.message);
         setLoading(false);
-        // No logging of dummy data in case of error
       }
     };
 
@@ -89,8 +89,8 @@ function DesFollowerMiddleSectionPrivacy() {
   // Toggle "See More" / "See Less" for about section
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
-  // Use API data if available, otherwise use default data for rendering
-  const data = profileData || defaultData;
+  // Use API data if available, otherwise use default data
+  const data = profileData ? profileData : defaultData;
 
   const maxLength = 100;
   const displayedText =
@@ -114,10 +114,10 @@ function DesFollowerMiddleSectionPrivacy() {
           <div className="Followers-middle-section-1-mainParent-privacy">
             <div className="Followers-middle-section-1-middle-container-privacy">
               <div className="Followers-middle-section-1-middle-section-privacy">
-                {/* Show "Data load failed" in red if there's an error */}
+                {/* Show error message if data fetch fails */}
                 {error && (
                   <div style={{ color: "red", textAlign: "center", padding: "10px" }}>
-                    Data load failed
+                    {error}
                   </div>
                 )}
                 <div className="Followers-middle-section-1-top-nav">
@@ -133,11 +133,11 @@ function DesFollowerMiddleSectionPrivacy() {
                     />
                   </div>
                   <div className="Followers-middle-section-1-collabsDetails-privacy">
-                    <h4>Collabs</h4> <span>{data._count?.connections1 || data.collabs || 0}</span>
+                    <h4>Collabs</h4> <span>{data._count?.connections1 ?? data.collabs ?? 0}</span>
                   </div>
                   <div className="Followers-middle-section-1-connectionsDetails-privacy">
                     <h4>Connections</h4>
-                    <span>{data._count?.connections2 || data.connections || 0}</span>
+                    <span>{data._count?.connections2 ?? data.connections ?? 0}</span>
                   </div>
                 </div>
                 <div className="Followers-middle-section-1-profile-info-privacy">
