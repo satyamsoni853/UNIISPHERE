@@ -205,7 +205,7 @@ function DesktopMiddle() {
 
   const handleProfileClick = (userId) => {
     if (userId) {
-      navigate(`/FullFlowerSectionPage/${userId}`);
+      navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
     } else {
       console.log("Error: userId is missing!");
     }
