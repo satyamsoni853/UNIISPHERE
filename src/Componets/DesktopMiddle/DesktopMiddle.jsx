@@ -368,6 +368,7 @@ function DesktopMiddle() {
                 <div className="Full-comment-section-desktop-action-buttons">
                   <div className="Full-comment-section-desktop-connect-div">
                     <img
+                    
                       src={Connect}
                       className="Full-comment-section-desktop-connect-icon"
                       alt="Connect"
