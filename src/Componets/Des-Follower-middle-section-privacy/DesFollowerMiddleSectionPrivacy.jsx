@@ -12,38 +12,47 @@ import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
+import Connect from './Connect.png'
 
 function DesFollowerMiddleSectionPrivacy() {
   const [searchParams] = useSearchParams();
-  const userId = searchParams.get("userId"); // Get userId from query parameters (e.g., /profile?userId=...)
+  const queryUserId = searchParams.get("userId"); // Get userId from query parameters
+  const storedUserId = localStorage.getItem("userId"); // Get userId from localStorage
+  const userId = storedUserId || queryUserId; // Prefer localStorage, fallback to query parameter
   const [profileData, setProfileData] = useState(null); // State to store API data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Default dummy data
+  // Log the userId source for verification
+  console.log("Stored userId from localStorage:", storedUserId);
+  console.log("Query userId from URL:", queryUserId);
+  console.log("Using userId:", userId);
+
+  // Default dummy data updated to match the image
   const defaultData = {
     profilePic: Personimage,
-    collabs: 12,
-    connections: 34,
+    collabs: 78,
+    connections: 248,
     name: "Himanshu Choudhary",
-    title: "Full Stack Developer | React & Node.js",
-    about: "I am a passionate full-stack developer with expertise in React and Node.js.",
-    collaboratorName: "Jane Smith",
-    education: ["B.Tech in CS"],
-    subCollaborators: ["Alice", "Bob", "Charlie"],
+    title: "Building Himansphere",
+    about: "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time",
+    collaboratorName: "Viraj Verma",
+    education: ["UPES - MBA", "IITR, Haridwar, Kartikey"],
     paragraph:
       "Founder Himanshu who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working.",
-    skills: ["JavaScript", "React", "Node.js", "MongoDB"],
+    skills: ["UI/UX", "JAVA", "CSS", "C++", "Python", "Photoshop"],
     fullAboutText:
-      "Passionate developer with experience in web and mobile development. I specialize in React, Node.js, and building scalable applications. Love to work on open-source projects and contribute to the tech community.",
+      "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time a reality. He envisioned a platform that connects people for collaboration and growth.",
+    college: "Masters Union",
+    degree: "SBM",
   };
 
   // Fetch profile data when component mounts or userId changes
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!userId) {
-        setError("No user ID provided in query parameters");
+        setError("No user ID provided in localStorage or query parameters");
         setLoading(false);
         return;
       }
@@ -58,24 +67,6 @@ function DesFollowerMiddleSectionPrivacy() {
         const profile = data[0]; // Assuming data is an array with one object
         setProfileData(profile || defaultData); // Fallback to default if profile is null
         setLoading(false);
-
-        // Structured console logging for API data
-        console.log("API Data Received:", {
-          Username: profile?.username ?? "N/A",
-          FirstName: profile?.firstName ?? "N/A",
-          LastName: profile?.lastName ?? "N/A",
-          Location: profile?.location ?? "N/A",
-          About: profile?.About ?? "N/A",
-          Skills: profile?.Skills ?? "N/A",
-          Interests: profile?.Interests ?? "N/A",
-          Headline: profile?.headline ?? "N/A",
-          ProfilePictureUrl: profile?.profilePictureUrl ?? "N/A",
-          WorkOrProject: profile?.workorProject ?? "N/A",
-          College: profile?.college ?? "N/A",
-          Degree: profile?.degree ?? "N/A",
-          Email: profile?.email ?? "N/A",
-          Count: profile?._count ?? "N/A",
-        });
       } catch (err) {
         console.error("Error fetching profile data:", err);
         setError(err.message);
@@ -90,14 +81,14 @@ function DesFollowerMiddleSectionPrivacy() {
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   // Use API data if available, otherwise use default data
-  const data = profileData ? profileData : defaultData;
+  const data = profileData || defaultData;
 
   const maxLength = 100;
   const displayedText =
-    data.fullAboutText && isExpanded
-      ? data.fullAboutText
-      : data.fullAboutText?.slice(0, maxLength) +
-        (data.fullAboutText?.length > maxLength ? "..." : "") || data.about || "N/A";
+    data.About && isExpanded
+      ? data.About
+      : data.About?.slice(0, maxLength) +
+        (data.About?.length > maxLength ? "..." : "") || data.about || "N/A";
 
   if (loading) return <div>Loading...</div>;
 
@@ -133,25 +124,31 @@ function DesFollowerMiddleSectionPrivacy() {
                     />
                   </div>
                   <div className="Followers-middle-section-1-collabsDetails-privacy">
-                    <h4>Collabs</h4> <span>{data._count?.connections1 ?? data.collabs ?? 0}</span>
+                    <h4>Connections</h4> <span>{data._count?.connections2 ?? data.connections ?? 0}</span>
                   </div>
                   <div className="Followers-middle-section-1-connectionsDetails-privacy">
-                    <h4>Connections</h4>
-                    <span>{data._count?.connections2 ?? data.connections ?? 0}</span>
+                    <h4>Collabs</h4>
+                    <span>{data._count?.connections1 ?? data.collabs ?? 0}</span>
                   </div>
                 </div>
+                {/* Display profile data */}
                 <div className="Followers-middle-section-1-profile-info-privacy">
-                  <p>{data.headline || data.title || "N/A"}</p>
+                  <h3>{data.firstName || data.name} {data.lastName || ""}</h3>
+                  <p>{data.headline || data.title || "N/A"}|{data.workorProject || data.workorProject || "N/A"}</p>
+                </div>
+                {/* Add Connect button */}
+                <div style={{ textAlign: "left", margin: "10px 0" }}>
+                  <img src={Connect} alt="" />
                 </div>
                 <div className="Followers-middle-section-1-profile-buttons-privacy">
-                  <button>{data.college || "Masters Union"}</button>
-                  <button>{data.degree || "SBM"}</button>
+                  <button>{data.college || "N/A"}</button>
+                  <button>{data.degree || "N/A"}</button>
                 </div>
                 <div className="Followers-middle-section-1-about-section-privacy">
-                  <p>About</p>
+                  <p><strong>About:</strong></p>
                   <p>
                     {displayedText}
-                    {data.fullAboutText?.length > maxLength && (
+                    {data.About?.length > maxLength && (
                       <button
                         className="Followers-middle-section-1-about-button-privacy"
                         onClick={toggleExpand}
@@ -175,30 +172,23 @@ function DesFollowerMiddleSectionPrivacy() {
                         ))}
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className="Followers-middle-section-1-paragraphAndArrow-privacy">
-                  <div className="Followers-middle-section-1-para-privacy">
-                    <p>{data.workorProject || data.paragraph || "N/A"}</p>
-                  </div>
-                  <div className="Followers-middle-section-1-iconAndImage-privacy">
-                    <img src={Personimage} alt="" />
-                    <RiArrowDropRightLine className="Followers-middle-section-1-paragrapgh-icon-privacy" />
+                    <div className="Followers-middle-section-1-iconAndImage-privacy">
+                      <img src={Personimage} alt="" />
+                      <RiArrowDropRightLine className="Followers-middle-section-1-paragrapgh-icon-privacy" />
+                    </div>
                   </div>
                 </div>
                 <div className="Followers-middle-section-1-skills-section-privacy">
                   <h3>Skills</h3>
                   <div className="Followers-middle-section-1-skill-list-privacy">
-                    {(data.Skills && data.Skills.length > 0 ? data.Skills : data.skills || []).map(
-                      (val, index) => (
-                        <div
-                          key={index}
-                          className="Followers-middle-section-1-skillsMiniDiv-privacy"
-                        >
-                          {val || "N/A"}
-                        </div>
-                      )
-                    )}
+                    {(data.Skills || data.skills || []).map((val, index) => (
+                      <div
+                        key={index}
+                        className="Followers-middle-section-1-skillsMiniDiv-privacy"
+                      >
+                        {val || "N/A"}
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <div className="Followers-middle-section-1-blur-privacy">
