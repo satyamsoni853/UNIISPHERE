@@ -5,25 +5,25 @@
 }
 
 .settings-menu {
-  width: 20vw;  /* Changed from 300px to 20vw */
+  width: 20vw; /* Changed from 300px to 20vw */
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   z-index: 1001;
   height: 100vh;
-  position: fixed;  /* Added to fix position */
-  left: 0;  /* Added to position at left */
-  overflow-y: auto;  /* Added to handle overflow */
+  position: fixed; /* Added to fix position */
+  left: 0; /* Added to position at left */
+  overflow-y: auto; /* Added to handle overflow */
 }
 
 .settings-submenu {
-  width: 80vw;  /* Added width for right container */
-  height: 100vh;  /* Added full height */
-  position: fixed;  
+  width: 80vw; /* Added width for right container */
+  height: 100vh; /* Added full height */
+  position: fixed;
   top: 120px;
-  right: 0;  /* Added to position at right */
-  padding: 20px;  /* Added padding to match left container */
+  right: 0; /* Added to position at right */
+  padding: 20px; /* Added padding to match left container */
   /* overflow-y: auto;   */
 }
 
@@ -110,6 +110,7 @@
   border-radius: 10px;
   cursor: pointer;
   font-size: 18px;
+  justify-content: space-between;
   color: #333;
   margin-bottom: 5px;
 }
@@ -174,13 +175,505 @@
   transform: translateX(14px);
 }
 
-
-
-
 .settings-sign-out {
   color: #ff4444;
   margin-top: 50px;
-  
+
   /* width: 100%; */
 }
 
+/* =======================PROFILE DETAILS BOX  ============= */
+
+.settings-profile-main-container {
+  width: 80vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.settings-profile-personal-details-section {
+  background-color: #ffd7d7;
+
+  padding: 20px;
+  width: 843px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 20px;
+}
+.settings-profile-personal-heading-and-paragraph {
+  width: 85%;
+}
+
+.settings-profile-personal-details-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333; /* Dark gray for strong contrast */
+}
+
+.settings-profile-personal-details-section p {
+  font-size: 14px;
+  color: #666666; /* Medium gray for softer text */
+}
+
+.settings-profile-information-of-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-profile-field {
+  width: 690px;
+  height: 50px;
+  background-color: #ffffff; /* Light gray background */
+  border: 2px solid #ffd7d7; /* Subtle border */
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px; /* Comfortable padding */
+}
+
+.settings-profile-main-headline {
+  font-size: 20px;
+  color: #000;
+}
+
+.settings-profile-value-headline {
+  font-size: 15px;
+  color: #6b6b6b;
+}
+
+/* ## =========================== PASSWORD AND SECURITY CSS ====================## */
+
+.passoword-security-main-container {
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.password-security-section {
+  width: 843px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.data-and-arrow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.data-and-arrow span {
+  font-size: 15px;
+  color: #6b6b6b;
+}
+
+/* 
+=============================WHERE YOU LOGGED IN CSS ================================= */
+
+.settings-whereLoggedIn-main-container {
+  width: 80vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.settings-whereLoggedIn-personal-details-section {
+  background-color: #f5fafb;
+  padding: 20px;
+  width: 843px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 20px;
+}
+.settings-whereLoggedIn-personal-heading-and-paragraph {
+  width: 85%;
+}
+
+.settings-whereLoggedIn-personal-details-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333; /* Dark gray for strong contrast */
+}
+
+.settings-whereLoggedIn-personal-details-section p {
+  font-size: 14px;
+  color: #666666; /* Medium gray for softer text */
+}
+
+.settings-whereLoggedIn-information-of-whereLoggedIn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-whereLoggedIn-field {
+  width: 690px;
+  height: 50px;
+  background-color: #ffffff; /* Light gray background */
+  border: 1px solid #dddddd; /* Subtle border */
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px; /* Comfortable padding */
+}
+
+.settings-whereLoggedIn-main-headline {
+  font-size: 20px;
+  color: #000;
+}
+
+.settings-whereLoggedIn-value-headline {
+  font-size: 15px;
+  color: #6b6b6b;
+}
+
+/* ===========================VISIBILTY $ PERMISONS CODE ================================================= */
+
+.settings-visibiltyandPermisons-items {
+  max-height: 400px;
+}
+
+.settings-visibiltyandPermisons-item {
+  display: flex;
+
+  align-items: center;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  color: #333;
+}
+
+.settings-visibiltyandPermisons-item span {
+  font-size: 20px;
+  font-weight: lighter;
+}
+
+/* Alternating background colors for visibiltyandPermisons items */
+.settings-visibiltyandPermisons-item:nth-child(odd) {
+  background-color: #ffe6e6;
+}
+
+.settings-visibiltyandPermisons-item:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.settings-visibiltyandPermisons-item:hover {
+  background-color: #e0e0e0;
+}
+
+/* =========================WHO CAN SEE YOUR CONNECTION CODE CSS ========================================= */
+
+.settings-connectionPermisons-Parentcontainer {
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings-connectionPermisons-main-heading {
+  font-size: 22px;
+}
+.settings-connectionPermisons-blue-box {
+  width: 827px;
+  background-color: #d9cad6;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.settings-connectionPermisons-heading-and-para {
+  width: 85%;
+}
+
+.settings-connectionPermisons-toggle-and-heading {
+  width: 690px;
+
+  background-color: #ffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  color: #333333;
+  padding: 7px 30px;
+  box-shadow: 1px 1px 7px black;
+}
+
+.settings-connectionPermisons-description {
+  font-size: 14px;
+}
+
+.settings-connectionPermisons-toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+.settings-connectionPermisons-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.settings-connectionPermisons-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.settings-connectionPermisons-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.settings-connectionPermisons-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.settings-connectionPermisons-switch
+  input:checked
+  + .settings-connectionPermisons-slider {
+  background-color: #76ee59;
+}
+
+.settings-connectionPermisons-switch
+  input:checked
+  + .settings-connectionPermisons-slider:before {
+  transform: translateX(26px);
+}
+
+.settings-connectionPermisons-round {
+  border-radius: 34px;
+}
+
+.settings-connectionPermisons-toggle-label {
+  font-size: 14px;
+}
+
+/* ===========================WHO CAN SEE COLLAB CODE CSS ============================ */
+
+.settings-collabPermisions-Parentcontainer {
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings-collabPermisions-main-heading {
+  font-size: 22px;
+}
+.settings-collabPermisions-blue-box {
+  width: 827px;
+  background-color: #d9cad6;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.settings-collabPermisions-heading-and-para {
+  width: 85%;
+}
+
+.settings-collabPermisions-toggle-and-heading {
+  width: 690px;
+
+  background-color: #ffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  color: #333333;
+  padding: 7px 30px;
+  box-shadow: 1px 1px 7px black;
+}
+
+.settings-collabPermisions-description {
+  font-size: 14px;
+}
+
+.settings-collabPermisions-toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+.settings-collabPermisions-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.settings-collabPermisions-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.settings-collabPermisions-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.settings-collabPermisions-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.settings-collabPermisions-switch
+  input:checked
+  + .settings-collabPermisions-slider {
+  background-color: #76ee59;
+}
+
+.settings-collabPermisions-switch
+  input:checked
+  + .settings-collabPermisions-slider:before {
+  transform: translateX(26px);
+}
+
+.settings-collabPermisions-round {
+  border-radius: 34px;
+}
+
+.settings-collabPermisions-toggle-label {
+  font-size: 14px;
+}
+
+/* 
+=========================BLOCKED CODE CSS ==================== */
+
+.settings-blocked-main-parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+}
+
+.settings-blocked-container {
+  width: 830px;
+  background: #f5fafb;
+  padding: 15px;
+  border-radius: 30px;
+}
+
+.settings-blocked-title {
+  font-size: 25px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.settings-blocked-description {
+  color: #1a1a1a;
+  font-size: 18px;
+}
+
+.settings-blocked-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-blocked-user-item {
+  display: flex;
+  width: 715px;
+  padding: 10px 20px;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #ffffff;
+  border-radius: 50px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.settings-blocked-user-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.settings-blocked-user-info {
+  flex-grow: 1;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.settings-blocked-user-info img {
+  height: 70px;
+  width: 70px;
+}
+
+.settings-blocked-user-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #050505;
+}
+
+.settings-blocked-user-message {
+  font-size: 20px;
+  font-weight: 600;
+  color: #050505;
+}
+
+.settings-blocked-unblock-btn {
+  background-color: #3867ff;
+  color: #050505;
+  border: none;
+  border-radius: 15px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 88px;
+}
