@@ -599,7 +599,8 @@
   flex: 0 0 40%;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  margin-top: 10px;
+  padding: 40px 30px;
   border-left: 2px solid #9d9c9c;
 }
 
@@ -738,8 +739,8 @@
 /* Main Container */
 .Full-share-section-desktop-main-container {
   z-index: 99;
-  width: 1193px;
-  height: 600px;
+  width: 1500px;
+  height: 800px;
   position: fixed;
   left: 12%;
   bottom: 7%;
@@ -749,6 +750,7 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Prevent content overflow */
 }
 
 /* Left Section */
@@ -757,6 +759,7 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
+  height: 100%; /* Ensure it takes full height of container */
 }
 
 .Full-share-section-desktop-user-profile-header {
@@ -764,28 +767,38 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 15px; /* Space below header */
 }
 
 .Full-share-section-desktop-top-image-and-names {
   display: flex;
-  gap: 3px;
+  align-items: center;
+  gap: 10px; /* Increased gap for better spacing */
 }
 
 .Full-share-section-desktop-profile-picture {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover; /* Ensure image fits nicely */
 }
 
 .Full-share-section-desktop-user-info {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 2px; /* Slight gap for readability */
+}
+
+.Full-share-section-name-and-postTime-desktop {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between name and time */
 }
 
 .Full-share-section-desktop-user-name {
   font-weight: bold;
   font-size: 16px;
+  color: #333; /* Darker color for contrast */
 }
 
 .Full-share-section-desktop-user-details {
@@ -795,6 +808,7 @@
 
 .Full-share-section-desktop-menu-icon {
   height: 25px;
+  cursor: pointer; /* Indicate interactivity */
 }
 
 .Full-share-section-desktop-photo-container {
@@ -807,7 +821,43 @@
   height: 85%;
   border-radius: 10px;
   object-fit: cover;
+  display: block; /* Ensure it behaves as a block element */
 }
+
+.Full-share-section-action-buttons-desktop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 10px; /* Position at bottom of photo container */
+  width: 100%;
+  left: 0;
+}
+
+.Full-share-section-connect-div-desktop {
+  display: flex;
+  align-items: center;
+}
+
+.Full-share-section-connect-icon-desktop {
+  height: 24px;
+  width: 24px;
+  cursor: pointer; /* Indicate interactivity */
+}
+
+.Full-share-section-share-like-share-icon-desktop {
+  display: flex;
+  gap: 15px; /* Space between icons */
+}
+
+.Full-share-section-post-icons-desktop {
+  height: 24px;
+  width: 24px;
+  cursor: pointer; /* Indicate interactivity */
+}
+
 
 /* Right Section */
 .Full-share-section-desktop-right-section {

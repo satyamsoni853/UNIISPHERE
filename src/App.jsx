@@ -19,6 +19,8 @@ import MessageFinalclass from "./Componets/MessageFinalClass/MessageFinalclass.j
 import SelfProfile from "./Componets/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Componets/SelfSetting/SelfSetting.jsx";
 import MessageFinalClass2 from "./Componets/MessageFinalclass-2/MessageFinalClass2.jsx";
+import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
+import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 
 function App() {
   return (
@@ -35,7 +37,7 @@ function App() {
           {/* Protected Routes (require userId) */}
           <Route path="/View" element={<View />} />
           <Route
-            path="/FollowerMiddleSectionPrivacy"
+            path="/FollowerMiddleSectionPrivacy/:userId"
             element={<DesFollowerMiddleSectionPrivacy />}
           />
           <Route
@@ -63,6 +65,8 @@ function App() {
           <Route path="/SelfProfile" element={<SelfProfile />} />
           <Route path="/SelfSetting" element={<SelfSetting />} />
           <Route path="/MessageFinalClass2" element={<MessageFinalClass2 />} />
+          <Route path="/NetworkPage" element={<NetworkPage />} />
+          <Route path="/CollabPage" element={<CollabPage />} />
         </Routes>
       </div>
     </Router>

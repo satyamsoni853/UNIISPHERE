@@ -1,0 +1,217 @@
+.collabpage-main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.collabpage {
+  flex: 1;
+  padding: 20px;
+}
+
+.collabpage-container {
+  margin-left: 50px;
+  max-width: 1100px;
+  width: 100%; /* Ensure it scales with the viewport */
+}
+
+.collabpage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 100px;
+}
+
+.collabpage-card {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.collabpage-profile-pic-container {
+  margin-right: 15px;
+}
+
+.collabpage-profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.collabpage-info {
+  flex: 1;
+}
+
+.collabpage-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.collabpage-education {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.collabpage-description {
+  font-size: 14px;
+  color: #333;
+  margin: 5px 0;
+}
+
+.collabpage-remove-btn {
+  background: black;
+  border: none;
+  font-size: 18px;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collabpage-remove-btn:hover {
+  color: #ff4d4d; /* Red on hover for better UX */
+}
+
+.collabpage-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.collabpage-action-btn {
+  background-color: #d3e1f0;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.collabpage-action-btn:hover {
+  background-color: #0056b3;
+}
+
+.collabpage-first-container {
+  display: flex;
+  align-items: center;
+  gap: 250px;
+}
+
+/* Desktop Right Section (assuming it exists in your JSX) */
+.desktop-right-section {
+  width: 300px;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .collabpage-container {
+    margin-left: 20px; /* Reduce margin on tablets */
+    max-width: 900px;
+  }
+
+  .collabpage-list {
+    margin-top: 80px; /* Slightly reduce top margin */
+  }
+
+  .collabpage-first-container {
+    gap: 100px; /* Reduce gap on tablets */
+  }
+
+  .desktop-right-section {
+    width: 250px; /* Slightly narrower on tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .collabpage-container {
+    margin-left: 10px; /* Further reduce margin on mobile */
+    max-width: 100%; /* Full width on mobile */
+  }
+
+  .collabpage-list {
+    margin-top: 50px; /* Reduce top margin for mobile */
+  }
+
+  .collabpage-card {
+    flex-direction: column; /* Stack card content vertically */
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .collabpage-profile-pic-container {
+    margin-right: 0;
+    margin-bottom: 10px; /* Space below profile pic */
+  }
+
+  .collabpage-remove-btn {
+    width: 40px; /* Smaller button on mobile */
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .collabpage-first-container {
+    flex-direction: column; /* Stack items vertically */
+    gap: 20px; /* Smaller gap on mobile */
+    align-items: flex-start;
+  }
+
+  .collabpage-buttons {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 15px;
+  }
+
+  .collabpage-action-btn {
+    width: 100%; /* Full-width buttons on mobile */
+    padding: 12px;
+    
+  }
+
+  .desktop-right-section {
+    width: 100%; /* Full width on mobile */
+    padding: 15px;
+    background-color: transparent; /* Optional: blend with main content */
+  }
+
+  .collabpage-main-container {
+    flex-direction: column; /* Ensure everything stacks vertically */
+  }
+}
+
+@media (max-width: 480px) {
+  .collabpage {
+    padding: 10px; /* Reduce padding on small screens */
+  }
+
+  .collabpage-profile-pic {
+    width: 40px; /* Smaller profile pic */
+    height: 40px;
+  }
+
+  .collabpage-name {
+    font-size: 16px; /* Smaller text */
+  }
+
+  .collabpage-education,
+  .collabpage-description {
+    font-size: 12px; /* Smaller text */
+  }
+
+  .collabpage-remove-btn {
+    width: 30px; /* Even smaller button */
+    height: 30px;
+    font-size: 14px;
+  }
+}

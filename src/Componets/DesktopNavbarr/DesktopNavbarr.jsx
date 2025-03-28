@@ -1,49 +1,76 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbarr.css";
-import Addicon from "./Addicon.png";
-import Clendericon from "./Clendericon.png";
-import Homeicon from "./Homeicon.png";
-import Messageicon from "./Messageicon.png";
-import Networkicon from "./Networkicon.png";
-import Nottificationicon from "./Notificationicon.png";
+
 import Usericon from "./Usericon.png";
 import Unispherelogoicon from "./Unispherelogoicon.png";
 
+// black and white icons
+import Addwhite from './AddBlack.svg';
+import Addblack from './Addwhite.svg';
+import Homewhite from './Homewhite.svg';
+import Homeblack from './Homeblack.svg';
+import NetworkBlack from './NetworkBlack.svg';
+import Networkwhite from './NetworkWhite.svg';
+import Notificationblack from './Notificationblack.svg';
+import Notificationwhite from './Notificationwhite.svg';
+
 function DesktopNavbarr() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [activeIcon, setActiveIcon] = useState(null); // Track which icon is active
   const navigate = useNavigate();
 
   const handleUserIconClick = () => {
-    setIsUserDropdownOpen(!isUserDropdownOpen); // Toggle dropdown visibility
+    setIsUserDropdownOpen(!isUserDropdownOpen);
   };
 
   const handleSignOut = () => {
-    setIsUserDropdownOpen(false); // Close dropdown on sign out
-    // Add your sign-out logic here (e.g., clear auth token, redirect)
+    setIsUserDropdownOpen(false);
     console.log("User signed out");
   };
 
   const handleEditProfile = () => {
-    const userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
+    const userId = localStorage.getItem("userId");
     if (userId) {
-      navigate(`/ProfileEditSection/${userId}`); // Pass userId in the URL
+      navigate(`/ProfileEditSection/${userId}`);
     } else {
       console.error("User ID not found in localStorage.");
     }
   };
 
+  const handleIconClick = (iconName) => {
+    setActiveIcon(activeIcon === iconName ? null : iconName); // Toggle active state
+  };
+
   return (
     <div className="desktop-navbar-1">
-      <img src={Homeicon} alt="Home" className="desktop-icon" />
-      <img src={Networkicon} alt="Network" className="desktop-icon" />
-      <img src={Clendericon} alt="Calendar" className="desktop-icon" />
-      <img src={Addicon} alt="Add" className="desktop-icon" />
-      <img src={Messageicon} alt="Messages" className="desktop-icon" />
-      <img
-        src={Nottificationicon}
-        alt="Notifications"
-        className="desktop-icon"
+      <img 
+        src={activeIcon === 'home' ? Homewhite : Homeblack} 
+        alt="Home" 
+        className="desktop-icon" 
+        onClick={() => handleIconClick('home')}
+        style={{ cursor: "pointer" }}
+      />
+      <img 
+        src={activeIcon === 'network' ? Networkwhite : NetworkBlack} 
+        alt="Network" 
+        className="desktop-icon" 
+        onClick={() => handleIconClick('network')}
+        style={{ cursor: "pointer" }}
+      />
+      <img 
+        src={activeIcon === 'add' ? Addwhite : Addblack} 
+        alt="Add" 
+        className="desktop-icon" 
+        onClick={() => handleIconClick('add')}
+        style={{ cursor: "pointer" }}
+      />
+      <img 
+        src={activeIcon === 'notifications' ? Notificationwhite : Notificationblack} 
+        alt="Notifications" 
+        className="desktop-icon" 
+        onClick={() => handleIconClick('notifications')}
+        style={{ cursor: "pointer" }}
       />
 
       <div className="user-icon-container">
@@ -56,7 +83,6 @@ function DesktopNavbarr() {
         />
         {isUserDropdownOpen && (
           <div className="SelfProfile-card">
-            {/* Profile Header */}
             <div className="SelfProfile-header">
               <img
                 src="https://via.placeholder.com/50"
@@ -69,15 +95,13 @@ function DesktopNavbarr() {
               </div>
             </div>
 
-            {/* Edit Profile Button */}
             <button
               className="SelfProfile-edit-button"
-              onClick={handleEditProfile} // Add onClick handler
+              onClick={handleEditProfile}
             >
               Edit Profile
             </button>
 
-            {/* Stats Section */}
             <div className="SelfProfile-stats">
               <div className="SelfProfile-stat">
                 <span>Posts</span>
@@ -97,7 +121,6 @@ function DesktopNavbarr() {
               </div>
             </div>
 
-            {/* Menu Section */}
             <div className="SelfProfile-menu">
               <div>
                 <Link
@@ -115,7 +138,7 @@ function DesktopNavbarr() {
               <Link
                 to="/"
                 className="SelfProfile-menu-item SelfProfile-sign-out"
-                onClick={handleSignOut} // Close dropdown and handle sign-out
+                onClick={handleSignOut}
               >
                 Sign Out
               </Link>

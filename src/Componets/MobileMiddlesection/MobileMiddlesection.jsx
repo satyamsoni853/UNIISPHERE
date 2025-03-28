@@ -21,9 +21,8 @@ import Smallimage6 from "./small-image6.png";
 import Smallimage7 from "./small-image7.png";
 import Smallimage8 from "./small-image8.png";
 
-
 // Comment box data
-//import profilePhoto from "./profilePhoto.png";
+import profilePhoto from "./profilephoto.png";
 import Threedot from "./Threedot.svg";
 import Connect from "./Connect.png";
 import ShareIcon from "./Share.svg";
@@ -40,11 +39,8 @@ import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
 
 function MobileMiddlesection() {
-
-
-
-  const [showComment, setshowComment] = useState(false)
-  const [showShare, setshowShare] = useState(false)
+  const [showComment, setshowComment] = useState(false);
+  const [showShare, setshowShare] = useState(false);
 
   // Full comment box data
 
@@ -123,7 +119,6 @@ function MobileMiddlesection() {
       name: "Rohit",
       avatar: profilePhoto,
     },
-
   ];
 
   const [posts, setPosts] = useState([]);
@@ -135,7 +130,9 @@ function MobileMiddlesection() {
   const getAuthData = () => {
     const storedToken = localStorage.getItem("authToken");
     const storedUserId = localStorage.getItem("userId");
-    return storedToken && storedUserId ? { token: storedToken, userId: storedUserId } : null;
+    return storedToken && storedUserId
+      ? { token: storedToken, userId: storedUserId }
+      : null;
   };
 
   const authData = getAuthData();
@@ -157,14 +154,17 @@ function MobileMiddlesection() {
 
       setImageLoading(true);
       try {
-        const response = await axios.get("https://uniisphere-1.onrender.com/api/feed", {
-          headers: { Authorization: `Bearer ${authData.token}` },
-        });
+        const response = await axios.get(
+          "https://uniisphere-1.onrender.com/api/feed",
+          {
+            headers: { Authorization: `Bearer ${authData.token}` },
+          }
+        );
         console.log(response.data);
         console.log(response);
 
         if (response.data.posts && response.data.posts.length > 0) {
-          const updatedPosts = response.data.posts.map(post => ({
+          const updatedPosts = response.data.posts.map((post) => ({
             ...post,
             likes: post.likes || 0,
             isLiked: false, // Initial like state per post
@@ -196,19 +196,27 @@ function MobileMiddlesection() {
     <div className="middle-middle-card">
       {error && <div className="error-message">{error}</div>}
 
-
       {posts.length > 0 ? (
         posts.map((post, index) => (
           <div key={index} className="post-container">
             {/* Profile Header */}
             <div className="middle-profile-header">
-              <img src={Profileimage} alt="Profile" className="middle-profile-pic" />
+              <img
+                src={Profileimage}
+                alt="Profile"
+                className="middle-profile-pic"
+              />
               <div className="middle-profile-info">
                 <div className="middle-profile-top">
-                  <span className="middle-profile-name">{post.user.username || "Unknown Author"}</span>
+                  <span className="middle-profile-name">
+                    {post.user.username || "Unknown Author"}
+                  </span>
                   {/* <span className="middle-post-time">18h</span> */}
                 </div>
-                <p className="middle-profile-details">{post.authorDetails || "University of Delhi | Works at Google"}</p>
+                <p className="middle-profile-details">
+                  {post.authorDetails ||
+                    "University of Delhi | Works at Google"}
+                </p>
               </div>
               <BsThreeDotsVertical className="middle-options-icon" />
             </div>
@@ -218,49 +226,80 @@ function MobileMiddlesection() {
               {imageLoading ? (
                 <div>Loading image...</div>
               ) : post.mediaUrl ? (
-                <img src={post.mediaUrl} alt={`Post ${index + 1}`} className="middle-content-image" onError={(e) => (e.target.src = "https://via.placeholder.com/300")} />
+                <img
+                  src={post.mediaUrl}
+                  alt={`Post ${index + 1}`}
+                  className="middle-content-image"
+                  onError={(e) =>
+                    (e.target.src = "https://via.placeholder.com/300")
+                  }
+                />
               ) : (
-                <img src={MiddlemainImage} alt="Default Post" className="middle-content-image" />
+                <img
+                  src={MiddlemainImage}
+                  alt="Default Post"
+                  className="middle-content-image"
+                />
               )}
             </div>
 
             {/* Action Bar */}
             <div className="middle-action-bar">
-              <img src={ConnectMidlleimage} alt="Connect" className="middle-connect-image" />
+              <img
+                src={ConnectMidlleimage}
+                alt="Connect"
+                className="middle-connect-image"
+              />
               <div className="middle-action-icons">
                 {/* Like Button */}
-                <div className="middle-icon-container" onClick={() => handleLike(index)}>
+                <div
+                  className="middle-icon-container"
+                  onClick={() => handleLike(index)}
+                >
                   <span className="middle-icon-count">{post.totalLikes}</span>
-                  <CiHeart className={`middle-icon ${post.isLiked ? "liked" : ""}`} />
+                  <img
+                    src={LikeIcon}// Replace this with your actual like image path
+                    className={`middle-icon ${post.isLiked ? "liked" : ""}`}
+                    alt="Like"
+                  />
                 </div>
 
                 {/* Comments Count */}
                 <div className="middle-icon-container">
-                  <span className="middle-icon-count">{post.totalComments}</span>
-                  <TfiCommentsSmiley
+                  <span className="middle-icon-count">
+                    {post.totalComments}
+                  </span>
+                  <img
+                    src={CommentIcon} // Replace this with your actual comment SVG path
                     onClick={() => {
-                      setshowComment(true)
+                      setshowComment(true);
                     }}
-                    className="middle-icon" />
+                    className="middle-icon"
+                    alt="Comments"
+                  />
                 </div>
 
                 {/* Share Placeholder */}
 
-                <div
-
-                  className="middle-icon-container">
-                  <PiShareFatThin
+                <div className="middle-icon-container">
+                  <img
+                    src={ShareIcon} // Replace this with your actual ShareIcon image path
                     onClick={() => {
-                      setshowShare(true)
+                      setshowShare(true);
                     }}
-                    className="middle-icon" />
+                    className="middle-icon"
+                    alt="Share"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Post Text */}
             <div className="middle-post-text">
-              <span className="middle-post-author">{post.content || "Unknown Author"}</span> {post.caption || "No caption available"}
+              <span className="middle-post-author">
+                {post.content || "Unknown Author"}
+              </span>{" "}
+              {post.caption || "No caption available"}
               <span className="middle-see-more">...more</span>
             </div>
           </div>
@@ -272,143 +311,143 @@ function MobileMiddlesection() {
       {/* ## *******************COMMENT BOX CODE *********************##  */}
 
       {showComment && (
-        <div className="Full-comment-section-main-container">
-          {/* Left Section */}
-          <div className="Full-comment-section-left-section">
-            <div className="Full-comment-section-user-profile-header">
-              <img
-                src={userData.profilePicture}
-                alt="Profile"
-                className="Full-comment-section-profile-picture"
-              />
-              <div className="Full-comment-section-user-info">
-                <div className="Full-comment-section-name-and-postTime">
-                  <span className="Full-comment-section-user-name">
-                    {userData.name}
-                  </span>
-                  <span className="Full-comment-section-user-details">18h</span>
-                </div>
-                <div className="Full-comment-section-work-and-education">
-                  <span className="Full-comment-section-user-details">
-                    {userData.education}
-                  </span>
-                  <span className="Full-comment-section-user-details">||</span>
-                  <span className="Full-comment-section-user-details">
-                    {" "}
-                    {userData.workPlace}{" "}
-                  </span>
-                </div>
+        <div className="mobile-Full-comment-section-main-container">
+        {/* Left Section */}
+        <div className="mobile-Full-comment-section-left-section">
+          <div className="mobile-Full-comment-section-user-profile-header">
+            <img
+              src={userData.profilePicture}
+              alt="Profile"
+              className="mobile-Full-comment-section-profile-picture"
+            />
+            <div className="mobile-Full-comment-section-user-info">
+              <div className="mobile-Full-comment-section-name-and-postTime">
+                <span className="mobile-Full-comment-section-user-name">
+                  {userData.name}
+                </span>
+                <span className="mobile-Full-comment-section-user-details">18h</span>
               </div>
-              <img
-                src={Threedot}
-                className="Full-comment-section-menu-icon"
-                alt=""
-              />
-            </div>
-            <div className="Full-comment-section-photo-container">
-              <img
-                src={userData.profilePicture}
-                alt="Post"
-                className="Full-comment-section-post-photo"
-              />
-              <div className="Full-comment-section-action-buttons">
-                <div className="Full-comment-section-connect-div">
-                  <img
-                    src={Connect}
-                    className="Full-comment-section-connect-icon"
-                    alt=""
-                  />
-                </div>
-                <div className="Full-comment-section-share-like-comment-icon">
-                  <img
-                    src={ShareIcon}
-                    className="Full-comment-section-post-icons"
-                    alt=""
-                  />
-                  <img
-                    src={CommentIcon}
-                    className="Full-comment-section-post-icons"
-                    alt=""
-                  />
-                  <img
-                    src={LikeIcon}
-                    className="Full-comment-section-post-icons"
-                    alt=""
-                  />
-                </div>
+              <div className="mobile-Full-comment-section-work-and-education">
+                <span className="mobile-Full-comment-section-user-details">
+                  {userData.education}
+                </span>
+                <span className="mobile-Full-comment-section-user-details">||</span>
+                <span className="mobile-Full-comment-section-user-details">
+                  {" "}
+                  {userData.workPlace}{" "}
+                </span>
               </div>
             </div>
+            <img
+              src={Threedot}
+              className="mobile-Full-comment-section-menu-icon"
+              alt=""
+            />
           </div>
-
-          {/* Right Section */}
-          <div className="Full-comment-section-right-section">
-            <div className="Full-comment-section-comments-header">
-              <h1 className="Full-comment-section-heading">Comments</h1>
+          <div className="mobile-Full-comment-section-photo-container">
+            <img
+              src={userData.profilePicture}
+              alt="Post"
+              className="mobile-Full-comment-section-post-photo"
+            />
+            <div className="mobile-Full-comment-section-action-buttons">
+              <div className="mobile-Full-comment-section-connect-div">
+                <img
+                  src={Connect}
+                  className="mobile-Full-comment-section-connect-icon"
+                  alt=""
+                />
+              </div>
+              <div className="mobile-Full-comment-section-share-like-comment-icon">
+                <img
+                  src={ShareIcon}
+                  className="mobile-Full-comment-section-post-icons"
+                  alt=""
+                />
+                <img
+                  src={CommentIcon}
+                  className="mobile-Full-comment-section-post-icons"
+                  alt=""
+                />
+                <img
+                  src={LikeIcon}
+                  className="mobile-Full-comment-section-post-icons"
+                  alt=""
+                />
+              </div>
             </div>
-            <div className="Full-comment-section-comments-list">
-              {comments.map((comment, index) => (
-                <div
-                  className="Full-comment-section-comment-main-parent"
-                  key={index}
-                >
-                  <div className="Full-comment-section-comment">
-                    <img
-                      src={comment.profilePicture}
-                      alt="Profile"
-                      className="Full-comment-section-comment-profile-picture"
-                    />
-                    <div className="Full-comment-section-comment-content">
-                      <div className="Full-comment-section-comment-user-info">
-                        <span className="Full-comment-section-comment-username">
-                          {comment.username}
-                        </span>
-                        <span className="Full-comment-section-comment-timestamp">
-                          {comment.timestamp}
-                        </span>
-                      </div>
-                      <div className="Full-comment-section-comment-text">
-                        {comment.text}
-                      </div>
-                      <div className="Full-comment-section-comment-actions">
-                        <span className="Full-comment-section-reply-link">
-                          REPLY
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="Full-comment-section-comment-likes">
-                    <img
-                      src={LikeIcon}
-                      alt=""
-                      className="Full-comment-section-like-button"
-                    />
-                    <span>{comment.likes} </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="Full-comment-section-comment-input-and-image">
-              <img
-                src={profilePhoto}
-                className="Full-comment-section-commentPerson-image"
-                alt=""
-              />
-              <input
-                type="text"
-                placeholder="Write a comment to VIJAY PRASAD"
-              />
-            </div>
-            <button
-              onClick={() => {
-                setshowComment(false)
-              }}
-              className="Full-comment-section-cross-button"
-            >
-              {" "}
-              ×
-            </button>
           </div>
         </div>
+      
+        {/* Right Section */}
+        <div className="mobile-Full-comment-section-right-section">
+          <div className="mobile-Full-comment-section-comments-header">
+            <h1 className="mobile-Full-comment-section-heading">Comments</h1>
+          </div>
+          <div className="mobile-Full-comment-section-comments-list">
+            {comments.map((comment, index) => (
+              <div
+                className="mobile-Full-comment-section-comment-main-parent"
+                key={index}
+              >
+                <div className="mobile-Full-comment-section-comment">
+                  <img
+                    src={comment.profilePicture}
+                    alt="Profile"
+                    className="mobile-Full-comment-section-comment-profile-picture"
+                  />
+                  <div className="mobile-Full-comment-section-comment-content">
+                    <div className="mobile-Full-comment-section-comment-user-info">
+                      <span className="mobile-Full-comment-section-comment-username">
+                        {comment.username}
+                      </span>
+                      <span className="mobile-Full-comment-section-comment-timestamp">
+                        {comment.timestamp}
+                      </span>
+                    </div>
+                    <div className="mobile-Full-comment-section-comment-text">
+                      {comment.text}
+                    </div>
+                    <div className="mobile-Full-comment-section-comment-actions">
+                      <span className="mobile-Full-comment-section-reply-link">
+                        REPLY
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mobile-Full-comment-section-comment-likes">
+                  <img
+                    src={LikeIcon}
+                    alt=""
+                    className="mobile-Full-comment-section-like-button"
+                  />
+                  <span>{comment.likes} </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mobile-Full-comment-section-comment-input-and-image">
+            <img
+              src={profilePhoto}
+              className="mobile-Full-comment-section-commentPerson-image"
+              alt=""
+            />
+            <input
+              type="text"
+              placeholder="Write a comment to VIJAY PRASAD"
+            />
+          </div>
+          <button
+            onClick={() => {
+              setshowComment(false);
+            }}
+            className="mobile-Full-comment-section-cross-button"
+          >
+            {" "}
+            ×
+          </button>
+        </div>
+      </div>
       )}
 
       {/* ## ===================SHARE BOX   ======================## */}
@@ -516,7 +555,7 @@ function MobileMiddlesection() {
             </div>
             <button
               onClick={() => {
-                setshowShare(false)
+                setshowShare(false);
               }}
               className="Full-share-section-cross-button"
             >
@@ -526,15 +565,7 @@ function MobileMiddlesection() {
           </div>
         </div>
       )}
-
-
     </div>
-
-
-
-
-
-
   );
 }
 

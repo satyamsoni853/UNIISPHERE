@@ -1,0 +1,224 @@
+.networkpage-main-container{
+  display: flex;
+  
+}
+.networkpage {
+  margin-top: 100px;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.networkpage-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.networkpage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.networkpage-card {
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.networkpage-profile-pic-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.networkpage-profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.networkpage-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 5px 0;
+  color: #333;
+}
+
+.networkpage-education {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.networkpage-description {
+  font-size: 12px;
+  color: #888;
+  margin: 5px 0;
+  overflow: hidden;
+}
+
+.networkpage-connect-icon {
+  margin: 10px auto;
+  cursor: pointer;
+  width: 200px;
+  height: 80px;
+}
+
+.networkpage-connect-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.networkpage-stats {
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
+  color: #666;
+
+}
+.networkpage-stats span{
+  padding: 10px;
+}
+
+
+.networkpage-stats span {
+  background-color: #f0f0f0;
+  border-radius: 12px;
+}
+
+.networkpage-buttons {
+  display: flex;
+  justify-content: start;
+  gap: 15px;
+  margin-top: 30px;
+  padding-bottom: 20px;
+
+}
+
+.networkpage-action-btn {
+  background-color: #f5f5dc;
+  /* border: 2px solid #007bff; */
+  color: black;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.networkpage-action-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.networkpage-right-section {
+  width: 350px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: fit-content;
+}
+
+.networkpage-right-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.networkpage-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+.networkpage-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  gap: 10px; /* Space between the buttons */
+}
+.networkpage-actions img{
+  height: 40px;
+  width: 40px;
+}
+
+.action-btn {
+  width: 40px; /* Adjust size as needed */
+  height: 40px;
+  border-radius: 50%; /* Circular buttons */
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn-cross {
+  background-color: #ff4d4d; /* Red background for cross */
+}
+
+.action-btn-check {
+  background-color: #4CAF50; /* Green background for checkmark */
+}
+
+.action-btn:hover {
+  opacity: 0.8; /* Slight hover effect */
+}
+
+.action-icon {
+  width: 24px; /* Adjust icon size */
+  height: 24px;
+}
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .networkpage-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .networkpage-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .networkpage-right-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .networkpage {
+    margin-top: 0px;
+    margin-bottom: 50px;
+   
+  }
+  .Networkpage-rightsection{
+    display: none;
+  }
+  .networkpage-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .networkpage-action-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .networkpage-name {
+    font-size: 16px;
+  }
+  .networkpage-education,
+  .networkpage-description {
+    font-size: 12px;
+  }
+}
