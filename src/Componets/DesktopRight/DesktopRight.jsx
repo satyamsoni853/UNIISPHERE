@@ -8,6 +8,7 @@ import Sugestion1img from "./Sugestion1.png";
 import Sugestion2img from "./Sugestion2.png";
 import Sugestion3img from "./Sugestion3.png";
 import ConnectandCollbrateSvg from './CollabConnection.svg'
+import BottomMessageWidth from '../BottomMessagesWidget/BottomMessagesWidget'
 
 const suggestions = [
   { img: Sugestion1img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
@@ -153,6 +154,7 @@ function DesktopRightsection() {
           ))}
         </div>
       </div>
+      <BottomMessageWidth/>
     </div>
   );
 }
