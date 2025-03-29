@@ -12,7 +12,7 @@ import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
-import Connect from './Connect.png'
+import Connect from "./Connect.png";
 
 function DesFollowerMiddleSectionPrivacy() {
   const [searchParams] = useSearchParams();
@@ -36,7 +36,8 @@ function DesFollowerMiddleSectionPrivacy() {
     connections: 248,
     name: "Himanshu Choudhary",
     title: "Building Himansphere",
-    about: "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time",
+    about:
+      "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time",
     collaboratorName: "Viraj Verma",
     education: ["UPES - MBA", "IITR, Haridwar, Kartikey"],
     paragraph:
@@ -46,6 +47,7 @@ function DesFollowerMiddleSectionPrivacy() {
       "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time a reality. He envisioned a platform that connects people for collaboration and growth.",
     college: "Masters Union",
     degree: "SBM",
+    subCollabrators:["Tarun ,Himanshu ,kartikey"]
   };
 
   // Fetch profile data when component mounts or userId changes
@@ -59,7 +61,9 @@ function DesFollowerMiddleSectionPrivacy() {
 
       try {
         setLoading(true); // Reset loading state
-        const response = await fetch(`https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`);
+        const response = await fetch(
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`
+        );
         if (!response.ok) {
           throw new Error(`Failed to fetch profile data: ${response.status}`);
         }
@@ -85,12 +89,16 @@ function DesFollowerMiddleSectionPrivacy() {
 
   const maxLength = 100;
   const displayedText =
-    data.About && isExpanded
-      ? data.About
-      : data.About?.slice(0, maxLength) +
-        (data.About?.length > maxLength ? "..." : "") || data.about || "N/A";
+    data.about && isExpanded
+      ? data.about
+      : data.about?.slice(0, maxLength) +
+          (data.about?.length > maxLength ? "..." : "") ||
+        data.about ||
+        "N/A";
 
   if (loading) return <div>Loading...</div>;
+
+  console.log( "data  fetching startting in the middle",data);
 
   return (
     <div>
@@ -107,7 +115,13 @@ function DesFollowerMiddleSectionPrivacy() {
               <div className="Followers-middle-section-1-middle-section-privacy">
                 {/* Show error message if data fetch fails */}
                 {error && (
-                  <div style={{ color: "red", textAlign: "center", padding: "10px" }}>
+                  <div
+                    style={{
+                      color: "red",
+                      textAlign: "center",
+                      padding: "10px",
+                    }}
+                  >
                     {error}
                   </div>
                 )}
@@ -118,37 +132,51 @@ function DesFollowerMiddleSectionPrivacy() {
                 <div className="Followers-middle-section-1-profile-header-privacy">
                   <div className="Followers-middle-section-1-imageContainer-privacy">
                     <img
-                      src={data.profilePictureUrl || data.profilePic || Personimage}
+                      src={
+                        data.profilePictureUrl || data.profilePic || Personimage
+                      }
                       alt="Profile"
                       className="Followers-middle-section-1-profile-pic-privacy"
                     />
                   </div>
                   <div className="Followers-middle-section-1-collabsDetails-privacy">
-                    <h4>Connections</h4> <span>{data._count?.connections2 ?? data.connections ?? 0}</span>
+                    <h4>Connections</h4>{" "}
+                    <span>
+                      {data._count?.connections2 ?? data.connections ?? 0}
+                    </span>
                   </div>
                   <div className="Followers-middle-section-1-connectionsDetails-privacy">
                     <h4>Collabs</h4>
-                    <span>{data._count?.connections1 ?? data.collabs ?? 0}</span>
+                    <span>
+                      {data._count?.connections1 ?? data.collabs ?? 0}
+                    </span>
                   </div>
                 </div>
                 {/* Display profile data */}
                 <div className="Followers-middle-section-1-profile-info-privacy">
-                  <h3>{data.firstName || data.name} {data.lastName || ""}</h3>
-                  <p>{data.headline || data.title || "N/A"}|{data.workorProject || data.workorProject || "N/A"}</p>
+                  <h3>
+                    {data.firstName || data.name } {data.lastName || defaultData.name }
+                  </h3>
+                  <p>
+                    {data.headline || data.title ||  defaultData.title|| "N/A" }|
+                    {data.workorProject || data.workorProject || defaultData.college|| "N/A"}
+                  </p>
                 </div>
                 {/* Add Connect button */}
                 <div style={{ textAlign: "left", margin: "10px 0" }}>
                   <img src={Connect} alt="" />
                 </div>
                 <div className="Followers-middle-section-1-profile-buttons-privacy">
-                  <button>{data.college || "N/A"}</button>
-                  <button>{data.degree || "N/A"}</button>
+                  <button>{data.college ||   "N/A"}</button>
+                  <button>{data.degree ||   defaultData.degree ||"N/A"}</button>
                 </div>
                 <div className="Followers-middle-section-1-about-section-privacy">
-                  <p><strong>About:</strong></p>
+                  <p>
+                    <strong>About:</strong>
+                  </p>
                   <p>
                     {displayedText}
-                    {data.About?.length > maxLength && (
+                    { defaultData.fullAboutText || data.about?.length > maxLength && (
                       <button
                         className="Followers-middle-section-1-about-button-privacy"
                         onClick={toggleExpand}
@@ -161,17 +189,34 @@ function DesFollowerMiddleSectionPrivacy() {
                 <div className="Followers-middle-section-1-collabs-section-privacy">
                   <p>Collabs</p>
                   <div className="Followers-middle-section-1-collabratorCard-privacy">
-                    <div className="Followers-middle-section-1-collab-image-privacy">
-                      <img src={Personimage} alt="" />
-                    </div>
-                    <div className="Followers-middle-section-1-collabratorDetails-privacy">
-                      <h7>{data.collaboratorName || "N/A"}</h7>
-                      <div className="Followers-middle-section-1-education-privacy">
-                        {(data.education || [data.college || "N/A"]).map((val, index) => (
-                          <h6 key={index}>{val}</h6>
-                        ))}
+                    <div className="Followers-middle-section-1-collabrator-lower-left-privacy">
+                      <div className="Followers-middle-section-1-collab-profile-privacy">
+                        <div className="Followers-middle-section-1-collab-image-privacy">
+                          <img src={Personimage} alt="" />
+                        </div>
+                        <div className="Followers-middle-section-1-collabratorDetails-privacy">
+                          <h7>{data.collaboratorName || defaultData.collaboratorName || "N/A"}</h7>
+                          <div className="Followers-middle-section-1-education-privacy">
+                            {(data.education || [data.college ||  "N/A"]).map(
+                              (val, index) => (
+                                <h6 key={index}>{val}</h6>
+                              )
+                            )}
+                          </div>
+                         {defaultData.subCollabrators.map((val,index)=>(
+                           <h5 key={index} className="Followers-middle-section-1-subCollabrators-privacy">
+                            ({val})
+                           </h5>
+                         ))}
+                        </div>
+                      </div>
+                      <div className="Followers-middle-section-1-para-privacy">
+                        <h6>
+                        {defaultData.paragraph}
+                        </h6>
                       </div>
                     </div>
+
                     <div className="Followers-middle-section-1-iconAndImage-privacy">
                       <img src={Personimage} alt="" />
                       <RiArrowDropRightLine className="Followers-middle-section-1-paragrapgh-icon-privacy" />
@@ -181,7 +226,7 @@ function DesFollowerMiddleSectionPrivacy() {
                 <div className="Followers-middle-section-1-skills-section-privacy">
                   <h3>Skills</h3>
                   <div className="Followers-middle-section-1-skill-list-privacy">
-                    {(data.Skills || data.skills || []).map((val, index) => (
+                    {(data.skills || data.skills || defaultData.skills || []).map((val, index) => (
                       <div
                         key={index}
                         className="Followers-middle-section-1-skillsMiniDiv-privacy"
