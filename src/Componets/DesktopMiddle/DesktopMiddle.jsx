@@ -1,7 +1,5 @@
-
-
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { PiShareFatThin } from "react-icons/pi";
@@ -90,6 +88,21 @@ function DesktopMiddle() {
   ];
 
   const [showShare, setShowshare] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const optionsRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setShowOptions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const [posts, setPosts] = useState([]);
   const [imageLoading, setImageLoading] = useState(true);
@@ -245,7 +258,35 @@ function DesktopMiddle() {
                       "University of Delhi | Works at Google"}
                   </p>
                 </div>
-                <BsThreeDotsVertical className="middle-options-icon" />
+                <div className="middle-options-container" ref={optionsRef}>
+                  <BsThreeDotsVertical
+                    className="middle-options-icon"
+                    onClick={() => setShowOptions(!showOptions)}
+                  />
+                  {showOptions && (
+                    <div className="middle-options-dropdown">
+                      <button className="middle-options-item">
+                        <span>Interest</span> <hr />{" "}
+                      </button>
+                      <button className="middle-options-item">
+                        <span>Not Interest</span> <hr />
+                      </button>
+                      <button className="middle-options-item">
+                        <span>
+                          Block 
+                        </span><hr />
+                      </button>
+                      <button className="middle-options-item">
+                        <span>Report</span>
+                        <hr />
+                      </button>
+                      <button className="middle-options-item">
+                        <span>Message</span>
+                        <hr />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="middle-main-image">
@@ -370,7 +411,6 @@ function DesktopMiddle() {
                 <div className="Full-comment-section-desktop-action-buttons">
                   <div className="Full-comment-section-desktop-connect-div">
                     <img
-                    
                       src={Connect}
                       className="Full-comment-section-desktop-connect-icon"
                       alt="Connect"

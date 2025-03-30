@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./MobileMiddlesection.css";
 import MobileNavbarr from "../MobileNavbarr/MobileNavbarr";
 import MobileFooter from "../Mobilefooter/MobileFooter";
@@ -41,6 +41,20 @@ import xIcon from "./X.svg";
 function MobileMiddlesection() {
   const [showComment, setshowComment] = useState(false);
   const [showShare, setshowShare] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const optionsRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setShowOptions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Full comment box data
 
@@ -218,7 +232,35 @@ function MobileMiddlesection() {
                     "University of Delhi | Works at Google"}
                 </p>
               </div>
-              <BsThreeDotsVertical className="middle-options-icon" />
+              <div className="middle-options-container" ref={optionsRef}>
+                <BsThreeDotsVertical
+                  className="middle-options-icon"
+                  onClick={() => setShowOptions(!showOptions)}
+                />
+                {showOptions && (
+                  <div className="middle-options-dropdown">
+                    <button className="middle-options-item">
+                      <span>Interest</span> <hr />{" "}
+                    </button>
+                    <button className="middle-options-item">
+                      <span>Not Interest</span> <hr />
+                    </button>
+                    <button className="middle-options-item">
+                      <span>Block</span>
+                      <hr />
+                    </button>
+                    <button className="middle-options-item">
+                      <span>Report</span>
+                      <hr />
+                    </button>
+                    <button className="middle-options-item">
+                      <span>Message</span>
+                      <hr />
+                    </button>
+                  </div>
+                )}
+              </div>
+              {/* </div> */}
             </div>
 
             {/* Main Image */}
@@ -258,7 +300,7 @@ function MobileMiddlesection() {
                 >
                   <span className="middle-icon-count">{post.totalLikes}</span>
                   <img
-                    src={LikeIcon}// Replace this with your actual like image path
+                    src={LikeIcon} // Replace this with your actual like image path
                     className={`middle-icon ${post.isLiked ? "liked" : ""}`}
                     alt="Like"
                   />
@@ -312,142 +354,146 @@ function MobileMiddlesection() {
 
       {showComment && (
         <div className="mobile-Full-comment-section-main-container">
-        {/* Left Section */}
-        <div className="mobile-Full-comment-section-left-section">
-          <div className="mobile-Full-comment-section-user-profile-header">
-            <img
-              src={userData.profilePicture}
-              alt="Profile"
-              className="mobile-Full-comment-section-profile-picture"
-            />
-            <div className="mobile-Full-comment-section-user-info">
-              <div className="mobile-Full-comment-section-name-and-postTime">
-                <span className="mobile-Full-comment-section-user-name">
-                  {userData.name}
-                </span>
-                <span className="mobile-Full-comment-section-user-details">18h</span>
-              </div>
-              <div className="mobile-Full-comment-section-work-and-education">
-                <span className="mobile-Full-comment-section-user-details">
-                  {userData.education}
-                </span>
-                <span className="mobile-Full-comment-section-user-details">||</span>
-                <span className="mobile-Full-comment-section-user-details">
-                  {" "}
-                  {userData.workPlace}{" "}
-                </span>
-              </div>
-            </div>
-            <img
-              src={Threedot}
-              className="mobile-Full-comment-section-menu-icon"
-              alt=""
-            />
-          </div>
-          <div className="mobile-Full-comment-section-photo-container">
-            <img
-              src={userData.profilePicture}
-              alt="Post"
-              className="mobile-Full-comment-section-post-photo"
-            />
-            <div className="mobile-Full-comment-section-action-buttons">
-              <div className="mobile-Full-comment-section-connect-div">
-                <img
-                  src={Connect}
-                  className="mobile-Full-comment-section-connect-icon"
-                  alt=""
-                />
-              </div>
-              <div className="mobile-Full-comment-section-share-like-comment-icon">
-                <img
-                  src={ShareIcon}
-                  className="mobile-Full-comment-section-post-icons"
-                  alt=""
-                />
-                <img
-                  src={CommentIcon}
-                  className="mobile-Full-comment-section-post-icons"
-                  alt=""
-                />
-                <img
-                  src={LikeIcon}
-                  className="mobile-Full-comment-section-post-icons"
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      
-        {/* Right Section */}
-        <div className="mobile-Full-comment-section-right-section">
-          <div className="mobile-Full-comment-section-comments-header">
-            <h1 className="mobile-Full-comment-section-heading">Comments</h1>
-          </div>
-          <div className="mobile-Full-comment-section-comments-list">
-            {comments.map((comment, index) => (
-              <div
-                className="mobile-Full-comment-section-comment-main-parent"
-                key={index}
-              >
-                <div className="mobile-Full-comment-section-comment">
-                  <img
-                    src={comment.profilePicture}
-                    alt="Profile"
-                    className="mobile-Full-comment-section-comment-profile-picture"
-                  />
-                  <div className="mobile-Full-comment-section-comment-content">
-                    <div className="mobile-Full-comment-section-comment-user-info">
-                      <span className="mobile-Full-comment-section-comment-username">
-                        {comment.username}
-                      </span>
-                      <span className="mobile-Full-comment-section-comment-timestamp">
-                        {comment.timestamp}
-                      </span>
-                    </div>
-                    <div className="mobile-Full-comment-section-comment-text">
-                      {comment.text}
-                    </div>
-                    <div className="mobile-Full-comment-section-comment-actions">
-                      <span className="mobile-Full-comment-section-reply-link">
-                        REPLY
-                      </span>
-                    </div>
-                  </div>
+          {/* Left Section */}
+          <div className="mobile-Full-comment-section-left-section">
+            <div className="mobile-Full-comment-section-user-profile-header">
+              <img
+                src={userData.profilePicture}
+                alt="Profile"
+                className="mobile-Full-comment-section-profile-picture"
+              />
+              <div className="mobile-Full-comment-section-user-info">
+                <div className="mobile-Full-comment-section-name-and-postTime">
+                  <span className="mobile-Full-comment-section-user-name">
+                    {userData.name}
+                  </span>
+                  <span className="mobile-Full-comment-section-user-details">
+                    18h
+                  </span>
                 </div>
-                <div className="mobile-Full-comment-section-comment-likes">
+                <div className="mobile-Full-comment-section-work-and-education">
+                  <span className="mobile-Full-comment-section-user-details">
+                    {userData.education}
+                  </span>
+                  <span className="mobile-Full-comment-section-user-details">
+                    ||
+                  </span>
+                  <span className="mobile-Full-comment-section-user-details">
+                    {" "}
+                    {userData.workPlace}{" "}
+                  </span>
+                </div>
+              </div>
+              <img
+                src={Threedot}
+                className="mobile-Full-comment-section-menu-icon"
+                alt=""
+              />
+            </div>
+            <div className="mobile-Full-comment-section-photo-container">
+              <img
+                src={userData.profilePicture}
+                alt="Post"
+                className="mobile-Full-comment-section-post-photo"
+              />
+              <div className="mobile-Full-comment-section-action-buttons">
+                <div className="mobile-Full-comment-section-connect-div">
+                  <img
+                    src={Connect}
+                    className="mobile-Full-comment-section-connect-icon"
+                    alt=""
+                  />
+                </div>
+                <div className="mobile-Full-comment-section-share-like-comment-icon">
+                  <img
+                    src={ShareIcon}
+                    className="mobile-Full-comment-section-post-icons"
+                    alt=""
+                  />
+                  <img
+                    src={CommentIcon}
+                    className="mobile-Full-comment-section-post-icons"
+                    alt=""
+                  />
                   <img
                     src={LikeIcon}
+                    className="mobile-Full-comment-section-post-icons"
                     alt=""
-                    className="mobile-Full-comment-section-like-button"
                   />
-                  <span>{comment.likes} </span>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-          <div className="mobile-Full-comment-section-comment-input-and-image">
-            <img
-              src={profilePhoto}
-              className="mobile-Full-comment-section-commentPerson-image"
-              alt=""
-            />
-            <input
-              type="text"
-              placeholder="Write a comment to VIJAY PRASAD"
-            />
+
+          {/* Right Section */}
+          <div className="mobile-Full-comment-section-right-section">
+            <div className="mobile-Full-comment-section-comments-header">
+              <h1 className="mobile-Full-comment-section-heading">Comments</h1>
+            </div>
+            <div className="mobile-Full-comment-section-comments-list">
+              {comments.map((comment, index) => (
+                <div
+                  className="mobile-Full-comment-section-comment-main-parent"
+                  key={index}
+                >
+                  <div className="mobile-Full-comment-section-comment">
+                    <img
+                      src={comment.profilePicture}
+                      alt="Profile"
+                      className="mobile-Full-comment-section-comment-profile-picture"
+                    />
+                    <div className="mobile-Full-comment-section-comment-content">
+                      <div className="mobile-Full-comment-section-comment-user-info">
+                        <span className="mobile-Full-comment-section-comment-username">
+                          {comment.username}
+                        </span>
+                        <span className="mobile-Full-comment-section-comment-timestamp">
+                          {comment.timestamp}
+                        </span>
+                      </div>
+                      <div className="mobile-Full-comment-section-comment-text">
+                        {comment.text}
+                      </div>
+                      <div className="mobile-Full-comment-section-comment-actions">
+                        <span className="mobile-Full-comment-section-reply-link">
+                          REPLY
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mobile-Full-comment-section-comment-likes">
+                    <img
+                      src={LikeIcon}
+                      alt=""
+                      className="mobile-Full-comment-section-like-button"
+                    />
+                    <span>{comment.likes} </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mobile-Full-comment-section-comment-input-and-image">
+              <img
+                src={profilePhoto}
+                className="mobile-Full-comment-section-commentPerson-image"
+                alt=""
+              />
+              <input
+                type="text"
+                placeholder="Write a comment to VIJAY PRASAD"
+              />
+            </div>
+            <button
+              onClick={() => {
+                setshowComment(false);
+              }}
+              className="mobile-Full-comment-section-cross-button"
+            >
+              {" "}
+              ×
+            </button>
           </div>
-          <button
-            onClick={() => {
-              setshowComment(false);
-            }}
-            className="mobile-Full-comment-section-cross-button"
-          >
-            {" "}
-            ×
-          </button>
         </div>
-      </div>
       )}
 
       {/* ## ===================SHARE BOX   ======================## */}
