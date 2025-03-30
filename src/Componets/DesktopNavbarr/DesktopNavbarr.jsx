@@ -14,8 +14,8 @@ import Homewhite from "./Homewhite.svg";
 import Homeblack from "./homeblack.svg";
 import NetworkBlack from "./NetworkBlack.svg";
 import Networkwhite from "./NetworkWhite.svg";
-import Notificationblack from "./Notificationblack.svg";
-import Notificationwhite from "./Notificationwhite.svg";
+import Notificationblack from "./notificationblack.svg";
+import Notificationwhite from "./notificationwhite.svg";
 
 function DesktopNavbarr() {
   // State
