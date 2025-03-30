@@ -258,11 +258,7 @@ function FullFlowerSectionPage() {
                 <IoArrowBack
                   className="back-button"
                   onClick={handleBackClick}
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "24px",
-                    margin: "10px",
-                  }}
+                  
                 />
                 {error && (
                   <div

@@ -50,7 +50,13 @@
   /* border: 2px solid black; */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
+/* adding the new css for the back-button */
+.Profile-full-section-container .back-button { 
+ cursor: pointer; 
+ font-size: 24px;
+ margin: 10px;
+ display: none;
+}
 .Profile-full-section-whole-profile-section {
   display: flex;
   flex-direction: column;
@@ -728,6 +734,12 @@
     width: 40vw;
     margin-left: 60px;
   }
+  .Profile-full-section-heading-and-logos h3{
+  margin-top: 30px;
+  font-size: 2rem;
+  font-weight: 600;
+}  
+ 
 }
 
 @media (max-width: 900px) {
@@ -776,12 +788,14 @@
     margin: 40px auto 0; /* Center horizontally */
     padding: 15px;
   }
+ 
+  .Profile-full-section-heading-and-logos h3{
+    margin-top: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+  }
 }
-.Profile-full-section-heading-and-logos h3{
-  margin-top: 30px;
-  font-size: 2rem;
-  font-weight: 600;
-}
+
 
 @media (max-width: 740px) {
   .Profile-full-section-mainParent {
@@ -853,6 +867,13 @@
     padding: 8px;
   }
 
+  .Profile-full-section-message-box{
+    display: none;
+  }
+
+  .Profile-full-section-container .back-button {
+     display: block;
+   }
   .Profile-full-section-profile-header {
     gap: 15px;
   }
@@ -891,6 +912,9 @@
     margin: 10px auto 0;
     padding: 5px;
   }
+  .Profile-full-section-container .back-button {
+    display: block;
+   }
 
   .Profile-full-section-imageContainer {
     height: 50px;
