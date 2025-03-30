@@ -22,8 +22,7 @@ import MessageFinalClass2 from "./Componets/MessageFinalclass-2/MessageFinalClas
 import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
- 
-
+import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
 
 function App() {
   return (
@@ -63,8 +62,6 @@ function App() {
             element={<AboutAndExperiance />}
           />
 
-
-
           {/* Other Routes */}
           <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
           <Route path="/SelfProfile" element={<SelfProfile />} />
@@ -73,8 +70,8 @@ function App() {
           <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/CollabPage" element={<CollabPage />} />
 
-<Route path="/projectAndEvent" element={<ProjectAndEvent/>} />
-
+          <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
+          <Route path="/uploadsection" element={<UploadSection/>} />
         </Routes>
       </div>
     </Router>

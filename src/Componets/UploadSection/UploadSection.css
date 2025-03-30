@@ -1,0 +1,274 @@
+.main-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-container {
+  width: 477px;
+  min-height: 253px;
+  border-radius: 43px;
+  box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-text {
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+}
+
+.upload-button {
+  background-color: #007bff;
+  color: white;
+  width: 209px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.after-upload {
+  box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
+  min-height: 479px;
+  width: 477px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 43px;
+}
+.navbar {
+  padding: 5px 15px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.navbar h6 {
+  color: #3978ff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.preview-container {
+  text-align: center;
+  display: flex;
+  height: 350px;
+  padding: 10px;
+  flex-direction: column;
+  overflow-y: scroll;
+  border-radius: 15px;
+}
+
+.preview-container::-webkit-scrollbar {
+  display: none;
+}
+.imageAndVideo {
+  height: 325px;
+  width: 250px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+.add-more-btn {
+  height: 30px;
+  color: white;
+  width: 132px;
+  background-color: #3978ff;
+  border-radius: 15px;
+}
+
+.add-more-btn:hover {
+  background: #0045f2;
+}
+
+/* Create Post Specific Styles */
+.create-post-main-container {
+  box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
+  height: 479px;
+  width: 477px;
+  border-radius: 43px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+}
+
+.create-post-navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 18px;
+  width: 100%;
+  align-items: center;
+}
+.create-post-navbar h6 {
+  font-size: 16px;
+
+  color: #3978ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.image-and-name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.image-and-name img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.image-and-name h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.image-and-caption {
+  display: flex;
+  width: 100%;
+  height: 143px;
+  justify-content: space-between;
+}
+.post-media-container{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    padding: 2px 10px;
+    
+}
+ .post-media-container::-webkit-scrollbar{
+    display: none;
+ }
+.create-post-imageAndVideo {
+  height: 143px;
+  width: 115px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+.input-label {
+  font-weight: 600;
+  font-size: 16px;
+  color: #020202;
+}
+
+.caption-input {
+  padding: 1rem;
+  border: 1px solid #000000;
+  border-radius: 20px;
+  font-size: 1rem;
+  resize: none;
+  height: 107px;
+  outline: none;
+  width: 294px;
+}
+
+.mention-form-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mention-button {
+  padding: 5px;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: flex;
+  font-size: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.privacy-settings {
+  width: 100%;
+}
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 2px 10px;
+}
+
+.setting-info{
+    width: 60%;
+    
+}
+.setting-info h4 {
+  color: #000000;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.setting-description {
+  text-align: start;
+  color: #7e7c7c;
+  font-size: 14px;
+}
+
+/* Toggle Switch Styles */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d3d3d3;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 2.8px;
+  background-color: rgb(0, 0, 0);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #000000;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+  background-color: #fff;
+}
