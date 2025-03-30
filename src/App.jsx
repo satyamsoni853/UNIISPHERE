@@ -21,14 +21,17 @@ import SelfSetting from "./Componets/SelfSetting/SelfSetting.jsx";
 import MessageFinalClass2 from "./Componets/MessageFinalclass-2/MessageFinalClass2.jsx";
 import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
- 
-import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
- 
 
+import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
+
+ 
  
 import BottomMessagesWidget from  './Componets/BottomMessagesWidget/BottomMessagesWidget.jsx'
  
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
+ 
+import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
+ 
 
 function App() {
   return (
@@ -75,16 +78,23 @@ function App() {
           <Route path="/MessageFinalClass2" element={<MessageFinalClass2 />} />
           <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/CollabPage" element={<CollabPage />} />
+
+         
  
-
-<Route path="/projectAndEvent" element={<ProjectAndEvent/>} />
-
  
           <Route path="/BottomMessagesWidget" element={<BottomMessagesWidget />} />
  
           <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
           <Route path="/uploadsection" element={<UploadSection/>} />
+ 
+          <Route
+            path="/BottomMessagesWidget"
+            element={<BottomMessagesWidget />}
+          />
+           <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
+ 
         </Routes>
+       
       </div>
     </Router>
   );

@@ -1,19 +1,55 @@
-.main-container {
+/* Main Container */
+.projectandevent-main-container-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+}
+
+/* Left Container */
+.projectandevent-left-main-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Middle Container */
+.projectandevent-middle-main-container {
+  width: 50%; /* Adjust width as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Right Container */
+.projectandevent-right-main-container {
+  width: 30%; /* Adjust width as needed */
+  display: flex;
+  justify-content: flex-end; /* Align content to the right */
+}
+
+.projectandevent-main-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* display: none; */
+  margin-top: 100px;
+  margin-left: 50px;
 }
 
-.project-card {
-  width: 500px;
+.projectandevent-project-card {
+  max-width: 700px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 75vh;
   justify-content: space-around;
   padding: 16px;
   border-radius: 10px;
 }
-.down-container {
+
+.projectandevent-down-container {
   gap: 10px;
   display: flex;
   flex-direction: column;
@@ -21,13 +57,14 @@
   border: 2px solid black;
   padding: 10px;
 }
-.header {
+
+.projectandevent-header {
   display: flex;
   justify-content: space-around;
   padding-bottom: 8px;
 }
 
-.tab1 {
+.projectandevent-tab1 {
   background: linear-gradient(to bottom, #f9d6d6fb, #e7d3fd);
   border: none;
   outline: none;
@@ -38,7 +75,7 @@
   transition: all 0.4s linear;
 }
 
-.tab2 {
+.projectandevent-tab2 {
   background: linear-gradient(to bottom, #d6d1f5, #f4dec5);
   border: none;
   outline: none;
@@ -49,84 +86,88 @@
   transition: all 0.4s linear;
 }
 
-.tab1:active ,.tab2:active{
- transform: scale(1.1);
+.projectandevent-tab1:active,
+.projectandevent-tab2:active {
+  transform: scale(1.1);
 }
- 
-.content {
+
+.projectandevent-content {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.content h2 {
+.projectandevent-content h2 {
   font-size: 25px;
   font-weight: 600;
 }
 
-.profile-pic {
+.projectandevent-profile-pic {
   width: 60px;
   height: 60px;
   border-radius: 50%;
 }
 
-.headline-and-name h2 {
+.projectandevent-headline-and-name h2 {
   font-size: 22px;
   display: inline-block;
   font-weight: 500;
 }
-.headline {
+
+.projectandevent-headline {
   font-size: 14px;
   color: gray;
 }
 
-.description {
+.projectandevent-description {
   font-size: 14px;
   color: #333;
 }
 
-.description h2 {
+.projectandevent-description h2 {
   font-size: 18px;
   font-weight: 600;
 }
 
-.description p {
+.projectandevent-description p {
   font-size: 18px;
   font-weight: 400;
   color: #646363;
   line-height: 1;
 }
 
-.project-details h2 {
+.projectandevent-project-details h2 {
   font-size: 18px;
   font-weight: 600;
 }
 
-.collaborators {
+.projectandevent-collaborators {
   display: flex;
   gap: 16px;
   position: relative;
 }
 
-.project-tech {
+.projectandevent-project-tech {
   list-style: disc;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.project-tech li {
+
+.projectandevent-project-tech li {
   font-size: 14px;
   font-weight: 500;
 }
-.collaborator {
-  padding: 5px;
 
+.projectandevent-collaborator {
+  padding: 5px;
   display: flex;
   gap: 2px;
   border-radius: 15px;
   align-items: center;
 }
-.collaborator-img {
+
+.projectandevent-collaborator-img {
   height: 80px;
   width: 80px;
   border-radius: 50%;
@@ -134,23 +175,27 @@
   align-items: center;
 }
 
-.collaborator-img img {
+.projectandevent-collaborator-img img {
   height: 80%;
   width: 100%;
   border-radius: 50px;
   object-fit: cover;
 }
-.collabrator-details {
+
+.projectandevent-collabrator-details {
   display: flex;
   flex-direction: column;
 }
-.collaborator-name {
+
+.projectandevent-collaborator-name {
   font-size: 14px;
 }
-.collaborator-para {
+
+.projectandevent-collaborator-para {
   font-size: 12px;
 }
-.others {
+
+.projectandevent-others {
   height: 20px;
   width: 100px;
   font-size: 10px;
@@ -167,160 +212,166 @@
 }
 
 /* event code */
-.events-page {
+.projectandevent-events-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
 }
-.event-list {
+
+.projectandevent-event-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
 }
 
-.event-card {
+.projectandevent-event-card {
   display: flex;
   align-items: center;
   flex-direction: column;
-
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
   justify-content: space-between;
 }
-.image-name-and-date {
+
+.projectandevent-image-name-and-date {
   display: flex;
   justify-content: start;
   width: 100%;
   gap: 15px;
 }
 
-.event-logo {
+.projectandevent-event-logo {
   width: 50px;
   height: 50px;
   border-radius: 50%;
 }
 
-.event-details {
+.projectandevent-event-details {
   flex: 1;
 }
 
-.event-header {
+.projectandevent-event-header {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
 }
 
-.event-title {
+.projectandevent-event-title {
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.event-date {
+.projectandevent-event-date {
   font-size: 14px;
   color: #000;
 }
 
-.event-college {
+.projectandevent-event-college {
   font-size: 14px;
   color: #000;
 }
 
-.event-description {
+.projectandevent-event-description {
   font-size: 14px;
   color: #808080;
 }
 
 /* Responsiveness  */
-
-/* Add this at the bottom of your CSS */
 @media (max-width: 480px) {
-  .main-container {
+  .projectandevent-main-container {
     padding: 10px;
   }
 
-  .project-card {
+  .projectandevent-project-card {
     width: 100%;
     height: auto;
     padding: 12px;
   }
 
-  .tab1,
-  .tab2 {
+  .projectandevent-tab1,
+  .projectandevent-tab2 {
     width: 140px;
     padding: 4px 0;
   }
 
-  .content h2 {
+  .projectandevent-content h2 {
     font-size: 20px;
   }
 
-  .profile-pic {
+  .projectandevent-profile-pic {
     width: 50px;
     height: 50px;
   }
 
-  .headline-and-name h2 {
+  .projectandevent-headline-and-name h2 {
     font-size: 18px;
   }
 
-  .description p {
+  .projectandevent-description p {
     font-size: 16px;
   }
 
-  .project-tech li {
+  .projectandevent-project-tech li {
     font-size: 13px;
   }
-  .image-name-and-date img {
+
+  .projectandevent-image-name-and-date img {
     width: 20%;
     height: 80%;
   }
 
-  .event-card {
+  .projectandevent-event-card {
     padding: 8px;
   }
 
-  .event-logo {
+  .projectandevent-event-logo {
     width: 40px;
     height: 40px;
   }
 
-  .event-title {
+  .projectandevent-event-title {
     font-size: 14px;
   }
 
-  .event-date,
-  .event-college,
-  .event-description {
+  .projectandevent-event-date,
+  .projectandevent-event-college,
+  .projectandevent-event-description {
     font-size: 12px;
   }
 
-  .others {
+  .projectandevent-others {
     width: 80px;
     font-size: 12px;
     top: -20px;
   }
-  .collaborator-img {
+
+  .projectandevent-collaborator-img {
     height: 110%;
     width: 50%;
   }
-  .collaborator-img img {
+
+  .projectandevent-collaborator-img img {
     object-fit: cover;
   }
-  .collabrator-details {
+
+  .projectandevent-collabrator-details {
     line-height: 1;
   }
-  .collaborator-name {
+
+  .projectandevent-collaborator-name {
     font-size: 12px;
   }
-  .collaborator-para {
+
+  .projectandevent-collaborator-para {
     font-size: 10px;
   }
-  .collaborator {
+
+  .projectandevent-collaborator {
     gap: 5px;
   }
 }

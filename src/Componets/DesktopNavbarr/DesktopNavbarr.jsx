@@ -1,25 +1,87 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "./DesktopNavbarr.css";
+import axios from "axios";
+import { FiSearch } from "react-icons/fi";
+import debounce from "lodash/debounce";
 
+// Icons
 import Usericon from "./Usericon.png";
 import Unispherelogoicon from "./Unispherelogoicon.png";
-
-// black and white icons
-import Addwhite from './AddBlack.svg';
-import Addblack from './Addwhite.svg';
-import Homewhite from './Homewhite.svg';
-import Homeblack from './Homeblack.svg';
-import NetworkBlack from './NetworkBlack.svg';
-import Networkwhite from './NetworkWhite.svg';
-import Notificationblack from './Notificationblack.svg';
-import Notificationwhite from './Notificationwhite.svg';
+import Addwhite from "./Addwhite.svg";
+import Addblack from "./AddBlack.svg";
+import Homewhite from "./Homewhite.svg";
+import Homeblack from "./Homeblack.svg";
+import NetworkBlack from "./NetworkBlack.svg";
+import Networkwhite from "./NetworkWhite.svg";
+import Notificationblack from "./Notificationblack.svg";
+import Notificationwhite from "./Notificationwhite.svg";
 
 function DesktopNavbarr() {
+  // State
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [activeIcon, setActiveIcon] = useState(null); // Track which icon is active
+  const [activeIcon, setActiveIcon] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch profiles by username
+  const fetchProfiles = useCallback(async (username = "") => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      console.log("Searching for username:", username);
+      const response = await axios.get(
+        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${username}`
+      );
+      console.log("API response:", response.data);
+      setSearchResults(response.data);
+    } catch (err) {
+      console.error("Search error:", err);
+      setError("Failed to search. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Debounced search
+  const debouncedSearch = useCallback(
+    debounce((username) => {
+      fetchProfiles(username);
+    }, 500),
+    [fetchProfiles]
+  );
+
+  // Handle search input
+  const handleSearchChange = (e) => {
+    const username = e.target.value;
+    setSearchQuery(username);
+    console.log("User typing:", username);
+    
+    if (/^[a-z0-9_]*$/i.test(username)) {
+      debouncedSearch(username);
+    } else {
+      setError("Only letters, numbers and underscores allowed");
+    }
+  };
+
+  // Handle profile click
+  const handleProfileClick = (userId) => {
+    console.log("Navigating to profile with ID:", userId);
+    navigate(`/profile/${userId}`);
+    setShowResults(false);
+    setSearchQuery("");
+  };
+
+  // Initial load - fetch all profiles
+  useEffect(() => {
+    fetchProfiles();
+  }, [fetchProfiles]);
+
+  // User dropdown handlers
   const handleUserIconClick = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
   };
@@ -34,64 +96,62 @@ function DesktopNavbarr() {
     if (userId) {
       navigate(`/ProfileEditSection/${userId}`);
     } else {
-      console.error("User ID not found in localStorage.");
+      console.error("User ID not found");
     }
   };
 
+  // Navigation icon handlers
   const handleIconClick = (iconName) => {
-    setActiveIcon(activeIcon === iconName ? null : iconName); // Toggle active state
+    setActiveIcon(activeIcon === iconName ? null : iconName);
   };
 
   return (
     <div className="desktop-navbar-1">
+      {/* Navigation Icons */}
       <img 
-        src={activeIcon === 'home' ? Homewhite : Homeblack} 
+        src={activeIcon === "home" ? Homewhite : Homeblack} 
         alt="Home" 
         className="desktop-icon" 
-        onClick={() => handleIconClick('home')}
-        style={{ cursor: "pointer" }}
+        onClick={() => handleIconClick("home")}
       />
       <img 
-        src={activeIcon === 'network' ? Networkwhite : NetworkBlack} 
+        src={activeIcon === "network" ? Networkwhite : NetworkBlack} 
         alt="Network" 
         className="desktop-icon" 
-        onClick={() => handleIconClick('network')}
-        style={{ cursor: "pointer" }}
+        onClick={() => handleIconClick("network")}
       />
       <img 
-        src={activeIcon === 'add' ? Addwhite : Addblack} 
+        src={activeIcon === "add" ? Addwhite : Addblack} 
         alt="Add" 
         className="desktop-icon" 
-        onClick={() => handleIconClick('add')}
-        style={{ cursor: "pointer" }}
+        onClick={() => handleIconClick("add")}
       />
       <img 
-        src={activeIcon === 'notifications' ? Notificationwhite : Notificationblack} 
+        src={activeIcon === "notifications" ? Notificationwhite : Notificationblack} 
         alt="Notifications" 
         className="desktop-icon" 
-        onClick={() => handleIconClick('notifications')}
-        style={{ cursor: "pointer" }}
+        onClick={() => handleIconClick("notifications")}
       />
 
+      {/* User Dropdown */}
       <div className="user-icon-container">
         <img
           src={Usericon}
           alt="User"
           className="desktop-user-icon"
           onClick={handleUserIconClick}
-          style={{ cursor: "pointer" }}
         />
         {isUserDropdownOpen && (
           <div className="SelfProfile-card">
             <div className="SelfProfile-header">
               <img
                 src="https://via.placeholder.com/50"
-                alt="Profile Picture"
+                alt="Profile"
                 className="SelfProfile-pic"
               />
               <div className="SelfProfile-info">
-                <h2 className="SelfProfile-name">Himanshu Sir</h2>
-                <p className="SelfProfile-label">SBM</p>
+                <h2 className="SelfProfile-name">User Name</h2>
+                <p className="SelfProfile-label">Position</p>
               </div>
             </div>
 
@@ -115,42 +175,79 @@ function DesktopNavbarr() {
                 <span>Comments</span>
                 <span className="SelfProfile-stat-value">12</span>
               </div>
-              <div className="SelfProfile-stat">
-                <span>Profile Visits</span>
-                <span className="SelfProfile-stat-value">348</span>
-              </div>
             </div>
 
             <div className="SelfProfile-menu">
-              <div>
-                <Link
-                  to="/SelfSetting"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <div className="SelfProfile-menu-item">Settings</div>
-                </Link>
-                <hr className="SelfProfile-divider" />
+              <div className="SelfProfile-menu-item" onClick={() => navigate("/SelfSetting")}>
+                Settings
               </div>
-              <div>
-                <div className="SelfProfile-menu-item">Help</div>
-                <hr className="SelfProfile-divider" />
-              </div>
-              <Link
-                to="/"
+              <div className="SelfProfile-menu-item">Help</div>
+              <div 
                 className="SelfProfile-menu-item SelfProfile-sign-out"
                 onClick={handleSignOut}
               >
                 Sign Out
-              </Link>
+              </div>
             </div>
           </div>
         )}
       </div>
 
-      <input type="text" placeholder="Search" className="desktop-search-bar" />
+      {/* Search Bar */}
+      <div className="desktop-search-container">
+        <div className="desktop-search-input-wrapper">
+          <input
+            type="text"
+            placeholder="Search username"
+            className="desktop-search-bar"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onFocus={() => setShowResults(true)}
+            onBlur={() => setTimeout(() => setShowResults(false), 200)}
+          />
+          <FiSearch className="desktop-search-icon" />
+        </div>
+
+        {/* Search Results */}
+        {showResults && (
+          <div className="desktop-search-results">
+            {isLoading ? (
+              <div className="desktop-search-loading">Searching...</div>
+            ) : error ? (
+              <div className="desktop-search-error">{error}</div>
+            ) : searchResults.length > 0 ? (
+              searchResults.map((user) => (
+                <div
+                  key={user._id}
+                  className="desktop-search-result-item"
+                  onClick={() => handleProfileClick(user._id)}
+                >
+                  <img
+                    src={user.profilePicture || Usericon}
+                    alt={user.username}
+                    className="desktop-search-result-avatar"
+                  />
+                  <div className="desktop-search-result-info">
+                    <span className="desktop-search-result-name">
+                      {user.username}
+                    </span>
+                    <span className="desktop-search-result-id">
+                      ID: {user._id}
+                    </span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="desktop-search-no-results">No users found</div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Logo */}
       <img
         src={Unispherelogoicon}
-        alt="Unisphere Logo"
+        alt="Logo"
         className="desktop-logo-icon"
       />
     </div>
