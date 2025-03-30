@@ -29,46 +29,40 @@ function FullFlowerSectionPage() {
     profilePic: Profile,
     collabs: 10,
     connections: 50,
-    name: "Himanshu Choudhary",
-    title: "Software Engineer || Web Developer",
-    address: "Gurgaon, Haryana, India",
-    about:
-      "Passionate developer with experience in web and mobile development.",
-    fullAboutText:
-      "Passionate developer with experience in web and mobile development. I specialize in React, Node.js, and building scalable applications. Love to work on open-source projects and contribute to the tech community.",
+    name: "Kartikey Pandey",
+    title: "software developer",
+    address: "Dehradun, Uttarakhand",
+    about: "Nothing to say as of now",
+    fullAboutText: "Nothing to say as of now",
     skills: [
-      "UI/UX",
-      "JAVA",
-      "CSS",
-      "C++",
       "Python",
-      "V+",
-      "Figma",
-      "Photoshop",
-    ],
-    interests: [
-      "UI/UX",
-      "JAVA",
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Git",
+      "SQL",
+      "HTML",
       "CSS",
-      "C++",
-      "Python",
-      "V+",
-      "Figma",
-      "Photoshop",
+      "JavaScript",
+      "Java",
     ],
-    education: ["Hansraj College", "B.A Programme", "12th Class", "10th Class"],
+    interests: ["JAVA", "Painting", "Sketching", "Driving"],
+    education: ["Upes dehradun", "btech"],
     collaboratorName: "Jane Smith",
     subCollaborators: ["Alice", "Bob", "Charlie"],
     paragraph:
-      "Founder Himanshu who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working.",
+      "Founder who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working.",
     experiences: [
       {
-        title: "Farewell",
-        subtitle: "Backstage Handler",
-        description:
-          "The actual idea of Unisphere was of The Founder Himanshu who worked for months to...",
+        title: "Uniisphere",
+        subtitle: "Project",
+        description: "Details about Uniisphere project...",
       },
     ],
+    email: "pandkartikey0@gmail.com",
+    username: "kartikeyme",
+    college: "Upes dehradun",
+    degree: "btech",
   };
 
   // Image data
@@ -99,6 +93,7 @@ function FullFlowerSectionPage() {
       if (!authToken) {
         setError("Authentication required. Using dummy data.");
         setProfileData(defaultData);
+        console.log("Using default data (no auth token):", defaultData);
         setLoading(false);
         return;
       }
@@ -106,6 +101,7 @@ function FullFlowerSectionPage() {
       if (!userId || userId === "unknown") {
         setError("Invalid user ID. Using dummy data.");
         setProfileData(defaultData);
+        console.log("Using default data (invalid user ID):", defaultData);
         setLoading(false);
         return;
       }
@@ -136,24 +132,40 @@ function FullFlowerSectionPage() {
             defaultData.name,
           title: data.headline || defaultData.title,
           address: data.location || defaultData.address,
-          about: data.About || defaultData.about,
-          fullAboutText: data.About || defaultData.fullAboutText,
+          about: data.About || "Nothing to say as of now",
+          fullAboutText: data.About || "Nothing to say as of now",
           skills: data.skills || defaultData.skills,
           interests: data.interests || defaultData.interests,
-          education: data.education || defaultData.education,
+          education: [data.college || "Upes dehradun", data.degree || "btech"],
           collaboratorName:
             data.collaboratorName || defaultData.collaboratorName,
           subCollaborators:
             data.subCollaborators || defaultData.subCollaborators,
           paragraph: data.paragraph || defaultData.paragraph,
-          experiences: data.experiences || defaultData.experiences,
+          experiences: [
+            {
+              title: data.workorProject || "Uniisphere",
+              subtitle: "Project",
+              description: data.workorProject
+                ? `Details about ${data.workorProject} project...`
+                : "Details about project...",
+            },
+          ],
+          email: data.email || "pandkartikey0@gmail.com",
+          username: data.username || "kartikeyme",
+          college: data.college || "Upes dehradun",
+          degree: data.degree || "btech",
+          rawData: data, // Store the raw API response for debugging
         };
 
+        console.log("Fetched user data for ID:", userId, transformedData);
+        console.log("Raw API response:", data);
         setProfileData(transformedData);
       } catch (err) {
         console.error("Error fetching profile data:", err);
-        setError("Failed to load profile data. Showing dummy data.");
+        // setError("Failed to load profile data. Showing dummy data.");
         setProfileData(defaultData);
+        console.log("Using default data due to error:", defaultData);
       } finally {
         setLoading(false);
       }
@@ -161,6 +173,13 @@ function FullFlowerSectionPage() {
 
     fetchProfileData();
   }, [userId]);
+
+  // Log the current profile data whenever it changes
+  useEffect(() => {
+    if (profileData) {
+      console.log("Current profile data:", profileData);
+    }
+  }, [profileData]);
 
   // Handler functions
   const toggleExpand = () => setIsExpanded(!isExpanded);
@@ -256,6 +275,9 @@ function FullFlowerSectionPage() {
                     {error}
                   </div>
                 )}
+
+                {/* Debug data display section */}
+                
                 <div className="Profile-full-section-whole-profile-section">
                   <div className="Profile-full-section-top-nav-section"></div>
                   <div className="Profile-full-section-profile-header">
@@ -282,6 +304,8 @@ function FullFlowerSectionPage() {
                     <p>{data.name}</p>
                     <p>{data.title}</p>
                     <p>{data.address}</p>
+                    <p>Username: {data.username}</p>
+                    <p>Email: {data.email}</p>
                     <p>User ID: {userId}</p>
                   </div>
 
@@ -296,13 +320,17 @@ function FullFlowerSectionPage() {
                 </div>
 
                 <div className="Profile-full-section-goal-section">
-                  <p className="Profile-full-section-heading">
-                    Your Plan and Goal
-                  </p>
+                  <p className="Profile-full-section-heading">About</p>
                   <p>
-                    {displayedText}
-                    <span>
-                      {data.fullAboutText?.length > maxLength && (
+                    {data.about === "Nothing to say as of now" ? (
+                      <span style={{ fontStyle: "italic", color: "#666" }}>
+                        {data.about}
+                      </span>
+                    ) : (
+                      displayedText
+                    )}
+                    {data.about !== "Nothing to say as of now" &&
+                      data.fullAboutText?.length > maxLength && (
                         <button
                           className="Profile-full-section-goal-button"
                           onClick={toggleExpand}
@@ -310,7 +338,6 @@ function FullFlowerSectionPage() {
                           {isExpanded ? "See Less" : "See More"}
                         </button>
                       )}
-                    </span>
                   </p>
                 </div>
 
@@ -328,21 +355,16 @@ function FullFlowerSectionPage() {
 
                 <div className="Profile-full-section-about-section">
                   <div className="Profile-full-section-about-headingAndFull">
-                    <p className="Profile-full-section-heading">About</p>
+                    <p className="Profile-full-section-heading">Education</p>
                   </div>
-                  <p>
-                    {displayedText}
-                    <span>
-                      {data.fullAboutText?.length > maxLength && (
-                        <button
-                          className="Profile-full-section-aboutAndgoal-button"
-                          onClick={toggleExpand}
-                        >
-                          {isExpanded ? "See Less" : "See More"}
-                        </button>
-                      )}
-                    </span>
-                  </p>
+                  <div className="Profile-full-section-education-details">
+                    <p>
+                      <strong>College:</strong> {data.college}
+                    </p>
+                    <p>
+                      <strong>Degree:</strong> {data.degree}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="Profile-full-section-upload-slider-box">
@@ -365,7 +387,7 @@ function FullFlowerSectionPage() {
                               alt="Slide"
                               className="Profile-full-section-slide-img"
                             />
-                            <p>the actual idea..... </p>
+                            <p>Project showcase</p>
                           </div>
                         ))}
                     </div>
@@ -439,54 +461,6 @@ function FullFlowerSectionPage() {
                   </div>
                 </div>
 
-                <div className="Profile-full-section-main-collabs-section">
-                  <div className="Profile-full-section-heading-and-logos">
-                    <p className="Profile-full-section-heading">Collabs</p>
-                    <div className="Profile-full-section-logos"></div>
-                  </div>
-                  <div className="Profile-full-section-second-div-arrowAndContent">
-                    <IoIosArrowBack
-                      className="Profile-full-section-Back"
-                      onClick={prevImageSlide}
-                    />
-                    <div className="Profile-full-section-innerDiv-onlyContent">
-                      <div className="Profile-full-section-left">
-                        <div className="Profile-full-section-collabratorCard">
-                          <div className="Profile-full-section-collab-image">
-                            <img src={uploadimage1} alt="" />
-                          </div>
-                          <div className="Profile-full-section-collabratorDetails">
-                            <p>{data.collaboratorName}</p>
-                            <div className="Profile-full-section-education">
-                              <p>M.Tech </p>
-                              <p>B.tech </p>
-                            </div>
-                            <div className="Profile-full-section-subCollabrators">
-                              (
-                              <div className="Profile-full-section-sunCollabrators-name">
-                                {data.subCollaborators.map((val, index) => (
-                                  <p key={index}>{val},</p>
-                                ))}
-                              </div>
-                              )
-                            </div>
-                          </div>
-                        </div>
-                        <div className="Profile-full-section-para">
-                          <p>{data.paragraph}</p>
-                        </div>
-                      </div>
-                      <div className="Profile-collab-full-section-right">
-                        <img src={uploadimage2} alt="" />
-                      </div>
-                    </div>
-                    <IoIosArrowForward
-                      className="Profile-full-section-Forward"
-                      onClick={nextImageSlide}
-                    />
-                  </div>
-                </div>
-
                 <div className="Profile-full-section-main-wrapper-section">
                   <div className="Profile-full-section-heading-and-logos">
                     <h3>Interests</h3>
@@ -522,7 +496,9 @@ function FullFlowerSectionPage() {
                 <div className="Profile-full-section-main-education">
                   <div className="Profile-full-section-upper-education">
                     <div className="Profile-full-section-education-headingAndFull">
-                      <p className="Profile-full-section-heading">Education</p>
+                      <p className="Profile-full-section-heading">
+                        Education Details
+                      </p>
                     </div>
                     <div className="Profile-full-section-buttons-section">
                       {data.education.map((edu, index) => (

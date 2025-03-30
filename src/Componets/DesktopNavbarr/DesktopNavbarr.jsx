@@ -37,11 +37,18 @@ function DesktopNavbarr() {
       const response = await axios.get(
         `https://uniisphere-1.onrender.com/getProfile/profile/?search=${username}`
       );
-      console.log("API response:", response.data);
-      setSearchResults(response.data);
+      console.log("Profile API response:", response.data);
+
+      // Extract profile data
+      const profiles = response.data;
+      if (profiles.length > 0) {
+        console.log("First user ID:", profiles[0].id);
+      }
+
+      setSearchResults(profiles);
     } catch (err) {
       console.error("Search error:", err);
-      setError("Failed to search. Please try again.");
+      // setError("Failed to search. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +67,7 @@ function DesktopNavbarr() {
     const username = e.target.value;
     setSearchQuery(username);
     console.log("User typing:", username);
-    
+
     if (/^[a-z0-9_]*$/i.test(username)) {
       debouncedSearch(username);
     } else {
@@ -71,7 +78,7 @@ function DesktopNavbarr() {
   // Handle profile click
   const handleProfileClick = (userId) => {
     console.log("Navigating to profile with ID:", userId);
-    navigate(`/profile/${userId}`);
+    navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
     setShowResults(false);
     setSearchQuery("");
   };
@@ -89,6 +96,7 @@ function DesktopNavbarr() {
   const handleSignOut = () => {
     setIsUserDropdownOpen(false);
     console.log("User signed out");
+    // Add your sign out logic here
   };
 
   const handleEditProfile = () => {
@@ -103,33 +111,52 @@ function DesktopNavbarr() {
   // Navigation icon handlers
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
+    // Add navigation logic for each icon if needed
+    switch (iconName) {
+      case "home":
+        navigate("/");
+        break;
+      case "network":
+        navigate("/network");
+        break;
+      case "add":
+        navigate("/create-post");
+        break;
+      case "notifications":
+        navigate("/notifications");
+        break;
+      default:
+        break;
+    }
   };
 
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
-      <img 
-        src={activeIcon === "home" ? Homewhite : Homeblack} 
-        alt="Home" 
-        className="desktop-icon" 
+      <img
+        src={activeIcon === "home" ? Homewhite : Homeblack}
+        alt="Home"
+        className="desktop-icon"
         onClick={() => handleIconClick("home")}
       />
-      <img 
-        src={activeIcon === "network" ? Networkwhite : NetworkBlack} 
-        alt="Network" 
-        className="desktop-icon" 
+      <img
+        src={activeIcon === "network" ? Networkwhite : NetworkBlack}
+        alt="Network"
+        className="desktop-icon"
         onClick={() => handleIconClick("network")}
       />
-      <img 
-        src={activeIcon === "add" ? Addwhite : Addblack} 
-        alt="Add" 
-        className="desktop-icon" 
+      <img
+        src={activeIcon === "add" ? Addwhite : Addblack}
+        alt="Add"
+        className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-      <img 
-        src={activeIcon === "notifications" ? Notificationwhite : Notificationblack} 
-        alt="Notifications" 
-        className="desktop-icon" 
+      <img
+        src={
+          activeIcon === "notifications" ? Notificationwhite : Notificationblack
+        }
+        alt="Notifications"
+        className="desktop-icon"
         onClick={() => handleIconClick("notifications")}
       />
 
@@ -178,11 +205,14 @@ function DesktopNavbarr() {
             </div>
 
             <div className="SelfProfile-menu">
-              <div className="SelfProfile-menu-item" onClick={() => navigate("/SelfSetting")}>
+              <div
+                className="SelfProfile-menu-item"
+                onClick={() => navigate("/SelfSetting")}
+              >
                 Settings
               </div>
               <div className="SelfProfile-menu-item">Help</div>
-              <div 
+              <div
                 className="SelfProfile-menu-item SelfProfile-sign-out"
                 onClick={handleSignOut}
               >
@@ -218,9 +248,9 @@ function DesktopNavbarr() {
             ) : searchResults.length > 0 ? (
               searchResults.map((user) => (
                 <div
-                  key={user._id}
+                  key={user.id}
                   className="desktop-search-result-item"
-                  onClick={() => handleProfileClick(user._id)}
+                  onClick={() => handleProfileClick(user.id)}
                 >
                   <img
                     src={user.profilePicture || Usericon}
@@ -232,7 +262,7 @@ function DesktopNavbarr() {
                       {user.username}
                     </span>
                     <span className="desktop-search-result-id">
-                      ID: {user._id}
+                      ID: {user.id}
                     </span>
                   </div>
                 </div>
@@ -245,11 +275,7 @@ function DesktopNavbarr() {
       </div>
 
       {/* Logo */}
-      <img
-        src={Unispherelogoicon}
-        alt="Logo"
-        className="desktop-logo-icon"
-      />
+      <img src={Unispherelogoicon} alt="Logo" className="desktop-logo-icon" />
     </div>
   );
 }
