@@ -30,7 +30,7 @@ import BottomMessagesWidget from  './Componets/BottomMessagesWidget/BottomMessag
  
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
  
-import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
+// import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
  
 
 function App() {
