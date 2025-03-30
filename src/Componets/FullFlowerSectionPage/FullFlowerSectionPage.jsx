@@ -30,7 +30,7 @@ function FullFlowerSectionPage() {
     collabs: 10,
     connections: 50,
     name: "Kartikey Pandey",
-    title: "software developer",
+    title: "Software Developer",
     address: "Dehradun, Uttarakhand",
     about: "Nothing to say as of now",
     fullAboutText: "Nothing to say as of now",
@@ -298,15 +298,18 @@ function FullFlowerSectionPage() {
                         <span>{data.connections}</span>
                       </div>
                     </div>
+                    <div className="Profile-full-section-message-box">Message</div>
                   </div>
 
                   <div className="Profile-full-section-profile-info">
                     <p>{data.name}</p>
                     <p>{data.title}</p>
                     <p>{data.address}</p>
-                    <p>Username: {data.username}</p>
+                    {/* <p> Username: {data.username}</p>
                     <p>Email: {data.email}</p>
-                    <p>User ID: {userId}</p>
+                    <p>User ID: {userId}</p> */}
+
+                   
                   </div>
 
                   <div className="Profile-full-section-profile-buttons">
@@ -353,7 +356,7 @@ function FullFlowerSectionPage() {
                   </div>
                 </div>
 
-                <div className="Profile-full-section-about-section">
+                {/* <div className="Profile-full-section-about-section">
                   <div className="Profile-full-section-about-headingAndFull">
                     <p className="Profile-full-section-heading">Education</p>
                   </div>
@@ -365,7 +368,7 @@ function FullFlowerSectionPage() {
                       <strong>Degree:</strong> {data.degree}
                     </p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="Profile-full-section-upload-slider-box">
                   <p className="Profile-full-section-heading">Upload</p>
@@ -416,8 +419,10 @@ function FullFlowerSectionPage() {
                             key={index}
                             className="Profile-full-section-experince-inner-div"
                           >
-                            <h3>{exp.title}</h3>
-                            <h5>{exp.subtitle}</h5>
+                          <div className="Profile-full-section-experince-innerdiv-heading">
+                          <h3>{exp.title}</h3>
+                          <h5>{exp.subtitle}</h5>
+                          </div>
                             <p>{exp.description}</p>
                           </div>
                         ))}
