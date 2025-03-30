@@ -24,7 +24,14 @@ import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 
 import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
 
+ 
+ 
+import BottomMessagesWidget from  './Componets/BottomMessagesWidget/BottomMessagesWidget.jsx'
+ 
+import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
+ 
 import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
+ 
 
 function App() {
   return (
@@ -73,12 +80,19 @@ function App() {
           <Route path="/CollabPage" element={<CollabPage />} />
 
          
-
+ 
+ 
+          <Route path="/BottomMessagesWidget" element={<BottomMessagesWidget />} />
+ 
+          <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
+          <Route path="/uploadsection" element={<UploadSection/>} />
+ 
           <Route
             path="/BottomMessagesWidget"
             element={<BottomMessagesWidget />}
           />
            <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
+ 
         </Routes>
        
       </div>
