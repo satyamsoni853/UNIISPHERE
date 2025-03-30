@@ -232,7 +232,9 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-upload-section-public">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
                     <p>Upload</p>
-                    <FiEdit className="Followers-middle-section-2-icon-public" />
+                    <Link to={`/uploadsection/${userId}`}>
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
                   </div>
                   <h6>No Upload yet.</h6>
                 </div>
