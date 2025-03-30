@@ -23,7 +23,7 @@ import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 
 
-import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
+// import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
 
 import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
 
@@ -80,14 +80,14 @@ function App() {
             element={<BottomMessagesWidget />}
           />
 
-          <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
+          {/* <Route path="/projectAndEvent" element={<ProjectAndEvent />} /> */}
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
 
           <Route
             path="/BottomMessagesWidget"
             element={<BottomMessagesWidget />}
           />
-          <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
+          <
         </Routes>
       </div>
     </Router>
