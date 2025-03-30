@@ -1,0 +1,29 @@
+.messages-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgb(242, 215, 219);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  width: 350px;
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.messages-text {
+  color: black;
+  font-weight: 600;
+}
+
+.icon {
+  margin-left: auto;
+}

@@ -9,14 +9,13 @@ import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
-import axios from "axios"; // Import axios for API calls
-import { useNavigate } from "react-router-dom"; // For navigation
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Interset() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
-  // Initial interests and selected interests state
   const [interest, setInterest] = useState([
     "UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop", "Swift",
     "Kotlin", "SQL", "MongoDB", "React", "Angular", "Node.js", "Java", "HTML",
@@ -30,25 +29,21 @@ function Interset() {
     "UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop", "Swift",
     "Kotlin", "SQL", "MongoDB", "React", "Angular", "Node.js", "Java",
   ]);
-  const [selectedInterests, setSelectedInterests] = useState([]); // Track selected interests
-
+  const [selectedInterests, setSelectedInterests] = useState([]);
   const [color] = useState(["#F3FDF4", "#FDF9F9", "#eaead6", "#F7F7F7"]);
 
   const tagsRef1 = useRef(null);
   const tagsRef2 = useRef(null);
 
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Split interests into two rows
   const row1 = interest.slice(0, Math.ceil(interest.length / 2));
   const row2 = interest.slice(Math.ceil(interest.length / 2));
 
-  // Scroll functions
   const scrollLeft = () => {
     if (tagsRef1.current && tagsRef2.current) {
       tagsRef1.current.scrollBy({ left: -200, behavior: "smooth" });
@@ -63,22 +58,17 @@ function Interset() {
     }
   };
 
-  // Handle interest selection
   const handleInterestClick = (skill) => {
-    if (selectedInterests.includes(skill)) {
-      setSelectedInterests(selectedInterests.filter((item) => item !== skill));
-    } else {
-      setSelectedInterests([...selectedInterests, skill]);
-    }
+    setSelectedInterests((prev) =>
+      prev.includes(skill) ? prev.filter((item) => item !== skill) : [...prev, skill]
+    );
   };
 
-  // Cancel button functionality
   const handleCancel = () => {
-    setSelectedInterests([]); // Reset selected interests
-    navigate(-1); // Navigate back to the previous page
+    setSelectedInterests([]);
+    navigate(-1);
   };
 
-  // Save button functionality
   const handleSave = async () => {
     if (selectedInterests.length === 0) {
       alert("Please select at least one interest to save.");
@@ -86,16 +76,17 @@ function Interset() {
     }
 
     try {
-      const userId = localStorage.getItem("userId");
       const authToken = localStorage.getItem("authToken");
 
-      if (!userId || !authToken) {
-        throw new Error("User not authenticated.");
+      // Log the authToken for debugging
+      console.log("Auth Token:", authToken);
+
+      if (!authToken) {
+        throw new Error("User not authenticated. Please log in.");
       }
 
-      // Placeholder API call to save interests
-      const response = await axios.post(
-        `https://uniisphere-1.onrender.com/users/profile/${userId}/interests`,
+      const response = await axios.patch(
+        `https://uniisphere-1.onrender.com/users/profile/`,
         { interests: selectedInterests },
         {
           headers: {
@@ -105,12 +96,17 @@ function Interset() {
       );
 
       if (response.status === 200) {
+        console.log("Success response:", response.data);
         alert("Interests saved successfully!");
-        navigate("/profile"); // Redirect to profile page after saving
+        navigate("/profile");
       }
     } catch (error) {
-      console.error("Error saving interests:", error);
-      alert("Failed to save interests. Please try again.");
+      console.error("Error saving interests:", error.response?.data || error.message);
+      if (error.response) {
+        alert(`Failed to save interests: ${error.response.data.message || error.response.statusText}`);
+      } else {
+        alert("Failed to save interests. Check your network or try again later.");
+      }
     }
   };
 
@@ -126,7 +122,6 @@ function Interset() {
         <div className="Interest-middle-main-container">
           <div className="middle-interest-mainParent">
             <div className="middle-interest-container">
-              {/* Header */}
               <div className="middle-interest-header">
                 {isMobile && (
                   <span>
@@ -136,7 +131,6 @@ function Interset() {
                 <span>Interest</span>
               </div>
 
-              {/* Search Bar with Icon */}
               <div className="middle-interest-searchAndIconMain">
                 <div className="middle-interest-search">
                   <FiSearch className="search-icon" />
@@ -144,7 +138,6 @@ function Interset() {
                 </div>
               </div>
 
-              {/* Interests Section with Arrows */}
               <div className="middle-interest-interestAndArrow">
                 <button className="arrow-btn" onClick={scrollLeft}>
                   <IoIosArrowBack className="main-left-arrow" />
@@ -152,7 +145,6 @@ function Interset() {
 
                 <div className="middle-interest-tags-wrapper">
                   <div className="middle-interest-tags">
-                    {/* First Row */}
                     <div className="middle-interest-tags-row" ref={tagsRef1}>
                       {row1.map((skill, index) => (
                         <div
@@ -160,9 +152,7 @@ function Interset() {
                           className={`middle-interest-tag ${
                             selectedInterests.includes(skill) ? "selected" : ""
                           }`}
-                          style={{
-                            backgroundColor: color[index % color.length],
-                          }}
+                          style={{ backgroundColor: color[index % color.length] }}
                           onClick={() => handleInterestClick(skill)}
                         >
                           {skill}
@@ -170,7 +160,6 @@ function Interset() {
                       ))}
                     </div>
 
-                    {/* Second Row */}
                     <div className="middle-interest-tags-row" ref={tagsRef2}>
                       {row2.map((skill, index) => (
                         <div
@@ -178,9 +167,7 @@ function Interset() {
                           className={`middle-interest-tag ${
                             selectedInterests.includes(skill) ? "selected" : ""
                           }`}
-                          style={{
-                            backgroundColor: color[index % color.length],
-                          }}
+                          style={{ backgroundColor: color[index % color.length] }}
                           onClick={() => handleInterestClick(skill)}
                         >
                           {skill}
@@ -195,14 +182,12 @@ function Interset() {
                 </button>
               </div>
 
-              {/* Prompt */}
               <div className="middle-interest-parentOfPrompt">
                 <div className="middle-interest-prompt">
                   <h1>Add other interests which you have knowledge of</h1>
                 </div>
               </div>
 
-              {/* Suggested Interests */}
               <div className="middle-interest-suggested-tags">
                 {Slideinterest.map((skill, index) => (
                   <div
@@ -218,7 +203,6 @@ function Interset() {
                 ))}
               </div>
 
-              {/* Description */}
               <div className="middle-interest-description">
                 <p>
                   Interests can present you in a better way among others. Also,
@@ -226,12 +210,8 @@ function Interset() {
                 </p>
               </div>
 
-              {/* Buttons */}
               <div className="middle-interest-last-buttons">
-                <button
-                  className="middle-interest-cancel"
-                  onClick={handleCancel}
-                >
+                <button className="middle-interest-cancel" onClick={handleCancel}>
                   Cancel
                 </button>
                 <button className="middle-interest-save" onClick={handleSave}>
