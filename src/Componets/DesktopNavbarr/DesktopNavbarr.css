@@ -24,6 +24,7 @@
 .desktop-user-icon {
   width: 35px;
   height: 35px;
+  cursor: pointer;
   border-radius: 50%;
   background: #f76b6b; /* Red background for user icon */
   padding: 5px;
@@ -174,59 +175,6 @@
   }
 }
 
-
-/* Main Navbar Container */
-.desktop-navbar-1 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
-
-/* Icons */
-.desktop-icon {
-  width: 24px;
-  height: 24px;
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.desktop-logo-icon {
-  width: 30px;
-  height: 30px;
-  margin-left: 15px;
-}
-
-/* User Dropdown */
-.user-icon-container {
-  position: relative;
-}
-
-.desktop-user-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.SelfProfile-card {
-  position: absolute;
-  top: 50px;
-  right: 0;
-  width: 300px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  padding: 15px;
-  z-index: 1001;
-}
 
 /* Search Bar */
 .desktop-search-container {
@@ -394,8 +342,3 @@
   border-top: 1px solid #eee;
   margin: 5px 0;
 }
-@media screen and (max-width: 768px) {
-  .desktop-navbar-1 {
-    display: none;
-  }
-  

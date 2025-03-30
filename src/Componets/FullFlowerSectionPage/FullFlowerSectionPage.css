@@ -50,7 +50,13 @@
   /* border: 2px solid black; */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
+/* adding the new css for the back-button */
+.Profile-full-section-container .back-button { 
+ cursor: pointer; 
+ font-size: 24px;
+ margin: 10px;
+ display: none;
+}
 .Profile-full-section-whole-profile-section {
   display: flex;
   flex-direction: column;
@@ -75,6 +81,7 @@
   align-items: center;
   padding: 5px;
   font-size: 20px;
+  position: relative;
 }
 
 .Profile-full-section-top-nav-section {
@@ -160,8 +167,23 @@
   flex-direction: column;
   align-items: flex-end;
   line-height: 0.5;
+  position: relative;
 }
-
+.Profile-full-section-message-box{
+  position:absolute;
+  width: 133px;
+  height: 25px;
+  font-size: 15px;
+  display: flex;
+  bottom: -25px;
+  left: 25px;
+  border-radius: 25px;
+  background-color: #d7d7d7;
+  box-shadow: 0 2px 5px   rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
 .Profile-full-section-profile-info p:first-child {
   font-size: 23px;
   font-weight: 500;
@@ -372,10 +394,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  
   border-radius: 5px;
-  height: 100%;
+  height: 191px;
+  width: 171px;
   border: 1px solid #eee;
+}
+
+.Profile-full-section-experince-innerdiv-heading{
+  display: flex;
+  flex-direction: column;
+  height: 25%;
+  width: 100%;
 }
 
 .Profile-full-section-experince-inner-div h3 {
@@ -704,6 +734,12 @@
     width: 40vw;
     margin-left: 60px;
   }
+  .Profile-full-section-heading-and-logos h3{
+  margin-top: 30px;
+  font-size: 2rem;
+  font-weight: 600;
+}  
+ 
 }
 
 @media (max-width: 900px) {
@@ -752,12 +788,14 @@
     margin: 40px auto 0; /* Center horizontally */
     padding: 15px;
   }
+ 
+  .Profile-full-section-heading-and-logos h3{
+    margin-top: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+  }
 }
-.Profile-full-section-heading-and-logos h3{
-  margin-top: 30px;
-  font-size: 2rem;
-  font-weight: 600;
-}
+
 
 @media (max-width: 740px) {
   .Profile-full-section-mainParent {
@@ -807,7 +845,9 @@
   .Profile-full-section-profile-info {
     align-items: center;
     line-height: 1.2;
+     
   }
+ 
 
   .Profile-full-section-parent-collabs-connection {
     width: 100%;
@@ -827,6 +867,13 @@
     padding: 8px;
   }
 
+  .Profile-full-section-message-box{
+    display: none;
+  }
+
+  .Profile-full-section-container .back-button {
+     display: block;
+   }
   .Profile-full-section-profile-header {
     gap: 15px;
   }
@@ -865,6 +912,9 @@
     margin: 10px auto 0;
     padding: 5px;
   }
+  .Profile-full-section-container .back-button {
+    display: block;
+   }
 
   .Profile-full-section-imageContainer {
     height: 50px;
