@@ -87,7 +87,7 @@ function App() {
             path="/BottomMessagesWidget"
             element={<BottomMessagesWidget />}
           />
-          <
+          
         </Routes>
       </div>
     </Router>
