@@ -24,14 +24,9 @@ import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 
 import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
 
- 
- 
-import BottomMessagesWidget from  './Componets/BottomMessagesWidget/BottomMessagesWidget.jsx'
- 
+import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
+
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
- 
-// import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
- 
 
 function App() {
   return (
@@ -79,22 +74,20 @@ function App() {
           <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/CollabPage" element={<CollabPage />} />
 
-         
- 
- 
-          <Route path="/BottomMessagesWidget" element={<BottomMessagesWidget />} />
- 
-          <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
-          <Route path="/uploadsection" element={<UploadSection/>} />
- 
           <Route
             path="/BottomMessagesWidget"
             element={<BottomMessagesWidget />}
           />
-           <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
- 
+
+          <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
+          <Route path="/uploadsection/:userId" element={<UploadSection />} />
+
+          <Route
+            path="/BottomMessagesWidget"
+            element={<BottomMessagesWidget />}
+          />
+          <Route path="/projectAndEvent" element={<ProjectAndEvent />} />
         </Routes>
-       
       </div>
     </Router>
   );
