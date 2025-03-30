@@ -17,29 +17,15 @@ import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
 
 function FullFlowerSectionPage() {
-  const { userId } = useParams(); // Extracts "07d3b55a-6908-4d5d-be94-79f8f6e0539b" from URL
+  const { userId } = useParams();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [profileData, setProfileData] = useState(null);
 
-  const [profilePic, setProfilePic] = useState(Profile);
-  const [collabs, setCollabs] = useState(10);
-  const [connections, setConnections] = useState(50);
-  const [name, setName] = useState("Himanshu Choudhary");
-  const [title, setTitle] = useState("Software Engineer || Web Developer");
-  const [address, setAddress] = useState("Gurgaon, Haryana, India");
-  const [fullAboutText, setFullAboutText] = useState(
-    "Passionate developer with experience in web and mobile development. I specialize in React, Node.js, and building scalable applications. Love to work on open-source projects and contribute to the tech community."
-  );
-  const [skill, setSkill] = useState([
-    "UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop",
-  ]);
-  const [interest, setInterest] = useState([
-    "UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop",
-  ]);
-
-  const dummyData = {
+  // Default dummy data
+  const defaultData = {
     profilePic: Profile,
     collabs: 10,
     connections: 50,
@@ -47,10 +33,58 @@ function FullFlowerSectionPage() {
     title: "Software Engineer || Web Developer",
     address: "Gurgaon, Haryana, India",
     about:
+      "Passionate developer with experience in web and mobile development.",
+    fullAboutText:
       "Passionate developer with experience in web and mobile development. I specialize in React, Node.js, and building scalable applications. Love to work on open-source projects and contribute to the tech community.",
-    skills: ["UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop"],
-    interests: ["UI/UX", "JAVA", "CSS", "C++", "Python", "V+", "Figma", "Photoshop"],
+    skills: [
+      "UI/UX",
+      "JAVA",
+      "CSS",
+      "C++",
+      "Python",
+      "V+",
+      "Figma",
+      "Photoshop",
+    ],
+    interests: [
+      "UI/UX",
+      "JAVA",
+      "CSS",
+      "C++",
+      "Python",
+      "V+",
+      "Figma",
+      "Photoshop",
+    ],
+    education: ["Hansraj College", "B.A Programme", "12th Class", "10th Class"],
+    collaboratorName: "Jane Smith",
+    subCollaborators: ["Alice", "Bob", "Charlie"],
+    paragraph:
+      "Founder Himanshu who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working.",
+    experiences: [
+      {
+        title: "Farewell",
+        subtitle: "Backstage Handler",
+        description:
+          "The actual idea of Unisphere was of The Founder Himanshu who worked for months to...",
+      },
+    ],
   };
+
+  // Image data
+  const images = [
+    uploadimage1,
+    uploadimage2,
+    uploadimage3,
+    uploadimage2,
+    uploadimage3,
+  ];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentExpIndex, setCurrentExpIndex] = useState(0);
+  const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
+  const [currentInterestIndex, setCurrentInterestIndex] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const color = ["#F3FDF4", "#FDF9F9", "#eaead6", "#F7F7F7"];
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -61,28 +95,23 @@ function FullFlowerSectionPage() {
   useEffect(() => {
     const fetchProfileData = async () => {
       const authToken = localStorage.getItem("authToken");
-      console.log("Starting fetch for userId:", userId, "with token:", authToken);
 
       if (!authToken) {
-        console.log("No auth token found, using dummy data");
         setError("Authentication required. Using dummy data.");
-        applyDummyData();
+        setProfileData(defaultData);
         setLoading(false);
         return;
       }
 
       if (!userId || userId === "unknown") {
-        console.log("Invalid userId, using dummy data");
         setError("Invalid user ID. Using dummy data.");
-        applyDummyData();
+        setProfileData(defaultData);
         setLoading(false);
         return;
       }
 
       try {
-        setLoading(true); // Set loading to true before fetching
-        console.log("Fetching data from API...");
-
+        setLoading(true);
         const response = await axios.get(
           `https://uniisphere-1.onrender.com/getProfile/profile/${userId}`,
           {
@@ -90,139 +119,108 @@ function FullFlowerSectionPage() {
           }
         );
 
-        console.log("API response for userId", userId, ":", response.data);
-
         const data = response.data;
         if (!data || Object.keys(data).length === 0) {
           throw new Error("No data returned from API");
         }
 
-        console.log("Processed profile data:", data);
+        // Transform API data to match our component's structure
+        const transformedData = {
+          profilePic: data.profilePictureUrl || defaultData.profilePic,
+          collabs: data._count?.connections1 || defaultData.collabs,
+          connections:
+            (data._count?.connections1 || 0) +
+              (data._count?.connections2 || 0) || defaultData.connections,
+          name:
+            `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
+            defaultData.name,
+          title: data.headline || defaultData.title,
+          address: data.location || defaultData.address,
+          about: data.About || defaultData.about,
+          fullAboutText: data.About || defaultData.fullAboutText,
+          skills: data.skills || defaultData.skills,
+          interests: data.interests || defaultData.interests,
+          education: data.education || defaultData.education,
+          collaboratorName:
+            data.collaboratorName || defaultData.collaboratorName,
+          subCollaborators:
+            data.subCollaborators || defaultData.subCollaborators,
+          paragraph: data.paragraph || defaultData.paragraph,
+          experiences: data.experiences || defaultData.experiences,
+        };
 
-        // Update state with API data
-        setProfilePic(data.profilePictureUrl || dummyData.profilePic);
-        setCollabs(data._count?.connections1 || dummyData.collabs);
-        setConnections(
-          (data._count?.connections1 || 0) + (data._count?.connections2 || 0) || dummyData.connections
-        );
-        setName(
-          `${data.firstName || dummyData.name.split(" ")[0]} ${data.lastName || dummyData.name.split(" ")[1]}`
-        );
-        setTitle(data.headline || dummyData.title);
-        setAddress(data.location || dummyData.address);
-        setFullAboutText(data.About || dummyData.about);
-        setSkill(data.skills || dummyData.skills);
-        setInterest(data.interests || dummyData.interests);
-      } catch (error) {
-        console.error("Error fetching profile data for userId", userId, ":", error.message);
+        setProfileData(transformedData);
+      } catch (err) {
+        console.error("Error fetching profile data:", err);
         setError("Failed to load profile data. Showing dummy data.");
-        applyDummyData();
+        setProfileData(defaultData);
       } finally {
         setLoading(false);
-        console.log("Fetch complete, loading set to false");
       }
-    };
-
-    const applyDummyData = () => {
-      setProfilePic(dummyData.profilePic);
-      setCollabs(dummyData.collabs);
-      setConnections(dummyData.connections);
-      setName(dummyData.name);
-      setTitle(dummyData.title);
-      setAddress(dummyData.address);
-      setFullAboutText(dummyData.about);
-      setSkill(dummyData.skills);
-      setInterest(dummyData.interests);
     };
 
     fetchProfileData();
   }, [userId]);
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  // Handler functions
   const toggleExpand = () => setIsExpanded(!isExpanded);
   const maxLength = 100;
+  const data = profileData || defaultData;
   const displayedText = isExpanded
-    ? fullAboutText
-    : fullAboutText.slice(0, maxLength) +
-      (fullAboutText.length > maxLength ? "..." : "");
-
-  const images = [uploadimage1, uploadimage2, uploadimage3, uploadimage2, uploadimage3];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    ? data.fullAboutText
+    : data.fullAboutText?.slice(0, maxLength) +
+      (data.fullAboutText?.length > maxLength ? "..." : "");
 
   const prevImageSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   const nextImageSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
-  const experiencesData = [
-    {
-      title: "Farewell",
-      subtitle: "Backstage Handler",
-      description:
-        "The actual idea of Unisphere was of The Founder Himanshu who worked for months to...",
-    },
-    // ... other experiences unchanged
-  ];
-
-  const [currentExpIndex, setCurrentExpIndex] = useState(0);
-
   const prevExpSlide = () => {
-    setCurrentExpIndex((prevIndex) =>
-      prevIndex === 0 ? experiencesData.length - 1 : prevIndex - 1
+    setCurrentExpIndex((prev) =>
+      prev === 0 ? data.experiences.length - 1 : prev - 1
     );
   };
 
   const nextExpSlide = () => {
-    setCurrentExpIndex((prevIndex) =>
-      prevIndex === experiencesData.length - 1 ? 0 : prevIndex + 1
+    setCurrentExpIndex((prev) =>
+      prev === data.experiences.length - 1 ? 0 : prev + 1
     );
   };
 
-  const [color] = useState(["#F3FDF4", "#FDF9F9", "#eaead6", "#F7F7F7"]);
-  const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
-  const [currentInterestIndex, setCurrentInterestIndex] = useState(0);
-
   const prevSkillSlide = () => {
-    setCurrentSkillIndex((prevIndex) =>
-      prevIndex === 0 ? Math.max(skill.length - 4, 0) : prevIndex - 1
+    setCurrentSkillIndex((prev) =>
+      prev === 0 ? Math.max(data.skills.length - 4, 0) : prev - 1
     );
   };
 
   const nextSkillSlide = () => {
-    setCurrentSkillIndex((prevIndex) =>
-      prevIndex >= skill.length - 4 ? 0 : prevIndex + 1
+    setCurrentSkillIndex((prev) =>
+      prev >= data.skills.length - 4 ? 0 : prev + 1
     );
   };
 
   const prevInterestSlide = () => {
-    setCurrentInterestIndex((prevIndex) =>
-      prevIndex === 0 ? Math.max(interest.length - 4, 0) : prevIndex - 1
+    setCurrentInterestIndex((prev) =>
+      prev === 0 ? Math.max(data.interests.length - 4, 0) : prev - 1
     );
   };
 
   const nextInterestSlide = () => {
-    setCurrentInterestIndex((prevIndex) =>
-      prevIndex >= interest.length - 4 ? 0 : prevIndex + 1
+    setCurrentInterestIndex((prev) =>
+      prev >= data.interests.length - 4 ? 0 : prev + 1
     );
   };
-
-  const [collaboratorName] = useState("Jane Smith");
-  const [subCollaborators] = useState(["Alice", "Bob", "Charlie"]);
-  const [paragraph] = useState(
-    "Founder Himanshu who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working."
-  );
 
   const handleBackClick = () => navigate("/");
 
   if (loading) {
-    return <div style={{ textAlign: "center", padding: "50px" }}>Loading...</div>;
+    return (
+      <div style={{ textAlign: "center", padding: "50px" }}>Loading...</div>
+    );
   }
 
   return (
@@ -241,10 +239,20 @@ function FullFlowerSectionPage() {
                 <IoArrowBack
                   className="back-button"
                   onClick={handleBackClick}
-                  style={{ cursor: "pointer", fontSize: "24px", margin: "10px" }}
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "24px",
+                    margin: "10px",
+                  }}
                 />
                 {error && (
-                  <div style={{ color: "orange", textAlign: "center", padding: "10px" }}>
+                  <div
+                    style={{
+                      color: "orange",
+                      textAlign: "center",
+                      padding: "10px",
+                    }}
+                  >
                     {error}
                   </div>
                 )}
@@ -253,7 +261,7 @@ function FullFlowerSectionPage() {
                   <div className="Profile-full-section-profile-header">
                     <div className="Profile-full-section-imageContainer">
                       <img
-                        src={profilePic}
+                        src={data.profilePic}
                         alt="Profile"
                         className="Profile-full-section-profile-pic"
                       />
@@ -261,34 +269,40 @@ function FullFlowerSectionPage() {
                     <div className="Profile-full-section-parent-collabs-connection">
                       <div className="Profile-full-section-collabsDetails">
                         <h4>Collabs</h4>
-                        <span>{collabs}</span>
+                        <span>{data.collabs}</span>
                       </div>
                       <div className="Profile-full-section-connectionsDetails">
                         <h4>Connections</h4>
-                        <span>{connections}</span>
+                        <span>{data.connections}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="Profile-full-section-profile-info">
-                    <p>{name}</p>
-                    <p>{title}</p>
-                    <p>{address}</p>
-                    <p>User ID: {userId}</p> {/* Displays 07d3b55a-6908-4d5d-be94-79f8f6e0539b */}
+                    <p>{data.name}</p>
+                    <p>{data.title}</p>
+                    <p>{data.address}</p>
+                    <p>User ID: {userId}</p>
                   </div>
 
                   <div className="Profile-full-section-profile-buttons">
-                    <button className="Profile-full-section-btn">Message</button>
-                    <button className="Profile-full-section-btn">Connect</button>
+                    <button className="Profile-full-section-btn">
+                      Message
+                    </button>
+                    <button className="Profile-full-section-btn">
+                      Connect
+                    </button>
                   </div>
                 </div>
 
                 <div className="Profile-full-section-goal-section">
-                  <p className="Profile-full-section-heading">Your Plan and Goal</p>
+                  <p className="Profile-full-section-heading">
+                    Your Plan and Goal
+                  </p>
                   <p>
                     {displayedText}
                     <span>
-                      {fullAboutText.length > maxLength && (
+                      {data.fullAboutText?.length > maxLength && (
                         <button
                           className="Profile-full-section-goal-button"
                           onClick={toggleExpand}
@@ -300,7 +314,6 @@ function FullFlowerSectionPage() {
                   </p>
                 </div>
 
-                {/* Rest of the JSX remains unchanged */}
                 <div className="Profile-full-section-main-analytics-parent">
                   <div className="Profile-full-section-anlaytic-main-section">
                     <p className="Profile-full-section-heading">Analytics</p>
@@ -320,7 +333,7 @@ function FullFlowerSectionPage() {
                   <p>
                     {displayedText}
                     <span>
-                      {fullAboutText.length > maxLength && (
+                      {data.fullAboutText?.length > maxLength && (
                         <button
                           className="Profile-full-section-aboutAndgoal-button"
                           onClick={toggleExpand}
@@ -371,17 +384,19 @@ function FullFlowerSectionPage() {
                       onClick={prevExpSlide}
                     />
                     <div className="Profile-full-section-slide-track">
-                      {experiencesData
+                      {data.experiences
                         .slice(currentExpIndex, currentExpIndex + 3)
-                        .map((data, index) => (
+                        .map((exp, index) => (
                           <div
-                            style={{ backgroundColor: color[index % color.length] }}
+                            style={{
+                              backgroundColor: color[index % color.length],
+                            }}
                             key={index}
                             className="Profile-full-section-experince-inner-div"
                           >
-                            <h3>{data.title}</h3>
-                            <h5>{data.subtitle}</h5>
-                            <p>{data.description}</p>
+                            <h3>{exp.title}</h3>
+                            <h5>{exp.subtitle}</h5>
+                            <p>{exp.description}</p>
                           </div>
                         ))}
                     </div>
@@ -403,15 +418,17 @@ function FullFlowerSectionPage() {
                       onClick={prevSkillSlide}
                     />
                     <div className="Profile-full-section-suggested-tags">
-                      {skill
+                      {data.skills
                         .slice(currentSkillIndex, currentSkillIndex + 4)
-                        .map((skillItem, index) => (
+                        .map((skill, index) => (
                           <div
                             key={index}
-                            style={{ backgroundColor: color[index % color.length] }}
+                            style={{
+                              backgroundColor: color[index % color.length],
+                            }}
                             className="Profile-full-section-tag"
                           >
-                            {skillItem}
+                            {skill}
                           </div>
                         ))}
                     </div>
@@ -439,7 +456,7 @@ function FullFlowerSectionPage() {
                             <img src={uploadimage1} alt="" />
                           </div>
                           <div className="Profile-full-section-collabratorDetails">
-                            <p>{collaboratorName}</p>
+                            <p>{data.collaboratorName}</p>
                             <div className="Profile-full-section-education">
                               <p>M.Tech </p>
                               <p>B.tech </p>
@@ -447,7 +464,7 @@ function FullFlowerSectionPage() {
                             <div className="Profile-full-section-subCollabrators">
                               (
                               <div className="Profile-full-section-sunCollabrators-name">
-                                {subCollaborators.map((val, index) => (
+                                {data.subCollaborators.map((val, index) => (
                                   <p key={index}>{val},</p>
                                 ))}
                               </div>
@@ -456,7 +473,7 @@ function FullFlowerSectionPage() {
                           </div>
                         </div>
                         <div className="Profile-full-section-para">
-                          <p>{paragraph}</p>
+                          <p>{data.paragraph}</p>
                         </div>
                       </div>
                       <div className="Profile-collab-full-section-right">
@@ -481,15 +498,17 @@ function FullFlowerSectionPage() {
                       onClick={prevInterestSlide}
                     />
                     <div className="Profile-full-section-suggested-tags">
-                      {interest
+                      {data.interests
                         .slice(currentInterestIndex, currentInterestIndex + 4)
-                        .map((interestItem, index) => (
+                        .map((interest, index) => (
                           <div
                             key={index}
-                            style={{ backgroundColor: color[index % color.length] }}
+                            style={{
+                              backgroundColor: color[index % color.length],
+                            }}
                             className="Profile-full-section-tag"
                           >
-                            {interestItem}
+                            {interest}
                           </div>
                         ))}
                     </div>
@@ -506,10 +525,20 @@ function FullFlowerSectionPage() {
                       <p className="Profile-full-section-heading">Education</p>
                     </div>
                     <div className="Profile-full-section-buttons-section">
-                      <button className="btn btn-left">Hansraj College</button>
-                      <button className="btn btn-middle">B.A Programme.</button>
-                      <button className="btn btn-middle">12th Class</button>
-                      <button className="btn btn-right">10th Class</button>
+                      {data.education.map((edu, index) => (
+                        <button
+                          key={index}
+                          className={`btn ${
+                            index === 0
+                              ? "btn-left"
+                              : index === data.education.length - 1
+                              ? "btn-right"
+                              : "btn-middle"
+                          }`}
+                        >
+                          {edu}
+                        </button>
+                      ))}
                     </div>
                   </div>
                   <img
