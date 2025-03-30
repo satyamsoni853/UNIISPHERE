@@ -11,7 +11,7 @@ import Unispherelogoicon from "./Unispherelogoicon.png";
 import Addwhite from "./Addwhite.svg";
 import Addblack from "./AddBlack.svg";
 import Homewhite from "./Homewhite.svg";
-import Homeblack from "./Homeblack.svg";
+import Homeblack from "./homeblack.svg";
 import NetworkBlack from "./NetworkBlack.svg";
 import Networkwhite from "./NetworkWhite.svg";
 import Notificationblack from "./Notificationblack.svg";
