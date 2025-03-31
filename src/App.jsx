@@ -79,8 +79,6 @@ function App() {
             path="/BottomMessagesWidget"
             element={<BottomMessagesWidget />}
           />
-
-          {/* <Route path="/projectAndEvent" element={<ProjectAndEvent />} /> */}
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
 
           <Route

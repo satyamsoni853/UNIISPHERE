@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./DesktopNavbarr.css";
 import axios from "axios";
 import { FiSearch } from "react-icons/fi";
@@ -239,13 +239,18 @@ function DesktopNavbarr() {
       {/* Network Dropdown */}
 
       {showDropdown && (
-        <div className="connections-card">
-          <div className="connections-item">Connections</div>
-          <div className="connections-item">Edu-vault</div>
-          <div className="connections-item active">Human Library</div>
-          <div className="connections-item">Guidness</div>
-          <div className="connections-item">NGO's</div>
-        </div>
+
+       <div className="connections-card">
+         <div className="connections-item">
+           <Link to="/NetworkPage" className="connection-link">Connection</Link>
+         </div>
+       
+         <div className="connections-item">Edu-vault</div>
+         <div className="connections-item active">Human Library</div>
+         <div className="connections-item">Guidance</div>
+         <div className="connections-item">NGOs</div>
+       </div>
+       
       )}
 
       {/* Search Bar */}
