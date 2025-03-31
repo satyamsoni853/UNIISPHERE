@@ -230,7 +230,7 @@ height: 36px;
     grid-template-columns: repeat(1, 1fr);
   }
   .networkpage-action-btn {
-   width: 150px;
+   width: 25vw;
     font-size: 12px;
   }
 }

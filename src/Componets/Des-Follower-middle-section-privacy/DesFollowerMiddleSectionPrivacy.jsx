@@ -311,16 +311,18 @@ function DesFollowerMiddleSectionPrivacy() {
                               )
                             )}
                           </div>
-                          {(
+                          <div className="Full-middle-section-1-subcollabrators-container-privacy">
+                          ({(
                             data.subCollabrators || defaultData.subCollabrators
                           ).map((val, index) => (
                             <h5
                               key={index}
                               className="Followers-middle-section-1-subCollabrators-privacy"
                             >
-                              ({val})
+                              {val},
                             </h5>
-                          ))}
+                          ))})
+                          </div>
                         </div>
                       </div>
                       <div className="Followers-middle-section-1-para-privacy">
