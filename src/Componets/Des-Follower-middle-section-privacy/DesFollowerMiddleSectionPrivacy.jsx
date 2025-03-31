@@ -16,28 +16,33 @@ import Connect from "./Connect.png";
 
 function DesFollowerMiddleSectionPrivacy() {
   const [searchParams] = useSearchParams();
-  const queryUserId = searchParams.get("userId"); // Get userId from query parameters
-  const storedUserId = localStorage.getItem("userId"); // Get userId from localStorage
-  const userId = storedUserId || queryUserId; // Prefer localStorage, fallback to query parameter
-  const [profileData, setProfileData] = useState(null); // State to store API data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const queryUserId = searchParams.get("userId");
+  const storedUserId = localStorage.getItem("userId");
+  const userId = storedUserId || queryUserId;
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState(null);
 
-  // Log the userId source for verification
-  console.log("Stored userId from localStorage:", storedUserId);
-  console.log("Query userId from URL:", queryUserId);
-  console.log("Using userId:", userId);
+  // Reset connectionStatus on component mount
+  useEffect(() => {
+    setConnectionStatus(null);
+  }, []);
 
-  // Default dummy data updated to match the image
+  // Enhanced dummy data
   const defaultData = {
+    profilePictureUrl: Personimage,
     profilePic: Personimage,
     collabs: 78,
     connections: 248,
     name: "Himanshu Choudhary",
+    firstName: "Himanshu",
+    lastName: "Choudhary",
     title: "Building Himansphere",
+    headline: "Building Himansphere",
     about:
-      "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time",
+      "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time a reality. He envisioned a platform that connects people for collaboration and growth.",
     collaboratorName: "Viraj Verma",
     education: ["UPES - MBA", "IITR, Haridwar, Kartikey"],
     paragraph:
@@ -47,33 +52,64 @@ function DesFollowerMiddleSectionPrivacy() {
       "The actual idea of Unisphere was The Founder Himanshu who worked for months to think and plan all the essential stuffs to make time a reality. He envisioned a platform that connects people for collaboration and growth.",
     college: "Masters Union",
     degree: "SBM",
-    subCollabrators:["Tarun ,Himanshu ,kartikey"]
+    workorProject: "Building Unisphere",
+    subCollabrators: ["Tarun", "Himanshu", "kartikey"],
+    _count: {
+      connections1: 78,
+      connections2: 248,
+    },
   };
 
-  // Fetch profile data when component mounts or userId changes
+  // Fetch profile data
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!userId) {
-        setError("No user ID provided in localStorage or query parameters");
+        setError("No user ID provided. Using default data.");
+        setProfileData(defaultData);
         setLoading(false);
         return;
       }
 
       try {
-        setLoading(true); // Reset loading state
+        setLoading(true);
+        const token = localStorage.getItem("AuthToken");
         const response = await fetch(
-          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+              "Content-Type": "application/json",
+            },
+          }
         );
-        if (!response.ok) {
-          throw new Error(`Failed to fetch profile data: ${response.status}`);
+
+        const contentType = response.headers.get("Content-Type");
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await response.text();
+          console.error("Non-JSON Response:", text);
+          throw new Error(
+            "Server did not return JSON data. Check the API endpoint."
+          );
         }
+
+        if (!response.ok) {
+          const text = await response.text();
+          console.error("Fetch Failed - Response Body:", text);
+          throw new Error(
+            `Failed to fetch profile: ${response.status} - ${text}`
+          );
+        }
+
         const data = await response.json();
-        const profile = data[0]; // Assuming data is an array with one object
-        setProfileData(profile || defaultData); // Fallback to default if profile is null
-        setLoading(false);
+        console.log("Fetched Profile Data:", data);
+        setProfileData(data[0] || defaultData);
       } catch (err) {
-        console.error("Error fetching profile data:", err);
-        setError(err.message);
+        console.error("Fetch Profile Error:", err);
+        setError(
+          `Failed to load profile data: ${err.message}. Using default data.`
+        );
+        setProfileData(defaultData);
+      } finally {
         setLoading(false);
       }
     };
@@ -81,24 +117,90 @@ function DesFollowerMiddleSectionPrivacy() {
     fetchProfileData();
   }, [userId]);
 
-  // Toggle "See More" / "See Less" for about section
+  // Send connection request with path parameter
+  const sendConnectionRequest = async () => {
+    console.log("sendConnectionRequest called");
+    try {
+      const token = localStorage.getItem("AuthToken");
+      const senderId = localStorage.getItem("LoginuserId");
+      const receiverId = localStorage.getItem("SearchUserId") || userId;
+
+      console.log("Sender Token:", token);
+      console.log("Sender ID:", senderId);
+      console.log("Receiver ID:", receiverId);
+
+      if (!token || !senderId || !receiverId) {
+        throw new Error("Missing authentication data");
+      }
+
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            senderId: senderId,
+            senderName: profileData?.name || "User",
+          }),
+        }
+      );
+
+      const contentType = response.headers.get("Content-Type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await response.text();
+        console.error("Non-JSON Response from Connection Request:", text);
+        throw new Error(
+          "Server did not return JSON data for connection request."
+        );
+      }
+
+      if (!response.ok) {
+        const text = await response.text();
+        console.error("Connection Request Failed - Response Body:", text);
+        throw new Error(
+          `Connection request failed: ${response.status} - ${text}`
+        );
+      }
+
+      const data = await response.json();
+      setConnectionStatus("requested");
+      console.log("Connection request successful:", data);
+    } catch (err) {
+      console.error("Connection Request Error:", err);
+      setError(`Failed to send connection request: ${err.message}`);
+    }
+  };
+
+  // Toggle about section
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
-  // Use API data if available, otherwise use default data
+  // Render connect button based on status
+  const renderConnectButton = () => {
+    console.log("Connection Status:", connectionStatus);
+    if (connectionStatus === "requested") {
+      return <div className="connection-status-message">Request Sent!</div>;
+    }
+
+    return (
+      <div className="connect-button-wrapper" onClick={sendConnectionRequest}>
+        <img src={Connect} alt="Connect" className="connect-button-img" />
+      </div>
+    );
+  };
+
+  // Use API data or default data
   const data = profileData || defaultData;
-
   const maxLength = 100;
-  const displayedText =
-    data.about && isExpanded
-      ? data.about
-      : data.about?.slice(0, maxLength) +
-          (data.about?.length > maxLength ? "..." : "") ||
-        data.about ||
-        "N/A";
+  const displayedText = isExpanded
+    ? data.about
+    : `${data.about?.slice(0, maxLength)}${
+        data.about?.length > maxLength ? "..." : ""
+      }`;
 
-  if (loading) return <div>Loading...</div>;
-
-  console.log( "data  fetching startting in the middle",data);
+  if (loading) return <div className="loading-message">Loading...</div>;
 
   return (
     <div>
@@ -113,22 +215,16 @@ function DesFollowerMiddleSectionPrivacy() {
           <div className="Followers-middle-section-1-mainParent-privacy">
             <div className="Followers-middle-section-1-middle-container-privacy">
               <div className="Followers-middle-section-1-middle-section-privacy">
-                {/* Show error message if data fetch fails */}
-                {error && (
-                  <div
-                    style={{
-                      color: "red",
-                      textAlign: "center",
-                      padding: "10px",
-                    }}
-                  >
-                    {error}
-                  </div>
-                )}
+                {error && <div className="error-message">{error}</div>}
+
                 <div className="Followers-middle-section-1-top-nav">
-                  <IoArrowBackCircleOutline className="Followers-middle-section-1-Circle-back-icon" />
-                  <img src={middleconnectimage} alt="" />
+                  <IoArrowBackCircleOutline
+                    className="Followers-middle-section-1-Circle-back-icon"
+                    onClick={() => window.history.back()}
+                  />
+                  <img src={middleconnectimage} alt="Connect" />
                 </div>
+
                 <div className="Followers-middle-section-1-profile-header-privacy">
                   <div className="Followers-middle-section-1-imageContainer-privacy">
                     <img
@@ -140,7 +236,7 @@ function DesFollowerMiddleSectionPrivacy() {
                     />
                   </div>
                   <div className="Followers-middle-section-1-collabsDetails-privacy">
-                    <h4>Connections</h4>{" "}
+                    <h4>Connections</h4>
                     <span>
                       {data._count?.connections2 ?? data.connections ?? 0}
                     </span>
@@ -152,31 +248,31 @@ function DesFollowerMiddleSectionPrivacy() {
                     </span>
                   </div>
                 </div>
-                {/* Display profile data */}
+
                 <div className="Followers-middle-section-1-profile-info-privacy">
                   <h3>
-                    {data.firstName || data.name } {data.lastName || defaultData.name }
+                    {data.firstName || data.name} {data.lastName || ""}
                   </h3>
                   <p>
-                    {data.headline || data.title ||  defaultData.title|| "N/A" }|
-                    {data.workorProject || data.workorProject || defaultData.college|| "N/A"}
+                    {data.headline || data.title || "N/A"} |
+                    {data.workorProject || data.college || "N/A"}
                   </p>
                 </div>
-                {/* Add Connect button */}
-                <div style={{ textAlign: "left", margin: "10px 0" }}>
-                  <img src={Connect} alt="" />
-                </div>
+
+                {renderConnectButton()}
+
                 <div className="Followers-middle-section-1-profile-buttons-privacy">
-                  <button>{data.college ||   "N/A"}</button>
-                  <button>{data.degree ||   defaultData.degree ||"N/A"}</button>
+                  <button>{data.college || "N/A"}</button>
+                  <button>{data.degree || "N/A"}</button>
                 </div>
+
                 <div className="Followers-middle-section-1-about-section-privacy">
                   <p>
                     <strong>About:</strong>
                   </p>
                   <p>
                     {displayedText}
-                    { defaultData.fullAboutText || data.about?.length > maxLength && (
+                    {data.about?.length > maxLength && (
                       <button
                         className="Followers-middle-section-1-about-button-privacy"
                         onClick={toggleExpand}
@@ -186,56 +282,61 @@ function DesFollowerMiddleSectionPrivacy() {
                     )}
                   </p>
                 </div>
+
                 <div className="Followers-middle-section-1-collabs-section-privacy">
                   <p>Collabs</p>
                   <div className="Followers-middle-section-1-collabratorCard-privacy">
                     <div className="Followers-middle-section-1-collabrator-lower-left-privacy">
                       <div className="Followers-middle-section-1-collab-profile-privacy">
                         <div className="Followers-middle-section-1-collab-image-privacy">
-                          <img src={Personimage} alt="" />
+                          <img src={Personimage} alt="Collaborator" />
                         </div>
                         <div className="Followers-middle-section-1-collabratorDetails-privacy">
-                          <h7>{data.collaboratorName || defaultData.collaboratorName || "N/A"}</h7>
+                          <h7>{data.collaboratorName || "N/A"}</h7>
                           <div className="Followers-middle-section-1-education-privacy">
-                            {(data.education || [data.college ||  "N/A"]).map(
+                            {(data.education || defaultData.education).map(
                               (val, index) => (
                                 <h6 key={index}>{val}</h6>
                               )
                             )}
                           </div>
-                         {defaultData.subCollabrators.map((val,index)=>(
-                           <h5 key={index} className="Followers-middle-section-1-subCollabrators-privacy">
-                            ({val})
-                           </h5>
-                         ))}
+                          {(
+                            data.subCollabrators || defaultData.subCollabrators
+                          ).map((val, index) => (
+                            <h5
+                              key={index}
+                              className="Followers-middle-section-1-subCollabrators-privacy"
+                            >
+                              ({val})
+                            </h5>
+                          ))}
                         </div>
                       </div>
                       <div className="Followers-middle-section-1-para-privacy">
-                        <h6>
-                        {defaultData.paragraph}
-                        </h6>
+                        <h6>{data.paragraph || defaultData.paragraph}</h6>
                       </div>
                     </div>
-
                     <div className="Followers-middle-section-1-iconAndImage-privacy">
-                      <img src={Personimage} alt="" />
+                      <img src={Personimage} alt="Person" />
                       <RiArrowDropRightLine className="Followers-middle-section-1-paragrapgh-icon-privacy" />
                     </div>
                   </div>
                 </div>
+
                 <div className="Followers-middle-section-1-skills-section-privacy">
                   <h3>Skills</h3>
                   <div className="Followers-middle-section-1-skill-list-privacy">
-                    {(data.skills || data.skills || defaultData.skills || []).map((val, index) => (
+                    {(data.skills || defaultData.skills).map((val, index) => (
                       <div
                         key={index}
                         className="Followers-middle-section-1-skillsMiniDiv-privacy"
                       >
-                        {val || "N/A"}
+                        {val}
                       </div>
                     ))}
                   </div>
                 </div>
+
                 <div className="Followers-middle-section-1-blur-privacy">
                   <div className="Followers-middle-section-1-lock-privacy">
                     <GoLock className="Followers-middle-section-1-lockIcon-privacy" />

@@ -78,14 +78,17 @@ function DesktopNavbarr() {
   // Handle profile click
   const handleProfileClick = (userId) => {
     console.log("Navigating to profile with ID:", userId);
-    console.log("Search to profile with ID:", userId);
-    localStorage.setItem(
-      "SearchUserId",
-      `Search to profile with ID: ${userId}`
-    );
 
-    console.log("Stored Search to profile with ID:", userId);
-    navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
+    let SearchUserId = userId;
+    console.log("Search to profile with ID:", SearchUserId);
+
+    // Store only the ID in localStorage (not the full message)
+    localStorage.setItem("SearchUserId", SearchUserId);
+
+    console.log("Stored SearchUserId:", SearchUserId);
+
+    // Navigate to the target page with the ID
+    navigate(`/FollowerMiddleSectionPrivacy/${SearchUserId}`);
     setShowResults(false);
     setSearchQuery("");
   };

@@ -29,11 +29,15 @@ function UserLogin() {
       if (response.status === 200) {
         // Extract token and user ID from response
         const token = response.data.token;
+
+        localStorage.setItem("AuthToken", token);
+        console.log("Stored Auth Token:", token);
+
         const userId = response.data.user.id;
         // Print user ID and token to the console
         console.log("User ID:", userId);
         console.log("Login User ID:", userId);
-        const LoginuserId = userId // Replace with actual user ID
+        const LoginuserId = userId; // Replace with actual user ID
         localStorage.setItem("LoginuserId", LoginuserId);
         localStorage.setItem("logMessage", `Login User ID: ${LoginuserId}`);
 
