@@ -1,11 +1,12 @@
 .networkpage-main-container{
   display: flex;
-  
+  justify-content: center;
 }
 .networkpage {
   margin-top: 100px;
   padding: 20px;
   min-height: 100vh;
+  width: 74vw;
 }
 
 .networkpage-container {
@@ -64,7 +65,7 @@
 .networkpage-connect-icon {
   margin: 10px auto;
   cursor: pointer;
-  width: 200px;
+  width: 170px;
   height: 80px;
 }
 
@@ -81,19 +82,20 @@
 
 }
 .networkpage-stats span{
-  padding: 10px;
+padding: 5px 10px;
 }
 
 
 .networkpage-stats span {
   background-color: #f0f0f0;
   border-radius: 12px;
+  font-size: 16px;
 }
 
 .networkpage-buttons {
   display: flex;
   justify-content: start;
-  gap: 15px;
+  gap: 20px;
   margin-top: 30px;
   padding-bottom: 20px;
 
@@ -101,10 +103,11 @@
 
 .networkpage-action-btn {
   background-color: #f5f5dc;
-  /* border: 2px solid #007bff; */
+  width: 260px;
   color: black;
   font-weight: 600;
-  padding: 10px 20px;
+  
+height: 36px;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -185,21 +188,40 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
+ 
 @media (max-width: 992px) {
+.networkpage{
+  display:flex;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+}
   .networkpage-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .Networkpage-rightsection{
+    display: none;
+  }
   .networkpage-right-section {
     width: 100%;
+  }
+  .networkpage-action-btn{
+    width: 220px;
   }
 }
 
 @media (max-width: 768px) {
   .networkpage {
     margin-top: 0px;
+    display:flex;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
     margin-bottom: 50px;
    
+  }
+  .networkpage-card{
+    width: 80vw;
   }
   .Networkpage-rightsection{
     display: none;
@@ -208,17 +230,67 @@
     grid-template-columns: repeat(1, 1fr);
   }
   .networkpage-action-btn {
-    padding: 8px 16px;
+   width: 150px;
     font-size: 12px;
   }
 }
 
 @media (max-width: 480px) {
+  .networkpage{
+    width: 100%;
+  }
+  .networkpage-grid{
+    grid-template-columns: repeat(1,1fr);
+  }
+  .networkpage-card{
+    width: 100%;
+  }
+  
+  .networkpage-profile-pic {
+    height: 80px;
+    width:80px;
+    border-radius: 50%;
+  }
   .networkpage-name {
+    font-size: 22px;
+  }
+  .networkpage-education {
     font-size: 16px;
   }
-  .networkpage-education,
-  .networkpage-description {
-    font-size: 12px;
+  
+  .networkpage-description{
+    font-size: 13px;
+  }
+  .networkpage-connect-icon{
+    width: 148px;
+  } 
+  .networkpage-stats span{
+    width: 120px;
+    height: 25px;
+    font-size: 15px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .networkpage-action-btn {
+    width: 120px;
+    font-size: 10px;
+  }
+  .networkpage-main-container{
+    margin-left: 20vw;
+
+  }
+}
+
+@media screen and (width<=320px) {
+  .networkpage-main-container{
+    margin-left: 40vw;
+
+  }
+  .networkpage-stats span{
+    width: 120px;
+    height: 20px;
+    font-size: 14px;
   }
 }
