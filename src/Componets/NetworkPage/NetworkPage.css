@@ -1,6 +1,6 @@
 .networkpage-main-container{
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .networkpage {
   margin-top: 100px;

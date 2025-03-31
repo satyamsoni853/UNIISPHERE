@@ -181,10 +181,12 @@ function NetworkPage() {
                   REQUEST
                 </button>
                 <button className="networkpage-action-btn">NEW CONNECTION</button>
-                {isMobile && <MobileFooter />}
+              
               </div>
             </div>
           </div>
+          {isMobile && <MobileFooter />}
+
         </div>
       </div>
       <div className="Networkpage-rightsection">
