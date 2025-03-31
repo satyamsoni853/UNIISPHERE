@@ -130,7 +130,13 @@ function DesFollowerMiddleSectionPrivacy() {
       console.log("Receiver ID:", receiverId);
 
       if (!token || !senderId || !receiverId) {
-        throw new Error("Missing authentication data");
+        setError("Missing required data: Please ensure you are logged in");
+        return;
+      }
+
+      if (senderId === receiverId) {
+        setError("You cannot send a connection request to yourself");
+        return;
       }
 
       const response = await fetch(
@@ -138,39 +144,45 @@ function DesFollowerMiddleSectionPrivacy() {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            senderId: senderId,
-            senderName: profileData?.name || "User",
-          }),
+            userId: senderId,
+            senderName: profileData?.name || "User"
+          })
         }
       );
 
+      // First try to parse the response as JSON
+      let responseData;
       const contentType = response.headers.get("Content-Type");
-      if (!contentType || !contentType.includes("application/json")) {
+
+      try {
+        if (contentType && contentType.includes("application/json")) {
+          responseData = await response.json();
+        } else {
+          const text = await response.text();
+          console.error("Non-JSON Response:", text);
+          responseData = { message: text };
+        }
+      } catch (parseError) {
+        console.error("Error parsing response:", parseError);
         const text = await response.text();
-        console.error("Non-JSON Response from Connection Request:", text);
-        throw new Error(
-          "Server did not return JSON data for connection request."
-        );
+        responseData = { message: text };
       }
 
       if (!response.ok) {
-        const text = await response.text();
-        console.error("Connection Request Failed - Response Body:", text);
-        throw new Error(
-          `Connection request failed: ${response.status} - ${text}`
-        );
+        throw new Error(responseData.message || `Request failed with status ${response.status}`);
       }
 
-      const data = await response.json();
       setConnectionStatus("requested");
-      console.log("Connection request successful:", data);
+      console.log("Connection request successful:", responseData);
     } catch (err) {
       console.error("Connection Request Error:", err);
-      setError(`Failed to send connection request: ${err.message}`);
+      setError(err.message || "Failed to send connection request");
+      // Reset connection status if the request failed
+      setConnectionStatus(null);
     }
   };
 
@@ -196,9 +208,8 @@ function DesFollowerMiddleSectionPrivacy() {
   const maxLength = 100;
   const displayedText = isExpanded
     ? data.about
-    : `${data.about?.slice(0, maxLength)}${
-        data.about?.length > maxLength ? "..." : ""
-      }`;
+    : `${data.about?.slice(0, maxLength)}${data.about?.length > maxLength ? "..." : ""
+    }`;
 
   if (loading) return <div className="loading-message">Loading...</div>;
 
