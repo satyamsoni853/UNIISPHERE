@@ -20,6 +20,7 @@ import Notificationwhite from "./notificationwhite.svg";
 function DesktopNavbarr() {
   // State
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -153,7 +154,9 @@ function DesktopNavbarr() {
         src={activeIcon === "network" ? Networkwhite : NetworkBlack}
         alt="Network"
         className="desktop-icon"
-        onClick={() => handleIconClick("network")}
+        onClick={() => {
+          setShowDropdown((prev) => !prev);
+        }}
       />
       <img
         src={activeIcon === "add" ? Addwhite : Addblack}
@@ -232,6 +235,18 @@ function DesktopNavbarr() {
           </div>
         )}
       </div>
+
+      {/* Network Dropdown */}
+
+      {showDropdown && (
+        <div className="connections-card">
+          <div className="connections-item">Connections</div>
+          <div className="connections-item">Edu-vault</div>
+          <div className="connections-item active">Human Library</div>
+          <div className="connections-item">Guidness</div>
+          <div className="connections-item">NGO's</div>
+        </div>
+      )}
 
       {/* Search Bar */}
       <div className="desktop-search-container">
