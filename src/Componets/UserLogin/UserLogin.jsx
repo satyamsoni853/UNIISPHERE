@@ -32,6 +32,13 @@ function UserLogin() {
         const userId = response.data.user.id;
         // Print user ID and token to the console
         console.log("User ID:", userId);
+        console.log("Login User ID:", userId);
+        const LoginuserId = userId // Replace with actual user ID
+        localStorage.setItem("LoginuserId", LoginuserId);
+        localStorage.setItem("logMessage", `Login User ID: ${LoginuserId}`);
+
+        console.log("Login User ID:", userId);
+
         console.log("Token:", token);
 
         // Store in localStorage for persistence

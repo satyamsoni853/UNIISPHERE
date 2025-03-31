@@ -152,6 +152,14 @@ function DesktopMiddle() {
         if (response.data.userId) {
           setUserId(response.data.userId);
           localStorage.setItem("userId", response.data.userId);
+          console.log("visis user user id" + response.data.userId);
+        }
+        const storedLoginUserId = localStorage.getItem("LoginuserId");
+
+        if (storedLoginUserId) {
+          console.log("Stored  Login User ID:", storedLoginUserId); // Logs the stored ID
+        } else {
+          console.log("No user ID found in localStorage.");
         }
 
         if (response.data.posts && response.data.posts.length > 0) {
@@ -272,9 +280,8 @@ function DesktopMiddle() {
                         <span>Not Interest</span> <hr />
                       </button>
                       <button className="middle-options-item">
-                        <span>
-                          Block 
-                        </span><hr />
+                        <span>Block</span>
+                        <hr />
                       </button>
                       <button className="middle-options-item">
                         <span>Report</span>

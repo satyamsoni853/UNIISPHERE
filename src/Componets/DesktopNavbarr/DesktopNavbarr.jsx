@@ -78,6 +78,13 @@ function DesktopNavbarr() {
   // Handle profile click
   const handleProfileClick = (userId) => {
     console.log("Navigating to profile with ID:", userId);
+    console.log("Search to profile with ID:", userId);
+    localStorage.setItem(
+      "SearchUserId",
+      `Search to profile with ID: ${userId}`
+    );
+
+    console.log("Stored Search to profile with ID:", userId);
     navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
     setShowResults(false);
     setSearchQuery("");
@@ -262,7 +269,7 @@ function DesktopNavbarr() {
                       {user.username}
                     </span>
                     <span className="desktop-search-result-id">
-                      ID: {user.id}
+                      ID-For-Search-Bar: {user.id}
                     </span>
                   </div>
                 </div>
