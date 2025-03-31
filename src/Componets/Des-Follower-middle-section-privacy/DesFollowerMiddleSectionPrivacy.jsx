@@ -24,7 +24,6 @@ function DesFollowerMiddleSectionPrivacy() {
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState(null);
-  const [isRequesting, setIsRequesting] = useState(false);
 
   // Reset connectionStatus on component mount
   useEffect(() => {
@@ -118,14 +117,9 @@ function DesFollowerMiddleSectionPrivacy() {
     fetchProfileData();
   }, [userId]);
 
-  // Send connection request with improved error handling
+  // Send connection request with path parameter
   const sendConnectionRequest = async () => {
-    if (isRequesting) return; // Prevent multiple requests
-
-    console.log("Attempting to send connection request...");
-    setIsRequesting(true);
-    setError(null);
-
+    console.log("sendConnectionRequest called");
     try {
       const token = localStorage.getItem("AuthToken");
       const senderId = localStorage.getItem("LoginuserId");
@@ -136,7 +130,13 @@ function DesFollowerMiddleSectionPrivacy() {
       console.log("Receiver ID:", receiverId);
 
       if (!token || !senderId || !receiverId) {
-        throw new Error("Missing authentication data");
+        setError("Missing required data: Please ensure you are logged in");
+        return;
+      }
+
+      if (senderId === receiverId) {
+        setError("You cannot send a connection request to yourself");
+        return;
       }
 
       const response = await fetch(
@@ -144,8 +144,8 @@ function DesFollowerMiddleSectionPrivacy() {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             userId: senderId,
@@ -154,29 +154,35 @@ function DesFollowerMiddleSectionPrivacy() {
         }
       );
 
+      // First try to parse the response as JSON
+      let responseData;
       const contentType = response.headers.get("Content-Type");
-      if (!contentType || !contentType.includes("application/json")) {
+
+      try {
+        if (contentType && contentType.includes("application/json")) {
+          responseData = await response.json();
+        } else {
+          const text = await response.text();
+          console.error("Non-JSON Response:", text);
+          responseData = { message: text };
+        }
+      } catch (parseError) {
+        console.error("Error parsing response:", parseError);
         const text = await response.text();
-        console.error("Non-JSON Response from Connection Request:", text);
-        throw new Error(
-          "Server did not return JSON data for connection request."
-        );
+        responseData = { message: text };
       }
 
-      // Handle different status codes
       if (!response.ok) {
-        const text = await response.text();
-        console.error("Connection Request Failed - Response Body:", text);
-        throw new Error(
-          `Connection request failed: ${response.status} - ${text}`
-        );
+        throw new Error(responseData.message || `Request failed with status ${response.status}`);
       }
 
       setConnectionStatus("requested");
       console.log("Connection request successful:", responseData);
     } catch (err) {
       console.error("Connection Request Error:", err);
-      setError(`Failed to send connection request: ${err.message}`);
+      setError(err.message || "Failed to send connection request");
+      // Reset connection status if the request failed
+      setConnectionStatus(null);
     }
   };
 
@@ -185,10 +191,7 @@ function DesFollowerMiddleSectionPrivacy() {
 
   // Render connect button based on status
   const renderConnectButton = () => {
-    if (isRequesting) {
-      return <div className="connection-status-message">Sending...</div>;
-    }
-
+    console.log("Connection Status:", connectionStatus);
     if (connectionStatus === "requested") {
       return <div className="connection-status-message">Request Sent!</div>;
     }
@@ -223,13 +226,7 @@ function DesFollowerMiddleSectionPrivacy() {
           <div className="Followers-middle-section-1-mainParent-privacy">
             <div className="Followers-middle-section-1-middle-container-privacy">
               <div className="Followers-middle-section-1-middle-section-privacy">
-                {error && (
-                  <div
-                    className={`error-message ${isRequesting ? "warning" : ""}`}
-                  >
-                    {error}
-                  </div>
-                )}
+                {error && <div className="error-message">{error}</div>}
 
                 <div className="Followers-middle-section-1-top-nav">
                   <IoArrowBackCircleOutline
