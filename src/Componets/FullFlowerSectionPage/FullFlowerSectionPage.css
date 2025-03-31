@@ -51,12 +51,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 /* adding the new css for the back-button */
-.Profile-full-section-container .back-button { 
- cursor: pointer; 
- font-size: 24px;
- margin: 10px;
- display: none;
-}
+ 
 .Profile-full-section-whole-profile-section {
   display: flex;
   flex-direction: column;
@@ -66,12 +61,7 @@
   border-radius: 5px;
 }
 
-.Profile-full-section-whole-profile-section .Profile-full-section-back-logo-section {
-  width: 100%;
-  display: flex;
-  padding: 8px 5px;
-}
-
+ 
 .Profile-full-section-profile-header {
   width: 100%;
   display: flex;
@@ -87,22 +77,22 @@
 .Profile-full-section-top-nav-section {
   display: flex;
   width: 100%;
-  gap: 20px;
+  justify-content: space-between;
+  padding: 2px 10px;
   align-items: center;
+  display: none;
 }
 
-.Profile-full-section-top-nav-section .Profile-full-section-backLogo,
-.Profile-full-section-top-nav-section .Profile-full-section-settingsLogo {
-  object-fit: cover;
-  object-position: center;
-  cursor: pointer;
+.Profile-full-section-top-nav-section input{
+  width: 70%;
+  height: 25px;
+  background-color: #F2F1F1;
+  border-radius: 15px;
+  
 }
+ 
 
-.Profile-full-section-top-nav-section .Profile-full-section-settingsLogo {
-  height: 30px;
-  width: 30px;
-  color: #666;
-}
+ 
 
 .Profile-full-section-search {
   position: relative;
@@ -188,6 +178,13 @@
   font-size: 23px;
   font-weight: 500;
   color: #222;
+}
+
+.Profile-full-section-name span{
+  font-size: 14px;
+  color: #7C7B7B;
+  font-weight: 400;
+  display: none;
 }
 
 .Profile-full-section-imageContainer {
@@ -801,6 +798,9 @@
   .Profile-full-section-mainParent {
     width: 420px;
   }
+  .Profile-full-section-message-box{
+    display: none;
+  }
   .Profile-full-section-heading-and-logos h3{
     margin-top: 30px;
     font-size: 2rem;
@@ -833,7 +833,8 @@
   }
 
   .Profile-full-section-profile-header {
-    flex-direction: column;
+    flex-direction: row-reverse;
+    display: flex;
     align-items: center;
     gap: 20px;
   }
@@ -845,19 +846,37 @@
   .Profile-full-section-profile-info {
     align-items: center;
     line-height: 1.2;
-     
+    
   }
  
 
   .Profile-full-section-parent-collabs-connection {
     width: 100%;
-    justify-content: space-between;
+    justify-content:space-evenly;
+   
   }
 
   .Profile-full-section-btn {
     width: 100%;
     max-width: 140px;
   }
+  .Profile-full-section-parent-collabs-connection {
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+   
+  }
+  .Profile-full-section-profile-info{
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    justify-content: center;
+    line-height: 0.5;
+    padding: 5px 2px;
+    width: 100%;
+  
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -871,31 +890,63 @@
     display: none;
   }
 
-  .Profile-full-section-container .back-button {
-     display: block;
-   }
+  .Profile-full-section-top-nav-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+  }
   .Profile-full-section-profile-header {
-    gap: 15px;
+   justify-content: end;
   }
 
+  .Profile-full-section-parent-collabs-connection {
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+   
+  }
+
+  .Profile-full-section-profile-info{
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    justify-content: center;
+    line-height: 0.5;
+    padding: 5px 2px;
+    width: 100%;
+  
+  }
+ 
+  .Profile-full-section-name{
+    font-size: 22px;
+    
+  }
+ 
   .Profile-full-section-imageContainer {
-    height: 60px;
-    width: 60px;
+    height: 106px;
+    width: 104px;
+   
   }
 
   .Profile-full-section-search input {
     padding: 8px 35px 8px 12px;
   }
 
-  .Profile-full-section-btn {
-    padding: 6px 10px;
-    font-size: 15px;
-  }
+ 
+  .Profile-full-section-profile-buttons {
+ display: flex;
+ align-items: center;
 
-  .Profile-full-section-buttons-section {
-    grid-template-columns: 1fr; /* Single column */
   }
-
+.Profile-full-section-collabsDetails h4,.Profile-full-section-connectionsDetails h4{
+  font-size: 14px;
+  font-weight: 400;
+}
+.Profile-full-section-collabsDetails span,.Profile-full-section-connectionsDetails span{
+  font-size: 22px;
+  font-weight: 500;
+}
   .Profile-full-section-experience-slider-box,
   .Profile-full-section-upload-slider-box {
     height: auto; /* Adjust height dynamically */
@@ -904,27 +955,43 @@
   .Profile-full-section-each-slide {
     flex: 0 0 45%; /* Show fewer slides */
   }
+  .Profile-full-section-name span{
+    display: inline;
+  }
 }
 
 @media (max-width: 320px) {
+
+  .Profile-full-section-mainParent{
+    margin-left: 30vw;
+  }
+  
   .Profile-full-section-container {
     width: 100%;
     margin: 10px auto 0;
     padding: 5px;
   }
-  .Profile-full-section-container .back-button {
-    display: block;
+  .Profile-full-section-slide-track{
+ 
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  .Profile-full-section-top-nav-section  {
+   
+    display: flex;
    }
 
   .Profile-full-section-imageContainer {
     height: 50px;
     width: 50px;
   }
+  .Profile-full-section-name span{
+    display: inline;
+  }
 
   .Profile-full-section-btn {
-    font-size: 13px;
-    padding: 5px 8px;
-    max-width: 120px;
+  width: 50%;
+height: 40px;
   }
 
   .Profile-full-section-search input {

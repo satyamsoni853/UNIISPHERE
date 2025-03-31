@@ -15,6 +15,7 @@ import Profileandview from "./Profileandview.png";
 import uploadimage1 from "./UploadImage1.png";
 import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
+import backIcon from './backsvg.svg'
 
 function FullFlowerSectionPage() {
   const { userId } = useParams();
@@ -255,11 +256,9 @@ function FullFlowerSectionPage() {
           <div>
             <div className="Profile-full-section-mainParent">
               <div className="Profile-full-section-container">
-                <IoArrowBack
-                  className="back-button"
-                  onClick={handleBackClick}
+                 
                   
-                />
+         
                 {error && (
                   <div
                     style={{
@@ -275,7 +274,12 @@ function FullFlowerSectionPage() {
                 {/* Debug data display section */}
                 
                 <div className="Profile-full-section-whole-profile-section">
-                  <div className="Profile-full-section-top-nav-section"></div>
+                  <div className="Profile-full-section-top-nav-section">
+                    <img src={backIcon} className="back-button" alt="" />
+                    <input  type="text" 
+                    placeholder="Message"
+                    />
+                  </div>
                   <div className="Profile-full-section-profile-header">
                     <div className="Profile-full-section-imageContainer">
                       <img
@@ -298,7 +302,7 @@ function FullFlowerSectionPage() {
                   </div>
 
                   <div className="Profile-full-section-profile-info">
-                    <p>{data.name}</p>
+                    <p className="Profile-full-section-name"><span>(He/him)</span> {data.name}</p>
                     <p>{data.title}</p>
                     <p>{data.address}</p>
                     {/* <p> Username: {data.username}</p>
