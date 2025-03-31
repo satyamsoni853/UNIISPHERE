@@ -24,6 +24,7 @@ function DesFollowerMiddleSectionPrivacy() {
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState(null);
+  const [isRequesting, setIsRequesting] = useState(false);
 
   // Reset connectionStatus on component mount
   useEffect(() => {
@@ -117,21 +118,29 @@ function DesFollowerMiddleSectionPrivacy() {
     fetchProfileData();
   }, [userId]);
 
-  // Send connection request with path parameter
+  // Send connection request with improved error handling
   const sendConnectionRequest = async () => {
-    console.log("sendConnectionRequest called");
+    if (isRequesting) return; // Prevent multiple requests
+
+    console.log("Attempting to send connection request...");
+    setIsRequesting(true);
+    setError(null);
+
     try {
       const token = localStorage.getItem("AuthToken");
       const senderId = localStorage.getItem("LoginuserId");
       const receiverId = localStorage.getItem("SearchUserId") || userId;
 
-      console.log("Sender Token:", token);
-      console.log("Sender ID:", senderId);
-      console.log("Receiver ID:", receiverId);
+      // Validate required data
+      if (!token) throw new Error("Authentication token missing");
+      if (!senderId) throw new Error("Your user ID is missing");
+      if (!receiverId) throw new Error("Recipient user ID is missing");
 
-      if (!token || !senderId || !receiverId) {
-        throw new Error("Missing authentication data");
-      }
+      console.log("Request details:", {
+        senderId,
+        receiverId,
+        senderName: profileData?.name || "User",
+      });
 
       const response = await fetch(
         `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
@@ -140,6 +149,7 @@ function DesFollowerMiddleSectionPrivacy() {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
+            Accept: "application/json",
           },
           body: JSON.stringify({
             senderId: senderId,
@@ -148,21 +158,31 @@ function DesFollowerMiddleSectionPrivacy() {
         }
       );
 
-      const contentType = response.headers.get("Content-Type");
+      // Check for non-JSON responses
+      const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
         const text = await response.text();
-        console.error("Non-JSON Response from Connection Request:", text);
-        throw new Error(
-          "Server did not return JSON data for connection request."
-        );
+        console.error("Non-JSON response:", text);
+        throw new Error("Server returned unexpected response format");
       }
 
+      // Handle different status codes
       if (!response.ok) {
-        const text = await response.text();
-        console.error("Connection Request Failed - Response Body:", text);
-        throw new Error(
-          `Connection request failed: ${response.status} - ${text}`
-        );
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+
+        if (response.status === 400) {
+          throw new Error(errorData.message || "Invalid request data");
+        } else if (response.status === 401) {
+          throw new Error("Please log in again");
+        } else if (response.status === 404) {
+          throw new Error("User not found");
+        } else if (response.status === 500) {
+          throw new Error(
+            errorData.message || "Server error. Please try again later."
+          );
+        }
+        throw new Error(`Request failed with status ${response.status}`);
       }
 
       const data = await response.json();
@@ -170,7 +190,14 @@ function DesFollowerMiddleSectionPrivacy() {
       console.log("Connection request successful:", data);
     } catch (err) {
       console.error("Connection Request Error:", err);
-      setError(`Failed to send connection request: ${err.message}`);
+      setError(err.message);
+
+      // Reset connection status if the error is recoverable
+      if (!err.message.includes("Please log in again")) {
+        setConnectionStatus(null);
+      }
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -179,7 +206,10 @@ function DesFollowerMiddleSectionPrivacy() {
 
   // Render connect button based on status
   const renderConnectButton = () => {
-    console.log("Connection Status:", connectionStatus);
+    if (isRequesting) {
+      return <div className="connection-status-message">Sending...</div>;
+    }
+
     if (connectionStatus === "requested") {
       return <div className="connection-status-message">Request Sent!</div>;
     }
@@ -215,7 +245,13 @@ function DesFollowerMiddleSectionPrivacy() {
           <div className="Followers-middle-section-1-mainParent-privacy">
             <div className="Followers-middle-section-1-middle-container-privacy">
               <div className="Followers-middle-section-1-middle-section-privacy">
-                {error && <div className="error-message">{error}</div>}
+                {error && (
+                  <div
+                    className={`error-message ${isRequesting ? "warning" : ""}`}
+                  >
+                    {error}
+                  </div>
+                )}
 
                 <div className="Followers-middle-section-1-top-nav">
                   <IoArrowBackCircleOutline
