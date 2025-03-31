@@ -105,6 +105,15 @@
 
 .Followers-middle-section-1-subCollabrators-privacy {
   font-size: 10px;
+ 
+   
+}
+.Full-middle-section-1-subcollabrators-container-privacy{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+ 
 }
 
 .Followers-middle-section-1-collabratorCard-privacy {
@@ -126,8 +135,8 @@
   gap: 2px;
 }
 .Followers-middle-section-1-collab-image-privacy img {
-  width: 50px; /* Adjust size as needed */
-  height: 50px;
+  width: 60px; /* Adjust size as needed */
+  height: 60px;
   object-fit: cover;
 
   border-radius: 50%;
@@ -137,6 +146,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+ 
+  gap: 0;
+  line-height: 1;
 }
 
 .Followers-middle-section-1-para-privacy h6 {
@@ -146,10 +158,15 @@
 
 .Followers-middle-section-1-education-privacy {
   display: flex;
+ 
+ line-height: 0;
+ 
   flex-direction: column;
 }
 .Followers-middle-section-1-education-privacy h6 {
   font-size: 12px;
+  display: inline-block;
+  line-height: 0.6;
 }
 
 .Followers-middle-section-1-iconAndImage-privacy {
