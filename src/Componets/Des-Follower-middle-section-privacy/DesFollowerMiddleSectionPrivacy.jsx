@@ -144,13 +144,13 @@ function DesFollowerMiddleSectionPrivacy() {
         {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             userId: senderId,
-            senderName: profileData?.name || "User"
-          })
+            senderName: profileData?.name || "User",
+          }),
         }
       );
 
@@ -173,7 +173,10 @@ function DesFollowerMiddleSectionPrivacy() {
       }
 
       if (!response.ok) {
-        throw new Error(responseData.message || `Request failed with status ${response.status}`);
+        throw new Error(
+          responseData.message ||
+            `Request failed with status ${response.status}`
+        );
       }
 
       setConnectionStatus("requested");
@@ -208,8 +211,9 @@ function DesFollowerMiddleSectionPrivacy() {
   const maxLength = 100;
   const displayedText = isExpanded
     ? data.about
-    : `${data.about?.slice(0, maxLength)}${data.about?.length > maxLength ? "..." : ""
-    }`;
+    : `${data.about?.slice(0, maxLength)}${
+        data.about?.length > maxLength ? "..." : ""
+      }`;
 
   if (loading) return <div className="loading-message">Loading...</div>;
 
@@ -312,16 +316,19 @@ function DesFollowerMiddleSectionPrivacy() {
                             )}
                           </div>
                           <div className="Full-middle-section-1-subcollabrators-container-privacy">
-                          ({(
-                            data.subCollabrators || defaultData.subCollabrators
-                          ).map((val, index) => (
-                            <h5
-                              key={index}
-                              className="Followers-middle-section-1-subCollabrators-privacy"
-                            >
-                              {val},
-                            </h5>
-                          ))})
+                            (
+                            {(
+                              data.subCollabrators ||
+                              defaultData.subCollabrators
+                            ).map((val, index) => (
+                              <h5
+                                key={index}
+                                className="Followers-middle-section-1-subCollabrators-privacy"
+                              >
+                                {val},
+                              </h5>
+                            ))}
+                            )
                           </div>
                         </div>
                       </div>
