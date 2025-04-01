@@ -18,34 +18,16 @@ const MessagesWidget = () => {
   const [selectedMessage, setSelectedMessage] = useState(null);
 
   return (
-    <div>
-      <div className="messages-widget" onClick={() => setIsOpen(!isOpen)}>
-        <img src={Usericon} alt="Profile" className="profile-image" />
-        <span className="messages-text">Messages</span>
-        <span className="icon">{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
-      </div>
-
-      {isOpen && (
-        <div className="messages-list">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className="message-item"
-              onClick={() => setSelectedMessage(msg)}
-            >
-              <p><strong>{msg.name}</strong> <span>{msg.time}</span></p>
-              <p>{msg.text}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {selectedMessage && (
-        <div className="selected-message">
-          <h3>{selectedMessage.name}</h3>
-          <p>{selectedMessage.text}</p>
-        </div>
-      )}
+    <div className="messages-widget" onClick={() => setIsOpen(!isOpen)}>
+      <img
+        src={Usericon}// Replace with actual image URL
+        alt="Profile"
+        className="profile-image"
+      />
+      <span className="messages-text">Messages</span>
+      <span className="icon">
+        {isOpen ? <ChevronUp /> : <ChevronDown />}
+      </span>
     </div>
   );
 };
