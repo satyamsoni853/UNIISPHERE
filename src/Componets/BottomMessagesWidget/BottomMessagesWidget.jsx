@@ -7,7 +7,8 @@ const MessagesWidget = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="messages-widget" onClick={() => setIsOpen(!isOpen)}>
+<div className="bottom-message-main-container">
+<div className="messages-widget" onClick={() => setIsOpen(!isOpen)}>
       <img
         src={Usericon}// Replace with actual image URL
         alt="Profile"
@@ -17,7 +18,10 @@ const MessagesWidget = () => {
       <span className="icon">
         {isOpen ? <ChevronUp /> : <ChevronDown />}
       </span>
+
     </div>
+ 
+</div>
   );
 };
 
