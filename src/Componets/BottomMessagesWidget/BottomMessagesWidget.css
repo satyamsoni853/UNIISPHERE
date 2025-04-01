@@ -3,27 +3,113 @@
   bottom: 20px;
   right: 20px;
   background: rgb(242, 215, 219);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 16px;
-  padding: 12px;
+  padding: 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   cursor: pointer;
   width: 350px;
+  transition: all 0.3s ease-in-out;
+}
+
+.messages-widget:hover {
+  background: rgb(235, 200, 205);
 }
 
 .profile-image {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
 }
 
 .messages-text {
   color: black;
   font-weight: 600;
+  font-size: 16px;
 }
 
 .icon {
   margin-left: auto;
+  font-size: 20px;
+}
+
+/* Messages List */
+.messages-list {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  width: 360px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+.message-item {
+  display: flex;
+  flex-direction: column;
+  background: rgb(248, 242, 244);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.message-item:hover {
+  background: rgb(240, 230, 233);
+}
+
+.message-item p {
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+.message-item strong {
+  font-size: 15px;
+  color: #333;
+}
+
+.selected-message {
+  position: fixed;
+  bottom: 480px;
+  right: 20px;
+  width: 360px;
+  background: rgb(242, 215, 219);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.selected-message h3 {
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
+.selected-message p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .messages-widget {
+    width: 280px;
+    padding: 10px;
+  }
+
+  .messages-list,
+  .selected-message {
+    width: 280px;
+    right: 10px;
+  }
 }
