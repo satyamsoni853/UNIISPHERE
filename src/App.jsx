@@ -22,7 +22,6 @@ import MessageFinalClass2 from "./Componets/MessageFinalclass-2/MessageFinalClas
 import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 
-
 // import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
 
 import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
@@ -68,7 +67,7 @@ function App() {
           />
 
           {/* Other Routes */}
-          
+
           <Route path="/SelfProfile" element={<SelfProfile />} />
           <Route path="/SelfSetting" element={<SelfSetting />} />
           <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
@@ -82,11 +81,10 @@ function App() {
           />
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
 
-          <Route
+          <Routes
             path="/BottomMessagesWidget"
             element={<BottomMessagesWidget />}
           />
-          
         </Routes>
       </div>
     </Router>
