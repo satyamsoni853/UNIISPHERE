@@ -5,7 +5,7 @@ import Decklefttop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopMiddle from "../DesktopMiddle/DesktopMiddle.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import "./DesktopView.css";
-import profileImage from "./profilephoto.png";
+import profileImage from "./ProfilePhoto.png";
 import Backgrund from "../Background/Background.jsx";
 
 function DesktopView() {
@@ -137,10 +137,10 @@ function DesktopView() {
                 Filters
               </button>
             </div>
-     
-              <div  className="message-list">
-              {filteredMessages.map((message ) => (
-                <div  key={message.id} className="message-row">
+
+            <div className="message-list">
+              {filteredMessages.map((message) => (
+                <div key={message.id} className="message-row">
                   <div className="profile-image">
                     <img src={message.profileImage} alt="" />
                   </div>
@@ -157,9 +157,9 @@ function DesktopView() {
                     </div>
                   </div>
                 </div>
-                   ))}
-              </div>
-         
+              ))}
+            </div>
+
           </div>
         </div>
 
