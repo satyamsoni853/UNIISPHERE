@@ -11,29 +11,35 @@
   bottom: 20px;
   right: 20px;
   background: rgb(242, 215, 219);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 16px;
-  padding: 12px;
+  padding: 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   cursor: pointer;
   width: 350px;
+  transition: all 0.3s ease-in-out;
+}
+
+.messages-widget:hover {
+  background: rgb(235, 200, 205);
 }
  
-.userIcon-image {
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
 }
 
 .messages-text {
   color: black;
   font-weight: 600;
+  font-size: 16px;
 }
 
 .icon {
   margin-left: auto;
+ 
 }
 
 /* Message drop -up section  */
@@ -158,5 +164,8 @@ background: linear-gradient(to bottom, #91f09877,#9cdbf265);
 @media (width<=480px) {
   .message-section{
     display: none;
-  }
+ 
+  font-size: 20px;
 }
+
+ 

@@ -134,9 +134,10 @@ function NetworkPage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ userId: LoginuserId }), // Use LoginuserId from localStorage
+          body: JSON.stringify({ userId: LoginuserId }), // Changed userId to userId1 to match API contract
         }
       );
+      console.log(response);
 
       console.log("connection try block end");
 
@@ -457,7 +458,7 @@ function NetworkPage() {
                 >
                   REQUEST
                 </button>
-                <button className="networkpage-action-btn">
+                <button onClick={fetchPendingRequests} className="networkpage-action-btn">
                   NEW CONNECTION
                 </button>
               </div>

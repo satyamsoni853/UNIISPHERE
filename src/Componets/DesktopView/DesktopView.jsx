@@ -30,7 +30,7 @@ function DesktopView() {
         {/* Middle Section */}
         <div className="desktop-view-middle">
           <DesktopMiddle />
-         
+ 
         </div>
 
         {/* Right Section */}
