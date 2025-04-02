@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import UserLogin from "./Componets/UserLogin/UserLogin";
+import UserLogin from './Componets/UserLogin/UserLogin.jsx'
 import AfterOtpSection1 from "./Componets/AfterOtpSection1/AfterOtpSection1.jsx";
 import UserSignupwithemailandpass from "./Componets/UserSignupwithemailandpass/UserSignupwithemailandpass.jsx";
 import ForgotPassword from "./Componets/ForgotPassword/ForgotPassword.jsx";
@@ -21,11 +21,7 @@ import SelfSetting from "./Componets/SelfSetting/SelfSetting.jsx";
 import MessageFinalClass2 from "./Componets/MessageFinalclass-2/MessageFinalClass2.jsx";
 import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
-
-// import ProjectAndEvent from "./Componets/projectAndEvent/projectAndEvent.jsx";
-
 import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
-
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
 
 function App() {
@@ -67,24 +63,17 @@ function App() {
           />
 
           {/* Other Routes */}
-
           <Route path="/SelfProfile" element={<SelfProfile />} />
           <Route path="/SelfSetting" element={<SelfSetting />} />
           <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
           <Route path="/MessageFinalClass2" element={<MessageFinalClass2 />} />
           <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/CollabPage" element={<CollabPage />} />
-
           <Route
             path="/BottomMessagesWidget"
             element={<BottomMessagesWidget />}
           />
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
-
-          <Routes
-            path="/BottomMessagesWidget"
-            element={<BottomMessagesWidget />}
-          />
         </Routes>
       </div>
     </Router>
