@@ -13,28 +13,28 @@ import greenCheckIcon from "./check.png";
 const DUMMY_DATA = [
   {
     id: "770d70af-b221-d20a-9ccb-2304c33a38b4",
-    userId: "cefs3cd8-f6da-400b-a110-655d66086b32",
+    userId1: "cefs3cd8-f6da-400b-a110-655d66086b32",
     userId2: "7bdeaack-b786-d09f-b3ba-f911e2f99a04",
     status: "pending",
     createdAt: "2025-05-31T11:23:27.7282",
-    userDetails: {
+    user1: {
       id: "cefs3cd8-f6da-400b-a110-655d66086b32",
       username: "iconalcednet",
-      profilePictureNet1:
+      profilePictureUrl:
         "https://res.cloudinary.com/download/image/upload/v174274068b/profile_pictures/kmpjprkaxno2ncugvdb1.jpg",
       headline: "Student",
     },
   },
   {
     id: "550d70af-b221-d20a-9ccb-2304c33a38b5",
-    userId: "aefs3cd8-f6da-400b-a110-655d66086b33",
+    userId1: "aefs3cd8-f6da-400b-a110-655d66086b33",
     userId2: "7bdeaack-b786-d09f-b3ba-f911e2f99a04",
     status: "pending",
     createdAt: "2025-05-30T10:15:22.1234",
-    userDetails: {
+    user1: {
       id: "aefs3cd8-f6da-400b-a110-655d66086b33",
       username: "mahoop",
-      profilePictureNet1: "",
+      profilePictureUrl: "",
       headline: "Software Developer",
     },
   },
@@ -58,6 +58,34 @@ const staticUsers = [
   },
 ];
 
+// Limited dummy data for request section (exactly 2 requests)
+const REQUEST_DUMMY_DATA = [
+  {
+    id: "req1",
+    userId1: "user1",
+    userId2: "currentUser",
+    status: "pending",
+    user1: {
+      id: "user1",
+      username: "JaneDoe",
+      profilePictureUrl: "",
+      headline: "Designer",
+    },
+  },
+  {
+    id: "req2",
+    userId1: "user2",
+    userId2: "currentUser",
+    status: "pending",
+    user1: {
+      id: "user2",
+      username: "JohnSmith",
+      profilePictureUrl: "",
+      headline: "Engineer",
+    },
+  },
+];
+
 function NetworkPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [showRequestMode, setShowRequestMode] = useState(false);
@@ -65,20 +93,17 @@ function NetworkPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [useDummyData, setUseDummyData] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState(null); // Initialize as null
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [showRightSection, setShowRightSection] = useState(false);
 
-  // Get token from localStorage
   const token = localStorage.getItem("AuthToken");
 
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Fetch pending requests when in request mode
   useEffect(() => {
     if (showRequestMode) {
       fetchPendingRequests();
@@ -90,38 +115,20 @@ function NetworkPage() {
     setError(null);
 
     if (useDummyData) {
-      console.log("Using DUMMY_DATA for pending requests");
-      console.log("Current User ID:", currentUserId);
-      console.log(
-        "Dummy requests:",
-        DUMMY_DATA.map((req) => ({
-          id: req.id,
-          fromUserId: req.userId,
-          toUserId: req.userId2,
-          username: req.userDetails.username,
-        }))
-      );
-      // Set currentUserId from DUMMY_DATA if using dummy data
-      if (DUMMY_DATA.length > 0) {
-        setCurrentUserId(DUMMY_DATA[0].userId2);
-      }
-      setPendingRequests(DUMMY_DATA);
+      console.log("Using REQUEST_DUMMY_DATA for pending requests");
+      setPendingRequests(REQUEST_DUMMY_DATA);
+      setCurrentUserId("currentUser");
       setLoading(false);
       return;
     }
+
     const LoginuserId = localStorage.getItem("LoginuserId");
     console.log("Connection login userId:", LoginuserId);
 
     try {
-      console.log("try block is running");
-
       if (!token) {
         throw new Error("Missing authentication token");
       }
-
-      console.log("Auth Token:", token);
-
-      // Ensure userId is retrieved properly
       if (!LoginuserId) {
         throw new Error("Missing LoginuserId in localStorage");
       }
@@ -134,71 +141,46 @@ function NetworkPage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ userId: LoginuserId }), // Use LoginuserId from localStorage
+          body: JSON.stringify({ userId: LoginuserId }),
         }
       );
 
-      console.log("connection try block end");
-
-      // Print full response object (useful for debugging)
-      console.log("Connection Full Response:", response);
       const data = await response.json();
-      console.log("Data is coming:", data);
-      console.log("Connection Status:", response.status);
+      console.log("Raw API response:", data);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // if (data.length > 0 && data[0].userID2) {
-      //   setCurrentUserId(data[0].userID2);
-      //   console.log(`Fetched Current User ID: ${data[0].userID2}`);
-      // } else {
-      //   console.warn("No userID2 found in the response");
-      // }
+      const requests = Array.isArray(data.pendingRequests) ? data.pendingRequests : Array.isArray(data) ? data : [];
 
-      // Log all user IDs from the response
-      data.forEach((request, index) => {
-        console.log(`Pending Request ${index + 1} User IDs:`);
-        console.log(`  userID1: ${request.userID1}`);
-        console.log(`  userID2: ${request.userID2}`);
-        console.log(`  userDetails.id: ${request.userDetails.id}`);
-      });
+      if (requests.length > 0 && requests[0].userId2) {
+        setCurrentUserId(requests[0].userId2);
+      }
 
-      console.log("API Response:", {
-        currentUserId: data[0]?.userID2 || "Not set",
-        requests: data.map((req) => ({
-          id: req.id,
-          fromUser: req.userID1,
-          toUser: req.userID2,
-          status: req.status,
-        })),
-      });
-
-      setPendingRequests(data);
+      setPendingRequests(requests);
     } catch (err) {
       console.error("Error fetching pending requests:", err);
       setError(err.message);
-      console.log("Falling back to DUMMY_DATA due to error");
-      // Set currentUserId from DUMMY_DATA as fallback
-      if (DUMMY_DATA.length > 0) {
-        setCurrentUserId(DUMMY_DATA[0].userId2);
-      }
-      setPendingRequests(DUMMY_DATA);
+      setPendingRequests(REQUEST_DUMMY_DATA);
     } finally {
       setLoading(false);
     }
   };
 
   const handleAcceptRequest = async (connectionId) => {
-    if (!currentUserId || !token) return;
+    if (!token) return;
 
-    console.log(`User ${currentUserId} accepting request ${connectionId}`);
+    const LoginuserId = localStorage.getItem("LoginuserId");
+    if (!LoginuserId) {
+      console.error("LoginuserId not found in localStorage");
+      return;
+    }
+
+    console.log(`Accepting request ${connectionId}`);
 
     if (useDummyData) {
-      console.log(
-        `DUMMY_DATA - ${currentUserId} accepting request ${connectionId}`
-      );
+      console.log(`DUMMY_DATA - Accepting request ${connectionId}`);
       setPendingRequests((prev) =>
         prev.filter((req) => req.id !== connectionId)
       );
@@ -215,22 +197,23 @@ function NetworkPage() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            acceptingUserId: currentUserId,
+            userId: LoginuserId
           }),
         }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log("Accept request successful:", {
-        connectionId,
-        acceptingUserId: currentUserId,
-        result,
-      });
-      fetchPendingRequests();
+      console.log("Accept request successful:", data);
+
+      // Remove the accepted request from the pending requests list
+      setPendingRequests((prev) =>
+        prev.filter((req) => req.id !== connectionId)
+      );
     } catch (err) {
       console.error("Error accepting request:", err);
       setError(err.message);
@@ -240,12 +223,7 @@ function NetworkPage() {
   const handleDeclineRequest = async (connectionId) => {
     if (!currentUserId || !token) return;
 
-    console.log(`User ${currentUserId} declining request ${connectionId}`);
-
     if (useDummyData) {
-      console.log(
-        `DUMMY_DATA - ${currentUserId} declining request ${connectionId}`
-      );
       setPendingRequests((prev) =>
         prev.filter((req) => req.id !== connectionId)
       );
@@ -271,12 +249,6 @@ function NetworkPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log("Decline request successful:", {
-        connectionId,
-        decliningUserId: currentUserId,
-        result,
-      });
       fetchPendingRequests();
     } catch (err) {
       console.error("Error declining request:", err);
@@ -316,7 +288,6 @@ function NetworkPage() {
 
   const toggleDummyData = () => {
     setUseDummyData((prev) => !prev);
-    console.log(`Dummy data mode: ${!useDummyData}`);
   };
 
   return (
@@ -364,10 +335,9 @@ function NetworkPage() {
                         <div className="networkpage-profile-pic-container">
                           <img
                             src={
-                              request.userDetails.profilePictureNet1 ||
-                              profilePhoto
+                              request.user1?.profilePictureUrl || profilePhoto
                             }
-                            alt={`${request.userDetails.username}'s profile`}
+                            alt={`${request.user1?.username}'s profile`}
                             className="networkpage-profile-pic"
                             onError={(e) => {
                               e.target.src = profilePhoto;
@@ -375,10 +345,10 @@ function NetworkPage() {
                           />
                         </div>
                         <h3 className="networkpage-name">
-                          {request.userDetails.username}
+                          {request.user1?.username || "Unknown User"}
                         </h3>
                         <p className="networkpage-education">
-                          {request.userDetails.headline}
+                          {request.user1?.headline || "No headline"}
                         </p>
                         <div className="networkpage-actions">
                           <img
@@ -398,7 +368,7 @@ function NetworkPage() {
                         </div>
                         <div className="networkpage-stats">
                           <span>Request ID: {request.id}</span>
-                          <span>From: {request.userID1}</span>
+                          <span>From: {request.userId1}</span>
                         </div>
                       </div>
                     ))
@@ -457,7 +427,7 @@ function NetworkPage() {
                 >
                   REQUEST
                 </button>
-                <button className="networkpage-action-btn">
+                <button onClick={fetchPendingRequests} className="networkpage-action-btn">
                   NEW CONNECTION
                 </button>
               </div>

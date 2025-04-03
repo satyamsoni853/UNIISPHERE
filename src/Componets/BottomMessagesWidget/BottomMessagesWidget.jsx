@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import "./BottomMessagesWidget.css";
 import Usericon from "./Usericon.png";
+ 
 import profileImage from './profilephoto.png'
 const MessagesWidget = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -156,6 +157,7 @@ const MessagesWidget = () => {
         }}
         className="icon">{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
       </div>
+ 
     </div>
   );
 };
