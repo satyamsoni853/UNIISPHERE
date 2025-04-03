@@ -127,7 +127,7 @@ function FullFlowerSectionPage() {
           collabs: data._count?.connections1 || defaultData.collabs,
           connections:
             (data._count?.connections1 || 0) +
-              (data._count?.connections2 || 0) || defaultData.connections,
+            (data._count?.connections2 || 0) || defaultData.connections,
           name:
             `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
             defaultData.name,
@@ -189,7 +189,7 @@ function FullFlowerSectionPage() {
   const displayedText = isExpanded
     ? data.fullAboutText
     : data.fullAboutText?.slice(0, maxLength) +
-      (data.fullAboutText?.length > maxLength ? "..." : "");
+    (data.fullAboutText?.length > maxLength ? "..." : "");
 
   const prevImageSlide = () => {
     setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -256,9 +256,9 @@ function FullFlowerSectionPage() {
           <div>
             <div className="Profile-full-section-mainParent">
               <div className="Profile-full-section-container">
-                 
-                  
-         
+
+
+
                 {error && (
                   <div
                     style={{
@@ -272,12 +272,11 @@ function FullFlowerSectionPage() {
                 )}
 
                 {/* Debug data display section */}
-                
                 <div className="Profile-full-section-whole-profile-section">
                   <div className="Profile-full-section-top-nav-section">
                     <img src={backIcon} className="back-button" alt="" />
-                    <input  type="text" 
-                    placeholder="Message"
+                    <input type="text"
+                      placeholder="Message"
                     />
                   </div>
                   <div className="Profile-full-section-profile-header">
@@ -309,7 +308,7 @@ function FullFlowerSectionPage() {
                     <p>Email: {data.email}</p>
                     <p>User ID: {userId}</p> */}
 
-                   
+
                   </div>
 
                   <div className="Profile-full-section-profile-buttons">
@@ -419,10 +418,10 @@ function FullFlowerSectionPage() {
                             key={index}
                             className="Profile-full-section-experince-inner-div"
                           >
-                          <div className="Profile-full-section-experince-innerdiv-heading">
-                          <h3>{exp.title}</h3>
-                          <h5>{exp.subtitle}</h5>
-                          </div>
+                            <div className="Profile-full-section-experince-innerdiv-heading">
+                              <h3>{exp.title}</h3>
+                              <h5>{exp.subtitle}</h5>
+                            </div>
                             <p>{exp.description}</p>
                           </div>
                         ))}
@@ -509,13 +508,12 @@ function FullFlowerSectionPage() {
                       {data.education.map((edu, index) => (
                         <button
                           key={index}
-                          className={`btn ${
-                            index === 0
+                          className={`btn ${index === 0
                               ? "btn-left"
                               : index === data.education.length - 1
-                              ? "btn-right"
-                              : "btn-middle"
-                          }`}
+                                ? "btn-right"
+                                : "btn-middle"
+                            }`}
                         >
                           {edu}
                         </button>
