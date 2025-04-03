@@ -5,6 +5,7 @@
   bottom: 10px;
   width: 25vw; 
   overflow-y: auto; 
+  z-index: 99;
 }
 /* Right Section */
 .right-section-container {
