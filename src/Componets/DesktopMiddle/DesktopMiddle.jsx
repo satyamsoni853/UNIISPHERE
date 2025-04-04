@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { PiShareFatThin } from "react-icons/pi";
+import { IoSendOutline } from "react-icons/io5"; // Added new import
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
 
@@ -27,7 +28,6 @@ import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
 
 function DesktopMiddle() {
-  // Static user data
   const userData = {
     profilePicture: profilePhoto,
     name: "VIJAY PRASAD",
@@ -35,63 +35,11 @@ function DesktopMiddle() {
     workPlace: " Works at Google",
   };
 
-  // Static comments data
-  const comments = [
-    {
-      profilePicture: profilePhoto,
-      username: "Updesh",
-      timestamp: "1d ago",
-      text: "It's so true men.",
-      likes: 10054,
-    },
-    {
-      profilePicture: profilePhoto,
-      username: "Ajiket",
-      timestamp: "5d ago",
-      text: "Damnn.",
-      likes: 2457,
-    },
-    {
-      profilePicture: profilePhoto,
-      username: "Rohit",
-      timestamp: "1w ago",
-      text: "I am with you brother",
-      likes: 150,
-    },
-    {
-      profilePicture: profilePhoto,
-      username: "Anjali",
-      timestamp: "1m ago",
-      text: "There is no way in which they will now.",
-      likes: 91,
-    },
-  ];
-
   const [showComment, setShowComment] = useState(false);
-
-  // Share box data
-  const persons = [
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-  ];
-
   const [showShare, setShowshare] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
@@ -121,7 +69,6 @@ function DesktopMiddle() {
       ? { token: storedToken, userId: storedUserId }
       : null;
   };
-
   useEffect(() => {
     if (location.state?.userToken) {
       localStorage.setItem("authToken", location.state.userToken);
@@ -148,30 +95,26 @@ function DesktopMiddle() {
           }
         );
 
-        // Extract and store userId from API response if available
         if (response.data.userId) {
           setUserId(response.data.userId);
           localStorage.setItem("userId", response.data.userId);
-          console.log("visis user user id" + response.data.userId);
         }
-        const storedLoginUserId = localStorage.getItem("LoginuserId");
 
-        if (storedLoginUserId) {
-          console.log("Stored  Login User ID:", storedLoginUserId); // Logs the stored ID
-        } else {
-          console.log("No user ID found in localStorage.");
-        }
+        console.log("Next Cursor ID:", response.data.nextCursor);
+        console.log("Post IDs:");
+        response.data.posts.forEach(post => {
+          console.log(`- ${post.id}`);
+        });
 
         if (response.data.posts && response.data.posts.length > 0) {
-          const updatedPosts = response.data.posts.map((post) => {
-            return {
-              ...post,
-              authorId: post.authorId || "unknown",
-              likes: post.likes || 0,
-              isLiked: false,
-              comments: post.comments || [],
-            };
-          });
+          const updatedPosts = response.data.posts.map((post) => ({
+            ...post,
+            _id: post.id,
+            authorId: post.authorId || "unknown",
+            likes: post.likes || 0,
+            isLiked: post.isLiked || false,
+            comments: post.comments || [],
+          }));
           setPosts(updatedPosts);
         }
       } catch (error) {
@@ -185,45 +128,114 @@ function DesktopMiddle() {
     fetchData();
   }, [location.state]);
 
-  const handleLike = (index) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post, i) =>
-        i === index
-          ? {
-              ...post,
-              isLiked: !post.isLiked,
-              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-            }
-          : post
-      )
-    );
+
+  const handleLike = async (index) => {
+    const post = posts[index];
+    const authData = getAuthData();
+    if (!authData) {
+      setError("Please log in to like posts");
+      return;
+    }
+
+    try {
+      const endpoint = post.isLiked 
+        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
+        : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
+
+      const response = await axios.post(endpoint, {}, {
+        headers: { Authorization: `Bearer ${authData.token}` }
+      });
+
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likes: response.data.likes || (p.isLiked ? p.likes - 1 : p.likes + 1),
+              }
+            : p
+        )
+      );
+    } catch (error) {
+      console.error("Like/Unlike error:", error);
+      setError("Failed to update like status");
+    }
   };
 
-  const handleCommentClick = (index) => {
+  const handleCommentSubmit = async (index) => {
+    if (!newComment.trim()) return;
+
+    const post = posts[index];
+    const authData = getAuthData();
+    if (!authData) {
+      setError("Please log in to comment");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
+        { text: newComment },
+        { headers: { Authorization: `Bearer ${authData.token}` } }
+      );
+
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index
+            ? {
+                ...p,
+                comments: response.data.comments || [
+                  ...p.comments,
+                  { text: newComment, author: "You" },
+                ],
+              }
+            : p
+        )
+      );
+      setNewComment("");
+    } catch (error) {
+      console.error("Comment error:", error);
+      setError("Failed to post comment");
+    }
+  };
+
+  const fetchComments = async (postId) => {
+    const authData = getAuthData();
+    if (!authData) return;
+
+    try {
+      const response = await axios.get(
+        `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
+        { headers: { Authorization: `Bearer ${authData.token}` } }
+      );
+      return response.data.comments;
+    } catch (error) {
+      console.error("Fetch comments error:", error);
+      return [];
+    }
+  };
+
+  const handleCommentClick = async (index) => {
     setActiveCommentPostIndex(index);
+    setShowComment(true);
     setNewComment("");
+    
+    const post = posts[index];
+    const comments = await fetchComments(post._id);
+    setPosts((prevPosts) =>
+      prevPosts.map((p, i) =>
+        i === index ? { ...p, comments: comments || p.comments } : p
+      )
+    );
   };
 
   const handleCloseCommentModal = () => {
     setActiveCommentPostIndex(null);
+    setShowComment(false);
   };
 
-  const handleCommentSubmit = (index) => {
-    if (!newComment.trim()) return;
-
-    setPosts((prevPosts) =>
-      prevPosts.map((post, i) =>
-        i === index
-          ? {
-              ...post,
-              comments: [...post.comments, { text: newComment, author: "You" }],
-            }
-          : post
-      )
-    );
-    setNewComment("");
-  };
-
+  
   const handleProfileClick = (userId) => {
     if (userId) {
       navigate(`/FullFlowerSectionPage/${userId}`);
@@ -231,6 +243,23 @@ function DesktopMiddle() {
       console.log("Error: userId is missing!");
     }
   };
+
+  const persons = [
+    { name: "Anjali", avatar: profilePhoto },
+    { name: "Rohit", avatar: profilePhoto },
+    { name: "Anjali", avatar: profilePhoto },
+    { name: "Rohit", avatar: profilePhoto },
+    { name: "Anjali", avatar: profilePhoto },
+    { name: "Rohit", avatar: profilePhoto },
+    { name: "Anjali", avatar: profilePhoto },
+    { name: "Rohit", avatar: profilePhoto },
+    { name: "Anjali", avatar: profilePhoto },
+    { name: "Rohit", avatar: profilePhoto },
+    { name: "Anjali", avatar: profilePhoto },
+    { name: "Rohit", avatar: profilePhoto },
+    { name: "Anjali", avatar: profilePhoto },
+    { name: "Rohit", avatar: profilePhoto },
+  ];
 
   return (
     <div className="middle-container">
@@ -335,10 +364,7 @@ function DesktopMiddle() {
                   </div>
                   <div
                     className="middle-icon-container"
-                    onClick={() => {
-                      setShowComment((prev) => !prev);
-                      handleCommentClick(index);
-                    }}
+                    onClick={() => handleCommentClick(index)}
                   >
                     <span className="middle-icon-count">
                       {post.comments.length}
@@ -358,7 +384,7 @@ function DesktopMiddle() {
                 <span className="middle-post-author">
                   {post.authorName || "Unknown Author"}
                 </span>{" "}
-                {post.caption || "No caption available"}
+                {post.caption || post.content || "No caption available"}
                 <span className="middle-see-more">...more</span>
               </div>
             </div>
@@ -368,11 +394,9 @@ function DesktopMiddle() {
         )}
       </div>
 
-      {/* ===================== COMMENT BOX ===================== */}
-      {showComment && (
+      {showComment && activeCommentPostIndex !== null && (
         <div className="Comment-box-container">
           <div className="Full-comment-section-desktop-main-container">
-            {/* Left Section */}
             <div className="Full-comment-section-desktop-left-section">
               <div className="Full-comment-section-desktop-user-profile-header">
                 <div className="Full-comment-section-profile-image-and-heading">
@@ -411,7 +435,7 @@ function DesktopMiddle() {
               </div>
               <div className="Full-comment-section-desktop-photo-container">
                 <img
-                  src={userData.profilePicture}
+                  src={posts[activeCommentPostIndex].mediaUrl || userData.profilePicture}
                   alt="Post"
                   className="Full-comment-section-desktop-post-photo"
                 />
@@ -444,32 +468,29 @@ function DesktopMiddle() {
               </div>
             </div>
 
-            {/* Right Section */}
             <div className="Full-comment-section-desktop-right-section">
               <div className="Full-comment-section-desktop-comments-header">
-                <h1 className="Full-comment-section-desktop-heading">
-                  Comments
-                </h1>
+                <h1 className="Full-comment-section-desktop-heading">Comments</h1>
               </div>
               <div className="Full-comment-section-desktop-comments-list">
-                {comments.map((comment, index) => (
+                {posts[activeCommentPostIndex].comments.map((comment, index) => (
                   <div
                     className="Full-comment-section-desktop-comment-main-parent"
                     key={index}
                   >
                     <div className="Full-comment-section-desktop-comment">
                       <img
-                        src={comment.profilePicture}
+                        src={comment.profilePicture || profilePhoto}
                         alt="Profile"
                         className="Full-comment-section-desktop-comment-profile-picture"
                       />
                       <div className="Full-comment-section-desktop-comment-content">
                         <div className="Full-comment-section-desktop-comment-user-info">
                           <span className="Full-comment-section-desktop-comment-username">
-                            {comment.username}
+                            {comment.author || comment.username || "Anonymous"}
                           </span>
                           <span className="Full-comment-section-desktop-comment-timestamp">
-                            {comment.timestamp}
+                            {comment.timestamp || "Just now"}
                           </span>
                         </div>
                         <div className="Full-comment-section-desktop-comment-text">
@@ -488,7 +509,7 @@ function DesktopMiddle() {
                         alt="Like"
                         className="Full-comment-section-desktop-like-button"
                       />
-                      <span>{comment.likes}</span>
+                      <span>{comment.likes || 0}</span>
                     </div>
                   </div>
                 ))}
@@ -501,11 +522,18 @@ function DesktopMiddle() {
                 />
                 <input
                   type="text"
-                  placeholder="Write a comment to VIJAY PRASAD"
+                  placeholder="Write a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <IoSendOutline
+                  className="comment-send-icon"
+                  onClick={() => handleCommentSubmit(activeCommentPostIndex)}
+                  style={{ cursor: "pointer", marginLeft: "10px", fontSize: "20px" }}
                 />
               </div>
               <button
-                onClick={() => setShowComment(false)}
+                onClick={handleCloseCommentModal}
                 className="Full-comment-section-desktop-cross-button"
               >
                 ×
@@ -515,10 +543,8 @@ function DesktopMiddle() {
         </div>
       )}
 
-      {/* ===================== SHARE BOX ===================== */}
       {showShare && (
         <div className="Full-share-section-desktop-main-container">
-          {/* Left Section */}
           <div className="Full-share-section-desktop-left-section">
             <div className="Full-share-section-desktop-user-profile-header">
               <div className="Full-share-section-desktop-top-image-and-names">
@@ -590,7 +616,6 @@ function DesktopMiddle() {
             </div>
           </div>
 
-          {/* Right Section */}
           <div className="Full-share-section-desktop-right-section">
             <h1 className="Full-share-section-desktop-heading">Share</h1>
             <div className="Full-share-section-desktop-innerDiv">

@@ -34,7 +34,7 @@ function DesktopNavbarr() {
     setIsLoading(true);
     setError(null);
     try {
-      console.log("Searching for username:", username);
+      // console.log("Searching for username:", username);
       const response = await axios.get(
         `https://uniisphere-1.onrender.com/getProfile/profile/?search=${username}`
       );

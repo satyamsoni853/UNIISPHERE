@@ -58,12 +58,12 @@ function DesktopRightsection() {
           }
         );
 
-        console.log("Full profile response:", profileResponse.data);
+        // console.log("Full profile response:", profileResponse.data);
 
         if (profileResponse.data && profileResponse.data.length > 0) {
           const userData = profileResponse.data[0];
 
-          console.log("Available profile data fields:", Object.keys(userData));
+          // console.log("Available profile data fields:", Object.keys(userData));
 
           setProfileData(userData);
         }
@@ -76,7 +76,7 @@ function DesktopRightsection() {
           }
         );
 
-        console.log("Connections response:", connectionsResponse.data);
+        // console.log("Connections response:", connectionsResponse.data);
         const connectionCount = connectionsResponse.data.connections?.length || 0;
         setConnections(connectionCount);
         setFollowers(0);

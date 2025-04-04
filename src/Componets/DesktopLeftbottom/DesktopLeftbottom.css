@@ -16,9 +16,9 @@
 
   height: auto; /* Allow height to adjust */
   /* min-height: 353px;  */
-  height: 330px;
+  height: 400px;
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 100px;
   margin-left: 20px;
   position: fixed;
   top: 460px; 
@@ -26,7 +26,7 @@
 
 /* Heading */
 .leftsectionbottom-1-heading {
-  font-size: 18px;
+  font-size: 28px;
   margin-bottom: 10px;
   font-weight: bold;
 }
@@ -43,8 +43,8 @@
 
 /* Image */
 .leftsectionbottom-1-image {
-  width: 42px;
-  height: 43px;
+  width: 59px;
+  height: 59px;
   border-radius: 5px;
 }
 
@@ -56,11 +56,12 @@
 /* Date */
 .leftsectionbottom-1-date {
   font-weight: bold;
+  font-size: 20px;
 }
 
 /* Location */
 .leftsectionbottom-1-location {
-  font-size: 14px;
+  font-size: 20px;
   color: #555;
 }
 
