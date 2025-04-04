@@ -153,7 +153,7 @@ function NetworkPage() {
       }
 
       const requests = Array.isArray(data.pendingRequests) ? data.pendingRequests : Array.isArray(data) ? data : [];
-      
+
       if (requests.length > 0 && requests[0].userId2) {
         setCurrentUserId(requests[0].userId2);
       }
@@ -169,9 +169,18 @@ function NetworkPage() {
   };
 
   const handleAcceptRequest = async (connectionId) => {
-    if (!currentUserId || !token) return;
+    if (!token) return;
+
+    const LoginuserId = localStorage.getItem("LoginuserId");
+    if (!LoginuserId) {
+      console.error("LoginuserId not found in localStorage");
+      return;
+    }
+
+    console.log(`Accepting request ${connectionId}`);
 
     if (useDummyData) {
+      console.log(`DUMMY_DATA - Accepting request ${connectionId}`);
       setPendingRequests((prev) =>
         prev.filter((req) => req.id !== connectionId)
       );
@@ -188,16 +197,23 @@ function NetworkPage() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            acceptingUserId: currentUserId,
+            userId: LoginuserId
           }),
         }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
 
-      fetchPendingRequests();
+      console.log("Accept request successful:", data);
+
+      // Remove the accepted request from the pending requests list
+      setPendingRequests((prev) =>
+        prev.filter((req) => req.id !== connectionId)
+      );
     } catch (err) {
       console.error("Error accepting request:", err);
       setError(err.message);
