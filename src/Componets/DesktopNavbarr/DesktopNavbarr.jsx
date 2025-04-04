@@ -29,27 +29,42 @@ function DesktopNavbarr() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // Notification state
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
+  const [notifications, setNotifications] = useState([
+    { time: "2 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-blue-400" },
+    { time: "3 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-yellow-400" },
+    { time: "6 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-red-400" },
+    { time: "8 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
+    { time: "12 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
+    { time: "18 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-blue-400" },
+    { time: "2 days", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
+  ]);
+
+  // Time filters for notifications
+  const timeFilters = {
+    Today: (time) => time.includes("hrs"),
+    "Last Week": (time) => time.includes("days") && parseInt(time) <= 7,
+    "Last Month": (time) => time.includes("days") && parseInt(time) > 7 && parseInt(time) <= 30,
+    "Last Year": (time) => time.includes("days") && parseInt(time) > 30,
+  };
+
+  const filteredNotifications = notifications.filter((notif) =>
+    timeFilters[activeNotificationTab](notif.time)
+  );
+
   // Fetch profiles by username
   const fetchProfiles = useCallback(async (username = "") => {
     setIsLoading(true);
     setError(null);
     try {
-      // console.log("Searching for username:", username);
       const response = await axios.get(
         `https://uniisphere-1.onrender.com/getProfile/profile/?search=${username}`
       );
-      console.log("Profile API response:", response.data);
-
-      // Extract profile data
-      const profiles = response.data;
-      if (profiles.length > 0) {
-        console.log("First user ID:", profiles[0].id);
-      }
-
-      setSearchResults(profiles);
+      setSearchResults(response.data);
     } catch (err) {
       console.error("Search error:", err);
-      // setError("Failed to search. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +82,6 @@ function DesktopNavbarr() {
   const handleSearchChange = (e) => {
     const username = e.target.value;
     setSearchQuery(username);
-    console.log("User typing:", username);
 
     if (/^[a-z0-9_]*$/i.test(username)) {
       debouncedSearch(username);
@@ -78,18 +92,8 @@ function DesktopNavbarr() {
 
   // Handle profile click
   const handleProfileClick = (userId) => {
-    console.log("Navigating to profile with ID:", userId);
-
-    let SearchUserId = userId;
-    console.log("Search to profile with ID:", SearchUserId);
-
-    // Store only the ID in localStorage (not the full message)
-    localStorage.setItem("SearchUserId", SearchUserId);
-
-    console.log("Stored SearchUserId:", SearchUserId);
-
-    // Navigate to the target page with the ID
-    navigate(`/FollowerMiddleSectionPrivacy/${SearchUserId}`);
+    localStorage.setItem("SearchUserId", userId);
+    navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
     setShowResults(false);
     setSearchQuery("");
   };
@@ -102,6 +106,7 @@ function DesktopNavbarr() {
   // User dropdown handlers
   const handleUserIconClick = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
+    setShowNotificationDropdown(false); // Close notification dropdown if open
   };
 
   const handleSignOut = () => {
@@ -119,10 +124,18 @@ function DesktopNavbarr() {
     }
   };
 
+  // Handle notification icon click
+  const handleNotificationClick = () => {
+    setShowNotificationDropdown(!showNotificationDropdown);
+    setIsUserDropdownOpen(false); // Close user dropdown if open
+    setActiveIcon(prev => prev === "notifications" ? null : "notifications");
+  };
+
   // Navigation icon handlers
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
-    // Add navigation logic for each icon if needed
+    setShowNotificationDropdown(false); // Close notification dropdown when clicking other icons
+    
     switch (iconName) {
       case "home":
         navigate("/");
@@ -134,7 +147,7 @@ function DesktopNavbarr() {
         navigate("/create-post");
         break;
       case "notifications":
-        navigate("/notifications");
+        handleNotificationClick();
         break;
       default:
         break;
@@ -156,6 +169,7 @@ function DesktopNavbarr() {
         className="desktop-icon"
         onClick={() => {
           setShowDropdown((prev) => !prev);
+          setShowNotificationDropdown(false);
         }}
       />
       <img
@@ -164,14 +178,56 @@ function DesktopNavbarr() {
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-      <img
-        src={
-          activeIcon === "notifications" ? Notificationwhite : Notificationblack
-        }
-        alt="Notifications"
-        className="desktop-icon"
-        onClick={() => handleIconClick("notifications")}
-      />
+      
+      {/* Notification Icon with Dropdown */}
+      <div className="notification-icon-container">
+        <img
+          src={activeIcon === "notifications" ? Notificationwhite : Notificationblack}
+          alt="Notifications"
+          className="desktop-icon"
+          onClick={handleNotificationClick}
+        />
+        {showNotificationDropdown && (
+          <div className="notification-dropdown">
+            <div className="notification-tabs">
+              {Object.keys(timeFilters).map((tab) => (
+                <button
+                  key={tab}
+                  className={`notification-tab-button ${activeNotificationTab === tab ? 'active' : ''}`}
+                  onClick={() => setActiveNotificationTab(tab)}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            <div className="notification-list">
+              {filteredNotifications.length > 0 ? (
+                filteredNotifications.map((notif, index) => (
+                  <div
+                    key={index}
+                    className={`notification-item ${notif.color}`}
+                  >
+                    <img
+                      src="https://via.placeholder.com/50"
+                      alt="Profile"
+                      className="notification-profile-pic"
+                    />
+                    <div className="notification-content">
+                      <p className="notification-sender">Vijay Prasad</p>
+                      <p className="notification-message">{notif.message}</p>
+                    </div>
+                    <span className="notification-time">{notif.time}</span>
+                    {notif.alert && <span className="notification-alert">🔔</span>}
+                  </div>
+                ))
+              ) : (
+                <p className="notification-empty">No notifications in this time range.</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* User Dropdown */}
       <div className="user-icon-container">
@@ -237,20 +293,16 @@ function DesktopNavbarr() {
       </div>
 
       {/* Network Dropdown */}
-
       {showDropdown && (
-
-       <div className="connections-card">
-         <div className="connections-item">
-           <Link to="/NetworkPage" className="connection-link">Connection</Link>
-         </div>
-       
-         <div className="connections-item">Edu-vault</div>
-         <div className="connections-item active">Human Library</div>
-         <div className="connections-item">Guidance</div>
-         <div className="connections-item">NGOs</div>
-       </div>
-       
+        <div className="connections-card">
+          <div className="connections-item">
+            <Link to="/NetworkPage" className="connection-link">Connection</Link>
+          </div>
+          <div className="connections-item">Edu-vault</div>
+          <div className="connections-item active">Human Library</div>
+          <div className="connections-item">Guidance</div>
+          <div className="connections-item">NGOs</div>
+        </div>
       )}
 
       {/* Search Bar */}
@@ -292,7 +344,7 @@ function DesktopNavbarr() {
                       {user.username}
                     </span>
                     <span className="desktop-search-result-id">
-                      ID-For-Search-Bar: {user.id}
+                      ID: {user.id}
                     </span>
                   </div>
                 </div>
