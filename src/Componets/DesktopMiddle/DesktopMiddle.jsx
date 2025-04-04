@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { PiShareFatThin } from "react-icons/pi";
-import { IoSendOutline } from "react-icons/io5"; // Added new import
+import { IoSendOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
 
@@ -69,6 +69,7 @@ function DesktopMiddle() {
       ? { token: storedToken, userId: storedUserId }
       : null;
   };
+
   useEffect(() => {
     if (location.state?.userToken) {
       localStorage.setItem("authToken", location.state.userToken);
@@ -128,7 +129,6 @@ function DesktopMiddle() {
     fetchData();
   }, [location.state]);
 
-
   const handleLike = async (index) => {
     const post = posts[index];
     const authData = getAuthData();
@@ -139,13 +139,19 @@ function DesktopMiddle() {
 
     try {
       const endpoint = post.isLiked 
-        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
-        : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
-
-      const response = await axios.post(endpoint, {}, {
-        headers: { Authorization: `Bearer ${authData.token}` }
-      });
-
+        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike?userId=${userId}`
+        : `https://uniisphere-1.onrender.com/posts/${post._id}/like?userId=${userId}`;
+    
+      const response = await axios.post(
+        endpoint,
+        {}, // Empty body
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`
+          }
+        }
+      );
+    
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
@@ -161,6 +167,7 @@ function DesktopMiddle() {
       console.error("Like/Unlike error:", error);
       setError("Failed to update like status");
     }
+    
   };
 
   const handleCommentSubmit = async (index) => {
@@ -175,11 +182,15 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
+        `https://uniisphere-1.onrender.com/posts/${post._id}/comments?postId=${post._id}&userId=${userId}`,
         { text: newComment },
-        { headers: { Authorization: `Bearer ${authData.token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+          },
+        }
       );
-
+    
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
@@ -193,12 +204,13 @@ function DesktopMiddle() {
             : p
         )
       );
+    
       setNewComment("");
     } catch (error) {
       console.error("Comment error:", error);
       setError("Failed to post comment");
     }
-  };
+  };    
 
   const fetchComments = async (postId) => {
     const authData = getAuthData();
@@ -207,9 +219,15 @@ function DesktopMiddle() {
     try {
       const response = await axios.get(
         `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
-        { headers: { Authorization: `Bearer ${authData.token}` } }
+        {
+          headers: { Authorization: `Bearer ${authData.token}` },
+          params: {
+            postId: postId,
+            userId: authData.userId,
+          },
+        }
       );
-      return response.data.comments;
+      return response.data.comments || [];
     } catch (error) {
       console.error("Fetch comments error:", error);
       return [];
@@ -235,7 +253,6 @@ function DesktopMiddle() {
     setShowComment(false);
   };
 
-  
   const handleProfileClick = (userId) => {
     if (userId) {
       navigate(`/FullFlowerSectionPage/${userId}`);
