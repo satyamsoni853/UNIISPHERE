@@ -420,6 +420,7 @@ function NetworkPage() {
           {isMobile && <MobileFooter />}
         </div>
       </div>
+      
       {showRightSection && (
         <div className="Networkpage-rightsection">
           <DesktopRightsection
