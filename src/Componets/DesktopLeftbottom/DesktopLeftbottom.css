@@ -95,6 +95,9 @@
   padding: 0; /* Remove any padding */
 }
 
+.leftsectionbottom-1-link{
+  cursor: pointer;
+}
 /* Responsive Design */
 @media screen and (max-width: 768px) {
   .leftsectionbottom-1 {
