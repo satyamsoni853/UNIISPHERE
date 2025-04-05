@@ -37,6 +37,7 @@ import facebookIcon from "./Facebook.svg";
 import instaIcon from "./insta.svg";
 import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
+import { SearchIcon } from "lucide-react";
 
 function MobileMiddlesection() {
   const [showComment, setShowComment] = useState(false);
@@ -549,16 +550,12 @@ function MobileMiddlesection() {
             </div>
 
             <div className="mobile-Full-share-section-share-input-and-image">
-              <div className="mobile-Full-share-comment-box-and-image-and-saved-image">
-                <img
-                  src={profilePhoto}
-                  className="mobile-Full-share-section-sharePerson-image"
-                  alt="Share Person"
-                />
+              <div className="mobile-Full-share-comment-box-and-image-and-searchIcon">
                 <input
                   type="text"
                   placeholder="Write a share to VIJAY PRASAD"
                 />
+            <SearchIcon className="mobile-Full-share-search-icon"/>
               </div>
               <img src={savedIcon} alt="Saved" />
             </div>
