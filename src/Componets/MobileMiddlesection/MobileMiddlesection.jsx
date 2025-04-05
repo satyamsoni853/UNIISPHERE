@@ -37,6 +37,7 @@ import facebookIcon from "./Facebook.svg";
 import instaIcon from "./insta.svg";
 import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
+import { SearchIcon } from "lucide-react";
 
 function MobileMiddlesection() {
   const [showComment, setShowComment] = useState(false);
@@ -57,6 +58,37 @@ function MobileMiddlesection() {
     education: " University of Delhi ",
     workPlace: " Works at Google",
   };
+
+  const userComments = [
+    {
+      id: 1,
+      name: "Vijay Singh",
+      time: "18h",
+      msg: "Its really good.",
+      likes: 1245,
+    },
+    {
+      id: 2,
+      name: "Vijay Singh",
+      time: "18h",
+      msg: "Its really good.",
+      likes: 1245,
+    },
+    {
+      id: 3,
+      name: "Vijay Singh",
+      time: "18h",
+      msg: "Its really good.",
+      likes: 1245,
+    },
+    {
+      id: 4,
+      name: "Vijay Singh",
+      time: "18h",
+      msg: "Its really good.",
+      likes: 1245,
+    },
+  ];
 
   const persons = [
     { name: "Anjali", avatar: profilePhoto },
@@ -155,13 +187,17 @@ function MobileMiddlesection() {
     }
 
     try {
-      const endpoint = post.isLiked 
+      const endpoint = post.isLiked
         ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
         : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
 
-      const response = await axios.post(endpoint, {}, {
-        headers: { Authorization: `Bearer ${authData.token}` }
-      });
+      const response = await axios.post(
+        endpoint,
+        {},
+        {
+          headers: { Authorization: `Bearer ${authData.token}` },
+        }
+      );
 
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
@@ -169,7 +205,9 @@ function MobileMiddlesection() {
             ? {
                 ...p,
                 isLiked: !p.isLiked,
-                likes: response.data.likes || (p.isLiked ? p.likes - 1 : p.likes + 1),
+                likes:
+                  response.data.likes ||
+                  (p.isLiked ? p.likes - 1 : p.likes + 1),
               }
             : p
         )
@@ -237,7 +275,7 @@ function MobileMiddlesection() {
     setActiveCommentPostIndex(index);
     setShowComment(true);
     setNewComment("");
-    
+
     const post = posts[index];
     const comments = await fetchComments(post._id);
     setPosts((prevPosts) =>
@@ -397,81 +435,14 @@ function MobileMiddlesection() {
       {/* Comment Modal */}
       {showComment && activeCommentPostIndex !== null && (
         <div className="mobile-Full-comment-section-main-container">
-          <div className="mobile-Full-comment-section-left-section">
-            <div className="mobile-Full-comment-section-user-profile-header">
-              <img
-                src={userData.profilePicture}
-                alt="Profile"
-                className="mobile-Full-comment-section-profile-picture"
-              />
-              <div className="mobile-Full-comment-section-user-info">
-                <div className="mobile-Full-comment-section-name-and-postTime">
-                  <span className="mobile-Full-comment-section-user-name">
-                    {userData.name}
-                  </span>
-                  <span className="mobile-Full-comment-section-user-details">
-                    18h
-                  </span>
-                </div>
-                <div className="mobile-Full-comment-section-work-and-education">
-                  <span className="mobile-Full-comment-section-user-details">
-                    {userData.education}
-                  </span>
-                  <span className="mobile-Full-comment-section-user-details">
-                    ||
-                  </span>
-                  <span className="mobile-Full-comment-section-user-details">
-                    {userData.workPlace}
-                  </span>
-                </div>
-              </div>
-              <img
-                src={Threedot}
-                className="mobile-Full-comment-section-menu-icon"
-                alt="Menu"
-              />
-            </div>
-            <div className="mobile-Full-comment-section-photo-container">
-              <img
-                src={posts[activeCommentPostIndex].mediaUrl || userData.profilePicture}
-                alt="Post"
-                className="mobile-Full-comment-section-post-photo"
-              />
-              <div className="mobile-Full-comment-section-action-buttons">
-                <div className="mobile-Full-comment-section-connect-div">
-                  <img
-                    src={Connect}
-                    className="mobile-Full-comment-section-connect-icon"
-                    alt="Connect"
-                  />
-                </div>
-                <div className="mobile-Full-comment-section-share-like-comment-icon">
-                  <img
-                    src={ShareIcon}
-                    className="mobile-Full-comment-section-post-icons"
-                    alt="Share"
-                  />
-                  <img
-                    src={CommentIcon}
-                    className="mobile-Full-comment-section-post-icons"
-                    alt="Comment"
-                  />
-                  <img
-                    src={LikeIcon}
-                    className="mobile-Full-comment-section-post-icons"
-                    alt="Like"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+    
 
           <div className="mobile-Full-comment-section-right-section">
             <div className="mobile-Full-comment-section-comments-header">
               <h1 className="mobile-Full-comment-section-heading">Comments</h1>
             </div>
             <div className="mobile-Full-comment-section-comments-list">
-              {posts[activeCommentPostIndex].comments.map((comment, index) => (
+              {userComments .map((comment, index) => (
                 <div
                   className="mobile-Full-comment-section-comment-main-parent"
                   key={index}
@@ -527,7 +498,11 @@ function MobileMiddlesection() {
               <IoSendOutline
                 className="comment-send-icon"
                 onClick={() => handleCommentSubmit(activeCommentPostIndex)}
-                style={{ cursor: "pointer", marginLeft: "10px", fontSize: "20px" }}
+                style={{
+                  cursor: "pointer",
+                  marginLeft: "10px",
+                  fontSize: "20px",
+                }}
               />
             </div>
             <button
@@ -542,85 +517,22 @@ function MobileMiddlesection() {
 
       {/* Share Modal */}
       {showShare && (
-        <div className="Full-share-section-main-container">
-          <div className="Full-share-section-left-section">
-            <div className="Full-share-section-user-profile-header">
-              <div className="Full-share-section-top-image-and-names">
-                <img
-                  src={userData.profilePicture}
-                  alt="Profile"
-                  className="Full-share-section-profile-picture"
-                />
-                <div className="Full-share-section-user-info">
-                  <div className="Full-share-section-name-and-postTime">
-                    <span className="Full-share-section-user-name">
-                      {userData.name}
-                    </span>
-                    <span className="Full-share-section-user-details">
-                      18h
-                    </span>
-                  </div>
-                  <div className="Full-share-section-work-and-education">
-                    <span className="Full-share-section-user-details">
-                      {userData.education}
-                    </span>
-                    <span className="Full-share-section-user-details">
-                      ||
-                    </span>
-                    <span className="Full-share-section-user-details">
-                      {userData.workPlace}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <img
-                src={Threedot}
-                className="Full-share-section-menu-icon"
-                alt="Menu"
-              />
-            </div>
-            <div className="Full-share-section-photo-container">
-              <img
-                src={userData.profilePicture}
-                alt="Post"
-                className="Full-share-section-post-photo"
-              />
-              <div className="Full-share-section-action-buttons">
-                <div className="Full-share-section-connect-div">
-                  <img
-                    src={Connect}
-                    className="Full-share-section-connect-icon"
-                    alt="Connect"
-                  />
-                </div>
-                <div className="Full-share-section-share-like-share-icon">
-                  <img
-                    src={ShareIcon}
-                    className="Full-share-section-post-icons"
-                    alt="Share"
-                  />
-                  <img
-                    src={CommentIcon}
-                    className="Full-share-section-post-icons"
-                    alt="Comment"
-                  />
-                  <img
-                    src={LikeIcon}
-                    className="Full-share-section-post-icons"
-                    alt="Like"
-                  />
-                </div>
-              </div>
-            </div>
+        <div className="mobile-Full-share-section-main-container">
+          <div className="mobile-Full-share-section-heading-and-cross">
+            <h1 className="mobile-Full-share-section-heading">Share</h1>
+            <button
+              onClick={() => setShowShare(false)}
+              className="mobile-Full-share-section-cross-button"
+            >
+              ×
+            </button>
           </div>
-
-          <div className="Full-share-section-right-section">
-            <h1 className="Full-share-section-heading">Share</h1>
-            <div className="Full-share-section-innerDiv">
-              <div className="Full-share-section-AvtaarAndName-collection">
+          <div className="mobile-Full-share-section-right-section">
+            <div className="mobile-Full-share-section-innerDiv">
+              <div className="mobile-Full-share-section-AvtaarAndName-collection">
                 {persons.map((val, i) => (
                   <div
-                    className="Full-share-section-AvtaarAndName"
+                    className="mobile-Full-share-section-AvtaarAndName"
                     key={i}
                   >
                     <img src={val.avatar} alt={val.name} />
@@ -628,8 +540,7 @@ function MobileMiddlesection() {
                   </div>
                 ))}
               </div>
-              <div className="Full-share-section-AllIcons">
-                <img src={savedIcon} alt="Saved" />
+              <div className="mobile-Full-share-section-AllIcons">
                 <img src={linkIcon} alt="Link" />
                 <img src={xIcon} alt="X" />
                 <img src={whatsappIcon} alt="WhatsApp" />
@@ -638,20 +549,16 @@ function MobileMiddlesection() {
               </div>
             </div>
 
-            <div className="Full-share-section-share-input-and-image">
-              <img
-                src={profilePhoto}
-                className="Full-share-section-sharePerson-image"
-                alt="Share Person"
-              />
-              <input type="text" placeholder="Write a share to VIJAY PRASAD" />
+            <div className="mobile-Full-share-section-share-input-and-image">
+              <div className="mobile-Full-share-comment-box-and-image-and-searchIcon">
+                <input
+                  type="text"
+                  placeholder="Write a share to VIJAY PRASAD"
+                />
+            <SearchIcon className="mobile-Full-share-search-icon"/>
+              </div>
+              <img src={savedIcon} alt="Saved" />
             </div>
-            <button
-              onClick={() => setShowShare(false)}
-              className="Full-share-section-cross-button"
-            >
-              ×
-            </button>
           </div>
         </div>
       )}

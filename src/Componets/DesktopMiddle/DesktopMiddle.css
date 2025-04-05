@@ -1007,3 +1007,16 @@
   border-radius: 50%;
   padding: 0 15px;
 }
+
+.middle-get-id-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.middle-get-id-button:hover {
+  background-color: #0056b3;
+}

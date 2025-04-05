@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./DesktopNavbarr.css";
 import axios from "axios";
@@ -16,6 +16,8 @@ import NetworkBlack from "./NetworkBlack.svg";
 import Networkwhite from "./NetworkWhite.svg";
 import Notificationblack from "./notificationblack.svg";
 import Notificationwhite from "./notificationwhite.svg";
+import backicon from "./backsvg.svg";
+import profileImage from './profilephoto.png';
 
 function DesktopNavbarr() {
   // State
@@ -27,29 +29,53 @@ function DesktopNavbarr() {
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showUploadSection, setShowUploadSection] = useState(false);
+  const [showPostDetails, setShowPostDetails] = useState(false);
+  const [showAddmore, setShowAddMore] = useState(true);
+  const [caption, setCaption] = useState("");
+  const [hideLikes, setHideLikes] = useState(false);
+  const [disableComments, setDisableComments] = useState(false);
+  const [mentions, setMentions] = useState([]);
+  const [mediaList, setMediaList] = useState([]);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
+
+  // Notification state
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
+  const [notifications, setNotifications] = useState([
+    { time: "2 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-blue-400" },
+    { time: "3 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-yellow-400" },
+    { time: "6 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-red-400" },
+    { time: "8 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
+    { time: "12 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
+    { time: "18 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-blue-400" },
+    { time: "2 days", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
+  ]);
+
+  // Time filters for notifications
+  const timeFilters = {
+    Today: (time) => time.includes("hrs"),
+    "Last Week": (time) => time.includes("days") && parseInt(time) <= 7,
+    "Last Month": (time) => time.includes("days") && parseInt(time) > 7 && parseInt(time) <= 30,
+    "Last Year": (time) => time.includes("days") && parseInt(time) > 30,
+  };
+
+  const filteredNotifications = notifications.filter((notif) =>
+    timeFilters[activeNotificationTab](notif.time)
+  );
 
   // Fetch profiles by username
   const fetchProfiles = useCallback(async (username = "") => {
     setIsLoading(true);
     setError(null);
     try {
-      // console.log("Searching for username:", username);
       const response = await axios.get(
         `https://uniisphere-1.onrender.com/getProfile/profile/?search=${username}`
       );
-      console.log("Profile API response:", response.data);
-
-      // Extract profile data
-      const profiles = response.data;
-      if (profiles.length > 0) {
-        console.log("First user ID:", profiles[0].id);
-      }
-
-      setSearchResults(profiles);
+      setSearchResults(response.data);
     } catch (err) {
       console.error("Search error:", err);
-      // setError("Failed to search. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +93,6 @@ function DesktopNavbarr() {
   const handleSearchChange = (e) => {
     const username = e.target.value;
     setSearchQuery(username);
-    console.log("User typing:", username);
 
     if (/^[a-z0-9_]*$/i.test(username)) {
       debouncedSearch(username);
@@ -78,18 +103,8 @@ function DesktopNavbarr() {
 
   // Handle profile click
   const handleProfileClick = (userId) => {
-    console.log("Navigating to profile with ID:", userId);
-
-    let SearchUserId = userId;
-    console.log("Search to profile with ID:", SearchUserId);
-
-    // Store only the ID in localStorage (not the full message)
-    localStorage.setItem("SearchUserId", SearchUserId);
-
-    console.log("Stored SearchUserId:", SearchUserId);
-
-    // Navigate to the target page with the ID
-    navigate(`/FollowerMiddleSectionPrivacy/${SearchUserId}`);
+    localStorage.setItem("SearchUserId", userId);
+    navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
     setShowResults(false);
     setSearchQuery("");
   };
@@ -102,6 +117,7 @@ function DesktopNavbarr() {
   // User dropdown handlers
   const handleUserIconClick = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
+    setShowNotificationDropdown(false);
   };
 
   const handleSignOut = () => {
@@ -119,10 +135,18 @@ function DesktopNavbarr() {
     }
   };
 
+  // Handle notification icon click
+  const handleNotificationClick = () => {
+    setShowNotificationDropdown(!showNotificationDropdown);
+    setIsUserDropdownOpen(false);
+    setActiveIcon(prev => prev === "notifications" ? null : "notifications");
+  };
+
   // Navigation icon handlers
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
-    // Add navigation logic for each icon if needed
+    setShowNotificationDropdown(false);
+    
     switch (iconName) {
       case "home":
         navigate("/");
@@ -131,15 +155,127 @@ function DesktopNavbarr() {
         navigate("/network");
         break;
       case "add":
-        navigate("/create-post");
+        setShowUploadSection(true);
         break;
       case "notifications":
-        navigate("/notifications");
+        handleNotificationClick();
         break;
       default:
         break;
     }
   };
+
+  // Upload section handlers
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach((file) => {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        const previewURL = URL.createObjectURL(file);
+        setMediaList(prev => [
+          ...prev,
+          {
+            file,
+            previewURL,
+            mediaType: file.type.startsWith("image/") ? "image" : "video",
+            comment: ""
+          }
+        ]);
+      }
+    });
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    files.forEach((file) => {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        const previewURL = URL.createObjectURL(file);
+        setMediaList(prev => [
+          ...prev,
+          {
+            file,
+            previewURL,
+            mediaType: file.type.startsWith("image/") ? "image" : "video",
+            comment: ""
+          }
+        ]);
+      }
+    });
+  };
+
+  const handlePostSubmit = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const authToken = localStorage.getItem("authToken");
+      console.log("Auth Token:", authToken);
+
+      if (!authToken) {
+        throw new Error("User not authenticated. Please log in.");
+      }
+
+      const formData = new FormData();
+      mediaList.forEach((media, index) => {
+        formData.append(`media_${index}`, media.file);
+      });
+      formData.append('caption', caption);
+      formData.append('hideLikes', hideLikes);
+      formData.append('disableComments', disableComments);
+      
+      const profileResponse = await axios.patch(
+        `https://uniisphere-1.onrender.com/users/profile/`,
+        { bio: caption },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
+
+      console.log("Profile updated:", profileResponse.data);
+
+      const postResponse = await axios.post(
+        `https://uniisphere-1.onrender.com/posts/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      console.log("Post created:", postResponse.data);
+      
+      setMediaList([]);
+      setCaption("");
+      setHideLikes(false);
+      setDisableComments(false);
+      setShowPostDetails(false);
+      setShowAddMore(true);
+      setShowUploadSection(false);
+
+    } catch (error) {
+      console.error("Error creating post:", error);
+      setError(error.message || "Failed to create post. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCloseUpload = () => {
+    setShowUploadSection(false);
+    setShowPostDetails(false);
+    setShowAddMore(true);
+    setMediaList([]);
+    setCaption("");
+    setHideLikes(false);
+    setDisableComments(false);
+    setError(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      mediaList.forEach(media => URL.revokeObjectURL(media.previewURL));
+    };
+  }, [mediaList]);
 
   return (
     <div className="desktop-navbar-1">
@@ -156,6 +292,7 @@ function DesktopNavbarr() {
         className="desktop-icon"
         onClick={() => {
           setShowDropdown((prev) => !prev);
+          setShowNotificationDropdown(false);
         }}
       />
       <img
@@ -164,14 +301,56 @@ function DesktopNavbarr() {
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-      <img
-        src={
-          activeIcon === "notifications" ? Notificationwhite : Notificationblack
-        }
-        alt="Notifications"
-        className="desktop-icon"
-        onClick={() => handleIconClick("notifications")}
-      />
+      
+      {/* Notification Icon with Dropdown */}
+      <div className="notification-icon-container">
+        <img
+          src={activeIcon === "notifications" ? Notificationwhite : Notificationblack}
+          alt="Notifications"
+          className="desktop-icon"
+          onClick={handleNotificationClick}
+        />
+        {showNotificationDropdown && (
+          <div className="notification-dropdown">
+            <div className="notification-tabs">
+              {Object.keys(timeFilters).map((tab) => (
+                <button
+                  key={tab}
+                  className={`notification-tab-button ${activeNotificationTab === tab ? 'active' : ''}`}
+                  onClick={() => setActiveNotificationTab(tab)}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            <div className="notification-list">
+              {filteredNotifications.length > 0 ? (
+                filteredNotifications.map((notif, index) => (
+                  <div
+                    key={index}
+                    className={`notification-item ${notif.color}`}
+                  >
+                    <img
+                      src="https://via.placeholder.com/50"
+                      alt="Profile"
+                      className="notification-profile-pic"
+                    />
+                    <div className="notification-content">
+                      <p className="notification-sender">Vijay Prasad</p>
+                      <p className="notification-message">{notif.message}</p>
+                    </div>
+                    <span className="notification-time">{notif.time}</span>
+                    {notif.alert && <span className="notification-alert">🔔</span>}
+                  </div>
+                ))
+              ) : (
+                <p className="notification-empty">No notifications in this time range.</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* User Dropdown */}
       <div className="user-icon-container">
@@ -237,20 +416,16 @@ function DesktopNavbarr() {
       </div>
 
       {/* Network Dropdown */}
-
       {showDropdown && (
-
-       <div className="connections-card">
-         <div className="connections-item">
-           <Link to="/NetworkPage" className="connection-link">Connection</Link>
-         </div>
-       
-         <div className="connections-item">Edu-vault</div>
-         <div className="connections-item active">Human Library</div>
-         <div className="connections-item">Guidance</div>
-         <div className="connections-item">NGOs</div>
-       </div>
-       
+        <div className="connections-card">
+          <div className="connections-item">
+            <Link to="/NetworkPage" className="connection-link">Connection</Link>
+          </div>
+          <div className="connections-item">Edu-vault</div>
+          <div className="connections-item active">Human Library</div>
+          <div className="connections-item">Guidance</div>
+          <div className="connections-item">NGOs</div>
+        </div>
       )}
 
       {/* Search Bar */}
@@ -292,7 +467,7 @@ function DesktopNavbarr() {
                       {user.username}
                     </span>
                     <span className="desktop-search-result-id">
-                      ID-For-Search-Bar: {user.id}
+                      ID: {user.id}
                     </span>
                   </div>
                 </div>
@@ -306,6 +481,185 @@ function DesktopNavbarr() {
 
       {/* Logo */}
       <img src={Unispherelogoicon} alt="Logo" className="desktop-logo-icon" />
+
+      {/* Upload Section Overlay */}
+      {showUploadSection && (
+        <div className="upload-overlay" onClick={handleCloseUpload}>
+          <div className="upload-container" onClick={(e) => e.stopPropagation()} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+            {(mediaList.length === 0) && (
+              <div>
+                <p className="upload-text">Drag & Drop your media here</p>
+                <button
+                  className="upload-button"
+                  onClick={() => inputRef.current.click()}
+                >
+                  Upload from computer
+                </button>
+              </div>
+            )}
+            
+            {(mediaList.length !== 0 && showAddmore) && (
+              <div className="after-upload">
+                <div className="navbar">
+                  <img src={backicon} alt="Back" onClick={handleCloseUpload} />
+                  <h6
+                    onClick={() => {
+                      setShowPostDetails(true);
+                      setShowAddMore(false);
+                    }}
+                  >
+                    Continue
+                  </h6>
+                </div>
+
+                <div className="preview-container">
+                  {mediaList.map((media, index) => (
+                    <div key={index} className="media-item">
+                      {media.mediaType === "image" ? (
+                        <img
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          alt="Uploaded media"
+                        />
+                      ) : (
+                        <video
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          controls
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className="add-more-btn"
+                  onClick={() => inputRef.current.click()}
+                >
+                  Add More
+                </button>
+              </div>
+            )}
+
+            {showPostDetails && (
+              <div className="create-post-main-container">
+                <div className="create-post-after-upload">
+                  <div className="create-post-navbar">
+                    <div className="image-and-name">
+                      <img src={profileImage} alt="profileImage" />  
+                      <h3>Himanshu Choudary</h3>
+                    </div>
+                    <h6>Create Post</h6>
+                  </div>
+
+                  <div className="post-content-container">
+                    <div className="image-and-caption">
+                      {mediaList.map((media, index) => (
+                        <div key={index} className="post-media-container">
+                          {media.mediaType === "image" ? (
+                            <img
+                              className="create-post-imageAndVideo"
+                              src={media.previewURL}
+                              alt="Uploaded media"
+                            />
+                          ) : (
+                            <video
+                              className="create-post-imageAndVideo"
+                              src={media.previewURL}
+                              controls
+                            />
+                          )}
+                        </div>
+                      ))}
+                      <div className="form-group">
+                        <label className="input-label">Caption</label>
+                        <textarea
+                          className="caption-input"
+                          value={caption}
+                          onChange={(e) => setCaption(e.target.value)}
+                          placeholder="Write a caption..."
+                          rows="4"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mention-form-group">
+                      <label className="input-label">Add Mentions</label>
+                      <div className="mention-button">
+                        +  
+                      </div>
+                    </div>
+
+                    <div className="privacy-settings">
+                      <div className="setting-item">
+                        <div className="setting-info">
+                          <h4>Hide Likes</h4>
+                          <p className="setting-description">
+                            No one will be able to see the number of likes on your post. Except you
+                          </p>
+                        </div>
+                        <label className="toggle-switch">
+                          <input
+                            type="checkbox"
+                            checked={hideLikes}
+                            onChange={(e) => setHideLikes(e.target.checked)}
+                          />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+
+                      <div className="setting-item">
+                        <div className="setting-info">
+                          <h4>Turn Off Comments</h4>
+                          <p className="setting-description">
+                            No one will be able to comment on this post
+                          </p>
+                        </div>
+                        <label className="toggle-switch">
+                          <input
+                            type="checkbox"
+                            checked={disableComments}
+                            onChange={(e) => setDisableComments(e.target.checked)}
+                          />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="submit-section">
+                      <button 
+                        className="submit-button" 
+                        onClick={handlePostSubmit}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Posting..." : "Post"}
+                      </button>
+                      {error && <p className="error-message">{error}</p>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <input
+              type="file"
+              accept="image/*,video/*"
+              style={{ display: "none" }}
+              ref={inputRef}
+              onChange={handleFileChange}
+              multiple
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Hidden file input (for initial upload if needed outside overlay) */}
+      <input
+        type="file"
+        ref={inputRef}
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
     </div>
   );
 }

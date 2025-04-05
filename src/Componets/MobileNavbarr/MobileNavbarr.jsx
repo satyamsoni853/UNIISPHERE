@@ -75,11 +75,7 @@ function MobileNavbarr() {
       <Background />
       <div className="mobile-navbarr">
         {/* Logo */}
-        <img
-          src={Unispherelogoicon}
-          alt="Logo"
-          className="mobile-navbarr-logo"
-        />
+        <img src={Usericon} alt="Logo" className="mobile-navbarr-logo" />
 
         {/* Search Bar with Results */}
         <div className="mobile-navbarr-search-container">
@@ -130,10 +126,15 @@ function MobileNavbarr() {
         </div>
 
         {/* Message Icon */}
-        <img src={Messageicon} alt="Message" className="mobile-navbarr-icon" />
+        <Link to="/MessageMobileInbox">
+          <img
+            src={Messageicon}
+            alt="Message"
+            className="mobile-navbarr-icon"
+          />
+        </Link>
 
         {/* User Icon */}
-        <img src={Usericon} alt="User" className="mobile-navbarr-icon" />
       </div>
     </div>
   );
