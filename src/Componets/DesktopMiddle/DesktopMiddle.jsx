@@ -1,28 +1,28 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSendOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
 
 // Replace these imports with your actual images/paths
+import CommentIcon from "./Comment.svg";
+import Commenticonsvg from "./Commenticon.svg";
+import Connect from "./Connect.png";
+import LikeIcon from "./Like.svg";
 import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
-import Commenticonsvg from "./Commenticon.svg";
 import profilePhoto from "./profilephoto.png";
-import Threedot from "./Threedot.svg";
-import Connect from "./Connect.png";
 import ShareIcon from "./Share.svg";
-import LikeIcon from "./Like.svg";
-import CommentIcon from "./Comment.svg";
+import Threedot from "./Threedot.svg";
 
 // Share box icons
-import savedIcon from "./saved.svg";
-import whatsappIcon from "./Whatsapp.svg";
 import facebookIcon from "./Facebook.svg";
 import instaIcon from "./insta.svg";
 import linkIcon from "./Link.svg";
+import savedIcon from "./saved.svg";
+import whatsappIcon from "./Whatsapp.svg";
 import xIcon from "./X.svg";
 
 function DesktopMiddle() {
@@ -56,16 +56,15 @@ function DesktopMiddle() {
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
+  const [commentsLoading, setCommentsLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const getAuthData = () => {
-    const storedToken = localStorage.getItem("authToken");
-    const storedUserId = localStorage.getItem("userId");
-    return storedToken && storedUserId
-      ? { token: storedToken, userId: storedUserId }
-      : null;
+    const token = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("userId");
+    return token && userId ? { token, userId } : null;
   };
 
   useEffect(() => {
@@ -113,8 +112,6 @@ function DesktopMiddle() {
             likes: post.likes || 0,
             isLiked: post.isLiked || false,
             comments: post.comments || [],
-            totalLikes: post.likes || 0,
-            totalComments: post.comments?.length || 0,
           }));
           setPosts(updatedPosts);
         }
@@ -131,8 +128,6 @@ function DesktopMiddle() {
 
   const handleLike = async (index) => {
     const post = posts[index];
-    const postId = post._id;
-    console.log(`Liking Post ID: ${postId}`); // Log the post ID being liked
     const authData = getAuthData();
     if (!authData) {
       setError("Please log in to like posts");
@@ -141,8 +136,8 @@ function DesktopMiddle() {
 
     try {
       const endpoint = post.isLiked 
-        ? `https://uniisphere-1.onrender.com/posts/${postId}/unlike?userId=${userId}`
-        : `https://uniisphere-1.onrender.com/posts/${postId}/like?userId=${userId}`;
+        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike?userId=${userId}`
+        : `https://uniisphere-1.onrender.com/posts/${post._id}/like?userId=${userId}`;
     
       const response = await axios.post(
         endpoint,
@@ -161,98 +156,126 @@ function DesktopMiddle() {
                 ...p,
                 isLiked: !p.isLiked,
                 likes: response.data.likes || (p.isLiked ? p.likes - 1 : p.likes + 1),
-                totalLikes: response.data.likes || (p.isLiked ? p.totalLikes - 1 : p.totalLikes + 1),
               }
             : p
         )
       );
     } catch (error) {
-      console.error(`Like/Unlike error for Post ID ${postId}:`, error);
+      console.error("Like/Unlike error:", error);
       setError("Failed to update like status");
     }
+    
   };
 
-  const handleCommentSubmit = async (index) => {
-    if (!newComment.trim()) return;
+const handleCommentSubmit = async (index) => {
+  if (!newComment.trim()) return;
 
-    const post = posts[index];
-    const postId = post._id;
-    console.log(`Submitting comment for Post ID: ${postId}`); // Log the post ID
-    const authData = getAuthData();
-    if (!authData) {
-      setError("Please log in to comment");
-      return;
-    }
+  const post = posts[index];
+  const authData = getAuthData();
+  if (!authData) {
+    console.error("Authentication data missing");
+    setError("Please log in to comment");
+    return;
+  }
 
-    try {
-      const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${postId}/comments?postId=${postId}&userId=${userId}`,
-        { text: newComment },
-        {
-          headers: {
-            Authorization: `Bearer ${authData.token}`,
-          },
-        }
-      );
+  try {
+    console.log("Submitting comment with data:", {
+      postId: post._id,
+      userId: authData.userId,
+      content: newComment
+    });
+
+    const response = await axios({
+      method: 'post',
+      url: `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
+      headers: {
+        'Authorization': `Bearer ${authData.token}`,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        postId: post._id,
+        userId: authData.userId,
+        content: newComment
+      }
+    });
+
+    console.log("Comment submit response:", response.data);
     
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index
-            ? {
-                ...p,
-                comments: response.data.comments || [
-                  ...p.comments,
-                  { text: newComment, author: "You" },
-                ],
-                totalComments: (response.data.comments?.length) || (p.totalComments + 1),
-              }
-            : p
-        )
-      );
+    // Update UI with new comment
+    const newCommentObj = {
+      content: newComment,
+      author: userData.name,
+      timestamp: "Just now",
+      profilePicture: userData.profilePicture,
+      likes: 0
+    };
     
-      setNewComment("");
-    } catch (error) {
-      console.error(`Comment error for Post ID ${postId}:`, error);
-      setError("Failed to post comment");
-    }
-  };    
+    setPosts((prevPosts) =>
+      prevPosts.map((p, i) =>
+        i === index ? {
+          ...p,
+          comments: [...p.comments, newCommentObj]
+        } : p
+      )
+    );
+    
+    setNewComment("");
+  } catch (error) {
+    console.error("Comment submission error details:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+      headers: error.response?.headers,
+      config: error.config
+    });
+    setError(error.response?.data?.message || "Failed to post comment");
+  }
+};
 
-  const fetchComments = async (postId) => {
-    const authData = getAuthData();
-    if (!authData) return;
+const fetchComments = async (postId) => {
+  const authData = getAuthData();
+  if (!authData) return [];
 
-    try {
-      const response = await axios.get(
-        `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
-        {
-          headers: { Authorization: `Bearer ${authData.token}` },
-          params: {
-            postId: postId,
-            userId: authData.userId,
-          },
+  try {
+    const response = await axios.get(
+      `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
+      {
+        headers: {
+          Authorization: `Bearer ${authData.token}`
+        },
+        params: {
+          postId: postId,
+          userId: authData.userId
         }
-      );
-      return response.data.comments || [];
-    } catch (error) {
-      console.error(`Fetch comments error for Post ID ${postId}:`, error);
-      return [];
-    }
-  };
+      }
+    );
+    
+    return response.data?.comments || [];
+  } catch (error) {
+    console.error("Fetch comments error:", error.response?.data || error);
+    return [];
+  }
+};
 
   const handleCommentClick = async (index) => {
-    const post = posts[index];
-    const postId = post._id;
-    console.log(`Fetching comments for Post ID: ${postId}`); // Log the post ID
     setActiveCommentPostIndex(index);
     setShowComment(true);
     setNewComment("");
+    setCommentsLoading(true);
     
-    const comments = await fetchComments(postId);
-    setPosts((prevPosts) =>
-      prevPosts.map((p, i) =>
-        i === index ? { ...p, comments: comments || p.comments } : p
-      )
-    );
+    const post = posts[index];
+    try {
+      const comments = await fetchComments(post._id);
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index ? { ...p, comments: comments } : p
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setCommentsLoading(false);
+    }
   };
 
   const handleCloseCommentModal = () => {
@@ -266,10 +289,6 @@ function DesktopMiddle() {
     } else {
       console.log("Error: userId is missing!");
     }
-  };
-
-  const getPostId = (postId) => {
-    console.log(`Clicked Post ID: ${postId}`);
   };
 
   const persons = [
@@ -383,7 +402,7 @@ function DesktopMiddle() {
                     className="middle-icon-container"
                     onClick={() => handleLike(index)}
                   >
-                    <span className="middle-icon-count">{post.totalLikes}</span>
+                    <span className="middle-icon-count">{post.likes}</span>
                     <img
                       src={LikeIcon}
                       className={`middle-icon ${post.isLiked ? "liked" : ""}`}
@@ -394,8 +413,10 @@ function DesktopMiddle() {
                     className="middle-icon-container"
                     onClick={() => handleCommentClick(index)}
                   >
-                    <span className="middle-icon-count">{post.totalComments}</span>
-                    <img src={Commenticonsvg} className="middle-icon" alt="Comment" />
+                    <span className="middle-icon-count">
+                      {post.comments.length}
+                    </span>
+                    <img src={Commenticonsvg} alt="Comment" />
                   </div>
                   <div
                     onClick={() => setShowshare(true)}
@@ -413,13 +434,6 @@ function DesktopMiddle() {
                 {post.caption || post.content || "No caption available"}
                 <span className="middle-see-more">...more</span>
               </div>
-
-              <button
-                onClick={() => getPostId(post._id)}
-                className="middle-get-id-button"
-              >
-                Get Post ID
-              </button>
             </div>
           ))
         ) : (
@@ -506,46 +520,52 @@ function DesktopMiddle() {
                 <h1 className="Full-comment-section-desktop-heading">Comments</h1>
               </div>
               <div className="Full-comment-section-desktop-comments-list">
-                {posts[activeCommentPostIndex].comments.map((comment, index) => (
-                  <div
-                    className="Full-comment-section-desktop-comment-main-parent"
-                    key={index}
-                  >
-                    <div className="Full-comment-section-desktop-comment">
-                      <img
-                        src={comment.profilePicture || profilePhoto}
-                        alt="Profile"
-                        className="Full-comment-section-desktop-comment-profile-picture"
-                      />
-                      <div className="Full-comment-section-desktop-comment-content">
-                        <div className="Full-comment-section-desktop-comment-user-info">
-                          <span className="Full-comment-section-desktop-comment-username">
-                            {comment.author || comment.username || "Anonymous"}
-                          </span>
-                          <span className="Full-comment-section-desktop-comment-timestamp">
-                            {comment.timestamp || "Just now"}
-                          </span>
-                        </div>
-                        <div className="Full-comment-section-desktop-comment-text">
-                          {comment.text}
-                        </div>
-                        <div className="Full-comment-section-desktop-comment-actions">
-                          <span className="Full-comment-section-desktop-reply-link">
-                            REPLY
-                          </span>
+                {commentsLoading ? (
+                  <div className="comments-loading">Loading comments...</div>
+                ) : posts[activeCommentPostIndex].comments && posts[activeCommentPostIndex].comments.length > 0 ? (
+                  posts[activeCommentPostIndex].comments.map((comment, index) => (
+                    <div
+                      className="Full-comment-section-desktop-comment-main-parent"
+                      key={index}
+                    >
+                      <div className="Full-comment-section-desktop-comment">
+                        <img
+                          src={comment.profilePicture || comment.authorProfilePicture || profilePhoto}
+                          alt="Profile"
+                          className="Full-comment-section-desktop-comment-profile-picture"
+                        />
+                        <div className="Full-comment-section-desktop-comment-content">
+                          <div className="Full-comment-section-desktop-comment-user-info">
+                            <span className="Full-comment-section-desktop-comment-username">
+                              {comment.author || comment.authorName || comment.username || "Anonymous"}
+                            </span>
+                            <span className="Full-comment-section-desktop-comment-timestamp">
+                              {comment.timestamp || comment.createdAt || "Just now"}
+                            </span>
+                          </div>
+                          <div className="Full-comment-section-desktop-comment-text">
+                            {comment.text || comment.content}
+                          </div>
+                          <div className="Full-comment-section-desktop-comment-actions">
+                            <span className="Full-comment-section-desktop-reply-link">
+                              REPLY
+                            </span>
+                          </div>
                         </div>
                       </div>
+                      <div className="Full-comment-section-desktop-comment-likes">
+                        <img
+                          src={LikeIcon}
+                          alt="Like"
+                          className="Full-comment-section-desktop-like-button"
+                        />
+                        <span>{comment.likes || 0}</span>
+                      </div>
                     </div>
-                    <div className="Full-comment-section-desktop-comment-likes">
-                      <img
-                        src={LikeIcon}
-                        alt="Like"
-                        className="Full-comment-section-desktop-like-button"
-                      />
-                      <span>{comment.likes || 0}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <div className="no-comments-message">No comments yet. Be the first to comment!</div>
+                )}
               </div>
               <div className="Full-comment-section-desktop-comment-input-and-image">
                 <img
