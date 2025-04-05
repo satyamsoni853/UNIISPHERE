@@ -1,0 +1,28 @@
+.mobile-addpost-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.mobile-addpost-button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.mobile-addpost-input {
+  display: none;
+}
+
+.mobile-addpost-preview {
+  margin-top: 16px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+}

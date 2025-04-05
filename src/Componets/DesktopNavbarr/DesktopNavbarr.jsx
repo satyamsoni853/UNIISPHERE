@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./DesktopNavbarr.css";
 import axios from "axios";
@@ -16,6 +16,8 @@ import NetworkBlack from "./NetworkBlack.svg";
 import Networkwhite from "./NetworkWhite.svg";
 import Notificationblack from "./notificationblack.svg";
 import Notificationwhite from "./notificationwhite.svg";
+import backicon from "./backsvg.svg";
+import profileImage from './profilephoto.png';
 
 function DesktopNavbarr() {
   // State
@@ -27,6 +29,15 @@ function DesktopNavbarr() {
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showUploadSection, setShowUploadSection] = useState(false);
+  const [showPostDetails, setShowPostDetails] = useState(false);
+  const [showAddmore, setShowAddMore] = useState(true);
+  const [caption, setCaption] = useState("");
+  const [hideLikes, setHideLikes] = useState(false);
+  const [disableComments, setDisableComments] = useState(false);
+  const [mentions, setMentions] = useState([]);
+  const [mediaList, setMediaList] = useState([]);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
 
   // Notification state
@@ -106,7 +117,7 @@ function DesktopNavbarr() {
   // User dropdown handlers
   const handleUserIconClick = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
-    setShowNotificationDropdown(false); // Close notification dropdown if open
+    setShowNotificationDropdown(false);
   };
 
   const handleSignOut = () => {
@@ -127,14 +138,14 @@ function DesktopNavbarr() {
   // Handle notification icon click
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
-    setIsUserDropdownOpen(false); // Close user dropdown if open
+    setIsUserDropdownOpen(false);
     setActiveIcon(prev => prev === "notifications" ? null : "notifications");
   };
 
   // Navigation icon handlers
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
-    setShowNotificationDropdown(false); // Close notification dropdown when clicking other icons
+    setShowNotificationDropdown(false);
     
     switch (iconName) {
       case "home":
@@ -144,7 +155,7 @@ function DesktopNavbarr() {
         navigate("/network");
         break;
       case "add":
-        navigate("/create-post");
+        setShowUploadSection(true);
         break;
       case "notifications":
         handleNotificationClick();
@@ -153,6 +164,118 @@ function DesktopNavbarr() {
         break;
     }
   };
+
+  // Upload section handlers
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach((file) => {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        const previewURL = URL.createObjectURL(file);
+        setMediaList(prev => [
+          ...prev,
+          {
+            file,
+            previewURL,
+            mediaType: file.type.startsWith("image/") ? "image" : "video",
+            comment: ""
+          }
+        ]);
+      }
+    });
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    files.forEach((file) => {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        const previewURL = URL.createObjectURL(file);
+        setMediaList(prev => [
+          ...prev,
+          {
+            file,
+            previewURL,
+            mediaType: file.type.startsWith("image/") ? "image" : "video",
+            comment: ""
+          }
+        ]);
+      }
+    });
+  };
+
+  const handlePostSubmit = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const authToken = localStorage.getItem("authToken");
+      console.log("Auth Token:", authToken);
+
+      if (!authToken) {
+        throw new Error("User not authenticated. Please log in.");
+      }
+
+      const formData = new FormData();
+      mediaList.forEach((media, index) => {
+        formData.append(`media_${index}`, media.file);
+      });
+      formData.append('caption', caption);
+      formData.append('hideLikes', hideLikes);
+      formData.append('disableComments', disableComments);
+      
+      const profileResponse = await axios.patch(
+        `https://uniisphere-1.onrender.com/users/profile/`,
+        { bio: caption },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
+
+      console.log("Profile updated:", profileResponse.data);
+
+      const postResponse = await axios.post(
+        `https://uniisphere-1.onrender.com/posts/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      console.log("Post created:", postResponse.data);
+      
+      setMediaList([]);
+      setCaption("");
+      setHideLikes(false);
+      setDisableComments(false);
+      setShowPostDetails(false);
+      setShowAddMore(true);
+      setShowUploadSection(false);
+
+    } catch (error) {
+      console.error("Error creating post:", error);
+      setError(error.message || "Failed to create post. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCloseUpload = () => {
+    setShowUploadSection(false);
+    setShowPostDetails(false);
+    setShowAddMore(true);
+    setMediaList([]);
+    setCaption("");
+    setHideLikes(false);
+    setDisableComments(false);
+    setError(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      mediaList.forEach(media => URL.revokeObjectURL(media.previewURL));
+    };
+  }, [mediaList]);
 
   return (
     <div className="desktop-navbar-1">
@@ -358,6 +481,185 @@ function DesktopNavbarr() {
 
       {/* Logo */}
       <img src={Unispherelogoicon} alt="Logo" className="desktop-logo-icon" />
+
+      {/* Upload Section Overlay */}
+      {showUploadSection && (
+        <div className="upload-overlay" onClick={handleCloseUpload}>
+          <div className="upload-container" onClick={(e) => e.stopPropagation()} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+            {(mediaList.length === 0) && (
+              <div>
+                <p className="upload-text">Drag & Drop your media here</p>
+                <button
+                  className="upload-button"
+                  onClick={() => inputRef.current.click()}
+                >
+                  Upload from computer
+                </button>
+              </div>
+            )}
+            
+            {(mediaList.length !== 0 && showAddmore) && (
+              <div className="after-upload">
+                <div className="navbar">
+                  <img src={backicon} alt="Back" onClick={handleCloseUpload} />
+                  <h6
+                    onClick={() => {
+                      setShowPostDetails(true);
+                      setShowAddMore(false);
+                    }}
+                  >
+                    Continue
+                  </h6>
+                </div>
+
+                <div className="preview-container">
+                  {mediaList.map((media, index) => (
+                    <div key={index} className="media-item">
+                      {media.mediaType === "image" ? (
+                        <img
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          alt="Uploaded media"
+                        />
+                      ) : (
+                        <video
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          controls
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className="add-more-btn"
+                  onClick={() => inputRef.current.click()}
+                >
+                  Add More
+                </button>
+              </div>
+            )}
+
+            {showPostDetails && (
+              <div className="create-post-main-container">
+                <div className="create-post-after-upload">
+                  <div className="create-post-navbar">
+                    <div className="image-and-name">
+                      <img src={profileImage} alt="profileImage" />  
+                      <h3>Himanshu Choudary</h3>
+                    </div>
+                    <h6>Create Post</h6>
+                  </div>
+
+                  <div className="post-content-container">
+                    <div className="image-and-caption">
+                      {mediaList.map((media, index) => (
+                        <div key={index} className="post-media-container">
+                          {media.mediaType === "image" ? (
+                            <img
+                              className="create-post-imageAndVideo"
+                              src={media.previewURL}
+                              alt="Uploaded media"
+                            />
+                          ) : (
+                            <video
+                              className="create-post-imageAndVideo"
+                              src={media.previewURL}
+                              controls
+                            />
+                          )}
+                        </div>
+                      ))}
+                      <div className="form-group">
+                        <label className="input-label">Caption</label>
+                        <textarea
+                          className="caption-input"
+                          value={caption}
+                          onChange={(e) => setCaption(e.target.value)}
+                          placeholder="Write a caption..."
+                          rows="4"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mention-form-group">
+                      <label className="input-label">Add Mentions</label>
+                      <div className="mention-button">
+                        +  
+                      </div>
+                    </div>
+
+                    <div className="privacy-settings">
+                      <div className="setting-item">
+                        <div className="setting-info">
+                          <h4>Hide Likes</h4>
+                          <p className="setting-description">
+                            No one will be able to see the number of likes on your post. Except you
+                          </p>
+                        </div>
+                        <label className="toggle-switch">
+                          <input
+                            type="checkbox"
+                            checked={hideLikes}
+                            onChange={(e) => setHideLikes(e.target.checked)}
+                          />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+
+                      <div className="setting-item">
+                        <div className="setting-info">
+                          <h4>Turn Off Comments</h4>
+                          <p className="setting-description">
+                            No one will be able to comment on this post
+                          </p>
+                        </div>
+                        <label className="toggle-switch">
+                          <input
+                            type="checkbox"
+                            checked={disableComments}
+                            onChange={(e) => setDisableComments(e.target.checked)}
+                          />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="submit-section">
+                      <button 
+                        className="submit-button" 
+                        onClick={handlePostSubmit}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Posting..." : "Post"}
+                      </button>
+                      {error && <p className="error-message">{error}</p>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <input
+              type="file"
+              accept="image/*,video/*"
+              style={{ display: "none" }}
+              ref={inputRef}
+              onChange={handleFileChange}
+              multiple
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Hidden file input (for initial upload if needed outside overlay) */}
+      <input
+        type="file"
+        ref={inputRef}
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
     </div>
   );
 }
