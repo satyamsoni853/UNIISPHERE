@@ -244,7 +244,6 @@ const fetchComments = async (postId) => {
     setNewComment("");
     setCommentsLoading(true);
     
-    const post = posts[index];
     const comments = await fetchComments(post._id);
     setPosts((prevPosts) =>
       prevPosts.map((p, i) =>
