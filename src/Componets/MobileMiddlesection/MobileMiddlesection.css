@@ -166,8 +166,8 @@
 
 /* ## *******************Comment Box CSS ******************## */
 
- 
-@media (max-width: 480px) {
+/* Main Container */
+@media (max-width: 484px) {
   .mobile-Full-comment-section-main-container {
     top: 200px;
     left: 0;
@@ -185,7 +185,6 @@
     z-index: 99;
     overflow-y: auto;
   }
- 
 
   .mobile-Full-comment-section-user-profile-header {
     display: flex;
@@ -399,13 +398,9 @@
 /* 
 ##=========================SHARE BOX CSS=========================## */
 
- 
-
- 
-
+/* Main Container */
 /* Additional Media Query for Smaller Screens (max-width: 480px) */
 @media (max-width: 480px) {
-
   .mobile-Full-share-section-main-container {
     z-index: 99;
     width: 100%;
@@ -415,72 +410,99 @@
     top: 200px;
     display: flex;
     flex-direction: column;
-    padding: 10px;
-   
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    padding: 20px;
-    justify-content: center;
+    gap: 15px;
+    padding: 5px 15px;
     align-items: center;
-    background-color: white;
-    border-radius: 10px;
+    background-color: #fff;
+   border-top-right-radius: 20px;
+   border-top-left-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   /* Right Section */
   .mobile-Full-share-section-right-section {
     gap: 30px;
     padding: 0px 5px;
     overflow-y: scroll;
     width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
     border: none;
-    
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
+
   }
   .mobile-Full-share-section-innerDiv {
     display: flex;
-    gap: 0;
+    gap: 10px;
+    justify-content: space-between;
     flex-direction: row;
   }
 
-
   .mobile-Full-share-section-AvtaarAndName-collection {
-    width: 100%;
+    width: 90%;
+overflow-y: scroll;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    gap: 20px;
+    padding: 5px;
   }
-
+  .mobile-Full-share-section-AvtaarAndName-collection::-webkit-scrollbar{
+    display: none;
+  }
   .mobile-Full-share-section-AllIcons {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 15px;
   }
 
-  .mobile-Full-share-section-heading-and-cross{
+  .mobile-Full-share-section-AvtaarAndName {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .mobile-Full-share-section-AvtaarAndName h1 {
+    font-size: 15px;
+  }
+  .mobile-Full-share-section-AvtaarAndName img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .mobile-Full-share-section-heading-and-cross {
     display: flex;
     width: 100%;
     text-align: start;
     align-items: center;
   }
-  /* Comment Input and Image */
-  .mobile-Full-share-section-share-input-and-image {
-    padding-top: 10px;
-    gap: 6px;
-  }
 
-  /* Comment Person Image */
-  .mobile-Full-share-section-sharePerson-image {
-    height: 30px;
-    width: 30px;
+  .mobile-Full-share-section-cross-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1.3rem;
+    background-color: red;
+    border-radius: 50%;
+    padding: 0 10px;
+  }
+  .mobile-Full-share-section-share-input-and-image {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
   }
 
   /* Comment Input */
-  .mobile-Full-share-comment-box-and-image-and-saved-image{
+  .mobile-Full-share-comment-box-and-image-and-searchIcon {
     display: flex;
-    width: 100%;
+    width: 80%;
+
     gap: 5px;
+    position: relative;
   }
   .mobile-Full-share-section-share-input-and-image input {
-    padding: 6px;
     font-size: 10px;
     border-radius: 12px;
   }
@@ -490,6 +512,14 @@
   }
 
   .mobile-Full-share-section-share-input-and-image input {
-    width: 80%;
+    width: 100%;
+    background-color: #fdf9f9;
+    box-shadow: inset 2px 2px 4px #00000040, inset -2px -2px 4px #00000040;
+    border-radius: 20px;
+  }
+  .mobile-Full-share-search-icon {
+    position: absolute;
+    top: 5px;
+    right: 12px;
   }
 }
