@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 import UserLogin from './Componets/UserLogin/UserLogin.jsx'
 import AfterOtpSection1 from "./Componets/AfterOtpSection1/AfterOtpSection1.jsx";
