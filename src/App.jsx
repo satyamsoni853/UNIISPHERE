@@ -23,7 +23,7 @@ import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
- 
+
 
 
 function App() {
@@ -76,7 +76,6 @@ function App() {
             element={<BottomMessagesWidget />}
           />
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
-        
           
         </Routes>
       </div>
