@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
-import UserLogin from './Componets/UserLogin/UserLogin.jsx'
+import UserLogin from "./Componets/UserLogin/UserLogin.jsx";
 import AfterOtpSection1 from "./Componets/AfterOtpSection1/AfterOtpSection1.jsx";
 import UserSignupwithemailandpass from "./Componets/UserSignupwithemailandpass/UserSignupwithemailandpass.jsx";
 import ForgotPassword from "./Componets/ForgotPassword/ForgotPassword.jsx";
@@ -23,10 +23,9 @@ import NetworkPage from "./Componets/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Componets/CollabPage/CollabPage.jsx";
 import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessagesWidget.jsx";
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
- 
-import MobileAddPost from   "./Componets/MobileAddPost/MobileAddPost.jsx"
- 
 
+import MobileAddPost from "./Componets/MobileAddPost/MobileAddPost.jsx";
+import MessageMobileInbox from "./Componets/MessageMobileInbox/MobileMessage.jsx";
 
 function App() {
   return (
@@ -78,10 +77,9 @@ function App() {
             element={<BottomMessagesWidget />}
           />
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
- 
+
           <Route path="/MobileAddPost" element={<MobileAddPost />} />
- 
-          
+          <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
         </Routes>
       </div>
     </Router>

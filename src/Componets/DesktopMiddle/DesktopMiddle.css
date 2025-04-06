@@ -565,11 +565,12 @@
 
 /* Main Container */
 .Full-comment-section-desktop-main-container {
-  bottom: 7%;
-  left: 12%;
-  width: 1193px;
-  height: 600px;
+  width: 90%;
+  height: 80%;
   position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: row;
   padding: 10px;
@@ -577,7 +578,10 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 99;
+  overflow: hidden;
+  overflow-y: scroll;
 }
+
 
 /* Left Section */
 .Full-comment-section-desktop-left-section {
@@ -641,13 +645,15 @@
 /* Right Section */
 .Full-comment-section-desktop-right-section {
   width: 50%;
-  position: relative;
+  position: relative; /* important */
   flex: 0 0 40%;
   display: flex;
   flex-direction: column;
   margin-top: 10px;
   padding: 40px 30px;
   border-left: 2px solid #9d9c9c;
+  overflow-y: auto;
+  
 }
 
 .Full-comment-section-desktop-heading {
@@ -714,10 +720,17 @@
 }
 
 .Full-comment-section-desktop-comment-input-and-image {
-  padding-top: 20px;
   display: flex;
   gap: 10px;
+  position: absolute; /* <- relative to the right section now */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 0;
+  background-color: white; /* optional: to make it pop */
 }
+
+
 
 .Full-comment-section-desktop-comment-input-and-image input {
   width: 100%;

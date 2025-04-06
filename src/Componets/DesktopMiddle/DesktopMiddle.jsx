@@ -29,8 +29,8 @@ function DesktopMiddle() {
   const userData = {
     profilePicture: profilePhoto,
     name: "VIJAY PRASAD",
-    education: " University of Delhi ",
-    workPlace: " Works at Google",
+    education: "University of Delhi",
+    workPlace: "Works at Google",
   };
 
   const [showComment, setShowComment] = useState(false);
@@ -45,9 +45,7 @@ function DesktopMiddle() {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const [posts, setPosts] = useState([]);
@@ -67,6 +65,52 @@ function DesktopMiddle() {
     return token && userId ? { token, userId } : null;
   };
 
+  const fetchFeed = async () => {
+    const authData = getAuthData();
+    if (!authData) {
+      setError("You are not logged in. Please log in to view content.");
+      setImageLoading(false);
+      return;
+    }
+
+    setImageLoading(true);
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/api/feed",
+        {
+          headers: { Authorization: `Bearer ${authData.token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Feed API response:", response.data);
+
+      if (response.data.userId) {
+        setUserId(response.data.userId);
+        localStorage.setItem("userId", response.data.userId);
+      }
+
+      if (response.data.posts && response.data.posts.length > 0) {
+        const updatedPosts = response.data.posts.map((post) => ({
+          ...post,
+          _id: post.id,
+          authorId: post.authorId || "unknown",
+          authorName: post.authorName || "Unknown Author",
+          likes: post.Likes ? post.Likes.length : 0, // Count of likes from Likes array
+          isLiked: post.Likes ? post.Likes.some(like => like.userId === authData.userId) : false, // Check if current user liked
+          comments: post.Comments || [], // Comments from feed
+        }));
+        setPosts(updatedPosts);
+      }
+    } catch (error) {
+      console.error("Fetch feed error:", error.response?.data || error);
+      setError(
+        error.response?.data?.message || "Failed to load content. Please try again."
+      );
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (location.state?.userToken) {
       localStorage.setItem("authToken", location.state.userToken);
@@ -76,54 +120,7 @@ function DesktopMiddle() {
       setUserId(location.state.userId);
     }
 
-    const fetchData = async () => {
-      const authData = getAuthData();
-      if (!authData) {
-        setError("You are not logged in. Please log in to view content.");
-        setImageLoading(false);
-        return;
-      }
-
-      setImageLoading(true);
-      try {
-        const response = await axios.get(
-          "https://uniisphere-1.onrender.com/api/feed",
-          {
-            headers: { Authorization: `Bearer ${authData.token}` },
-          }
-        );
-
-        if (response.data.userId) {
-          setUserId(response.data.userId);
-          localStorage.setItem("userId", response.data.userId);
-        }
-
-        console.log("Next Cursor ID:", response.data.nextCursor);
-        console.log("Post IDs:");
-        response.data.posts.forEach(post => {
-          console.log(`- ${post.id}`);
-        });
-
-        if (response.data.posts && response.data.posts.length > 0) {
-          const updatedPosts = response.data.posts.map((post) => ({
-            ...post,
-            _id: post.id,
-            authorId: post.authorId || "unknown",
-            likes: post.likes || 0,
-            isLiked: post.isLiked || false,
-            comments: post.comments || [],
-          }));
-          setPosts(updatedPosts);
-        }
-      } catch (error) {
-        setError("Failed to load content. Please try again later.");
-        console.error("Fetch error:", error);
-      } finally {
-        setImageLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchFeed();
   }, [location.state]);
 
   const handleLike = async (index) => {
@@ -136,158 +133,107 @@ function DesktopMiddle() {
 
     try {
       const endpoint = post.isLiked 
-        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike?userId=${userId}`
-        : `https://uniisphere-1.onrender.com/posts/${post._id}/like?userId=${userId}`;
+        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
+        : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
     
-      const response = await axios.post(
-        endpoint,
-        {}, // Empty body
-        {
-          headers: {
-            Authorization: `Bearer ${authData.token}`
-          }
+      const response = await axios({
+        method: 'post',
+        url: endpoint,
+        headers: {
+          'Authorization': `Bearer ${authData.token}`,
+          'Content-Type': 'application/json'
         }
-      );
+      });
     
+      console.log("Like/Unlike response:", response.data);
+      
+      // Update UI optimistically
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
             ? {
                 ...p,
                 isLiked: !p.isLiked,
-                likes: response.data.likes || (p.isLiked ? p.likes - 1 : p.likes + 1),
+                likes: p.isLiked ? p.likes - 1 : p.likes + 1
               }
             : p
         )
       );
     } catch (error) {
-      console.error("Like/Unlike error:", error);
+      console.error("Like/Unlike error:", error.response?.data || error.message);
+      // Revert UI state if the request failed
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likes: p.isLiked ? p.likes + 1 : p.likes - 1
+              }
+            : p
+        )
+      );
       setError("Failed to update like status");
     }
-    
   };
 
-const handleCommentSubmit = async (index) => {
-  if (!newComment.trim()) return;
+  const handleCommentSubmit = async (index) => {
+    if (!newComment.trim()) return;
 
-  const post = posts[index];
-  const authData = getAuthData();
-  if (!authData) {
-    console.error("Authentication data missing");
-    setError("Please log in to comment");
-    return;
-  }
+    const post = posts[index];
+    const authData = getAuthData();
+    if (!authData) {
+      setError("Please log in to comment");
+      return;
+    }
 
-  try {
-    console.log("Submitting comment with data:", {
-      postId: post._id,
-      userId: authData.userId,
-      content: newComment
-    });
-
-    const response = await axios({
-      method: 'post',
-      url: `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
-      headers: {
-        'Authorization': `Bearer ${authData.token}`,
-        'Content-Type': 'application/json'
-      },
-      data: {
-        postId: post._id,
-        userId: authData.userId,
-        content: newComment
-      }
-    });
-
-    console.log("Comment submit response:", response.data);
-    
-    // Update UI with new comment
-    const newCommentObj = {
-      content: newComment,
-      author: userData.name,
-      timestamp: "Just now",
-      profilePicture: userData.profilePicture,
-      likes: 0
-    };
-    
-    setPosts((prevPosts) =>
-      prevPosts.map((p, i) =>
-        i === index ? {
-          ...p,
-          comments: [...p.comments, newCommentObj]
-        } : p
-      )
-    );
-    
-    setNewComment("");
-  } catch (error) {
-    console.error("Comment submission error details:", {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status,
-      headers: error.response?.headers,
-      config: error.config
-    });
-    setError(error.response?.data?.message || "Failed to post comment");
-  }
-};
-
-const fetchComments = async (postId) => {
-  const authData = getAuthData();
-  if (!authData) return [];
-
-  try {
-    const response = await axios.get(
-      `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
-      {
-        headers: {
-          Authorization: `Bearer ${authData.token}`
+    try {
+      const response = await axios.post(
+        `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
+        {
+          postId: post._id,
+          userId: authData.userId,
+          content: newComment,
         },
-        params: {
-          postId: postId,
-          userId: authData.userId
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
         }
-      }
-    );
-    
-    return response.data?.comments || [];
-  } catch (error) {
-    console.error("Fetch comments error:", error.response?.data || error);
-    return [];
-  }
-};
+      );
+      console.log("commentapi:", response.data);
+
+      // Refresh the entire feed to get updated comments and likes
+      await fetchFeed();
+
+      setNewComment("");
+      setError(null);
+    } catch (error) {
+      console.error("Comment submission error:", error.response?.data || error);
+      setError(error.response?.data?.message || "Failed to post comment. Please try again.");
+    }
+  };
 
   const handleCommentClick = async (index) => {
     setActiveCommentPostIndex(index);
     setShowComment(true);
     setNewComment("");
-    setCommentsLoading(true);
-    
-    const post = posts[index];
-    try {
-      const comments = await fetchComments(post._id);
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index ? { ...p, comments: comments } : p
-        )
-      );
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    } finally {
-      setCommentsLoading(false);
-    }
+    setCommentsLoading(false); // No separate fetch, comments are already in posts
   };
 
   const handleCloseCommentModal = () => {
     setActiveCommentPostIndex(null);
     setShowComment(false);
+    setError(null);
   };
 
   const handleProfileClick = (userId) => {
     if (userId) {
       navigate(`/FullFlowerSectionPage/${userId}`);
     } else {
-      console.log("Error: userId is missing!");
+      console.error("Error: userId is missing!");
     }
   };
 
@@ -317,10 +263,10 @@ const fetchComments = async (postId) => {
           <p>Loading posts...</p>
         ) : posts.length > 0 ? (
           posts.map((post, index) => (
-            <div key={index} className="post-container">
+            <div key={post._id || index} className="post-container">
               <div className="middle-profile-header">
                 <div
-                  onClick={() => handleProfileClick(userId)}
+                  onClick={() => handleProfileClick(post.authorId || userId)}
                   style={{ cursor: "pointer" }}
                 >
                   <img
@@ -329,7 +275,6 @@ const fetchComments = async (postId) => {
                     className="middle-profile-pic"
                   />
                 </div>
-
                 <div className="middle-profile-info">
                   <div className="middle-profile-top">
                     <span className="middle-profile-name">
@@ -338,8 +283,7 @@ const fetchComments = async (postId) => {
                     <span className="middle-post-time">18h</span>
                   </div>
                   <p className="middle-profile-details">
-                    {post.authorDetails ||
-                      "University of Delhi | Works at Google"}
+                    {post.authorDetails || "University of Delhi | Works at Google"}
                   </p>
                 </div>
                 <div className="middle-options-container" ref={optionsRef}>
@@ -349,24 +293,11 @@ const fetchComments = async (postId) => {
                   />
                   {showOptions && (
                     <div className="middle-options-dropdown">
-                      <button className="middle-options-item">
-                        <span>Interest</span> <hr />{" "}
-                      </button>
-                      <button className="middle-options-item">
-                        <span>Not Interest</span> <hr />
-                      </button>
-                      <button className="middle-options-item">
-                        <span>Block</span>
-                        <hr />
-                      </button>
-                      <button className="middle-options-item">
-                        <span>Report</span>
-                        <hr />
-                      </button>
-                      <button className="middle-options-item">
-                        <span>Message</span>
-                        <hr />
-                      </button>
+                      <button className="middle-options-item">Interest</button>
+                      <button className="middle-options-item">Not Interest</button>
+                      <button className="middle-options-item">Block</button>
+                      <button className="middle-options-item">Report</button>
+                      <button className="middle-options-item">Message</button>
                     </div>
                   )}
                 </div>
@@ -378,9 +309,7 @@ const fetchComments = async (postId) => {
                     src={post.mediaUrl}
                     alt={`Post ${index + 1}`}
                     className="middle-content-image"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/300")
-                    }
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/300")}
                   />
                 ) : (
                   <img
@@ -398,10 +327,7 @@ const fetchComments = async (postId) => {
                   className="middle-connect-image"
                 />
                 <div className="middle-action-icons">
-                  <div
-                    className="middle-icon-container"
-                    onClick={() => handleLike(index)}
-                  >
+                  <div className="middle-icon-container" onClick={() => handleLike(index)}>
                     <span className="middle-icon-count">{post.likes}</span>
                     <img
                       src={LikeIcon}
@@ -413,9 +339,7 @@ const fetchComments = async (postId) => {
                     className="middle-icon-container"
                     onClick={() => handleCommentClick(index)}
                   >
-                    <span className="middle-icon-count">
-                      {post.comments.length}
-                    </span>
+                    <span className="middle-icon-count">{post.comments.length}</span>
                     <img src={Commenticonsvg} alt="Comment" />
                   </div>
                   <div
@@ -465,9 +389,7 @@ const fetchComments = async (postId) => {
                       <span className="Full-comment-section-desktop-user-details">
                         {userData.education}
                       </span>
-                      <span className="Full-comment-section-desktop-user-details">
-                        ||
-                      </span>
+                      <span className="Full-comment-section-desktop-user-details">||</span>
                       <span className="Full-comment-section-desktop-user-details">
                         {userData.workPlace}
                       </span>
@@ -522,29 +444,29 @@ const fetchComments = async (postId) => {
               <div className="Full-comment-section-desktop-comments-list">
                 {commentsLoading ? (
                   <div className="comments-loading">Loading comments...</div>
-                ) : posts[activeCommentPostIndex].comments && posts[activeCommentPostIndex].comments.length > 0 ? (
+                ) : posts[activeCommentPostIndex].comments.length > 0 ? (
                   posts[activeCommentPostIndex].comments.map((comment, index) => (
                     <div
                       className="Full-comment-section-desktop-comment-main-parent"
-                      key={index}
+                      key={comment.id || index}
                     >
                       <div className="Full-comment-section-desktop-comment">
                         <img
-                          src={comment.profilePicture || comment.authorProfilePicture || profilePhoto}
+                          src={comment.user.profilePictureUrl || profilePhoto}
                           alt="Profile"
                           className="Full-comment-section-desktop-comment-profile-picture"
                         />
                         <div className="Full-comment-section-desktop-comment-content">
                           <div className="Full-comment-section-desktop-comment-user-info">
                             <span className="Full-comment-section-desktop-comment-username">
-                              {comment.author || comment.authorName || comment.username || "Anonymous"}
+                              {comment.user.username || "Anonymous"}
                             </span>
                             <span className="Full-comment-section-desktop-comment-timestamp">
-                              {comment.timestamp || comment.createdAt || "Just now"}
+                              {new Date(comment.createdAt).toLocaleTimeString() || "Just now"}
                             </span>
                           </div>
                           <div className="Full-comment-section-desktop-comment-text">
-                            {comment.text || comment.content}
+                            {comment.content}
                           </div>
                           <div className="Full-comment-section-desktop-comment-actions">
                             <span className="Full-comment-section-desktop-reply-link">
@@ -564,7 +486,9 @@ const fetchComments = async (postId) => {
                     </div>
                   ))
                 ) : (
-                  <div className="no-comments-message">No comments yet. Be the first to comment!</div>
+                  <div className="no-comments-message">
+                    No comments yet. Be the first to comment!
+                  </div>
                 )}
               </div>
               <div className="Full-comment-section-desktop-comment-input-and-image">
@@ -578,6 +502,7 @@ const fetchComments = async (postId) => {
                   placeholder="Write a comment..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleCommentSubmit(activeCommentPostIndex)}
                 />
                 <IoSendOutline
                   className="comment-send-icon"
@@ -611,17 +536,13 @@ const fetchComments = async (postId) => {
                     <span className="Full-share-section-desktop-user-name">
                       {userData.name}
                     </span>
-                    <span className="Full-share-section-desktop-user-details">
-                      18h
-                    </span>
+                    <span className="Full-share-section-desktop-user-details">18h</span>
                   </div>
                   <div className="Full-share-section-desktop-work-and-education">
                     <span className="Full-share-section-desktop-user-details">
                       {userData.education}
                     </span>
-                    <span className="Full-share-section-desktop-user-details">
-                      ||
-                    </span>
+                    <span className="Full-share-section-desktop-user-details">||</span>
                     <span className="Full-share-section-desktop-user-details">
                       {userData.workPlace}
                     </span>
@@ -674,10 +595,7 @@ const fetchComments = async (postId) => {
             <div className="Full-share-section-desktop-innerDiv">
               <div className="Full-share-section-desktop-AvtaarAndName-collection">
                 {persons.map((val, i) => (
-                  <div
-                    className="Full-share-section-desktop-AvtaarAndName"
-                    key={i}
-                  >
+                  <div className="Full-share-section-desktop-AvtaarAndName" key={i}>
                     <img src={val.avatar} alt={val.name} />
                     <h1>{val.name}</h1>
                   </div>
@@ -692,7 +610,6 @@ const fetchComments = async (postId) => {
                 <img src={instaIcon} alt="Instagram" />
               </div>
             </div>
-
             <div className="Full-share-section-desktop-share-input-and-image">
               <img
                 src={profilePhoto}
