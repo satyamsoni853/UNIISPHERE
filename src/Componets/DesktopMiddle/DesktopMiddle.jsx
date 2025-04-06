@@ -132,25 +132,47 @@ function DesktopMiddle() {
     }
 
     try {
-      const endpoint = post.isLiked
-        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike?userId=${userId}`
-        : `https://uniisphere-1.onrender.com/posts/${post._id}/like?userId=${userId}`;
-
-      const response = await axios.post(endpoint, {}, {
-        headers: { Authorization: `Bearer ${authData.token}` },
+      const endpoint = post.isLiked 
+        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
+        : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
+    
+      const response = await axios({
+        method: 'post',
+        url: endpoint,
+        headers: {
+          'Authorization': `Bearer ${authData.token}`,
+          'Content-Type': 'application/json'
+        }
       });
-
-      // Update state optimistically and refresh feed
+    
+      console.log("Like/Unlike response:", response.data);
+      
+      // Update UI optimistically
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
-            ? { ...p, isLiked: !p.isLiked, likes: p.isLiked ? p.likes - 1 : p.likes + 1 }
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likes: p.isLiked ? p.likes - 1 : p.likes + 1
+              }
             : p
         )
       );
-      await fetchFeed(); // Refresh to sync with server
     } catch (error) {
-      console.error("Like/Unlike error:", error.response?.data || error);
+      console.error("Like/Unlike error:", error.response?.data || error.message);
+      // Revert UI state if the request failed
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likes: p.isLiked ? p.likes + 1 : p.likes - 1
+              }
+            : p
+        )
+      );
       setError("Failed to update like status");
     }
   };
