@@ -65,6 +65,52 @@ function DesktopMiddle() {
     return token && userId ? { token, userId } : null;
   };
 
+  const fetchFeed = async () => {
+    const authData = getAuthData();
+    if (!authData) {
+      setError("You are not logged in. Please log in to view content.");
+      setImageLoading(false);
+      return;
+    }
+
+    setImageLoading(true);
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/api/feed",
+        {
+          headers: { Authorization: `Bearer ${authData.token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Feed API response:", response.data);
+
+      if (response.data.userId) {
+        setUserId(response.data.userId);
+        localStorage.setItem("userId", response.data.userId);
+      }
+
+      if (response.data.posts && response.data.posts.length > 0) {
+        const updatedPosts = response.data.posts.map((post) => ({
+          ...post,
+          _id: post.id,
+          authorId: post.authorId || "unknown",
+          authorName: post.authorName || "Unknown Author",
+          likes: post.Likes ? post.Likes.length : 0, // Count of likes from Likes array
+          isLiked: post.Likes ? post.Likes.some(like => like.userId === authData.userId) : false, // Check if current user liked
+          comments: post.Comments || [], // Comments from feed
+        }));
+        setPosts(updatedPosts);
+      }
+    } catch (error) {
+      console.error("Fetch feed error:", error.response?.data || error);
+      setError(
+        error.response?.data?.message || "Failed to load content. Please try again."
+      );
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (location.state?.userToken) {
       localStorage.setItem("authToken", location.state.userToken);
@@ -74,51 +120,7 @@ function DesktopMiddle() {
       setUserId(location.state.userId);
     }
 
-    const fetchData = async () => {
-      const authData = getAuthData();
-      if (!authData) {
-        setError("You are not logged in. Please log in to view content.");
-        setImageLoading(false);
-        return;
-      }
-
-      setImageLoading(true);
-      try {
-        const response = await axios.get(
-          "https://uniisphere-1.onrender.com/api/feed",
-          {
-            headers: { Authorization: `Bearer ${authData.token}` },
-            timeout: 10000,
-          }
-        );
-
-        if (response.data.userId) {
-          setUserId(response.data.userId);
-          localStorage.setItem("userId", response.data.userId);
-        }
-
-        if (response.data.posts && response.data.posts.length > 0) {
-          const updatedPosts = response.data.posts.map((post) => ({
-            ...post,
-            _id: post.id,
-            authorId: post.authorId || "unknown",
-            likes: post.likes || 0,
-            isLiked: post.isLiked || false,
-            comments: post.comments || [],
-          }));
-          setPosts(updatedPosts);
-        }
-      } catch (error) {
-        console.error("Fetch posts error:", error.response?.data || error);
-        setError(
-          error.response?.data?.message || "Failed to load content. Please try again."
-        );
-      } finally {
-        setImageLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchFeed();
   }, [location.state]);
 
   const handleLike = async (index) => {
@@ -138,38 +140,18 @@ function DesktopMiddle() {
         headers: { Authorization: `Bearer ${authData.token}` },
       });
 
+      // Update state optimistically and refresh feed
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
-            ? { ...p, isLiked: !p.isLiked, likes: response.data.likes || p.likes + (p.isLiked ? -1 : 1) }
+            ? { ...p, isLiked: !p.isLiked, likes: p.isLiked ? p.likes - 1 : p.likes + 1 }
             : p
         )
       );
+      await fetchFeed(); // Refresh to sync with server
     } catch (error) {
       console.error("Like/Unlike error:", error.response?.data || error);
       setError("Failed to update like status");
-    }
-  };
-
-  const fetchComments = async (postId) => {
-    const authData = getAuthData();
-    if (!authData) return [];
-
-    try {
-      const response = await axios.get(
-        `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
-        {
-          headers: { Authorization: `Bearer ${authData.token}` },
-          params: { postId, userId: authData.userId },
-          timeout: 10000,
-        }
-      );
-      console.log("fetch comment:", response.data.comments || []);
-      return response.data.comments || [];
-    } catch (error) {
-      console.error("Fetch comments error:", error.response?.data || error);
-      setError("Failed to load comments");
-      return [];
     }
   };
 
@@ -201,14 +183,9 @@ function DesktopMiddle() {
       );
       console.log("commentapi:", response.data);
 
-      // Refresh comments from backend to ensure UI syncs with server
-      const updatedComments = await fetchComments(post._id);
+      // Refresh the entire feed to get updated comments and likes
+      await fetchFeed();
 
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index ? { ...p, comments: updatedComments } : p
-        )
-      );
       setNewComment("");
       setError(null);
     } catch (error) {
@@ -221,21 +198,7 @@ function DesktopMiddle() {
     setActiveCommentPostIndex(index);
     setShowComment(true);
     setNewComment("");
-    setCommentsLoading(true);
-
-    const post = posts[index];
-    try {
-      const comments = await fetchComments(post._id);
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index ? { ...p, comments } : p
-        )
-      );
-    } catch (error) {
-      setError("Error fetching comments");
-    } finally {
-      setCommentsLoading(false);
-    }
+    setCommentsLoading(false); // No separate fetch, comments are already in posts
   };
 
   const handleCloseCommentModal = () => {
@@ -463,21 +426,21 @@ function DesktopMiddle() {
                   posts[activeCommentPostIndex].comments.map((comment, index) => (
                     <div
                       className="Full-comment-section-desktop-comment-main-parent"
-                      key={comment._id || index}
+                      key={comment.id || index}
                     >
                       <div className="Full-comment-section-desktop-comment">
                         <img
-                          src={comment.profilePicture || profilePhoto}
+                          src={comment.user.profilePictureUrl || profilePhoto}
                           alt="Profile"
                           className="Full-comment-section-desktop-comment-profile-picture"
                         />
                         <div className="Full-comment-section-desktop-comment-content">
                           <div className="Full-comment-section-desktop-comment-user-info">
                             <span className="Full-comment-section-desktop-comment-username">
-                              {comment.author || "Anonymous"}
+                              {comment.user.username || "Anonymous"}
                             </span>
                             <span className="Full-comment-section-desktop-comment-timestamp">
-                              {comment.timestamp || "Just now"}
+                              {new Date(comment.createdAt).toLocaleTimeString() || "Just now"}
                             </span>
                           </div>
                           <div className="Full-comment-section-desktop-comment-text">
