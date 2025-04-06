@@ -568,7 +568,7 @@
   width: 90%;
   height: 80%;
   position: fixed;
-  top: 50%;
+top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -602,7 +602,9 @@
   display: flex;
   gap: 2px;
 }
-
+.Full-comment-section-desktop-menu-icon{
+  cursor: pointer;
+}
 .Full-comment-section-profile-image-and-heading{
   display: flex;
   gap: 2px;
@@ -637,7 +639,7 @@
 
 .Full-comment-section-desktop-post-photo {
   width: 100%;
-  height: 85%;
+  height: 95%;
   border-radius: 10px;
   object-fit: cover;
 }
@@ -702,8 +704,9 @@
 
 .Full-comment-section-desktop-comment-text {
   font-size: 16px;
-  line-height: 1;
+  line-height: 0.5;
   white-space: 0;
+  
 }
 
 .Full-comment-section-desktop-comment-actions {
@@ -716,16 +719,14 @@
 .Full-comment-section-desktop-reply-link {
   color: #5b5b5b;
   cursor: pointer;
+  margin-top: 5px;
   font-size: 11px;
+  
 }
 
 .Full-comment-section-desktop-comment-input-and-image {
   display: flex;
   gap: 10px;
-  position: absolute; /* <- relative to the right section now */
-  bottom: 0;
-  left: 0;
-  right: 0;
   padding: 10px 0;
   background-color: white; /* optional: to make it pop */
 }
@@ -763,6 +764,7 @@
 .Full-comment-section-desktop-like-button {
   height: 1.6rem;
   width: 1.6rem;
+  cursor: pointer;
 }
 
 .Full-comment-section-desktop-comment-likes span {
