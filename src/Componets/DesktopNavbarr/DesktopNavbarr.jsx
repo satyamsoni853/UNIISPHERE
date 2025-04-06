@@ -37,6 +37,8 @@ function DesktopNavbarr() {
   const [disableComments, setDisableComments] = useState(false);
   const [mentions, setMentions] = useState([]);
   const [mediaList, setMediaList] = useState([]);
+  const [totalLikes, setTotalLikes] = useState(0); // New state for total likes
+  const [totalComments, setTotalComments] = useState(0); // New state for total comments
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -81,6 +83,37 @@ function DesktopNavbarr() {
     }
   }, []);
 
+  // Fetch stats from /posts/stats/total
+  const fetchStats = async () => {
+    const authToken = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("userId");
+    if (!authToken || !userId) {
+      setError("Authentication required");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://uniisphere-1.onrender.com/posts/stats/total",
+        { id: userId }, // Pass userId in the body as { id: userId }
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      console.log("Profile Stats response:", JSON.stringify(response.data, null, 2)); // Print detailed response
+      console.log("Profile Stats response:",response.data); 
+      const stats = response.data[0]; // Assuming the response is an array with one object
+      setTotalLikes(stats._count?.Likes || 0);
+      setTotalComments(stats._count?.Comments || 0);
+    } catch (err) {
+      console.error("Stats fetch error:", err);
+      setError("Failed to fetch stats");
+    }
+  };
+
   // Debounced search
   const debouncedSearch = useCallback(
     debounce((username) => {
@@ -109,9 +142,10 @@ function DesktopNavbarr() {
     setSearchQuery("");
   };
 
-  // Initial load - fetch all profiles
+  // Initial load - fetch all profiles and stats
   useEffect(() => {
     fetchProfiles();
+    fetchStats();
   }, [fetchProfiles]);
 
   // User dropdown handlers
@@ -388,11 +422,11 @@ function DesktopNavbarr() {
               </div>
               <div className="SelfProfile-stat">
                 <span>Likes</span>
-                <span className="SelfProfile-stat-value">56</span>
+                <span className="SelfProfile-stat-value">{totalLikes}</span>
               </div>
               <div className="SelfProfile-stat">
                 <span>Comments</span>
-                <span className="SelfProfile-stat-value">12</span>
+                <span className="SelfProfile-stat-value">{totalComments}</span>
               </div>
             </div>
 
