@@ -435,14 +435,12 @@ function MobileMiddlesection() {
       {/* Comment Modal */}
       {showComment && activeCommentPostIndex !== null && (
         <div className="mobile-Full-comment-section-main-container">
-    
-
           <div className="mobile-Full-comment-section-right-section">
             <div className="mobile-Full-comment-section-comments-header">
               <h1 className="mobile-Full-comment-section-heading">Comments</h1>
             </div>
             <div className="mobile-Full-comment-section-comments-list">
-              {userComments .map((comment, index) => (
+              {userComments.map((comment, index) => (
                 <div
                   className="mobile-Full-comment-section-comment-main-parent"
                   key={index}
@@ -555,8 +553,9 @@ function MobileMiddlesection() {
                   type="text"
                   placeholder="Write a share to VIJAY PRASAD"
                 />
-            <SearchIcon className="mobile-Full-share-search-icon"/>
+                <SearchIcon className="mobile-Full-share-search-icon" />
               </div>
+
               <img src={savedIcon} alt="Saved" />
             </div>
           </div>
