@@ -34,6 +34,7 @@ function DesktopMiddle() {
   };
 
   const [showComment, setShowComment] = useState(false);
+  const [showCommentOptions,setShowCommentOptions] =useState(false)
   const [showShare, setShowshare] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef(null);
@@ -419,9 +420,21 @@ function DesktopMiddle() {
                 </div>
                 <img
                   src={Threedot}
+                  onClick={() => setShowCommentOptions(!showCommentOptions)}
                   className="Full-comment-section-desktop-menu-icon"
                   alt="Menu"
                 />
+                  {showCommentOptions && (
+                    <div className="comment-threedot-options-dropdown">
+                      <button className="comment-threedot-options-item">Interest</button>
+                      <button className="comment-threedot-options-item">
+                        Not Interest
+                      </button>
+                      <button className="comment-threedot-options-item">Block</button>
+                      <button className="comment-threedot-options-item">Report</button>
+                      <button className="comment-threedot-options-item">Message</button>
+                    </div>
+                  )}
               </div>
               <div className="Full-comment-section-desktop-photo-container">
                 <img
@@ -432,7 +445,7 @@ function DesktopMiddle() {
                   alt="Post"
                   className="Full-comment-section-desktop-post-photo"
                 />
-                <div className="Full-comment-section-desktop-action-buttons">
+                {/* <div className="Full-comment-section-desktop-action-buttons">
                   <div className="Full-comment-section-desktop-connect-div">
                     <img
                       src={Connect}
@@ -457,7 +470,7 @@ function DesktopMiddle() {
                       alt="Like"
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
 
