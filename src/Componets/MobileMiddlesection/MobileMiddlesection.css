@@ -403,6 +403,7 @@
 @media (max-width: 480px) {
   .mobile-Full-share-section-main-container {
     z-index: 99;
+    
     width: 100%;
     height: 460px;
     position: fixed;
