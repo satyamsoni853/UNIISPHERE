@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import "./DesktopNavbarr.css";
 import axios from "axios";
-import { FiSearch } from "react-icons/fi";
 import debounce from "lodash/debounce";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FiSearch } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import "./DesktopNavbarr.css";
 
 // Icons
-import Usericon from "./Usericon.png";
-import Unispherelogoicon from "./Unispherelogoicon.png";
-import Addwhite from "./Addwhite.svg";
 import Addblack from "./AddBlack.svg";
-import Homewhite from "./Homewhite.svg";
+import Addwhite from "./Addwhite.svg";
+import backicon from "./backsvg.svg";
 import Homeblack from "./homeblack.svg";
+import Homewhite from "./Homewhite.svg";
 import NetworkBlack from "./NetworkBlack.svg";
 import Networkwhite from "./NetworkWhite.svg";
 import Notificationblack from "./notificationblack.svg";
 import Notificationwhite from "./notificationwhite.svg";
-import backicon from "./backsvg.svg";
 import profileImage from './profilephoto.png';
+import Unispherelogoicon from "./Unispherelogoicon.png";
+import Usericon from "./Usericon.png";
 
 function DesktopNavbarr() {
   // State
@@ -39,6 +39,7 @@ function DesktopNavbarr() {
   const [mediaList, setMediaList] = useState([]);
   const [totalLikes, setTotalLikes] = useState(0); // New state for total likes
   const [totalComments, setTotalComments] = useState(0); // New state for total comments
+  const [posts, setPosts] = useState(0); // Add this with your other state declarations
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -93,9 +94,8 @@ function DesktopNavbarr() {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         "https://uniisphere-1.onrender.com/posts/stats/total",
-        { id: userId }, // Pass userId in the body as { id: userId }
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -103,11 +103,27 @@ function DesktopNavbarr() {
           }
         }
       );
-      console.log("Profile Stats response:", JSON.stringify(response.data, null, 2)); // Print detailed response
-      console.log("Profile Stats response:",response.data); 
-      const stats = response.data[0]; // Assuming the response is an array with one object
-      setTotalLikes(stats._count?.Likes || 0);
-      setTotalComments(stats._count?.Comments || 0);
+
+      console.log("Profile Stats response:", response.data);
+
+      if (response.data.totalPosts) {
+        // Calculate total likes and comments across all posts
+        const totalLikesCount = response.data.totalPosts.reduce((sum, post) => 
+          sum + (post._count?.Likes || 0), 0
+        );
+        
+        const totalCommentsCount = response.data.totalPosts.reduce((sum, post) => 
+          sum + (post._count?.Comments || 0), 0
+        );
+
+        // Update the state with totals
+        setTotalLikes(totalLikesCount);
+        setTotalComments(totalCommentsCount);
+        
+        // You might want to add a new state for total posts count
+        const totalPostsCount = response.data.totalPosts.length;
+        setPosts(totalPostsCount); // Assuming you have a setPosts state setter
+      }
     } catch (err) {
       console.error("Stats fetch error:", err);
       setError("Failed to fetch stats");
@@ -418,7 +434,7 @@ function DesktopNavbarr() {
             <div className="SelfProfile-stats">
               <div className="SelfProfile-stat">
                 <span>Posts</span>
-                <span className="SelfProfile-stat-value">23</span>
+                <span className="SelfProfile-stat-value">{posts}</span>
               </div>
               <div className="SelfProfile-stat">
                 <span>Likes</span>
