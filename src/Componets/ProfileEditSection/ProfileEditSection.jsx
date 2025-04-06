@@ -64,7 +64,7 @@ function ProfileEditSection() {
           throw new Error("User ID not found in localStorage.");
         }
         setUserId(storedUserId);
-        console.log("The stored user ID is:", storedUserId);
+        console.log("Profile Edit Section The stored user ID is:", storedUserId);
 
         const response = await axios.get(
           `https://uniisphere-1.onrender.com/users/profile/${storedUserId}`,
