@@ -10,8 +10,21 @@ import stickerIcon from "./sticker.svg";
 import backIcon from "./backsvg.svg";
 import checkImage from "./image.jpg";
 import ProfileIcon from "./ProfileIcon.png";
+
 function MessageFinalClass2() {
-  // Data for the sidebar messages
+  const [messageInput, setMessageInput] = useState(""); // State for message input
+  const [chatMessages, setChatMessages] = useState([]); // State for chat messages
+  const [loading, setLoading] = useState(false); // State for loading status
+  const [error, setError] = useState(null); // State for error handling
+
+  // Provided IDs
+  const senderId = "18114725-fcc6-4cbe-a617-894a464b9fc8"; // pkartikey013@gmail.com
+  const receiverId = "7be6aac4-b786-4b9f-b3ba-f911e2f89a04"; // pandkartikey0@gmail.com
+
+  // Replace this with your actual token retrieval logic (e.g., from localStorage)
+  const token = localStorage.getItem("authToken") || "your-auth-token-here";
+
+  // Sidebar Messages (static data)
   const sidebarMessages = [
     {
       name: "Vijay Prasad",
@@ -40,32 +53,91 @@ function MessageFinalClass2() {
     },
   ];
 
-  // Data for the chat messages
-  const chatMessages = [
-    {
-      sender: "Mohan Bhadouria",
+  // Fetch conversation messages from the API
+  useEffect(() => {
+    const fetchConversation = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://uniisphere-1.onrender.com/api/messages/conversation/${receiverId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include token if required
+            },
+          }
+        );
 
-      text: "Hi wkjfnclruafnkvnmrkjvnbkevyjfnbvhaeh bruvibvkb",
-    },
-    {
-      sender: "Vijay Prasad",
+        if (!response.ok) {
+          throw new Error("Failed to fetch conversation");
+        }
 
-      text: "Hi wkjfnclruafnkvnmrkjvnbkevyjfnbvhaeh bruvibvkb,eajrvbjekveayknn oernrifier lerifer.",
-    },
-    {
-      sender: "Mohan Bhadouria",
+        const data = await response.json();
+        // Print the full API response for fetching conversation
+        console.log("GET API Response (Conversation):", data);
 
-      text: "It is always like this.",
-    },
-    {
-      sender: "Mohan Bhadouria",
+        // Transform API data to match chatMessages structure (adjust based on actual response)
+        const transformedMessages = data.map((msg) => ({
+          sender: msg.senderId === senderId ? "Vijay Prasad" : "Mohan Bhadouria",
+          text: msg.content,
+          image: msg.image || null, // Assuming API might return an image field
+        }));
 
-      text: "It is always like a ASSASIIN",
-      image: checkImage,
-    },
-  ];
+        setChatMessages(transformedMessages);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching conversation:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  /// ===============MOBILE CHAT DATA
+    fetchConversation();
+  }, []); // Empty dependency array to fetch once on mount
+
+  // Function to send a message via API
+  const sendMessage = async (content) => {
+    try {
+      const response = await fetch("https://uniisphere-1.onrender.com/api/messages/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token if required
+        },
+        body: JSON.stringify({
+          receiverId: receiverId,
+          content: content,
+          senderId: senderId, // Assuming the API accepts senderId in the body
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      const data = await response.json();
+      // Print the full API response for sending message
+      console.log("POST API Response (Send Message):", data);
+
+      // Add the sent message to the chat
+      setChatMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "Vijay Prasad", text: content },
+      ]);
+      setMessageInput(""); // Clear the input field
+    } catch (error) {
+      console.error("Error sending message:", error.message);
+      alert("Failed to send message. Please try again.");
+    }
+  };
+
+  // Handle form submission (Enter key triggers this)
+  const handleSendMessage = (e) => {
+    if (e.key === "Enter" && messageInput.trim()) {
+      sendMessage(messageInput);
+    }
+  };
 
   return (
     <>
@@ -111,59 +183,68 @@ function MessageFinalClass2() {
             </div>
           </div>
           <div className="message-part-2-chat-body">
-            {chatMessages.map((message, index) => {
-              const isNewSender =
-                index === 0 ||
-                message.sender !== chatMessages[index - 1].sender;
-              return (
-                <>
-                  {isNewSender && (
-                    <p className="message-part-2-timestamp">Today 2:00 AM</p>
-                  )}
-
-                  <div
-                    key={index}
-                    className={`message-part-2-message ${
-                      message.sender === "Vijay Prasad"
-                        ? "message-part-2-sent"
-                        : "message-part-2-received"
-                    }`}
-                  >
-                    <div className="message-part-2-message-content-container">
-                      {message.sender === "Mohan Bhadouria" && (
-                        <img
-                          className="message-part-2-message-person-image"
-                          src={profilePicSmall}
-                          alt=""
-                        />
-                      )}
-                      <div className="message-part-2-message-content">
-                        {message.image && (
-                          <div className="message-part-2-message-profile">
-                            <img src={ProfileIcon} alt="" />
-                            <span>Vijay Prasad</span>
-                          </div>
-                        )}
-                        {message.image && (
+            {loading && <p className="message-part-2-loading">Loading messages...</p>}
+            {error && <p className="message-part-2-error">Error: {error}</p>}
+            {!loading && !error && chatMessages.length === 0 && (
+              <p className="message-part-2-no-messages">No messages yet.</p>
+            )}
+            {!loading &&
+              !error &&
+              chatMessages.map((message, index) => {
+                const isNewSender =
+                  index === 0 ||
+                  message.sender !== chatMessages[index - 1].sender;
+                return (
+                  <>
+                    {isNewSender && (
+                      <p className="message-part-2-timestamp">Today 2:00 AM</p>
+                    )}
+                    <div
+                      key={index}
+                      className={`message-part-2-message ${
+                        message.sender === "Vijay Prasad"
+                          ? "message-part-2-sent"
+                          : "message-part-2-received"
+                      }`}
+                    >
+                      <div className="message-part-2-message-content-container">
+                        {message.sender === "Mohan Bhadouria" && (
                           <img
-                            className="message-part-2-chat-image"
-                            src={message.image}
+                            className="message-part-2-message-person-image"
+                            src={profilePicSmall}
                             alt=""
                           />
                         )}
-                        <p>{message.text}</p>
+                        <div className="message-part-2-message-content">
+                          {message.image && (
+                            <div className="message-part-2-message-profile">
+                              <img src={ProfileIcon} alt="" />
+                              <span>Vijay Prasad</span>
+                            </div>
+                          )}
+                          {message.image && (
+                            <img
+                              className="message-part-2-chat-image"
+                              src={message.image}
+                              alt=""
+                            />
+                          )}
+                          <p>{message.text}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              );
-            })}
+                  </>
+                );
+              })}
           </div>
           <div className="message-part-2-chat-footer">
             <input
               type="text"
               placeholder="Type a message..."
               className="message-part-2-input"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              onKeyDown={handleSendMessage} // Send message on Enter key
             />
             <div className="message-part-2-icons">
               <span>
@@ -192,6 +273,7 @@ function MessageFinalClass2() {
         </div>
       </div>
 
+      {/* Mobile Chat Section */}
       <div className="mobile-chat-profile-container">
         <div className="mobile-chat-container">
           <div className="mobile-chat-header">
@@ -221,8 +303,7 @@ function MessageFinalClass2() {
             </div>
             <button className="mobile-chat-voice-call">Voice Call</button>
             <div className="mobile-chat-interests">
-              {" "}
-              You both have interest in Reading Books, Basketball,Coding and 3
+              You both have interest in Reading Books, Basketball, Coding and 3
               other
             </div>
           </div>
@@ -231,6 +312,9 @@ function MessageFinalClass2() {
               type="text"
               className="mobile-chat-text-input"
               placeholder="Type a message"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              onKeyDown={handleSendMessage} // Send message on Enter key
             />
             <div className="mobile-chat-icons">
               <span>

@@ -114,7 +114,6 @@ function MobileMiddlesection() {
   };
 
   useEffect(() => {
-    
     const handleClickOutside = (event) => {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
         setShowOptions(false);
