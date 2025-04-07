@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import "./DesktopNavbarr.css";
 import axios from "axios";
-import { FiSearch } from "react-icons/fi";
 import debounce from "lodash/debounce";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FiSearch } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import "./DesktopNavbarr.css";
 
 // Icons
-import Usericon from "./Usericon.png";
-import Unispherelogoicon from "./Unispherelogoicon.png";
-import Addwhite from "./Addwhite.svg";
 import Addblack from "./AddBlack.svg";
-import Homewhite from "./Homewhite.svg";
+import Addwhite from "./Addwhite.svg";
+import backicon from "./backsvg.svg";
 import Homeblack from "./homeblack.svg";
+import Homewhite from "./Homewhite.svg";
 import NetworkBlack from "./NetworkBlack.svg";
 import Networkwhite from "./NetworkWhite.svg";
 import Notificationblack from "./notificationblack.svg";
 import Notificationwhite from "./notificationwhite.svg";
-import backicon from "./backsvg.svg";
 import profileImage from './profilephoto.png';
+import Unispherelogoicon from "./Unispherelogoicon.png";
+import Usericon from "./Usericon.png";
 
 function DesktopNavbarr() {
   // State
@@ -37,6 +37,11 @@ function DesktopNavbarr() {
   const [disableComments, setDisableComments] = useState(false);
   const [mentions, setMentions] = useState([]);
   const [mediaList, setMediaList] = useState([]);
+  const [totalLikes, setTotalLikes] = useState(0); // New state for total likes
+  const [totalComments, setTotalComments] = useState(0); // New state for total comments
+  const [posts, setPosts] = useState(0); // Add this with your other state declarations
+  const [Username, setUsername] = useState("");
+  const [UserProfileImage, setUserProfileImage] = useState("");
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -81,6 +86,56 @@ function DesktopNavbarr() {
     }
   }, []);
 
+  // Fetch stats from /posts/stats/total
+  const fetchStats = async () => {
+    const authToken = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("userId");
+    if (!authToken || !userId) {
+      setError("Authentication required");
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/posts/stats/total",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      console.log("Profile Stats response:", response.data);
+
+      if (response.data.totalPosts && response.data.totalPosts.length > 0) {
+        // Filter posts where user.id matches the logged-in userId
+        const userPosts = response.data.totalPosts.filter(post => post.user.id === userId);
+
+        // Extract username and profilePictureUrl from the first post
+        if (userPosts.length > 0) {
+          setUsername(userPosts[0].user.username || "");
+          setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
+        }
+
+        // Calculate total likes and comments for the filtered posts
+        const totalLikesCount = userPosts.reduce((sum, post) => sum + (post._count?.Likes || 0), 0);
+        const totalCommentsCount = userPosts.reduce((sum, post) => sum + (post._count?.Comments || 0), 0);
+
+        // Update the state with totals
+        setTotalLikes(totalLikesCount);
+        setTotalComments(totalCommentsCount);
+        
+        // Set the number of posts for the user
+        const totalPostsCount = userPosts.length;
+        setPosts(totalPostsCount);
+      }
+    } catch (err) {
+      console.error("Stats fetch error:", err);
+      setError("Failed to fetch stats");
+    }
+  };
+
   // Debounced search
   const debouncedSearch = useCallback(
     debounce((username) => {
@@ -109,9 +164,10 @@ function DesktopNavbarr() {
     setSearchQuery("");
   };
 
-  // Initial load - fetch all profiles
+  // Initial load - fetch all profiles and stats
   useEffect(() => {
     fetchProfiles();
+    fetchStats();
   }, [fetchProfiles]);
 
   // User dropdown handlers
@@ -355,7 +411,7 @@ function DesktopNavbarr() {
       {/* User Dropdown */}
       <div className="user-icon-container">
         <img
-          src={Usericon}
+          src={UserProfileImage || Usericon}
           alt="User"
           className="desktop-user-icon"
           onClick={handleUserIconClick}
@@ -364,12 +420,12 @@ function DesktopNavbarr() {
           <div className="SelfProfile-card">
             <div className="SelfProfile-header">
               <img
-                src="https://via.placeholder.com/50"
+                src={UserProfileImage || "https://via.placeholder.com/50"}
                 alt="Profile"
                 className="SelfProfile-pic"
               />
               <div className="SelfProfile-info">
-                <h2 className="SelfProfile-name">User Name</h2>
+                <h2 className="SelfProfile-name">{Username || "User Name"}</h2>
                 <p className="SelfProfile-label">Position</p>
               </div>
             </div>
@@ -384,15 +440,15 @@ function DesktopNavbarr() {
             <div className="SelfProfile-stats">
               <div className="SelfProfile-stat">
                 <span>Posts</span>
-                <span className="SelfProfile-stat-value">23</span>
+                <span className="SelfProfile-stat-value">{posts}</span>
               </div>
               <div className="SelfProfile-stat">
                 <span>Likes</span>
-                <span className="SelfProfile-stat-value">56</span>
+                <span className="SelfProfile-stat-value">{totalLikes}</span>
               </div>
               <div className="SelfProfile-stat">
                 <span>Comments</span>
-                <span className="SelfProfile-stat-value">12</span>
+                <span className="SelfProfile-stat-value">{totalComments}</span>
               </div>
             </div>
 
@@ -546,8 +602,8 @@ function DesktopNavbarr() {
                 <div className="create-post-after-upload">
                   <div className="create-post-navbar">
                     <div className="image-and-name">
-                      <img src={profileImage} alt="profileImage" />  
-                      <h3>Himanshu Choudary</h3>
+                      <img src={UserProfileImage || profileImage} alt="profileImage" />  
+                      <h3>{Username || "Himanshu Choudary"}</h3>
                     </div>
                     <h6>Create Post</h6>
                   </div>
