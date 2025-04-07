@@ -170,7 +170,7 @@
 /* Main Container */
 @media (max-width: 484px) {
   .mobile-Full-comment-section-main-container {
-    top: 200px;
+    bottom: 50px;
     left: 0;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
@@ -409,7 +409,7 @@
     height: 460px;
     position: fixed;
     left: 0%;
-    top: 200px;
+    bottom: 50px;
     display: flex;
     flex-direction: column;
     gap: 15px;

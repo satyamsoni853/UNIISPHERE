@@ -615,7 +615,7 @@ function DesktopMiddle() {
                 alt="Post"
                 className="Full-share-section-desktop-post-photo"
               />
-              <div className="Full-share-section-desktop-action-buttons">
+              {/* <div className="Full-share-section-desktop-action-buttons">
                 <div className="Full-share-section-desktop-connect-div">
                   <img
                     src={Connect}
@@ -640,7 +640,7 @@ function DesktopMiddle() {
                     alt="Like"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
