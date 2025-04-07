@@ -1,98 +1,138 @@
 /* Main Container */
-.mobile-middlesection {
+/* .mobile-middle-middlesection {
   max-width: 500px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid black;
+} */
+.mobile-middle-middle-card {
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  
 }
 
 /* Profile Section */
-.mobile-profile-header {
+.mobile-middle-profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
   width: 100%;
   padding: 10px;
   border-top: 2px solid grey;
 }
 
-
-/* Profile Info */
-.mobile-profile-info {
+.mobile-image-and-name-holder {
   display: flex;
+  gap: 5px;
   align-items: center;
-  gap: 10px;
+}
+/* Profile Info */
+.mobile-middle-profile-info {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.mobile-profile-pic {
+.mobile-middle-profile-pic {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.mobile-profile-details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+.mobile-middle-profile-details {
+  font-size: 16px;
 }
 
-.mobile-profile-name {
-  margin-top: 10px; /* Adjusted from original */
+.mobile-middle-profile-name {
   font-size: 14px;
   font-weight: bold;
 }
 
-.mobile-post-time {
+.mobile-middle-post-time {
   font-size: 12px;
   color: gray;
   margin-left: 5px;
 }
 
-.mobile-profile-desc {
+.mobile-middle-profile-desc {
   font-size: 12px;
   color: gray;
   margin-top: 2px;
 }
+.mobile-middle-options-container {
+  position: relative;
+}
 
-/* Profile Actions */
-.mobile-profile-actions {
+.mobile-middle-options-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  width: 180px;
+  overflow: hidden;
+}
+
+.mobile-middle-options-item {
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+/* Main Image */
+.mobile-middle-main-image {
+  width: 100%;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.mobile-middle-content-image {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Action Bar */
+
+.mobile-middle-profile-actions {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
 
-.mobile-connect-image {
-  width: 90px;
-  height: 24px;
+.mobile-middle-connect-image {
   cursor: pointer;
 }
 
-.mobile-options-icon {
-  font-size: 18px;
-  cursor: pointer;
-}
-
-/* Main Image */
-.mobile-main-image {
-  width: 100%;
+.mobile-middle-icon-container {
   display: flex;
-  justify-content: center;
+  gap: 5px;
   align-items: center;
 }
-
-.mobile-content-image {
-  width: 80%;
-  height: 70vh;
-  border-radius: 5px;
-}
-
-/* Action Bar */
-.mobile-action-bar {
+.mobile-middle-action-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -101,28 +141,29 @@
   /* border-top: 1px solid #ddd; */
 }
 
-.mobile-like-count {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.mobile-action-icons {
+.mobile-middle-action-icons {
   display: flex;
   gap: 15px;
+  align-items: center;
 }
 
-.mobile-icon {
-  font-size: 30px;
+.mobile-middle-icon {
+  height: 25px;
+  width: 25px;
   cursor: pointer;
   transition: transform 0.2s;
 }
+.mobile-middle-icon-share {
+  height: 50px;
+  width: 50px;
+}
 
-.mobile-icon:hover {
+.mobile-middle-icon:hover {
   transform: scale(1.2);
 }
 
 /* Image Text */
-.mobile-post-text {
+.mobile-middle-post-text {
   font-size: 14px;
   padding: 10px;
   width: 100%;
@@ -130,47 +171,27 @@
   padding-bottom: 60px;
 }
 
-.mobile-post-author {
+.mobile-middle-post-author {
   font-weight: bold;
 }
 
-.mobile-see-more {
+.mobile-middle-see-more {
   color: blue;
   cursor: pointer;
 }
 
-.mobile-middlesection {
+.mobile-middle-middlesection {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
-.side-images-left-images {
-  position: absolute;
-  left: 0;
-  display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
-  flex-direction: column;
-  gap: 100px;
-  width: 50px;
-}
-.side-images-right-images {
-  position: absolute;
-  right: 0;
-  display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
-  flex-direction: column;
-  gap: 100px;
-  width: 50px;
-}
-
+ 
 /* ## *******************Comment Box CSS ******************## */
 
 /* Main Container */
 @media (max-width: 484px) {
   .mobile-Full-comment-section-main-container {
-    top: 200px;
+    bottom: 50px;
     left: 0;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
@@ -404,21 +425,21 @@
 @media (max-width: 480px) {
   .mobile-Full-share-section-main-container {
     z-index: 99;
-    
+
     width: 100%;
     height: 460px;
     position: fixed;
     left: 0%;
-    top: 200px;
+    bottom: 50px;
     display: flex;
     flex-direction: column;
     gap: 15px;
     padding: 5px 15px;
     align-items: center;
     background-color: #fff;
-   border-top-right-radius: 20px;
-   border-top-left-radius: 20px;
-   
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
@@ -431,7 +452,6 @@
     display: flex;
     flex-direction: column-reverse;
     border: none;
-
   }
   .mobile-Full-share-section-innerDiv {
     display: flex;
@@ -442,14 +462,14 @@
 
   .mobile-Full-share-section-AvtaarAndName-collection {
     width: 90%;
-overflow-y: scroll;
+    overflow-y: scroll;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
     gap: 20px;
     padding: 5px;
   }
-  .mobile-Full-share-section-AvtaarAndName-collection::-webkit-scrollbar{
+  .mobile-Full-share-section-AvtaarAndName-collection::-webkit-scrollbar {
     display: none;
   }
   .mobile-Full-share-section-AllIcons {
