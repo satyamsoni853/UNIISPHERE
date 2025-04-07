@@ -40,6 +40,8 @@ function DesktopNavbarr() {
   const [totalLikes, setTotalLikes] = useState(0); // New state for total likes
   const [totalComments, setTotalComments] = useState(0); // New state for total comments
   const [posts, setPosts] = useState(0); // Add this with your other state declarations
+  const [Username, setUsername] = useState("");
+  const [UserProfileImage, setUserProfileImage] = useState("");
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -106,23 +108,27 @@ function DesktopNavbarr() {
 
       console.log("Profile Stats response:", response.data);
 
-      if (response.data.totalPosts) {
-        // Calculate total likes and comments across all posts
-        const totalLikesCount = response.data.totalPosts.reduce((sum, post) => 
-          sum + (post._count?.Likes || 0), 0
-        );
-        
-        const totalCommentsCount = response.data.totalPosts.reduce((sum, post) => 
-          sum + (post._count?.Comments || 0), 0
-        );
+      if (response.data.totalPosts && response.data.totalPosts.length > 0) {
+        // Filter posts where user.id matches the logged-in userId
+        const userPosts = response.data.totalPosts.filter(post => post.user.id === userId);
+
+        // Extract username and profilePictureUrl from the first post
+        if (userPosts.length > 0) {
+          setUsername(userPosts[0].user.username || "");
+          setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
+        }
+
+        // Calculate total likes and comments for the filtered posts
+        const totalLikesCount = userPosts.reduce((sum, post) => sum + (post._count?.Likes || 0), 0);
+        const totalCommentsCount = userPosts.reduce((sum, post) => sum + (post._count?.Comments || 0), 0);
 
         // Update the state with totals
         setTotalLikes(totalLikesCount);
         setTotalComments(totalCommentsCount);
         
-        // You might want to add a new state for total posts count
-        const totalPostsCount = response.data.totalPosts.length;
-        setPosts(totalPostsCount); // Assuming you have a setPosts state setter
+        // Set the number of posts for the user
+        const totalPostsCount = userPosts.length;
+        setPosts(totalPostsCount);
       }
     } catch (err) {
       console.error("Stats fetch error:", err);
@@ -405,7 +411,7 @@ function DesktopNavbarr() {
       {/* User Dropdown */}
       <div className="user-icon-container">
         <img
-          src={Usericon}
+          src={UserProfileImage || Usericon}
           alt="User"
           className="desktop-user-icon"
           onClick={handleUserIconClick}
@@ -414,12 +420,12 @@ function DesktopNavbarr() {
           <div className="SelfProfile-card">
             <div className="SelfProfile-header">
               <img
-                src="https://via.placeholder.com/50"
+                src={UserProfileImage || "https://via.placeholder.com/50"}
                 alt="Profile"
                 className="SelfProfile-pic"
               />
               <div className="SelfProfile-info">
-                <h2 className="SelfProfile-name">User Name</h2>
+                <h2 className="SelfProfile-name">{Username || "User Name"}</h2>
                 <p className="SelfProfile-label">Position</p>
               </div>
             </div>
@@ -596,8 +602,8 @@ function DesktopNavbarr() {
                 <div className="create-post-after-upload">
                   <div className="create-post-navbar">
                     <div className="image-and-name">
-                      <img src={profileImage} alt="profileImage" />  
-                      <h3>Himanshu Choudary</h3>
+                      <img src={UserProfileImage || profileImage} alt="profileImage" />  
+                      <h3>{Username || "Himanshu Choudary"}</h3>
                     </div>
                     <h6>Create Post</h6>
                   </div>
