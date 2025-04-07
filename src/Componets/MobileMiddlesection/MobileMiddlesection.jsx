@@ -114,7 +114,6 @@ function MobileMiddlesection() {
   };
 
   useEffect(() => {
-    
     const handleClickOutside = (event) => {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
         setShowOptions(false);
@@ -300,60 +299,62 @@ function MobileMiddlesection() {
   };
 
   return (
-    <div className="middle-middle-card">
-      {error && <div className="error-message">{error}</div>}
+    <div className="mobile-middle-middle-card">
+      {error && <div className="mobile-error-message">{error}</div>}
 
       {imageLoading ? (
         <p>Loading posts...</p>
       ) : posts.length > 0 ? (
         posts.map((post, index) => (
-          <div key={index} className="post-container">
+          <div key={index} className="mobile-post-container">
             {/* Profile Header */}
-            <div className="middle-profile-header">
-              <div
-                onClick={() => handleProfileClick(post.authorId || userId)}
-                style={{ cursor: "pointer" }}
-              >
-                <img
-                  src={Profileimage}
-                  alt="Profile"
-                  className="middle-profile-pic"
-                />
-              </div>
-              <div className="middle-profile-info">
-                <div className="middle-profile-top">
-                  <span className="middle-profile-name">
-                    {post.authorName || "Unknown Author"}
-                  </span>
-                  <span className="middle-post-time">18h</span>
+            <div className="mobile-middle-profile-header">
+              <div className="mobile-image-and-name-holder">
+                <div
+                  onClick={() => handleProfileClick(post.authorId || userId)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={Profileimage}
+                    alt="Profile"
+                    className="mobile-middle-profile-pic"
+                  />
                 </div>
-                <p className="middle-profile-details">
-                  {post.authorDetails ||
-                    "University of Delhi | Works at Google"}
-                </p>
+                <div className="mobile-middle-profile-info">
+                  <div className="mobile-middle-profile-top">
+                    <span className="mobile-middle-profile-name">
+                      {post.authorName || "Unknown Author"}
+                    </span>
+                    <span className="mobile-middle-post-time">18h</span>
+                  </div>
+                  <p className="mobile-middle-profile-details">
+                    {post.authorDetails ||
+                      "University of Delhi | Works at Google"}
+                  </p>
+                </div>
               </div>
-              <div className="middle-options-container" ref={optionsRef}>
+              <div className="mobile-middle-options-container" ref={optionsRef}>
                 <BsThreeDotsVertical
-                  className="middle-options-icon"
+                  className="mobile-middle-options-icon"
                   onClick={() => setShowOptions(!showOptions)}
                 />
                 {showOptions && (
-                  <div className="middle-options-dropdown">
-                    <button className="middle-options-item">
+                  <div className="mobile-middle-options-dropdown">
+                    <button className="mobile-middle-options-item">
                       <span>Interest</span> <hr />{" "}
                     </button>
-                    <button className="middle-options-item">
+                    <button className="mobile-middle-options-item">
                       <span>Not Interest</span> <hr />
                     </button>
-                    <button className="middle-options-item">
+                    <button className="mobile-middle-options-item">
                       <span>Block</span>
                       <hr />
                     </button>
-                    <button className="middle-options-item">
+                    <button className="mobile-middle-options-item">
                       <span>Report</span>
                       <hr />
                     </button>
-                    <button className="middle-options-item">
+                    <button className="mobile-middle-options-item">
                       <span>Message</span>
                       <hr />
                     </button>
@@ -363,12 +364,12 @@ function MobileMiddlesection() {
             </div>
 
             {/* Main Image */}
-            <div className="middle-main-image">
+            <div className="mobile-middle-main-image">
               {post.mediaUrl ? (
                 <img
                   src={post.mediaUrl}
                   alt={`Post ${index + 1}`}
-                  className="middle-content-image"
+                  className="mobile-middle-content-image"
                   onError={(e) =>
                     (e.target.src = "https://via.placeholder.com/300")
                   }
@@ -377,55 +378,61 @@ function MobileMiddlesection() {
                 <img
                   src={MiddlemainImage}
                   alt="Default Post"
-                  className="middle-content-image"
+                  className="mobile-middle-content-image"
                 />
               )}
             </div>
 
             {/* Action Bar */}
-            <div className="middle-action-bar">
+            <div className="mobile-middle-action-bar">
               <img
                 src={ConnectMidlleimage}
                 alt="Connect"
-                className="middle-connect-image"
+                className="mobile-middle-connect-image"
               />
-              <div className="middle-action-icons">
+              <div className="mobile-middle-action-icons">
                 <div
-                  className="middle-icon-container"
+                  className="mobile-middle-icon-container"
                   onClick={() => handleLike(index)}
                 >
-                  <span className="middle-icon-count">{post.likes}</span>
+                  <span className="mobile-middle-icon-count">{post.likes}</span>
                   <img
                     src={LikeIcon}
-                    className={`middle-icon ${post.isLiked ? "liked" : ""}`}
+                    className={`mobile-middle-icon ${
+                      post.isLiked ? "liked" : ""
+                    }`}
                     alt="Like"
                   />
                 </div>
                 <div
-                  className="middle-icon-container"
+                  className="mobile-middle-icon-container"
                   onClick={() => handleCommentClick(index)}
                 >
-                  <span className="middle-icon-count">
+                  <span className="mobile-middle-icon-count">
                     {post.comments.length}
                   </span>
-                  <img src={CommentIcon} alt="Comment" />
+                  <img src={CommentIcon} alt="Comment" className="mobile-middle-icon" />
                 </div>
                 <div
                   onClick={() => setShowShare(true)}
-                  className="middle-icon-container"
+                  className="mobile-middle-icon-container"
                 >
-                  <img src={ShareIcon} className="middle-icon" alt="Share" />
+                  <img
+                    src={ShareIcon}
+                    className="mobile-middle-icon mobile-middle-icon-share"
+                    alt="Share"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Post Text */}
-            <div className="middle-post-text">
-              <span className="middle-post-author">
+            <div className="mobile-middle-post-text">
+              <span className="mobile-middle-post-author">
                 {post.authorName || "Unknown Author"}
               </span>{" "}
               {post.caption || post.content || "No caption available"}
-              <span className="middle-see-more">...more</span>
+              <span className="mobile-middle-see-more">...more</span>
             </div>
           </div>
         ))
@@ -443,7 +450,6 @@ function MobileMiddlesection() {
             <div className="mobile-Full-comment-section-comments-list">
               {userComments.map((comment, index) => (
                 <div
-                
                   className="mobile-Full-comment-section-comment-main-parent"
                   key={index}
                 >
