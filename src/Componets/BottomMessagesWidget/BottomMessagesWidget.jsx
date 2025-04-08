@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "./BottomMessagesWidget.css";
 import Usericon from "./Usericon.png";
 import profileImage from "./profilephoto.png";
@@ -12,10 +13,11 @@ const MessagesWidget = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
   const userId = "your-user-id-here"; // Replace with actual userId
   const token = localStorage.getItem("authToken");
 
-  // Dummy data remains unchanged
+  // Dummy data (unchanged)
   const dummyDrafts = [
     {
       id: 1,
@@ -110,16 +112,23 @@ const MessagesWidget = () => {
         const unread = data.filter(
           (msg) => msg.status === "unread" || !msg.read
         );
-        setUnreadMessages(unread.map(msg => ({
-          id: msg.id || msg._id,
-          sender: msg.user?.username || "Unknown User",  // Using username from user object
-          timestamp: new Date(msg.timestamp).toLocaleString(),  // Format timestamp
-          text: msg.lastMessage,
-          status: msg.status || (msg.read ? "read" : "unread"),
-          profileImage: msg.user?.profilePictureUrl || profileImage,
-          draft: false,
-          group: msg.isGroup || false
-        })));
+        setUnreadMessages(
+          unread.map((msg, index) => {
+            // Try multiple possible ID fields, fallback to user.id or index
+            const messageId = msg.id || msg._id || msg.conversationId || msg.user?.id || `fallback-${index}`;
+            console.log("Mapping message:", msg, "Assigned ID:", messageId);
+            return {
+              id: messageId,
+              sender: msg.user?.username || "Unknown User",
+              timestamp: new Date(msg.timestamp).toLocaleString(),
+              text: msg.lastMessage,
+              status: msg.status || (msg.read ? "read" : "unread"),
+              profileImage: msg.user?.profilePictureUrl || profileImage,
+              draft: false,
+              group: msg.isGroup || false,
+            };
+          })
+        );
       } catch (err) {
         setError(err.message);
       } finally {
@@ -138,6 +147,15 @@ const MessagesWidget = () => {
     if (activeTab === "Groups") return dummyGroups;
     if (activeTab === "Filters") return dummyFilters;
     return [];
+  };
+
+  const handleUsernameClick = (messageId) => {
+    if (!messageId) {
+      console.error("No messageId provided for navigation");
+      return;
+    }
+    console.log("Navigating to MessageFinalClass2 with ID:", messageId);
+    navigate(`/MessageFinalClass2/${messageId}`);
   };
 
   return (
@@ -191,7 +209,11 @@ const MessagesWidget = () => {
                       alt={`${message.sender}'s profile`}
                     />
                   </div>
-                  <div className="message-bubble">
+                  <div
+                    className="message-bubble"
+                    onClick={() => handleUsernameClick(message.id)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <div className="name-and-timestamp">
                       <span className="sender-name">{message.sender}</span>
                       <span className="timestamp">{message.timestamp}</span>

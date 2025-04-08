@@ -70,7 +70,7 @@ function App() {
           <Route path="/SelfProfile" element={<SelfProfile />} />
           <Route path="/SelfSetting" element={<SelfSetting />} />
           <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
-          <Route path="/MessageFinalClass2" element={<MessageFinalClass2 />} />
+          <Route path="/MessageFinalClass2/:messageId" element={<MessageFinalClass2 />} />
           <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/CollabPage" element={<CollabPage />} />
           <Route
