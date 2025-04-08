@@ -101,7 +101,7 @@ function DesFollowerMiddleSectionPrivacy() {
         }
 
         const data = await response.json();
-        console.log("Fetched Profile Data:", data);
+        console.log("Privacy Fetched Profile Data:", data);
         setProfileData(data[0] || defaultData);
       } catch (err) {
         console.error("Fetch Profile Error:", err);

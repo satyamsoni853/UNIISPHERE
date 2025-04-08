@@ -186,8 +186,16 @@ function UserLogin() {
           </div>
 
           <div className="google-container">
-            <button className="google-btn" onClick={handleGoogleLogin}>
-              <FcGoogle className="google-icon" /> Google
+            <button
+              className="google-btn"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <Link
+                to="/GoogleLogin"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <FcGoogle className="google-icon" /> Google
+              </Link>
             </button>
           </div>
 

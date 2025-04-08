@@ -1,163 +1,222 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import "./BottomMessagesWidget.css";
 import Usericon from "./Usericon.png";
- 
-import profileImage from './profilephoto.png'
+import profileImage from "./profilephoto.png";
+
 const MessagesWidget = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("Unread");
-  const [showMessages,setShowMessages]=useState(false)
-  // Filter messages based on the active tab
+  const [showMessages, setShowMessages] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState([]); // State for API-fetched unread messages
+  const [loading, setLoading] = useState(false); // State for loading status
+  const [error, setError] = useState(null); // State for error handling
 
-  const messages = [
+  // Replace this with your actual method to get userId (e.g., from auth context or localStorage)
+  const userId = "your-user-id-here"; // Placeholder: Obtain userId dynamically
+  const token = localStorage.getItem("authToken"); // Example: Retrieve token from localStorage
+
+  // Dummy data for Drafts, Groups, and Filters
+  const dummyDrafts = [
     {
       id: 1,
-      sender: "Vijay Prasad",
-      timestamp: "2 hrs ago",
-      text: "Hello brother how are you. I that...",
-      status: "unread",
-      profileImage: profileImage, // Placeholder image
+      sender: "Draft User 1",
+      timestamp: "1 hr ago",
+      text: "Draft message 1...",
+      status: "read",
+      profileImage: profileImage,
       draft: true,
-      group: true,
+      group: false,
     },
     {
       id: 2,
-      sender: "Vijay Prasad",
-      timestamp: "3 hrs ago",
-      text: "Hello brother how are you. I am sure that...",
-      status: "unread",
-      profileImage: profileImage,
-      draft: true,
-      group: false,
-    },
-    {
-      id: 3,
-      sender: "Vijay Prasad",
-      timestamp: "5 hrs ago",
-      text: "Hey, just checking in...",
-      status: "unread",
-      profileImage: profileImage,
-      draft: true,
-      group: true,
-    },
-    {
-      id: 4,
-      sender: "Vijay Prasad",
+      sender: "Draft User 2",
       timestamp: "Yesterday",
-      text: "How's everything going?",
-      status: "read",
-      profileImage: profileImage,
-      draft: true,
-      group: false,
-    },
-    {
-      id: 5,
-      sender: "Vijay Prasad",
-      timestamp: "2 days ago",
-      text: "Let's catch up soon...",
-      status: "read",
-      profileImage: profileImage,
-      draft: true,
-      group: false,
-    },
-    {
-      id: 6,
-      sender: "Vijay Prasad",
-      timestamp: "2 days ago",
-      text: "Let's catch up soon...",
+      text: "Draft message 2...",
       status: "read",
       profileImage: profileImage,
       draft: true,
       group: false,
     },
   ];
-  const filteredMessages = messages.filter((msg) => {
-    if (activeTab === "Unread") return msg.status === "unread";
-    if (activeTab === "Drafts") return msg.draft;
-    if (activeTab === "Groups") return msg.group;
-    if (activeTab === "Filters") return true;
-    return true;
-  });
+
+  const dummyGroups = [
+    {
+      id: 3,
+      sender: "Group Chat 1",
+      timestamp: "2 hrs ago",
+      text: "Group message 1...",
+      status: "read",
+      profileImage: profileImage,
+      draft: false,
+      group: true,
+    },
+    {
+      id: 4,
+      sender: "Group Chat 2",
+      timestamp: "3 hrs ago",
+      text: "Group message 2...",
+      status: "read",
+      profileImage: profileImage,
+      draft: false,
+      group: true,
+    },
+  ];
+
+  const dummyFilters = [
+    {
+      id: 5,
+      sender: "Filtered User 1",
+      timestamp: "4 hrs ago",
+      text: "Filtered message 1...",
+      status: "read",
+      profileImage: profileImage,
+      draft: false,
+      group: false,
+    },
+    {
+      id: 6,
+      sender: "Filtered User 2",
+      timestamp: "5 hrs ago",
+      text: "Filtered message 2...",
+      status: "read",
+      profileImage: profileImage,
+      draft: false,
+      group: false,
+    },
+  ];
+
+  // Fetch unread conversations from the API
+  useEffect(() => {
+    const fetchConversations = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          "https://uniisphere-1.onrender.com/api/messages/conversations",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include token if required
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch conversations");
+        }
+
+        const data = await response.json();
+        // Log the full API response to the console
+        console.log("Message Full API Response:", data);
+
+        // Filter only unread messages from the API response
+        const unread = data.filter((msg) => msg.status === "unread");
+        setUnreadMessages(unread);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConversations();
+  }, []); // Empty dependency array to fetch once on mount
+
+  // Filter messages based on the active tab
+  const filteredMessages = () => {
+    if (activeTab === "Unread") return unreadMessages;
+    if (activeTab === "Drafts") return dummyDrafts;
+    if (activeTab === "Groups") return dummyGroups;
+    if (activeTab === "Filters") return dummyFilters;
+    return [];
+  };
 
   return (
     <div className="bottom-message-main-container">
-     {/* mesage -drop-up section */}
-      {showMessages && (<div className="message-section">
-        <div className="header">
-          <button
-            onClick={() => {
-              setActiveTab("Unread");
-            }}
-            className="message-btn unread"
-          >
-            Unread
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab("Drafts");
-            }}
-            className="message-btn drafts"
-          >
-            Drafts
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab("Groups");
-            }}
-            className="message-btn groups"
-          >
-            Groups
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab("Filters");
-            }}
-            className="message-btn filters"
-          >
-            Filters
-          </button>
-        </div>
+      {/* Message drop-up section */}
+      {showMessages && (
+        <div className="message-section">
+          <div className="header">
+            <button
+              onClick={() => setActiveTab("Unread")}
+              className={`message-btn ${activeTab === "Unread" ? "active" : ""}`}
+            >
+              Unread
+            </button>
+            <button
+              onClick={() => setActiveTab("Drafts")}
+              className={`message-btn ${activeTab === "Drafts" ? "active" : ""}`}
+            >
+              Drafts
+            </button>
+            <button
+              onClick={() => setActiveTab("Groups")}
+              className={`message-btn ${activeTab === "Groups" ? "active" : ""}`}
+            >
+              Groups
+            </button>
+            <button
+              onClick={() => setActiveTab("Filters")}
+              className={`message-btn ${activeTab === "Filters" ? "active" : ""}`}
+            >
+              Filters
+            </button>
+          </div>
 
-        <div className="message-list">
-          {filteredMessages.map((message) => (
-            <div key={message.id} className="message-row">
-              <div className="profile-image">
-                <img src={message.profileImage} alt="" />
-              </div>
-              <div className="message-bubble">
-                <div className="name-and-timestamp">
-                  <span className="sender-name">{message.sender}</span>
-                  <span className="timestamp">{message.timestamp}</span>
+          <div className="message-list">
+            {loading && <p>Loading conversations...</p>}
+            {error && <p>Error: {error}</p>}
+            {!loading && !error && filteredMessages().length === 0 && (
+              <p>
+                {activeTab === "Unread"
+                  ? "No unread messages."
+                  : `No ${activeTab.toLowerCase()} available.`}
+              </p>
+            )}
+            {!loading &&
+              !error &&
+              filteredMessages().map((message) => (
+                <div key={message.id} className="message-row">
+                  <div className="profile-image">
+                    <img
+                      src={message.profileImage || profileImage} // Fallback to default image
+                      alt={`${message.sender}'s profile`}
+                    />
+                  </div>
+                  <div className="message-bubble">
+                    <div className="name-and-timestamp">
+                      <span className="sender-name">{message.sender}</span>
+                      <span className="timestamp">{message.timestamp}</span>
+                    </div>
+                    <div className="para-and-dot">
+                      <p className="message-text">{message.text}</p>
+                      {message.status === "unread" && (
+                        <span className="dot"></span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="para-and-dot">
-                  <p className="message-text">{message.text}</p>
-                  {message.status === "unread" && <span className="dot"></span>}
-                </div>
-              </div>
-            </div>
-          ))}
+              ))}
+          </div>
         </div>
-      </div>)}
+      )}
       {/* Message option code */}
       <div className="messages-widget" onClick={() => setIsOpen(!isOpen)}>
-        <img
-          src={Usericon} // Replace with actual image URL
-          alt="Profile"
-          className="userIcon-image"
-        />
-        <span 
-          onClick={()=>{
-            setShowMessages(!showMessages)
-          }}
-        className="messages-text">Messages</span>
+        <img src={Usericon} alt="Profile" className="userIcon-image" />
         <span
-        onClick={()=>{
-          setShowMessages(!showMessages)
-        }}
-        className="icon">{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
+          onClick={() => setShowMessages(!showMessages)}
+          className="messages-text"
+        >
+          Messages
+        </span>
+        <span
+          onClick={() => setShowMessages(!showMessages)}
+          className="icon"
+        >
+          {isOpen ? <ChevronUp /> : <ChevronDown />}
+        </span>
       </div>
- 
     </div>
   );
 };
