@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoCall, IoSend } from "react-icons/io5"; // IoSend for the send button
 import { MdOutlineVideoCall } from "react-icons/md";
+import { useParams } from "react-router-dom";
 import backIcon from "./backsvg.svg";
 import callingIcon from "./call.svg";
 import gallaryIcon from "./gallary.svg";
+import "./MessageFinalClass2.css";
+import microphoneIcon from "./on.svg";
 import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
-import microphoneIcon from "./on.svg";
-import "./MessageFinalClass2.css";
 
 function MessageFinalClass2() {
   const { messageId } = useParams();
@@ -128,12 +128,56 @@ function MessageFinalClass2() {
     }
   };
 
-  // Fetch conversation on mount or when messageId changes
+  // Create a memoized polling function
+  const pollMessages = useCallback(async () => {
+    if (!messageId || !token) return;
+    
+    try {
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/messages/conversation/${messageId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+      const messages = Array.isArray(data) ? data : data.messages || [];
+      
+      const transformedMessages = messages
+        .map((msg) => ({
+          id: msg.id || msg._id,
+          senderId: msg.senderId,
+          sender: msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
+          text: msg.content || msg.lastMessage,
+          timestamp: msg.timestamp || msg.createdAt,
+          image: msg.image || null,
+        }))
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+      setChatMessages(transformedMessages);
+    } catch (error) {
+      console.error("Polling error:", error);
+    }
+  }, [messageId, token, senderId]);
+
+  // Add polling effect
   useEffect(() => {
+    // Initial fetch
     if (messageId && token) {
       fetchConversation();
     }
-  }, [messageId, token, senderId]);
+
+    // Set up polling interval
+    const pollInterval = setInterval(pollMessages, 3000); // Poll every 3 seconds
+
+    // Cleanup function
+    return () => clearInterval(pollInterval);
+  }, [messageId, token, pollMessages]);
 
   // Auto-scroll to bottom when chatMessages update
   useEffect(() => {
@@ -167,10 +211,20 @@ function MessageFinalClass2() {
       const data = await response.json();
       console.log("Message sent successfully:", data);
 
-      // Refresh the conversation to get the latest messages
-      await fetchConversation();
+      // Optimistically add the new message
+      const newMessage = {
+        id: Date.now().toString(), // Temporary ID
+        senderId: senderId,
+        sender: "You",
+        text: content,
+        timestamp: new Date().toISOString(),
+      };
 
+      setChatMessages(prev => [...prev, newMessage]);
       setMessageInput("");
+
+      // Trigger an immediate poll for new messages
+      pollMessages();
     } catch (error) {
       console.error("Error sending message:", error);
       setError(error.message || "Failed to send message");
