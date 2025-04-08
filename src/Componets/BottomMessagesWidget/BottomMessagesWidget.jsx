@@ -8,15 +8,14 @@ const MessagesWidget = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("Unread");
   const [showMessages, setShowMessages] = useState(false);
-  const [unreadMessages, setUnreadMessages] = useState([]); // State for API-fetched unread messages
-  const [loading, setLoading] = useState(false); // State for loading status
-  const [error, setError] = useState(null); // State for error handling
+  const [unreadMessages, setUnreadMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Replace this with your actual method to get userId (e.g., from auth context or localStorage)
-  const userId = "your-user-id-here"; // Placeholder: Obtain userId dynamically
-  const token = localStorage.getItem("authToken"); // Example: Retrieve token from localStorage
+  const userId = "your-user-id-here"; // Replace with actual userId
+  const token = localStorage.getItem("authToken");
 
-  // Dummy data for Drafts, Groups, and Filters
+  // Dummy data remains unchanged
   const dummyDrafts = [
     {
       id: 1,
@@ -86,33 +85,41 @@ const MessagesWidget = () => {
     },
   ];
 
-  // Fetch unread conversations from the API
   useEffect(() => {
     const fetchConversations = async () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "https://uniisphere-1.onrender.com/api/messages/conversations",
+          `https://uniisphere-1.onrender.com/api/messages/conversations?userId=${userId}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Include token if required
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch conversations");
+          throw new Error(`Failed to fetch conversations: ${response.status}`);
         }
 
         const data = await response.json();
-        // Log the full API response to the console
-        console.log("Message Full API Response:", data);
+        console.log("Full API Response:", data);
 
-        // Filter only unread messages from the API response
-        const unread = data.filter((msg) => msg.status === "unread");
-        setUnreadMessages(unread);
+        const unread = data.filter(
+          (msg) => msg.status === "unread" || !msg.read
+        );
+        setUnreadMessages(unread.map(msg => ({
+          id: msg.id || msg._id,
+          sender: msg.user?.username || "Unknown User",  // Using username from user object
+          timestamp: new Date(msg.timestamp).toLocaleString(),  // Format timestamp
+          text: msg.lastMessage,
+          status: msg.status || (msg.read ? "read" : "unread"),
+          profileImage: msg.user?.profilePictureUrl || profileImage,
+          draft: false,
+          group: msg.isGroup || false
+        })));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -120,10 +127,11 @@ const MessagesWidget = () => {
       }
     };
 
-    fetchConversations();
-  }, []); // Empty dependency array to fetch once on mount
+    if (token) {
+      fetchConversations();
+    }
+  }, [userId, token]);
 
-  // Filter messages based on the active tab
   const filteredMessages = () => {
     if (activeTab === "Unread") return unreadMessages;
     if (activeTab === "Drafts") return dummyDrafts;
@@ -134,7 +142,6 @@ const MessagesWidget = () => {
 
   return (
     <div className="bottom-message-main-container">
-      {/* Message drop-up section */}
       {showMessages && (
         <div className="message-section">
           <div className="header">
@@ -180,7 +187,7 @@ const MessagesWidget = () => {
                 <div key={message.id} className="message-row">
                   <div className="profile-image">
                     <img
-                      src={message.profileImage || profileImage} // Fallback to default image
+                      src={message.profileImage}
                       alt={`${message.sender}'s profile`}
                     />
                   </div>
@@ -201,7 +208,6 @@ const MessagesWidget = () => {
           </div>
         </div>
       )}
-      {/* Message option code */}
       <div className="messages-widget" onClick={() => setIsOpen(!isOpen)}>
         <img src={Usericon} alt="Profile" className="userIcon-image" />
         <span
