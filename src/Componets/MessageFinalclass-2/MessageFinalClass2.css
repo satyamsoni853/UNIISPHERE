@@ -358,6 +358,39 @@
 .message-part-2-delete-btn:hover {
   background-color: #cc0000;
 }
+/* Desktop Send Icon */
+.message-part-2-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between icons */
+}
+
+.message-part-2-send-icon {
+  cursor: pointer;
+  font-size: 40px; /* Match size with other icons */
+  color: black; /* Adjust color as needed */
+}
+
+.message-part-2-send-icon:hover {
+  color: #0056b3; /* Hover effect */
+}
+
+/* Mobile Send Icon */
+.mobile-chat-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between icons */
+}
+
+.mobile-chat-send-icon {
+  cursor: pointer;
+  font-size: 20px; /* Match size with other icons */
+  color: #007bff; /* Adjust color as needed */
+}
+
+.mobile-chat-send-icon:hover {
+  color: #0056b3; /* Hover effect */
+}
 
 @media (max-width: 748px) {
   .message-part-2-app {

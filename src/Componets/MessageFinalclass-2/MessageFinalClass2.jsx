@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { IoCall } from "react-icons/io5";
+import { IoCall, IoSend } from "react-icons/io5"; // IoSend for the send button
 import { MdOutlineVideoCall } from "react-icons/md";
 import backIcon from "./backsvg.svg";
 import callingIcon from "./call.svg";
@@ -14,10 +14,11 @@ function MessageFinalClass2() {
   const { messageId } = useParams();
   const [messageInput, setMessageInput] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
-  const [conversations, setConversations] = useState([]); // State for sidebar conversations
+  const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [receiverData, setReceiverData] = useState({});
+  const chatBodyRef = useRef(null); // Ref for chat body to scroll to bottom
 
   const senderId = "18114725-fcc6-4cbe-a617-894a464b9fc8";
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
@@ -45,7 +46,6 @@ function MessageFinalClass2() {
         const data = await response.json();
         console.log("Sidebar Conversations API Response:", data);
 
-        // Map conversations to sidebar format
         const transformedConversations = data.map((msg) => ({
           id: msg.id || msg._id || msg.conversationId || msg.user?.id,
           name: msg.user?.username || "Unknown User",
@@ -71,62 +71,78 @@ function MessageFinalClass2() {
     }
   }, [senderId, token]);
 
-  // Fetch conversation messages for the selected conversation
-  useEffect(() => {
-    const fetchConversation = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `https://uniisphere-1.onrender.com/api/messages/conversation/${messageId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch conversation");
+  // Function to fetch conversation messages
+  const fetchConversation = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/messages/conversation/${messageId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const data = await response.json();
-        console.log("GET API Response (Conversation):", data);
+      if (!response.ok) {
+        throw new Error("Failed to fetch conversation");
+      }
 
-        const messages = Array.isArray(data) ? data : data.messages || [];
-        const transformedMessages = messages.map((msg) => ({
+      const data = await response.json();
+      console.log("GET API Response (Conversation):", data);
+
+      const messages = Array.isArray(data) ? data : data.messages || [];
+      const transformedMessages = messages
+        .map((msg) => ({
           id: msg.id || msg._id,
           senderId: msg.senderId,
           sender: msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
           text: msg.content || msg.lastMessage,
           timestamp: msg.timestamp || msg.createdAt,
           image: msg.image || null,
-        }));
+        }))
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-        if (messages.length > 0) {
-          const receiver = messages.find((msg) => msg.senderId !== senderId)?.user || {};
-          setReceiverData({
-            username: receiver.username || "Unknown",
-            profilePictureUrl: receiver.profilePictureUrl || profilePicSmall,
-          });
-        }
-
-        setChatMessages(transformedMessages);
-      } catch (err) {
-        setError(err.message);
-        console.error("Error fetching conversation:", err.message);
-      } finally {
-        setLoading(false);
+      if (messages.length > 0) {
+        const receiver = messages.find((msg) => msg.senderId !== senderId)?.user || {};
+        setReceiverData({
+          username: receiver.username || "Unknown",
+          profilePictureUrl: receiver.profilePictureUrl || profilePicSmall,
+        });
+      } else {
+        const selectedConversation = conversations.find((conv) => conv.id === messageId);
+        setReceiverData({
+          username: selectedConversation?.name || "Unknown",
+          profilePictureUrl: selectedConversation?.profilePictureUrl || profilePicSmall,
+        });
       }
-    };
 
+      setChatMessages(transformedMessages);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching conversation:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch conversation on mount or when messageId changes
+  useEffect(() => {
     if (messageId && token) {
       fetchConversation();
     }
   }, [messageId, token, senderId]);
 
-  // Send message function
+  // Auto-scroll to bottom when chatMessages update
+  useEffect(() => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+
+  // Send message function with refresh
   const sendMessage = async (content) => {
     if (!content.trim()) return;
 
@@ -151,16 +167,8 @@ function MessageFinalClass2() {
       const data = await response.json();
       console.log("Message sent successfully:", data);
 
-      setChatMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          id: data.id,
-          senderId: senderId,
-          sender: "You",
-          text: content,
-          timestamp: new Date().toISOString(),
-        },
-      ]);
+      // Refresh the conversation to get the latest messages
+      await fetchConversation();
 
       setMessageInput("");
     } catch (error) {
@@ -169,9 +177,17 @@ function MessageFinalClass2() {
     }
   };
 
+  // Optional: Keep Enter key functionality (comment out if not needed)
   const handleSendMessage = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
+      sendMessage(messageInput);
+    }
+  };
+
+  // Send message when clicking the send icon
+  const handleSendClick = () => {
+    if (messageInput.trim()) {
       sendMessage(messageInput);
     }
   };
@@ -195,7 +211,7 @@ function MessageFinalClass2() {
                 className={`message-part-2-message-item ${
                   conversation.id === messageId ? "active" : ""
                 }`}
-                onClick={() => window.location.href = `/MessageFinalClass2/${conversation.id}`} // Navigate to conversation
+                onClick={() => (window.location.href = `/MessageFinalClass2/${conversation.id}`)}
                 style={{ cursor: "pointer" }}
               >
                 <img
@@ -235,7 +251,7 @@ function MessageFinalClass2() {
               </span>
             </div>
           </div>
-          <div className="message-part-2-chat-body">
+          <div className="message-part-2-chat-body" ref={chatBodyRef}>
             {loading && <p className="message-part-2-loading">Loading messages...</p>}
             {error && <p className="message-part-2-error">Error: {error}</p>}
             {!loading && !error && chatMessages.length === 0 && (
@@ -291,7 +307,7 @@ function MessageFinalClass2() {
               className="message-part-2-input"
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
-              onKeyDown={handleSendMessage}
+              onKeyDown={handleSendMessage} // Optional: Keep this if you want Enter key support
             />
             {error && (
               <div className="message-error-alert">
@@ -300,6 +316,9 @@ function MessageFinalClass2() {
               </div>
             )}
             <div className="message-part-2-icons">
+            <span className="message-part-2-send-icon" onClick={handleSendClick}>
+                <IoSend />
+              </span>
               <span>
                 <img className="message-part-2-chat-all-icon" src={stickerIcon} alt="StickerIcon" />
               </span>
@@ -307,8 +326,13 @@ function MessageFinalClass2() {
                 <img className="message-part-2-chat-all-icon" src={gallaryIcon} alt="GallaryIcon" />
               </span>
               <span>
-                <img className="message-part-2-chat-all-icon" src={microphoneIcon} alt="MicrophoneIcon" />
+                <img
+                  className="message-part-2-chat-all-icon"
+                  src={microphoneIcon}
+                  alt="MicrophoneIcon"
+                />
               </span>
+              
             </div>
           </div>
         </div>
@@ -339,9 +363,7 @@ function MessageFinalClass2() {
             <div className="mobile-chat-big-name">{receiverData.username || "Loading..."}</div>
             <div className="mobile-chat-big-username">{receiverData.username || ""}</div>
             <button className="mobile-chat-voice-call">Voice Call</button>
-            <div className="mobile-chat-interests">
-              Loading interests...
-            </div>
+            <div className="mobile-chat-interests">Loading interests...</div>
           </div>
           <div className="mobile-chat-input">
             <input
@@ -350,7 +372,7 @@ function MessageFinalClass2() {
               placeholder="Type a message"
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
-              onKeyDown={handleSendMessage}
+              onKeyDown={handleSendMessage} // Optional: Keep this if you want Enter key support
             />
             <div className="mobile-chat-icons">
               <span>
@@ -360,7 +382,14 @@ function MessageFinalClass2() {
                 <img className="mobile-chat-all-icon" src={gallaryIcon} alt="GallaryIcon" />
               </span>
               <span>
-                <img className="mobile-chat-all-icon" src={microphoneIcon} alt="MicrophoneIcon" />
+                <img
+                  className="mobile-chat-all-icon"
+                  src={microphoneIcon}
+                  alt="MicrophoneIcon"
+                />
+              </span>
+              <span className="mobile-chat-send-icon" onClick={handleSendClick}>
+                <IoSend />
               </span>
             </div>
           </div>
