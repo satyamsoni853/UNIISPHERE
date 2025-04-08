@@ -26,6 +26,7 @@ import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
 
 import MobileAddPost from "./Componets/MobileAddPost/MobileAddPost.jsx";
 import MessageMobileInbox from "./Componets/MessageMobileInbox/MobileMessage.jsx";
+import GoogleLoginComponent from './Componets/GoogleLogin/GoogleLoginComponent.jsx'
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             path="/FullFlowerSectionPage/:userId"
             element={<FullFlowerSectionPage />}
           />
+         
           <Route
             path="/PersonalInfoUpdate/:userId"
             element={<PersonalInfoUpdate />}
@@ -80,6 +82,8 @@ function App() {
 
           <Route path="/MobileAddPost" element={<MobileAddPost />} />
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
+          <Route path="/GoogleLoginComponent" element={<GoogleLoginComponent />} />
+          
         </Routes>
       </div>
     </Router>

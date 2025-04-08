@@ -42,6 +42,9 @@ function DesktopNavbarr() {
   const [posts, setPosts] = useState(0); // Add this with your other state declarations
   const [Username, setUsername] = useState("");
   const [UserProfileImage, setUserProfileImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  
+  const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -57,6 +60,38 @@ function DesktopNavbarr() {
     { time: "18 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-blue-400" },
     { time: "2 days", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
   ]);
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        setError("Authentication token not found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          "https://uniisphere-1.onrender.com/users/getAll",
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
+        );
+
+        setAllUsersResponse(response.data);
+        console.log("Get All Users API Response:", response.data);
+      } catch (err) {
+        console.error("Error fetching all users:", err);
+        setError(err.message || "Failed to fetch users");
+        setAllUsersResponse({ error: err.message });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllUsers();
+  }, []);
 
   // Time filters for notifications
   const timeFilters = {
@@ -160,6 +195,7 @@ function DesktopNavbarr() {
   const handleProfileClick = (userId) => {
     localStorage.setItem("SearchUserId", userId);
     navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
+    // navigate(`/FullFlowerSectionPage/${userId}`);
     setShowResults(false);
     setSearchQuery("");
   };
