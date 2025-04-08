@@ -46,6 +46,7 @@ function MobileMiddlesection() {
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
+    const [commentsLoading, setCommentsLoading] = useState(false);
   const optionsRef = useRef(null);
 
   const location = useLocation();
@@ -448,46 +449,56 @@ function MobileMiddlesection() {
               <h1 className="mobile-Full-comment-section-heading">Comments</h1>
             </div>
             <div className="mobile-Full-comment-section-comments-list">
-              {userComments.map((comment, index) => (
-                <div
-                  className="mobile-Full-comment-section-comment-main-parent"
-                  key={index}
-                >
-                  <div className="mobile-Full-comment-section-comment">
-                    <img
-                      src={comment.profilePicture || profilePhoto}
-                      alt="Profile"
-                      className="mobile-Full-comment-section-comment-profile-picture"
-                    />
-                    <div className="mobile-Full-comment-section-comment-content">
-                      <div className="mobile-Full-comment-section-comment-user-info">
-                        <span className="mobile-Full-comment-section-comment-username">
-                          {comment.author || comment.username || "Anonymous"}
-                        </span>
-                        <span className="mobile-Full-comment-section-comment-timestamp">
-                          {comment.timestamp || "Just now"}
-                        </span>
+            {commentsLoading ? (
+                  <div className="comments-loading">Loading comments...</div>
+                ) : posts[activeCommentPostIndex].comments.length > 0 ? (
+                  posts[activeCommentPostIndex].comments.map(
+                    (comment, index) => (
+                      <div
+                      className="mobile-Full-comment-section-comment-main-parent"
+                      key={comment.id || index}
+                    >
+                      <div className="mobile-Full-comment-section-comment">
+                        <img
+                          src={comment.user.profiePictureUrl || profilePhoto}
+                          alt="Profile"
+                          className="mobile-Full-comment-section-comment-profile-picture"
+                        />
+                        <div className="mobile-Full-comment-section-comment-content">
+                          <div className="mobile-Full-comment-section-comment-user-info">
+                            <span className="mobile-Full-comment-section-comment-username">
+                              {comment.user.username || "Anonymous"}
+                            </span>
+                            <span className="mobile-Full-comment-section-comment-timestamp">
+                              {new Date(comment.createdAt).toLocaleTimeString() || "Just now"}
+                            </span>
+                          </div>
+                          <div className="mobile-Full-comment-section-comment-text">
+                            {comment.content}
+                          </div>
+                          <div className="mobile-Full-comment-section-comment-actions">
+                            <span className="mobile-Full-comment-section-reply-link">
+                              REPLY
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="mobile-Full-comment-section-comment-text">
-                        {comment.text}
-                      </div>
-                      <div className="mobile-Full-comment-section-comment-actions">
-                        <span className="mobile-Full-comment-section-reply-link">
-                          REPLY
-                        </span>
+                      <div className="mobile-Full-comment-section-comment-likes">
+                        <img
+                          src={LikeIcon}
+                          alt="Like"
+                          className="mobile-Full-comment-section-like-button"
+                        />
+                        <span>{comment.likes || 0}</span>
                       </div>
                     </div>
+                    )
+                  )
+                ) : (
+                  <div className="no-comments-message">
+                    No comments yet. Be the first to comment!
                   </div>
-                  <div className="mobile-Full-comment-section-comment-likes">
-                    <img
-                      src={LikeIcon}
-                      alt="Like"
-                      className="mobile-Full-comment-section-like-button"
-                    />
-                    <span>{comment.likes || 0}</span>
-                  </div>
-                </div>
-              ))}
+                )}
             </div>
             <div className="mobile-Full-comment-section-comment-input-and-image">
               <img
@@ -500,6 +511,10 @@ function MobileMiddlesection() {
                 placeholder="Write a comment..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
+                onKeyPress={(e) =>
+                  e.key === "Enter" &&
+                  handleCommentSubmit(activeCommentPostIndex)
+                }
               />
               <IoSendOutline
                 className="comment-send-icon"

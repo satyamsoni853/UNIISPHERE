@@ -273,7 +273,7 @@ function DesktopMiddle() {
           <p>Loading posts...</p>
         ) : posts.length > 0 ? (
           posts.map((post, index) => (
-            <div key={post._id || index} className="post-container">
+            <div key={post._id|| index} className="post-container">
               <div className="middle-profile-header">
                 <div
                   onClick={() => handleProfileClick(post.authorId || userId)}

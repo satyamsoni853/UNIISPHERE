@@ -422,7 +422,7 @@
 
 /* Main Container */
 /* Additional Media Query for Smaller Screens (max-width: 480px) */
-@media (max-width: 480px) {
+@media (max-width: 484px) {
   .mobile-Full-share-section-main-container {
     z-index: 99;
 
