@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./MessageFinalClass2.css";
+import React, { useEffect, useState } from "react";
 import { IoCall } from "react-icons/io5";
 import { MdOutlineVideoCall } from "react-icons/md";
-import profilePicSmall from "./profilePicSmall.png";
+import backIcon from "./backsvg.svg";
 import callingIcon from "./call.svg";
 import gallaryIcon from "./gallary.svg";
-import microphoneIcon from "./on.svg";
-import stickerIcon from "./sticker.svg";
-import backIcon from "./backsvg.svg";
 import checkImage from "./image.jpg";
-import ProfileIcon from "./ProfileIcon.png";
+import "./MessageFinalClass2.css";
+import microphoneIcon from "./on.svg";
+import profilePicSmall from "./profilePicSmall.png";
+import stickerIcon from "./sticker.svg";
 
 function MessageFinalClass2() {
   const [messageInput, setMessageInput] = useState(""); // State for message input
@@ -96,45 +95,62 @@ function MessageFinalClass2() {
     fetchConversation();
   }, []); // Empty dependency array to fetch once on mount
 
-  // Function to send a message via API
+  // Update the sendMessage function
   const sendMessage = async (content) => {
+    if (!content.trim()) return;
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setError("Please login to send messages");
+      return;
+    }
+
     try {
-      const response = await fetch("https://uniisphere-1.onrender.com/api/messages/", {
+      console.log("Sending message with data:", {
+        receiverId,
+        content
+      });
+
+      const response = await fetch("https://uniisphere-1.onrender.com/api/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include token if required
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          receiverId: receiverId,
-          content: content,
-          senderId: senderId, // Assuming the API accepts senderId in the body
-        }),
+          receiverId,
+          content
+        })
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send message");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to send message");
       }
 
       const data = await response.json();
-      // Print the full API response for sending message
-      console.log("POST API Response (Send Message):", data);
+      console.log("Message sent successfully:", data);
 
-      // Add the sent message to the chat
-      setChatMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "Vijay Prasad", text: content },
-      ]);
-      setMessageInput(""); // Clear the input field
+      // Update chat messages with the new message
+      setChatMessages(prevMessages => [...prevMessages, {
+        sender: "Vijay Prasad",
+        text: content,
+        timestamp: new Date().toISOString(),
+        id: data.id
+      }]);
+
+      // Clear input
+      setMessageInput("");
     } catch (error) {
-      console.error("Error sending message:", error.message);
-      alert("Failed to send message. Please try again.");
+      console.error("Error sending message:", error);
+      setError(error.message || "Failed to send message");
     }
   };
 
-  // Handle form submission (Enter key triggers this)
+  // Update the handleSendMessage function
   const handleSendMessage = (e) => {
-    if (e.key === "Enter" && messageInput.trim()) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage(messageInput);
     }
   };
@@ -194,13 +210,20 @@ function MessageFinalClass2() {
                 const isNewSender =
                   index === 0 ||
                   message.sender !== chatMessages[index - 1].sender;
+                
+                const messageTime = new Date(message.timestamp).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                });
+
                 return (
-                  <>
+                  <React.Fragment key={message.id || index}>
                     {isNewSender && (
-                      <p className="message-part-2-timestamp">Today 2:00 AM</p>
+                      <p className="message-part-2-timestamp">
+                        {new Date(message.timestamp).toLocaleDateString()}
+                      </p>
                     )}
                     <div
-                      key={index}
                       className={`message-part-2-message ${
                         message.sender === "Vijay Prasad"
                           ? "message-part-2-sent"
@@ -208,32 +231,20 @@ function MessageFinalClass2() {
                       }`}
                     >
                       <div className="message-part-2-message-content-container">
-                        {message.sender === "Mohan Bhadouria" && (
+                        {message.sender !== "Vijay Prasad" && (
                           <img
                             className="message-part-2-message-person-image"
-                            src={profilePicSmall}
+                            src={message.sender.profilePictureUrl || profilePicSmall}
                             alt=""
                           />
                         )}
                         <div className="message-part-2-message-content">
-                          {message.image && (
-                            <div className="message-part-2-message-profile">
-                              <img src={ProfileIcon} alt="" />
-                              <span>Vijay Prasad</span>
-                            </div>
-                          )}
-                          {message.image && (
-                            <img
-                              className="message-part-2-chat-image"
-                              src={message.image}
-                              alt=""
-                            />
-                          )}
-                          <p>{message.text}</p>
+                          <p>{message.text || message.content}</p>
+                          <span className="message-time">{messageTime}</span>
                         </div>
                       </div>
                     </div>
-                  </>
+                  </React.Fragment>
                 );
               })}
           </div>
@@ -246,6 +257,12 @@ function MessageFinalClass2() {
               onChange={(e) => setMessageInput(e.target.value)}
               onKeyDown={handleSendMessage} // Send message on Enter key
             />
+            {error && (
+              <div className="message-error-alert">
+                {error}
+                <button onClick={() => setError(null)}>✕</button>
+              </div>
+            )}
             <div className="message-part-2-icons">
               <span>
                 <img
