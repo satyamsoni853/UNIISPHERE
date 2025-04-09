@@ -37,13 +37,12 @@ function DesktopNavbarr() {
   const [disableComments, setDisableComments] = useState(false);
   const [mentions, setMentions] = useState([]);
   const [mediaList, setMediaList] = useState([]);
-  const [totalLikes, setTotalLikes] = useState(0); // New state for total likes
-  const [totalComments, setTotalComments] = useState(0); // New state for total comments
-  const [posts, setPosts] = useState(0); // Add this with your other state declarations
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [totalComments, setTotalComments] = useState(0);
+  const [posts, setPosts] = useState(0);
   const [Username, setUsername] = useState("");
   const [UserProfileImage, setUserProfileImage] = useState("");
   const [loading, setLoading] = useState(true);
-  
   const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -60,6 +59,35 @@ function DesktopNavbarr() {
     { time: "18 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-blue-400" },
     { time: "2 days", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
   ]);
+
+  // Fetch connections from the API
+  useEffect(() => {
+    const fetchConnections = async () => {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        console.error("Authentication token not found");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          "https://uniisphere-1.onrender.com/api/connections",
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
+        );
+
+        console.log("Connections API Response:", response.data);
+      } catch (err) {
+        console.error("Error fetching connections:", err.response ? err.response.data : err.message);
+      }
+    };
+
+    fetchConnections();
+  }, []);
+
+  // Fetch all users
   useEffect(() => {
     const fetchAllUsers = async () => {
       const authToken = localStorage.getItem("authToken");
@@ -194,8 +222,7 @@ function DesktopNavbarr() {
   // Handle profile click
   const handleProfileClick = (userId) => {
     localStorage.setItem("SearchUserId", userId);
-    navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
-    // navigate(`/FullFlowerSectionPage/${userId}`);
+    navigate(`/FullFlowerSectionPage/${userId}`);
     setShowResults(false);
     setSearchQuery("");
   };
@@ -241,7 +268,7 @@ function DesktopNavbarr() {
     
     switch (iconName) {
       case "home":
-        navigate("/");
+        navigate("/view");
         break;
       case "network":
         navigate("/network");
@@ -323,7 +350,7 @@ function DesktopNavbarr() {
 
       console.log("Profile updated:", profileResponse.data);
 
-      const postResponse = await axios.post(
+      const postResponse = await axios.get(
         `https://uniisphere-1.onrender.com/posts/`,
         formData,
         {
