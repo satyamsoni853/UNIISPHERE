@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { IoCall, IoSend } from "react-icons/io5"; // IoSend for the send button
 import { MdOutlineVideoCall } from "react-icons/md";
 import { useParams } from "react-router-dom";
@@ -7,7 +6,7 @@ import backIcon from "./backsvg.svg";
 import callingIcon from "./call.svg";
 import gallaryIcon from "./gallary.svg";
 import "./MessageFinalClass2.css";
-import microphoneIcon from "./on.svg";
+// Removed duplicate import of microphoneIcon
 import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
 import microphoneIcon from "./on.svg";
