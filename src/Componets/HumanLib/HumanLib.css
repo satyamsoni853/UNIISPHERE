@@ -1,0 +1,342 @@
+/* HumanLib.css */
+
+/* Wrapper for the entire layout */
+.HumanLib-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content area (container for the form and sidebar) */
+.HumanLib-main-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Container styles for the form (left/center section) */
+.HumanLib-container {
+  width: 72%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* Apply margin-left only to the first page content */
+.HumanLib-container > div:not(.HumanLib-second-page-content, .HumanLib-third-page-content) {
+  margin-left: 200px;
+}
+
+/* Override margin-left for the second and third page content */
+.HumanLib-second-page-content,
+.HumanLib-third-page-content {
+  margin-left: 0 !important; /* Override any inherited margin */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  text-align: center; /* Center text */
+}
+
+/* Right section (sidebar) */
+.HumanLib-right-section {
+  width: 300px; /* Fixed width for the sidebar */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Image container for the circular arrangement */
+.HumanLib-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Ensure vertical centering */
+  margin-bottom: 30px;
+}
+
+/* Concentric circles container */
+.HumanLib-concentric-circles {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto; /* Ensure centering */
+}
+
+/* Circle styles (for all circles) */
+.HumanLib-circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+/* Pink outer circle (static) */
+.HumanLib-circle-pink {
+  border: 2px solid #ff9999; /* Pink color */
+}
+
+/* Light blue middle circle (static) */
+.HumanLib-circle-blue {
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  border: 2px solid #a3dffa; /* Light blue color */
+}
+
+/* Purple inner circle (third phase only) */
+.HumanLib-circle-purple {
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+  border: 2px solid #d1c4e9; /* Purple color */
+}
+
+/* Central image (second phase only) */
+.HumanLib-central-image {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  background-color: #e0e0e0; /* Placeholder background */
+  border-radius: 50%;
+}
+
+/* Orbiting images (second phase only) */
+.HumanLib-orbiting-image {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-color: #d0d0d0; /* Placeholder background */
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+}
+
+/* Position each orbiting image along the pink circle (radius = 150px) */
+.HumanLib-orbiting-image-1 {
+  transform: translate(-50%, -50%) translateX(150px);
+}
+
+.HumanLib-orbiting-image-2 {
+  transform: translate(-50%, -50%) rotate(90deg) translateX(150px) rotate(-90deg);
+}
+
+.HumanLib-orbiting-image-3 {
+  transform: translate(-50%, -50%) translateX(-150px);
+}
+
+.HumanLib-orbiting-image-4 {
+  transform: translate(-50%, -50%) rotate(270deg) translateX(150px) rotate(-270deg);
+}
+
+/* Apply the orbiting animation to the parent container (second phase only) */
+.HumanLib-second-page-content .HumanLib-concentric-circles {
+  animation: orbit 10s linear infinite;
+}
+
+/* Keyframes for the orbit animation */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Title styles */
+.HumanLib-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Description styles */
+.HumanLib-description {
+  font-size: 24px;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center; /* Ensure centering on all screens */
+}
+
+/* Input styles (first page) */
+.HumanLib-input {
+  width: 800px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* Button container */
+.HumanLib-button-container {
+  display: flex;
+  gap: 100px;
+}
+
+/* Button styles */
+.HumanLib-button {
+  padding: 10px 80px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.HumanLib-cancel {
+  background-color: #ccc;
+  color: #333;
+}
+
+.HumanLib-start {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  /* Hide the right section on mobile */
+  .HumanLib-right-section {
+    display: none;
+  }
+
+  /* Make the main container take full width */
+  .HumanLib-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  /* Remove the margin-left and center content */
+  .HumanLib-container > div {
+    margin-left: 0;
+    text-align: center; /* Center content on mobile */
+  }
+
+  /* Ensure second and third page content is centered */
+  .HumanLib-second-page-content,
+  .HumanLib-third-page-content {
+    margin-left: 0 !important;
+    text-align: center;
+  }
+
+  /* Adjust title font size */
+  .HumanLib-title {
+    font-size: 2rem;
+  }
+
+  /* Adjust description font size */
+  .HumanLib-description {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  /* Adjust input field width for mobile */
+  .HumanLib-input {
+    width: 100%;
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  /* Adjust button container for mobile */
+  .HumanLib-button-container {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  /* Adjust button padding for mobile */
+  .HumanLib-button {
+    padding: 10px 40px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  /* Center the image container on mobile */
+  .HumanLib-image-container {
+    margin-bottom: 20px;
+  }
+
+  /* Adjust the concentric circles size for mobile */
+  .HumanLib-concentric-circles {
+    width: 200px;
+    height: 200px;
+  }
+
+  /* Adjust orbiting images size and orbit radius for mobile (radius = 100px) */
+  .HumanLib-orbiting-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .HumanLib-orbiting-image-1 {
+    transform: translate(-50%, -50%) translateX(100px);
+  }
+
+  .HumanLib-orbiting-image-2 {
+    transform: translate(-50%, -50%) rotate(90deg) translateX(100px) rotate(-90deg);
+  }
+
+  .HumanLib-orbiting-image-3 {
+    transform: translate(-50%, -50%) translateX(-100px);
+  }
+
+  .HumanLib-orbiting-image-4 {
+    transform: translate(-50%, -50%) rotate(270deg) translateX(100px) rotate(-270deg);
+  }
+}
+
+/* Further adjustments for very small screens (e.g., below 480px) */
+@media (max-width: 480px) {
+  .HumanLib-title {
+    font-size: 1.5rem;
+  }
+
+  .HumanLib-description {
+    font-size: 14px;
+  }
+
+  .HumanLib-input {
+    font-size: 12px;
+  }
+
+  .HumanLib-button {
+    padding: 8px 30px;
+    font-size: 12px;
+    max-width: 180px;
+  }
+
+  .HumanLib-concentric-circles {
+    width: 150px;
+    height: 150px;
+  }
+
+  .HumanLib-orbiting-image {
+    width: 30px;
+    height: 30px;
+  }
+
+  .HumanLib-orbiting-image-1 {
+    transform: translate(-50%, -50%) translateX(75px);
+  }
+
+  .HumanLib-orbiting-image-2 {
+    transform: translate(-50%, -50%) rotate(90deg) translateX(75px) rotate(-90deg);
+  }
+
+  .HumanLib-orbiting-image-3 {
+    transform: translate(-50%, -50%) translateX(-75px);
+  }
+
+  .HumanLib-orbiting-image-4 {
+    transform: translate(-50%, -50%) rotate(270deg) translateX(75px) rotate(-270deg);
+  }
+}
