@@ -1,34 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { IoCall, IoSend } from "react-icons/io5";
+import { IoCall, IoSend } from "react-icons/io5"; // IoSend for the send button
 import { MdOutlineVideoCall } from "react-icons/md";
+import { useParams } from "react-router-dom";
 import backIcon from "./backsvg.svg";
 import callingIcon from "./call.svg";
 import gallaryIcon from "./gallary.svg";
+import "./MessageFinalClass2.css";
+import microphoneIcon from "./on.svg";
 import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
 import microphoneIcon from "./on.svg";
 import "./MessageFinalClass2.css";
-import Background from '../Background/Background.jsx'
-
-// Comprehensive emoji list
-const emojis = [
-  "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛",
-  "😇", "🙃", "😏", "😴", "🤗", "🤔", "🤤", "😢", "😭", "😤",
-  "😡", "🤬", "😳", "😱", "😨", "😰", "😥", "😓", "🙄", "😬",
-  "🤐", "😷", "🤒", "🤕", "🥳", "🤩", "🥺", "🙌", "👏", "👍",
-  "👎", "✌️", "🤘", "👌", "👈", "👉", "👆", "👇", "✋", "🤚",
-  "🖐️", "👋", "🤝", "🙏", "💪", "🦵", "🦶", "👀", "👁️", "👅",
-  "👄", "💋", "❤️", "💔", "💖", "💙", "💚", "💛", "💜", "🖤",
-  "🤎", "💯", "💥", "💦", "💤", "💨", "🎉", "🎈", "🎁", "🎂",
-  "🍰", "🍫", "🍬", "🍭", "🍎", "🍊", "🍋", "🍇", "🍉", "🍓",
-  "🥝", "🍍", "🥭", "🥑", "🥕", "🌽", "🥔", "🍔", "🍕", "🌮",
-  "🍟", "🍗", "🥚", "🥓", "🧀", "🍳", "☕", "🍵", "🥛", "🍷",
-  "🍺", "🥂", "🎸", "🎹", "🥁", "🎤", "🎧", "🎮", "🏀", "⚽",
-  "🏈", "🎾", "🏐", "🏓", "⛳", "🏊", "🏄", "🚴", "🚗", "✈️",
-  "🚀", "🛸", "🌍", "🌙", "⭐", "🌞", "☁️", "⛅", "🌧️", "⛄",
-  "⚡", "🔥", "💧", "🌊", "🌴", "🌵", "🌷", "🌸", "🌹", "🥀"
-];
 
 function MessageFinalClass2() {
   const { messageId } = useParams();
@@ -138,14 +121,21 @@ function MessageFinalClass2() {
     }
   };
 
-  // Set up polling for conversation updates
+  // Fetch conversation on mount or when messageId changes
   useEffect(() => {
+    // Initial fetch
     if (messageId && token) {
       fetchConversation(); // Initial fetch
       const intervalId = setInterval(fetchConversation, 2000); // Poll every 2 seconds
       return () => clearInterval(intervalId); // Cleanup on unmount
     }
-  }, [messageId, token, senderId]);
+
+    // Set up polling interval
+    const pollInterval = setInterval(pollMessages, 3000); // Poll every 3 seconds
+
+    // Cleanup function
+    return () => clearInterval(pollInterval);
+  }, [messageId, token, pollMessages]);
 
   // Auto-scroll to bottom when messages update
   useEffect(() => {
@@ -172,77 +162,17 @@ function MessageFinalClass2() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send message");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to send message");
       }
-      setMessageInput(""); // Clear input immediately
-      // No need to call fetchConversation here - polling will handle it
-    } catch (error) {
-      setError(error.message);
-    }
-  };
 
-  // Sticker (Emoji) functionality
-  const handleStickerClick = () => {
-    setShowStickers(!showStickers);
-    setShowGallery(false);
-  };
+      const data = await response.json();
+      console.log("Message sent successfully:", data);
 
-  const addEmojiToInput = (emoji) => {
-    setMessageInput(prev => prev + emoji);
-    setShowStickers(false);
-  };
+      // Refresh the conversation to get the latest messages
+      await fetchConversation();
 
-  // Voice recording functionality
-  const handleVoiceRecord = async () => {
-    if (!isRecording) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const mediaRecorder = new MediaRecorder(stream);
-        mediaRecorderRef.current = mediaRecorder;
-        const audioChunks = [];
-
-        mediaRecorder.ondataavailable = (event) => {
-          audioChunks.push(event.data);
-        };
-
-        mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-          setAudioBlob(audioBlob);
-          sendVoiceMessage(audioBlob);
-          stream.getTracks().forEach((track) => track.stop());
-        };
-
-        mediaRecorder.start();
-        setIsRecording(true);
-      } catch (error) {
-        setError("Failed to start recording: " + error.message);
-      }
-    } else {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
-    }
-  };
-
-  const sendVoiceMessage = async (audioBlob) => {
-    try {
-      const formData = new FormData();
-      formData.append("receiverId", messageId);
-      formData.append("content", "Voice message");
-      formData.append("file", audioBlob, "voice-message.webm");
-
-      const response = await fetch("https://uniisphere-1.onrender.com/api/messages", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to send voice message");
-      }
-      setAudioBlob(null);
-      // No need to call fetchConversation here - polling will handle it
+      setMessageInput("");
     } catch (error) {
       setError(error.message);
     }
