@@ -8,9 +8,6 @@ import Profileimage from "./Profile-image.png";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { CiHeart } from "react-icons/ci";
-import { TfiCommentsSmiley } from "react-icons/tfi";
-import { PiShareFatThin } from "react-icons/pi";
 import { IoSendOutline } from "react-icons/io5";
 import Background from "../Background/Background";
 import Smallimage1 from "./small-image1.png";
@@ -24,7 +21,6 @@ import Smallimage8 from "./small-image8.png";
 
 // Comment box data
 import profilePhoto from "./profilephoto.png";
-import Threedot from "./Threedot.svg";
 import Connect from "./Connect.png";
 import ShareIcon from "./Share.svg";
 import LikeIcon from "./Like.svg";
@@ -46,9 +42,7 @@ function MobileMiddlesection() {
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
-    const [commentsLoading, setCommentsLoading] = useState(false);
   const optionsRef = useRef(null);
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -56,40 +50,9 @@ function MobileMiddlesection() {
   const userData = {
     profilePicture: profilePhoto,
     name: "VIJAY PRASAD",
-    education: " University of Delhi ",
-    workPlace: " Works at Google",
+    education: "University of Delhi",
+    workPlace: "Works at Google",
   };
-
-  const userComments = [
-    {
-      id: 1,
-      name: "Vijay Singh",
-      time: "18h",
-      msg: "Its really good.",
-      likes: 1245,
-    },
-    {
-      id: 2,
-      name: "Vijay Singh",
-      time: "18h",
-      msg: "Its really good.",
-      likes: 1245,
-    },
-    {
-      id: 3,
-      name: "Vijay Singh",
-      time: "18h",
-      msg: "Its really good.",
-      likes: 1245,
-    },
-    {
-      id: 4,
-      name: "Vijay Singh",
-      time: "18h",
-      msg: "Its really good.",
-      likes: 1245,
-    },
-  ];
 
   const persons = [
     { name: "Anjali", avatar: profilePhoto },
@@ -102,16 +65,95 @@ function MobileMiddlesection() {
     { name: "Rohit", avatar: profilePhoto },
   ];
 
-  const [posts, setPosts] = useState([]);
-  const [imageLoading, setImageLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   const getAuthData = () => {
     const storedToken = localStorage.getItem("authToken");
     const storedUserId = localStorage.getItem("userId");
     return storedToken && storedUserId
       ? { token: storedToken, userId: storedUserId }
       : null;
+  };
+
+  // Fetch Feed API
+  const fetchFeed = async () => {
+    const authData = getAuthData();
+    if (!authData) {
+      setError("You are not logged in. Please log in to view content.");
+      setImageLoading(false);
+      return;
+    }
+
+    setImageLoading(true);
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/api/feed",
+        {
+          headers: { Authorization: `Bearer ${authData.token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Feed API response:", response.data);
+
+      if (response.data.userId) {
+        setUserId(response.data.userId);
+        localStorage.setItem("userId", response.data.userId);
+      }
+
+      if (response.data.posts && response.data.posts.length > 0) {
+        const updatedPosts = response.data.posts.map((post) => ({
+          ...post,
+          _id: post._id || post.id,
+          authorId: post.authorId || "unknown",
+          authorName: post.authorName || "Unknown Author",
+          authorDetails: post.authorDetails || "University of Delhi | Works at Google",
+          likes: post.Likes ? post.Likes.length : 0,
+          isLiked: post.Likes
+            ? post.Likes.some((like) => like.userId === authData.userId)
+            : false,
+          comments: post.Comments || [],
+          mediaUrl: post.mediaUrl || MiddlemainImage,
+          caption: post.caption || post.content || "No caption available",
+        }));
+        setPosts(updatedPosts);
+      }
+    } catch (error) {
+      console.error("Fetch feed error:", error.response?.data || error);
+      setError(
+        error.response?.data?.message ||
+          "Failed to load content. Please try again."
+      );
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
+  // Fetch Comments API
+  const fetchComments = async (postId) => {
+    const authData = getAuthData();
+    if (!authData) {
+      setError("Please log in to view comments");
+      return [];
+    }
+
+    setCommentsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
+        {
+          headers: { Authorization: `Bearer ${authData.token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Fetch Comments API response:", response.data);
+      return response.data.comments || [];
+    } catch (error) {
+      console.error("Fetch comments error:", error.response?.data || error);
+      setError(
+        error.response?.data?.message || "Failed to fetch comments. Please try again."
+      );
+      return [];
+    } finally {
+      setCommentsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -135,48 +177,7 @@ function MobileMiddlesection() {
       setUserId(location.state.userId);
     }
 
-    const fetchData = async () => {
-      const authData = getAuthData();
-      if (!authData) {
-        setError("You are not logged in. Please log in to view content.");
-        setImageLoading(false);
-        return;
-      }
-
-      setImageLoading(true);
-      try {
-        const response = await axios.get(
-          "https://uniisphere-1.onrender.com/api/feed",
-          {
-            headers: { Authorization: `Bearer ${authData.token}` },
-          }
-        );
-
-        if (response.data.userId) {
-          setUserId(response.data.userId);
-          localStorage.setItem("userId", response.data.userId);
-        }
-
-        if (response.data.posts && response.data.posts.length > 0) {
-          const updatedPosts = response.data.posts.map((post) => ({
-            ...post,
-            _id: post.id,
-            authorId: post.authorId || "unknown",
-            likes: post.likes || 0,
-            isLiked: post.isLiked || false,
-            comments: post.comments || [],
-          }));
-          setPosts(updatedPosts);
-        }
-      } catch (error) {
-        setError("Failed to load content. Please try again later.");
-        console.error("Fetch error:", error);
-      } finally {
-        setImageLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchFeed();
   }, [location.state]);
 
   const handleLike = async (index) => {
@@ -192,29 +193,46 @@ function MobileMiddlesection() {
         ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
         : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
 
-      const response = await axios.post(
-        endpoint,
-        {},
-        {
-          headers: { Authorization: `Bearer ${authData.token}` },
-        }
-      );
+      const response = await axios({
+        method: "post",
+        url: endpoint,
+        headers: {
+          Authorization: `Bearer ${authData.token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
+      console.log("Like/Unlike response:", response.data);
+
+      // Update UI optimistically
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
             ? {
                 ...p,
                 isLiked: !p.isLiked,
-                likes:
-                  response.data.likes ||
-                  (p.isLiked ? p.likes - 1 : p.likes + 1),
+                likes: p.isLiked ? p.likes - 1 : p.likes + 1,
               }
             : p
         )
       );
     } catch (error) {
-      console.error("Like/Unlike error:", error);
+      console.error(
+        "Like/Unlike error:",
+        error.response?.data || error.message
+      );
+      // Revert UI state if the request failed
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likes: p.isLiked ? p.likes + 1 : p.likes - 1,
+              }
+            : p
+        )
+      );
       setError("Failed to update like status");
     }
   };
@@ -232,43 +250,32 @@ function MobileMiddlesection() {
     try {
       const response = await axios.post(
         `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
-        { text: newComment },
-        { headers: { Authorization: `Bearer ${authData.token}` } }
+        {
+          postId: post._id,
+          userId: authData.userId,
+          content: newComment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+        }
       );
+      console.log("Comment API response:", response.data);
 
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index
-            ? {
-                ...p,
-                comments: response.data.comments || [
-                  ...p.comments,
-                  { text: newComment, author: "You" },
-                ],
-              }
-            : p
-        )
-      );
+      // Refresh the entire feed to get updated comments and likes
+      await fetchFeed();
+
       setNewComment("");
+      setError(null);
     } catch (error) {
-      console.error("Comment error:", error);
-      setError("Failed to post comment");
-    }
-  };
-
-  const fetchComments = async (postId) => {
-    const authData = getAuthData();
-    if (!authData) return [];
-
-    try {
-      const response = await axios.get(
-        `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
-        { headers: { Authorization: `Bearer ${authData.token}` } }
+      console.error("Comment submission error:", error.response?.data || error);
+      setError(
+        error.response?.data?.message ||
+          "Failed to post comment. Please try again."
       );
-      return response.data.comments;
-    } catch (error) {
-      console.error("Fetch comments error:", error);
-      return [];
     }
   };
 
@@ -289,6 +296,7 @@ function MobileMiddlesection() {
   const handleCloseCommentModal = () => {
     setActiveCommentPostIndex(null);
     setShowComment(false);
+    setError(null);
   };
 
   const handleProfileClick = (userId) => {
@@ -307,7 +315,7 @@ function MobileMiddlesection() {
         <p>Loading posts...</p>
       ) : posts.length > 0 ? (
         posts.map((post, index) => (
-          <div key={index} className="mobile-post-container">
+          <div key={post._id || index} className="mobile-post-container">
             {/* Profile Header */}
             <div className="mobile-middle-profile-header">
               <div className="mobile-image-and-name-holder">
@@ -324,13 +332,12 @@ function MobileMiddlesection() {
                 <div className="mobile-middle-profile-info">
                   <div className="mobile-middle-profile-top">
                     <span className="mobile-middle-profile-name">
-                      {post.authorName || "Unknown Author"}
+                      {post.authorName}
                     </span>
                     <span className="mobile-middle-post-time">18h</span>
                   </div>
                   <p className="mobile-middle-profile-details">
-                    {post.authorDetails ||
-                      "University of Delhi | Works at Google"}
+                    {post.authorDetails}
                   </p>
                 </div>
               </div>
@@ -342,7 +349,7 @@ function MobileMiddlesection() {
                 {showOptions && (
                   <div className="mobile-middle-options-dropdown">
                     <button className="mobile-middle-options-item">
-                      <span>Interest</span> <hr />{" "}
+                      <span>Interest</span> <hr />
                     </button>
                     <button className="mobile-middle-options-item">
                       <span>Not Interest</span> <hr />
@@ -366,22 +373,14 @@ function MobileMiddlesection() {
 
             {/* Main Image */}
             <div className="mobile-middle-main-image">
-              {post.mediaUrl ? (
-                <img
-                  src={post.mediaUrl}
-                  alt={`Post ${index + 1}`}
-                  className="mobile-middle-content-image"
-                  onError={(e) =>
-                    (e.target.src = "https://via.placeholder.com/300")
-                  }
-                />
-              ) : (
-                <img
-                  src={MiddlemainImage}
-                  alt="Default Post"
-                  className="mobile-middle-content-image"
-                />
-              )}
+              <img
+                src={post.mediaUrl}
+                alt={`Post ${index + 1}`}
+                className="mobile-middle-content-image"
+                onError={(e) =>
+                  (e.target.src = "https://via.placeholder.com/300")
+                }
+              />
             </div>
 
             {/* Action Bar */}
@@ -430,9 +429,9 @@ function MobileMiddlesection() {
             {/* Post Text */}
             <div className="mobile-middle-post-text">
               <span className="mobile-middle-post-author">
-                {post.authorName || "Unknown Author"}
+                {post.authorName}
               </span>{" "}
-              {post.caption || post.content || "No caption available"}
+              {post.caption}
               <span className="mobile-middle-see-more">...more</span>
             </div>
           </div>
@@ -449,56 +448,46 @@ function MobileMiddlesection() {
               <h1 className="mobile-Full-comment-section-heading">Comments</h1>
             </div>
             <div className="mobile-Full-comment-section-comments-list">
-            {commentsLoading ? (
-                  <div className="comments-loading">Loading comments...</div>
-                ) : posts[activeCommentPostIndex].comments.length > 0 ? (
-                  posts[activeCommentPostIndex].comments.map(
-                    (comment, index) => (
-                      <div
-                      className="mobile-Full-comment-section-comment-main-parent"
-                      key={comment.id || index}
-                    >
-                      <div className="mobile-Full-comment-section-comment">
-                        <img
-                          src={comment.user.profiePictureUrl || profilePhoto}
-                          alt="Profile"
-                          className="mobile-Full-comment-section-comment-profile-picture"
-                        />
-                        <div className="mobile-Full-comment-section-comment-content">
-                          <div className="mobile-Full-comment-section-comment-user-info">
-                            <span className="mobile-Full-comment-section-comment-username">
-                              {comment.user.username || "Anonymous"}
-                            </span>
-                            <span className="mobile-Full-comment-section-comment-timestamp">
-                              {new Date(comment.createdAt).toLocaleTimeString() || "Just now"}
-                            </span>
-                          </div>
-                          <div className="mobile-Full-comment-section-comment-text">
-                            {comment.content}
-                          </div>
-                          <div className="mobile-Full-comment-section-comment-actions">
-                            <span className="mobile-Full-comment-section-reply-link">
-                              REPLY
-                            </span>
-                          </div>
-                        </div>
+              {userComments.map((comment, index) => (
+                <div
+                  className="mobile-Full-comment-section-comment-main-parent"
+                  key={index}
+                >
+                  <div className="mobile-Full-comment-section-comment">
+                    <img
+                      src={comment.profilePicture || profilePhoto}
+                      alt="Profile"
+                      className="mobile-Full-comment-section-comment-profile-picture"
+                    />
+                    <div className="mobile-Full-comment-section-comment-content">
+                      <div className="mobile-Full-comment-section-comment-user-info">
+                        <span className="mobile-Full-comment-section-comment-username">
+                          {comment.author || comment.username || "Anonymous"}
+                        </span>
+                        <span className="mobile-Full-comment-section-comment-timestamp">
+                          {comment.timestamp || "Just now"}
+                        </span>
                       </div>
-                      <div className="mobile-Full-comment-section-comment-likes">
-                        <img
-                          src={LikeIcon}
-                          alt="Like"
-                          className="mobile-Full-comment-section-like-button"
-                        />
-                        <span>{comment.likes || 0}</span>
+                      <div className="mobile-Full-comment-section-comment-text">
+                        {comment.text}
+                      </div>
+                      <div className="mobile-Full-comment-section-comment-actions">
+                        <span className="mobile-Full-comment-section-reply-link">
+                          REPLY
+                        </span>
                       </div>
                     </div>
-                    )
-                  )
-                ) : (
-                  <div className="no-comments-message">
-                    No comments yet. Be the first to comment!
                   </div>
-                )}
+                  <div className="mobile-Full-comment-section-comment-likes">
+                    <img
+                      src={LikeIcon}
+                      alt="Like"
+                      className="mobile-Full-comment-section-like-button"
+                    />
+                    <span>{comment.likes || 0}</span>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="mobile-Full-comment-section-comment-input-and-image">
               <img
@@ -578,7 +567,6 @@ function MobileMiddlesection() {
                 />
                 <SearchIcon className="mobile-Full-share-search-icon" />
               </div>
-
               <img src={savedIcon} alt="Saved" />
             </div>
           </div>

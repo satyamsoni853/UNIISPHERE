@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
-
 import UserLogin from "./Componets/UserLogin/UserLogin.jsx";
 import AfterOtpSection1 from "./Componets/AfterOtpSection1/AfterOtpSection1.jsx";
 import UserSignupwithemailandpass from "./Componets/UserSignupwithemailandpass/UserSignupwithemailandpass.jsx";
@@ -72,7 +71,7 @@ function App() {
           <Route path="/SelfProfile" element={<SelfProfile />} />
           <Route path="/SelfSetting" element={<SelfSetting />} />
           <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
-          <Route path="/MessageFinalClass2" element={<MessageFinalClass2 />} />
+          <Route path="/MessageFinalClass2/:messageId" element={<MessageFinalClass2 />} />
           <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/CollabPage" element={<CollabPage />} />
           <Route
