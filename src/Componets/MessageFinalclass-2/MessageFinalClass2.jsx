@@ -9,10 +9,9 @@ import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
 import microphoneIcon from "./on.svg";
 import "./MessageFinalClass2.css";
-import Background from "../Background/Background";
 
 // Placeholder Background component (replace with your actual implementation if needed)
-// const Background = () => <div className="message-background" />;
+const Background = () => <div className="message-background" />;
 
 function MessageFinalClass2() {
   const { messageId } = useParams();
@@ -29,7 +28,8 @@ function MessageFinalClass2() {
   const mediaRecorderRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  const senderId = "18114725-fcc6-4cbe-a617-894a464b9fc8";
+  // Fetch senderId dynamically from localStorage (set during login in UserLogin.jsx)
+  const senderId = localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8"; // Fallback for testing
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
 
   // Sample emojis array for sticker functionality
@@ -88,7 +88,7 @@ function MessageFinalClass2() {
       }
     };
 
-    if (token) {
+    if (token && senderId) {
       fetchConversations();
     }
   }, [senderId, token]);
@@ -143,7 +143,7 @@ function MessageFinalClass2() {
 
   // Polling logic for conversation updates
   useEffect(() => {
-    if (!messageId || !token) return;
+    if (!messageId || !token || !senderId) return;
 
     // Initial fetch
     fetchConversation();
@@ -155,7 +155,7 @@ function MessageFinalClass2() {
 
     // Cleanup interval on unmount or dependency change
     return () => clearInterval(intervalId);
-  }, [messageId, token]);
+  }, [messageId, token, senderId]);
 
   // Auto-scroll to bottom when messages update
   useEffect(() => {
