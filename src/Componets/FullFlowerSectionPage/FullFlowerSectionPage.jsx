@@ -8,13 +8,13 @@ import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
+import backIcon from './backsvg.svg';
 import "./FullFlowerSectionPage.css";
 import Profile from "./Profile.png";
 import Profileandview from "./Profileandview.png";
 import uploadimage1 from "./UploadImage1.png";
 import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
-import backIcon from './backsvg.svg';
 
 function FullFlowerSectionPage() {
   const { userId } = useParams();
@@ -103,15 +103,6 @@ function FullFlowerSectionPage() {
       if (!authToken) {
         setError("Authentication required. Using dummy data.");
         setProfileData(defaultData);
-        console.log("Using default data (no auth token):", defaultData);
-        setLoading(false);
-        return;
-      }
-
-      if (!userId || userId === "unknown") {
-        setError("Invalid user ID. Using dummy data.");
-        setProfileData(defaultData);
-        console.log("Using default data (invalid user ID):", defaultData);
         setLoading(false);
         return;
       }
@@ -121,73 +112,67 @@ function FullFlowerSectionPage() {
         const response = await axios.get(
           `https://uniisphere-1.onrender.com/getProfile/profile/${userId}`,
           {
-            headers: { Authorization: `Bearer ${authToken}` },
+            headers: { 
+              Authorization: `Bearer ${authToken}`,
+              'Content-Type': 'application/json'
+            }
           }
         );
 
-        const data = response.data;
-        setApiResponse(data);
-        if (!data || Object.keys(data).length === 0) {
+        console.log("Raw API response:", response.data);
+
+        // Check if response data exists
+        if (!response.data) {
           throw new Error("No data returned from API");
         }
-        console.log("FullPage  Api respose ",data);
-        
 
-        let apiExperiences = [
-          {
-            title: data.workorProject || "Uniisphere",
-            subtitle: "Project",
-            description: data.workorProject
-              ? `Details about ${data.workorProject} project...`
-              : "Details about project...",
-          },
-        ];
+        const data = response.data;
 
-        if (apiExperiences.length < 4) {
-          const remainingSlots = 4 - apiExperiences.length;
-          apiExperiences = [
-            ...apiExperiences,
-            ...dummyExperiences.slice(0, remainingSlots),
-          ];
-        }
-
+        // Transform API data
         const transformedData = {
           profilePic: data.profilePictureUrl || defaultData.profilePic,
-          collabs: data._count?.connections1 || defaultData.collabs,
-          connections:
-            (data._count?.connections1 || 0) +
-            (data._count?.connections2 || 0) || defaultData.connections,
-          name:
-            `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
-            defaultData.name,
+          collabs: data._count?.connections1 || 0,
+          connections: (data._count?.connections1 || 0) + (data._count?.connections2 || 0),
+          name: data.firstName && data.lastName 
+            ? `${data.firstName} ${data.lastName}`.trim() 
+            : data.username || defaultData.name,
           title: data.headline || defaultData.title,
           address: data.location || defaultData.address,
-          about: data.About || "Nothing to say as of now",
-          fullAboutText: data.About || "Nothing to say as of now",
-          skills: data.skills || defaultData.skills,
-          interests: data.interests || defaultData.interests,
-          education: [data.college || "Upes dehradun", data.degree || "btech"],
-          collaboratorName:
-            data.collaboratorName || defaultData.collaboratorName,
-          subCollaborators:
-            data.subCollaborators || defaultData.subCollaborators,
-          paragraph: data.paragraph || defaultData.paragraph,
-          experiences: apiExperiences,
-          email: data.email || "pandkartikey0@gmail.com",
-          username: data.username || "kartikeyme",
-          college: data.college || "Upes dehradun",
-          degree: data.degree || "btech",
-          rawData: data,
+          about: data.About || defaultData.about,
+          fullAboutText: data.About || defaultData.about,
+          skills: Array.isArray(data.skills) ? data.skills : defaultData.skills,
+          interests: Array.isArray(data.interests) ? data.interests : defaultData.interests,
+          education: [
+            data.college || defaultData.college,
+            data.degree || defaultData.degree
+          ],
+          experiences: data.workorProject ? [{
+            title: data.workorProject,
+            subtitle: "Project",
+            description: `Details about ${data.workorProject}`
+          }, ...defaultData.experiences.slice(1)] : defaultData.experiences,
+          email: data.email || defaultData.email,
+          username: data.username || defaultData.username,
+          college: data.college || defaultData.college,
+          degree: data.degree || defaultData.degree
         };
 
-        console.log("Fetched user data for ID:", userId, transformedData);
-        console.log("Raw API response:", data);
+        console.log("Transformed data:", transformedData);
         setProfileData(transformedData);
+        setError(null); // Clear any previous errors
+        
       } catch (err) {
-        console.error("Error fetching profile data:", err);
+        console.error("Error fetching profile data:", err.response || err);
+        
+        // Set specific error message
+        setError(
+          err.response?.data?.message || 
+          err.message || 
+          "Failed to fetch profile data"
+        );
+        
+        // Use default data as fallback
         setProfileData(defaultData);
-        setApiResponse({ error: err.message });
-        console.log("Using default data due to error:", defaultData);
       } finally {
         setLoading(false);
       }
