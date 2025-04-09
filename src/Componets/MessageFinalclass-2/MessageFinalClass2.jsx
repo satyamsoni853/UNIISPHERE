@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
-import { IoCall, IoSend } from "react-icons/io5"; // IoSend for the send button
+import { IoCall, IoSend } from "react-icons/io5";
 import { MdOutlineVideoCall } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import backIcon from "./backsvg.svg";
 import callingIcon from "./call.svg";
 import gallaryIcon from "./gallary.svg";
-import "./MessageFinalClass2.css";
-// Removed duplicate import of microphoneIcon
 import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
 import microphoneIcon from "./on.svg";
 import "./MessageFinalClass2.css";
+import Background from "../Background/Background";
+
+// Placeholder Background component (replace with your actual implementation if needed)
+// const Background = () => <div className="message-background" />;
 
 function MessageFinalClass2() {
   const { messageId } = useParams();
@@ -29,6 +31,25 @@ function MessageFinalClass2() {
 
   const senderId = "18114725-fcc6-4cbe-a617-894a464b9fc8";
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
+
+  // Sample emojis array for sticker functionality
+  const emojis = [
+    "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛",
+    "😇", "🙃", "😏", "😴", "🤗", "🤔", "🤤", "😢", "😭", "😤",
+    "😡", "🤬", "😳", "😱", "😨", "😰", "😥", "😓", "🙄", "😬",
+    "🤐", "😷", "🤒", "🤕", "🥳", "🤩", "🥺", "🙌", "👏", "👍",
+    "👎", "✌️", "🤘", "👌", "👈", "👉", "👆", "👇", "✋", "🤚",
+    "🖐️", "👋", "🤝", "🙏", "💪", "🦵", "🦶", "👀", "👁️", "👅",
+    "👄", "💋", "❤️", "💔", "💖", "💙", "💚", "💛", "💜", "🖤",
+    "🤎", "💯", "💥", "💦", "💤", "💨", "🎉", "🎈", "🎁", "🎂",
+    "🍰", "🍫", "🍬", "🍭", "🍎", "🍊", "🍋", "🍇", "🍉", "🍓",
+    "🥝", "🍍", "🥭", "🥑", "🥕", "🌽", "🥔", "🍔", "🍕", "🌮",
+    "🍟", "🍗", "🥚", "🥓", "🧀", "🍳", "☕", "🍵", "🥛", "🍷",
+    "🍺", "🥂", "🎸", "🎹", "🥁", "🎤", "🎧", "🎮", "🏀", "⚽",
+    "🏈", "🎾", "🏐", "🏓", "⛳", "🏊", "🏄", "🚴", "🚗", "✈️",
+    "🚀", "🛸", "🌍", "🌙", "⭐", "🌞", "☁️", "⛅", "🌧️", "⛄",
+    "⚡", "🔥", "💧", "🌊", "🌴", "🌵", "🌷", "🌸", "🌹", "🥀"
+  ];
 
   // Fetch conversations for sidebar (initial load only)
   useEffect(() => {
@@ -72,7 +93,7 @@ function MessageFinalClass2() {
     }
   }, [senderId, token]);
 
-  // Fetch conversation messages (background polling)
+  // Fetch conversation messages (with polling)
   const fetchConversation = async () => {
     try {
       const response = await fetch(
@@ -120,21 +141,21 @@ function MessageFinalClass2() {
     }
   };
 
-  // Fetch conversation on mount or when messageId changes
+  // Polling logic for conversation updates
   useEffect(() => {
+    if (!messageId || !token) return;
+
     // Initial fetch
-    if (messageId && token) {
-      fetchConversation(); // Initial fetch
-      const intervalId = setInterval(fetchConversation, 2000); // Poll every 2 seconds
-      return () => clearInterval(intervalId); // Cleanup on unmount
-    }
+    fetchConversation();
 
-    // Set up polling interval
-    const pollInterval = setInterval(pollMessages, 3000); // Poll every 3 seconds
+    // Poll every 2 seconds
+    const intervalId = setInterval(() => {
+      fetchConversation();
+    }, 2000);
 
-    // Cleanup function
-    return () => clearInterval(pollInterval);
-  }, [messageId, token, pollMessages]);
+    // Cleanup interval on unmount or dependency change
+    return () => clearInterval(intervalId);
+  }, [messageId, token]);
 
   // Auto-scroll to bottom when messages update
   useEffect(() => {
@@ -165,16 +186,24 @@ function MessageFinalClass2() {
         throw new Error(errorData.error || "Failed to send message");
       }
 
-      const data = await response.json();
-      console.log("Message sent successfully:", data);
-
-      // Refresh the conversation to get the latest messages
+      // Refresh conversation after sending
       await fetchConversation();
-
       setMessageInput("");
     } catch (error) {
       setError(error.message);
     }
+  };
+
+  // Handle sticker click
+  const handleStickerClick = () => {
+    setShowStickers(!showStickers);
+    setShowGallery(false);
+  };
+
+  // Add emoji to input
+  const addEmojiToInput = (emoji) => {
+    setMessageInput((prev) => prev + emoji);
+    setShowStickers(false);
   };
 
   // Gallery functionality
@@ -205,10 +234,33 @@ function MessageFinalClass2() {
           throw new Error("Failed to send image");
         }
         setShowGallery(false);
-        // No need to call fetchConversation here - polling will handle it
+        // Polling will update the chat
       } catch (error) {
         setError(error.message);
       }
+    }
+  };
+
+  // Voice recording (placeholder implementation)
+  const handleVoiceRecord = () => {
+    if (!isRecording) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        const recorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = recorder;
+        recorder.start();
+        setIsRecording(true);
+
+        const audioChunks = [];
+        recorder.ondataavailable = (event) => audioChunks.push(event.data);
+        recorder.onstop = () => {
+          const blob = new Blob(audioChunks, { type: "audio/webm" });
+          setAudioBlob(blob);
+          stream.getTracks().forEach((track) => track.stop());
+        };
+      });
+    } else {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
     }
   };
 
@@ -225,12 +277,12 @@ function MessageFinalClass2() {
     }
   };
 
-  const currentConversation = conversations.find(conv => conv.id === messageId);
+  const currentConversation = conversations.find((conv) => conv.id === messageId);
 
   return (
     <>
       <div className="message-part-2-app">
-        <Background/>
+        <Background />
         <div className="message-part-2-sidebar">
           <h1>Messages</h1>
           {error && <p>Error: {error}</p>}
@@ -269,12 +321,18 @@ function MessageFinalClass2() {
             />
             <h3>{currentConversation?.name || "Loading..."}</h3>
             <div className="call-video-icon">
-              <span><IoCall /></span>
-              <span><MdOutlineVideoCall /></span>
+              <span>
+                <IoCall />
+              </span>
+              <span>
+                <MdOutlineVideoCall />
+              </span>
             </div>
           </div>
           <div className="message-part-2-chat-body" ref={chatBodyRef}>
-            {!chatMessages.length && <p className="message-part-2-no-messages">No messages yet.</p>}
+            {!chatMessages.length && (
+              <p className="message-part-2-no-messages">No messages yet.</p>
+            )}
             {chatMessages.map((message, index) => {
               const isNewSender =
                 index === 0 || message.senderId !== chatMessages[index - 1]?.senderId;
@@ -380,23 +438,33 @@ function MessageFinalClass2() {
           <div className="mobile-chat-header">
             <div className="mobile-chat-header-top">
               <div className="mobile-chat-back-icon">
-                <img className="mobile-chat-all-icon" src={backIcon} alt="" />
+                <img className="mobile-chat-all-icon" src={backIcon} alt="Back" />
               </div>
               <div className="mobile-chat-profile-pic-small">
-                <img src={currentConversation?.profilePictureUrl || profilePicSmall} alt="Profile" />
+                <img
+                  src={currentConversation?.profilePictureUrl || profilePicSmall}
+                  alt="Profile"
+                />
                 <div className="mobile-chat-header-bottom">
-                  <span className="mobile-chat-name">{currentConversation?.name || "Loading..."}</span>
+                  <span className="mobile-chat-name">
+                    {currentConversation?.name || "Loading..."}
+                  </span>
                   <span className="mobile-chat-username">{receiverData.username || ""}</span>
                 </div>
               </div>
             </div>
-            <img className="mobile-chat-all-icon" src={callingIcon} alt="" />
+            <img className="mobile-chat-all-icon" src={callingIcon} alt="Call" />
           </div>
           <div className="mobile-chat-profile">
             <div className="mobile-chat-profile-pic-large">
-              <img src={currentConversation?.profilePictureUrl || profilePicSmall} alt="Profile" />
+              <img
+                src={currentConversation?.profilePictureUrl || profilePicSmall}
+                alt="Profile"
+              />
             </div>
-            <div className="mobile-chat-big-name">{currentConversation?.name || "Loading..."}</div>
+            <div className="mobile-chat-big-name">
+              {currentConversation?.name || "Loading..."}
+            </div>
             <div className="mobile-chat-big-username">{receiverData.username || ""}</div>
             <button className="mobile-chat-voice-call">Voice Call</button>
             <div className="mobile-chat-interests">Loading interests...</div>
