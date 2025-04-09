@@ -25,7 +25,8 @@ import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
 
 import MobileAddPost from "./Componets/MobileAddPost/MobileAddPost.jsx";
 import MessageMobileInbox from "./Componets/MessageMobileInbox/MobileMessage.jsx";
-import GoogleLoginComponent from './Componets/GoogleLogin/GoogleLoginComponent.jsx'
+// import GoogleLoginComponent from './Componets/GoogleLogin/GoogleLoginComponent.jsx'
+import MentorSection from "./Componets/MentorSection/MentorSection.jsx";
 
 function App() {
   return (
@@ -81,8 +82,8 @@ function App() {
 
           <Route path="/MobileAddPost" element={<MobileAddPost />} />
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
-          <Route path="/GoogleLoginComponent" element={<GoogleLoginComponent />} />
-          
+          {/* <Route path="/GoogleLoginComponent" element={<GoogleLoginComponent />} /> */}
+          <Route path="/Mentor" element={<MentorSection/>} />
         </Routes>
       </div>
     </Router>
