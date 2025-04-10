@@ -32,8 +32,7 @@ function MessageFinalClass2() {
   const [isAtBottom, setIsAtBottom] = useState(true); // Track if user is at bottom
 
   const senderId =
-    localStorage.getItem("LoginuserId") ||
-    "18114725-fcc6-4cbe-a617-894a464b9fc8";
+    localStorage.getItem("LoginuserId") ;
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
 
   const emojis = [

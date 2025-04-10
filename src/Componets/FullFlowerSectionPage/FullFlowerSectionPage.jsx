@@ -8,13 +8,14 @@ import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
-import backIcon from './backsvg.svg';
+import backIcon from "./backsvg.svg";
 import "./FullFlowerSectionPage.css";
 import Profile from "./Profile.png";
 import Profileandview from "./Profileandview.png";
 import uploadimage1 from "./UploadImage1.png";
 import uploadimage2 from "./UploadImage2.png";
 import uploadimage3 from "./UploadImage3.png";
+import { Link } from "react-router-dom";
 
 function FullFlowerSectionPage() {
   const { userId } = useParams();
@@ -26,7 +27,7 @@ function FullFlowerSectionPage() {
   const [apiResponse, setApiResponse] = useState(null);
   const [connections, setConnections] = useState([]);
   const [acceptedConnections, setAcceptedConnections] = useState([]);
-  const [connectionStatus, setConnectionStatus] = useState('not_connected');
+  const [connectionStatus, setConnectionStatus] = useState("not_connected");
 
   const dummyExperiences = [
     {
@@ -36,7 +37,8 @@ function FullFlowerSectionPage() {
     {
       title: "Internship at Tech Corp",
       subtitle: "Internship",
-      description: "Assisted in developing a mobile app during a summer internship.",
+      description:
+        "Assisted in developing a mobile app during a summer internship.",
     },
     {
       title: "Open Source Contribution",
@@ -84,7 +86,13 @@ function FullFlowerSectionPage() {
     degree: "btech",
   };
 
-  const images = [uploadimage1, uploadimage2, uploadimage3, uploadimage2, uploadimage3];
+  const images = [
+    uploadimage1,
+    uploadimage2,
+    uploadimage3,
+    uploadimage2,
+    uploadimage3,
+  ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentExpIndex, setCurrentExpIndex] = useState(0);
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
@@ -114,10 +122,10 @@ function FullFlowerSectionPage() {
         const response = await axios.get(
           `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`,
           {
-            headers: { 
+            headers: {
               Authorization: `Bearer ${authToken}`,
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
 
@@ -128,14 +136,20 @@ function FullFlowerSectionPage() {
         }
 
         const data = response.data[0];
-        
+
         const transformedData = {
           profilePic: data.profilePictureUrl || defaultData.profilePic,
-          collabs: data.connections1?.filter(c => c.status === 'accepted').length || 0,
-          connections: (data.connections1?.length || 0) + (data.connections2?.length || 0),
+          collabs:
+            data.connections1?.filter((c) => c.status === "accepted").length ||
+            0,
+          connections:
+            (data.connections1?.length || 0) + (data.connections2?.length || 0),
           connections1: data.connections1 || [],
           connections2: data.connections2 || [],
-          name: `${data.firstName} ${data.lastName}`.trim() || data.username || defaultData.name,
+          name:
+            `${data.firstName} ${data.lastName}`.trim() ||
+            data.username ||
+            defaultData.name,
           title: data.headline || defaultData.title,
           address: data.location || defaultData.address,
           about: data.About || defaultData.about,
@@ -144,24 +158,29 @@ function FullFlowerSectionPage() {
           interests: data.Interests || defaultData.interests,
           education: [
             data.college || defaultData.college,
-            data.degree || defaultData.degree
+            data.degree || defaultData.degree,
           ],
-          experiences: [{
-            title: data.workorProject || "No project",
-            subtitle: "Project",
-            description: `Working on ${data.workorProject || "No project"}`
-          }],
+          experiences: [
+            {
+              title: data.workorProject || "No project",
+              subtitle: "Project",
+              description: `Working on ${data.workorProject || "No project"}`,
+            },
+          ],
           email: data.email || defaultData.email,
-          username: data.username || defaultData.username
+          username: data.username || defaultData.username,
         };
 
         console.log("Transformed data:", transformedData);
         setProfileData(transformedData);
         setError(null);
-        
       } catch (err) {
         console.error("Error fetching profile data:", err.response || err);
-        setError(err.response?.data?.message || err.message || "Failed to fetch profile data");
+        setError(
+          err.response?.data?.message ||
+            err.message ||
+            "Failed to fetch profile data"
+        );
         setProfileData(defaultData);
       } finally {
         setLoading(false);
@@ -173,15 +192,15 @@ function FullFlowerSectionPage() {
 
   useEffect(() => {
     if (profileData) {
-      // Transform connections data
       const allConnections = [
         ...(profileData.connections1 || []),
-        ...(profileData.connections2 || [])
+        ...(profileData.connections2 || []),
       ];
 
-      // Filter accepted connections
-      const accepted = allConnections.filter(conn => conn.status === 'accepted');
-      
+      const accepted = allConnections.filter(
+        (conn) => conn.status === "accepted"
+      );
+
       setConnections(allConnections);
       setAcceptedConnections(accepted);
     }
@@ -195,15 +214,19 @@ function FullFlowerSectionPage() {
 
   const checkConnectionStatus = (data) => {
     const currentUserId = localStorage.getItem("userId");
-    if (!currentUserId || !data) return 'not_connected';
+    if (!currentUserId || !data) return "not_connected";
 
-    const allConnections = [...(data.connections1 || []), ...(data.connections2 || [])];
-    const connection = allConnections.find(conn => 
-      (conn.userId1 === currentUserId && conn.userId2 === userId) ||
-      (conn.userId2 === currentUserId && conn.userId1 === userId)
+    const allConnections = [
+      ...(data.connections1 || []),
+      ...(data.connections2 || []),
+    ];
+    const connection = allConnections.find(
+      (conn) =>
+        (conn.userId1 === currentUserId && conn.userId2 === userId) ||
+        (conn.userId2 === currentUserId && conn.userId1 === userId)
     );
 
-    return connection ? connection.status : 'not_connected';
+    return connection ? connection.status : "not_connected";
   };
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
@@ -215,49 +238,51 @@ function FullFlowerSectionPage() {
       (data.fullAboutText?.length > maxLength ? "..." : "");
 
   const prevImageSlide = () => {
-    setCurrentImageIndex((prev) => 
+    setCurrentImageIndex((prev) =>
       prev === 0 ? Math.max(images.length - 3, 0) : Math.max(prev - 1, 0)
     );
   };
 
   const nextImageSlide = () => {
-    setCurrentImageIndex((prev) => 
-      prev >= images.length - 3 ? 0 : prev + 1
-    );
+    setCurrentImageIndex((prev) => (prev >= images.length - 3 ? 0 : prev + 1));
   };
 
   const prevExpSlide = () => {
-    setCurrentExpIndex((prev) => 
-      prev === 0 ? Math.max(data.experiences.length - 3, 0) : Math.max(prev - 1, 0)
+    setCurrentExpIndex((prev) =>
+      prev === 0
+        ? Math.max(data.experiences.length - 3, 0)
+        : Math.max(prev - 1, 0)
     );
   };
 
   const nextExpSlide = () => {
-    setCurrentExpIndex((prev) => 
+    setCurrentExpIndex((prev) =>
       prev >= data.experiences.length - 3 ? 0 : prev + 1
     );
   };
 
   const prevSkillSlide = () => {
-    setCurrentSkillIndex((prev) => 
+    setCurrentSkillIndex((prev) =>
       prev === 0 ? Math.max(data.skills.length - 4, 0) : Math.max(prev - 1, 0)
     );
   };
 
   const nextSkillSlide = () => {
-    setCurrentSkillIndex((prev) => 
+    setCurrentSkillIndex((prev) =>
       prev >= data.skills.length - 4 ? 0 : prev + 1
     );
   };
 
   const prevInterestSlide = () => {
-    setCurrentInterestIndex((prev) => 
-      prev === 0 ? Math.max(data.interests.length - 4, 0) : Math.max(prev - 1, 0)
+    setCurrentInterestIndex((prev) =>
+      prev === 0
+        ? Math.max(data.interests.length - 4, 0)
+        : Math.max(prev - 1, 0)
     );
   };
 
   const nextInterestSlide = () => {
-    setCurrentInterestIndex((prev) => 
+    setCurrentInterestIndex((prev) =>
       prev >= data.interests.length - 4 ? 0 : prev + 1
     );
   };
@@ -265,7 +290,9 @@ function FullFlowerSectionPage() {
   const handleBackClick = () => navigate("/");
 
   if (loading) {
-    return <div style={{ textAlign: "center", padding: "50px" }}>Loading...</div>;
+    return (
+      <div style={{ textAlign: "center", padding: "50px" }}>Loading...</div>
+    );
   }
 
   return (
@@ -282,13 +309,25 @@ function FullFlowerSectionPage() {
             <div className="Profile-full-section-mainParent">
               <div className="Profile-full-section-container">
                 {error && (
-                  <div style={{ color: "orange", textAlign: "center", padding: "10px" }}>
+                  <div
+                    style={{
+                      color: "orange",
+                      textAlign: "center",
+                      padding: "10px",
+                    }}
+                  >
                     {error}
                   </div>
                 )}
 
                 {apiResponse && (
-                  <div style={{ margin: "20px", padding: "10px", background: "#f0f0f0" }}>
+                  <div
+                    style={{
+                      margin: "20px",
+                      padding: "10px",
+                      background: "#f0f0f0",
+                    }}
+                  >
                     <h3>API Response:</h3>
                     <pre style={{ whiteSpace: "pre-wrap" }}>
                       {JSON.stringify(apiResponse, null, 2)}
@@ -298,10 +337,10 @@ function FullFlowerSectionPage() {
 
                 <div className="Profile-full-section-whole-profile-section">
                   <div className="Profile-full-section-top-nav-section">
-                    <img 
-                      src={backIcon} 
-                      className="back-button" 
-                      alt="Back" 
+                    <img
+                      src={backIcon}
+                      className="back-button"
+                      alt="Back"
                       onClick={handleBackClick}
                     />
                     <input type="text" placeholder="Message" />
@@ -324,18 +363,31 @@ function FullFlowerSectionPage() {
                         <span>{data.connections}</span>
                       </div>
                     </div>
-                    <div className="Profile-full-section-message-box">Message</div>
+                    <div className="Profile-full-section-message-box">
+                      <Link
+                        to={`/MessageFinalClass2/${userId}`}
+                        onClick={() => localStorage.setItem("SearchUserId", userId)}
+                      >
+                        Message
+                      </Link>
+                    </div>
                   </div>
 
                   <div className="Profile-full-section-profile-info">
-                    <p className="Profile-full-section-name"><span>(He/him)</span> {data.name}</p>
+                    <p className="Profile-full-section-name">
+                      <span>(He/him)</span> {data.name}
+                    </p>
                     <p>{data.title}</p>
                     <p>{data.address}</p>
                   </div>
 
                   <div className="Profile-full-section-profile-buttons">
-                    <button className="Profile-full-section-btn">Message</button>
-                    <button className="Profile-full-section-btn">Connect</button>
+                    <button className="Profile-full-section-btn">
+                      Message
+                    </button>
+                    <button className="Profile-full-section-btn">
+                      Connect
+                    </button>
                   </div>
                 </div>
 
@@ -377,7 +429,9 @@ function FullFlowerSectionPage() {
                   <p className="Profile-full-section-heading">Upload</p>
                   <div className="Profile-full-section-down-upload-slider-con">
                     <IoIosArrowBack
-                      className={`Profile-full-section-Back ${currentImageIndex === 0 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-Back ${
+                        currentImageIndex === 0 ? "disabled" : ""
+                      }`}
                       onClick={prevImageSlide}
                       disabled={currentImageIndex === 0}
                     />
@@ -399,7 +453,9 @@ function FullFlowerSectionPage() {
                         ))}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-Forward ${currentImageIndex >= images.length - 3 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-Forward ${
+                        currentImageIndex >= images.length - 3 ? "disabled" : ""
+                      }`}
                       onClick={nextImageSlide}
                       disabled={currentImageIndex >= images.length - 3}
                     />
@@ -410,7 +466,9 @@ function FullFlowerSectionPage() {
                   <p className="Profile-full-section-heading">Experience</p>
                   <div className="Profile-full-section-down-experience-slider-con">
                     <IoIosArrowBack
-                      className={`Profile-full-section-Back ${currentExpIndex === 0 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-Back ${
+                        currentExpIndex === 0 ? "disabled" : ""
+                      }`}
                       onClick={prevExpSlide}
                       disabled={currentExpIndex === 0}
                     />
@@ -420,7 +478,9 @@ function FullFlowerSectionPage() {
                           .slice(currentExpIndex, currentExpIndex + 3)
                           .map((exp, index) => (
                             <div
-                              style={{ backgroundColor: color[index % color.length] }}
+                              style={{
+                                backgroundColor: color[index % color.length],
+                              }}
                               key={index}
                               className="Profile-full-section-experince-inner-div"
                             >
@@ -428,7 +488,9 @@ function FullFlowerSectionPage() {
                                 <h3>{exp.title || "Untitled"}</h3>
                                 <h5>{exp.subtitle || "No subtitle"}</h5>
                               </div>
-                              <p>{exp.description || "No description available"}</p>
+                              <p>
+                                {exp.description || "No description available"}
+                              </p>
                             </div>
                           ))
                       ) : (
@@ -436,7 +498,11 @@ function FullFlowerSectionPage() {
                       )}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-Forward ${currentExpIndex >= data.experiences.length - 3 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-Forward ${
+                        currentExpIndex >= data.experiences.length - 3
+                          ? "disabled"
+                          : ""
+                      }`}
                       onClick={nextExpSlide}
                       disabled={currentExpIndex >= data.experiences.length - 3}
                     />
@@ -450,7 +516,9 @@ function FullFlowerSectionPage() {
                   </div>
                   <div className="Profile-full-section-content-and-arrow">
                     <IoIosArrowBack
-                      className={`Profile-full-section-left-btn ${currentSkillIndex === 0 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-left-btn ${
+                        currentSkillIndex === 0 ? "disabled" : ""
+                      }`}
                       onClick={prevSkillSlide}
                       disabled={currentSkillIndex === 0}
                     />
@@ -461,7 +529,9 @@ function FullFlowerSectionPage() {
                           .map((skill, index) => (
                             <div
                               key={index}
-                              style={{ backgroundColor: color[index % color.length] }}
+                              style={{
+                                backgroundColor: color[index % color.length],
+                              }}
                               className="Profile-full-section-tag"
                             >
                               {skill || "Unnamed skill"}
@@ -472,7 +542,11 @@ function FullFlowerSectionPage() {
                       )}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-right-btn ${currentSkillIndex >= data.skills.length - 4 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-right-btn ${
+                        currentSkillIndex >= data.skills.length - 4
+                          ? "disabled"
+                          : ""
+                      }`}
                       onClick={nextSkillSlide}
                       disabled={currentSkillIndex >= data.skills.length - 4}
                     />
@@ -486,7 +560,9 @@ function FullFlowerSectionPage() {
                   </div>
                   <div className="Profile-full-section-content-and-arrow">
                     <IoIosArrowBack
-                      className={`Profile-full-section-left-btn ${currentInterestIndex === 0 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-left-btn ${
+                        currentInterestIndex === 0 ? "disabled" : ""
+                      }`}
                       onClick={prevInterestSlide}
                       disabled={currentInterestIndex === 0}
                     />
@@ -497,7 +573,9 @@ function FullFlowerSectionPage() {
                           .map((interest, index) => (
                             <div
                               key={index}
-                              style={{ backgroundColor: color[index % color.length] }}
+                              style={{
+                                backgroundColor: color[index % color.length],
+                              }}
                               className="Profile-full-section-tag"
                             >
                               {interest || "Unnamed interest"}
@@ -508,9 +586,15 @@ function FullFlowerSectionPage() {
                       )}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-right-btn ${currentInterestIndex >= data.interests.length - 4 ? 'disabled' : ''}`}
+                      className={`Profile-full-section-right-btn ${
+                        currentInterestIndex >= data.interests.length - 4
+                          ? "disabled"
+                          : ""
+                      }`}
                       onClick={nextInterestSlide}
-                      disabled={currentInterestIndex >= data.interests.length - 4}
+                      disabled={
+                        currentInterestIndex >= data.interests.length - 4
+                      }
                     />
                   </div>
                 </div>
@@ -526,12 +610,13 @@ function FullFlowerSectionPage() {
                       {data.education.map((edu, index) => (
                         <button
                           key={index}
-                          className={`btn ${index === 0
+                          className={`btn ${
+                            index === 0
                               ? "btn-left"
                               : index === data.education.length - 1
-                                ? "btn-right"
-                                : "btn-middle"
-                            }`}
+                              ? "btn-right"
+                              : "btn-middle"
+                          }`}
                         >
                           {edu}
                         </button>
