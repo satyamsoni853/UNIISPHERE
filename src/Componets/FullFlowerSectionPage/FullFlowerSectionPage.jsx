@@ -24,11 +24,13 @@ function FullFlowerSectionPage() {
   const [error, setError] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
+  const [connections, setConnections] = useState([]);
+  const [acceptedConnections, setAcceptedConnections] = useState([]);
+  const [connectionStatus, setConnectionStatus] = useState('not_connected');
 
   const dummyExperiences = [
     {
       title: "Project A",
-      subtitle: "Freelance",
       description: "Worked on a freelance project to build a web application.",
     },
     {
@@ -101,7 +103,7 @@ function FullFlowerSectionPage() {
       const authToken = localStorage.getItem("authToken");
 
       if (!authToken) {
-        setError("Authentication required. Using dummy data.");
+        setError("Authentication required");
         setProfileData(defaultData);
         setLoading(false);
         return;
@@ -110,7 +112,7 @@ function FullFlowerSectionPage() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://uniisphere-1.onrender.com/getProfile/profile/${userId}`,
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`,
           {
             headers: { 
               Authorization: `Bearer ${authToken}`,
@@ -121,57 +123,45 @@ function FullFlowerSectionPage() {
 
         console.log("Raw API response:", response.data);
 
-        // Check if response data exists
-        if (!response.data) {
+        if (!response.data || !response.data[0]) {
           throw new Error("No data returned from API");
         }
 
-        const data = response.data;
-
-        // Transform API data
+        const data = response.data[0];
+        
         const transformedData = {
           profilePic: data.profilePictureUrl || defaultData.profilePic,
-          collabs: data._count?.connections1 || 0,
-          connections: (data._count?.connections1 || 0) + (data._count?.connections2 || 0),
-          name: data.firstName && data.lastName 
-            ? `${data.firstName} ${data.lastName}`.trim() 
-            : data.username || defaultData.name,
+          collabs: data.connections1?.filter(c => c.status === 'accepted').length || 0,
+          connections: (data.connections1?.length || 0) + (data.connections2?.length || 0),
+          connections1: data.connections1 || [],
+          connections2: data.connections2 || [],
+          name: `${data.firstName} ${data.lastName}`.trim() || data.username || defaultData.name,
           title: data.headline || defaultData.title,
           address: data.location || defaultData.address,
           about: data.About || defaultData.about,
           fullAboutText: data.About || defaultData.about,
-          skills: Array.isArray(data.skills) ? data.skills : defaultData.skills,
-          interests: Array.isArray(data.interests) ? data.interests : defaultData.interests,
+          skills: data.Skills || defaultData.skills,
+          interests: data.Interests || defaultData.interests,
           education: [
             data.college || defaultData.college,
             data.degree || defaultData.degree
           ],
-          experiences: data.workorProject ? [{
-            title: data.workorProject,
+          experiences: [{
+            title: data.workorProject || "No project",
             subtitle: "Project",
-            description: `Details about ${data.workorProject}`
-          }, ...defaultData.experiences.slice(1)] : defaultData.experiences,
+            description: `Working on ${data.workorProject || "No project"}`
+          }],
           email: data.email || defaultData.email,
-          username: data.username || defaultData.username,
-          college: data.college || defaultData.college,
-          degree: data.degree || defaultData.degree
+          username: data.username || defaultData.username
         };
 
         console.log("Transformed data:", transformedData);
         setProfileData(transformedData);
-        setError(null); // Clear any previous errors
+        setError(null);
         
       } catch (err) {
         console.error("Error fetching profile data:", err.response || err);
-        
-        // Set specific error message
-        setError(
-          err.response?.data?.message || 
-          err.message || 
-          "Failed to fetch profile data"
-        );
-        
-        // Use default data as fallback
+        setError(err.response?.data?.message || err.message || "Failed to fetch profile data");
         setProfileData(defaultData);
       } finally {
         setLoading(false);
@@ -183,9 +173,38 @@ function FullFlowerSectionPage() {
 
   useEffect(() => {
     if (profileData) {
+      // Transform connections data
+      const allConnections = [
+        ...(profileData.connections1 || []),
+        ...(profileData.connections2 || [])
+      ];
+
+      // Filter accepted connections
+      const accepted = allConnections.filter(conn => conn.status === 'accepted');
+      
+      setConnections(allConnections);
+      setAcceptedConnections(accepted);
+    }
+  }, [profileData]);
+
+  useEffect(() => {
+    if (profileData) {
       console.log("Current profile data:", profileData);
     }
   }, [profileData]);
+
+  const checkConnectionStatus = (data) => {
+    const currentUserId = localStorage.getItem("userId");
+    if (!currentUserId || !data) return 'not_connected';
+
+    const allConnections = [...(data.connections1 || []), ...(data.connections2 || [])];
+    const connection = allConnections.find(conn => 
+      (conn.userId1 === currentUserId && conn.userId2 === userId) ||
+      (conn.userId2 === currentUserId && conn.userId1 === userId)
+    );
+
+    return connection ? connection.status : 'not_connected';
+  };
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
   const maxLength = 100;
