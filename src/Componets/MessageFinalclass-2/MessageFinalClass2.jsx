@@ -12,7 +12,6 @@ import "./MessageFinalClass2.css";
 import Background2 from "../Background/Background"; // Assuming you have a background image
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
 
-// Placeholder Background component
 const Background = () => <div className="message-background" />;
 
 function MessageFinalClass2() {
