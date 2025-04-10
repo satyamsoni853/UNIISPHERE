@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { IoCall, IoSend } from "react-icons/io5";
+import { IoCall, IoSend, IoArrowBackCircleSharp } from "react-icons/io5";
 import { MdOutlineVideoCall } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import backIcon from "./backsvg.svg";
@@ -9,10 +9,11 @@ import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
 import microphoneIcon from "./on.svg";
 import "./MessageFinalClass2.css";
-import Background from "../Background/Background";
+import Background2 from "../Background/Background"; // Assuming you have a background image
+import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
 
-// Placeholder Background component (replace with your actual implementation if needed)
-// const Background = () => <div className="message-background" />;
+// Placeholder Background component
+const Background = () => <div className="message-background" />;
 
 function MessageFinalClass2() {
   const { messageId } = useParams();
@@ -28,30 +29,166 @@ function MessageFinalClass2() {
   const chatBodyRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const fileInputRef = useRef(null);
+  const [isAtBottom, setIsAtBottom] = useState(true); // Track if user is at bottom
 
-  const senderId = "18114725-fcc6-4cbe-a617-894a464b9fc8";
+  const senderId =
+    localStorage.getItem("LoginuserId") ||
+    "18114725-fcc6-4cbe-a617-894a464b9fc8";
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
 
-  // Sample emojis array for sticker functionality
   const emojis = [
-    "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛",
-    "😇", "🙃", "😏", "😴", "🤗", "🤔", "🤤", "😢", "😭", "😤",
-    "😡", "🤬", "😳", "😱", "😨", "😰", "😥", "😓", "🙄", "😬",
-    "🤐", "😷", "🤒", "🤕", "🥳", "🤩", "🥺", "🙌", "👏", "👍",
-    "👎", "✌️", "🤘", "👌", "👈", "👉", "👆", "👇", "✋", "🤚",
-    "🖐️", "👋", "🤝", "🙏", "💪", "🦵", "🦶", "👀", "👁️", "👅",
-    "👄", "💋", "❤️", "💔", "💖", "💙", "💚", "💛", "💜", "🖤",
-    "🤎", "💯", "💥", "💦", "💤", "💨", "🎉", "🎈", "🎁", "🎂",
-    "🍰", "🍫", "🍬", "🍭", "🍎", "🍊", "🍋", "🍇", "🍉", "🍓",
-    "🥝", "🍍", "🥭", "🥑", "🥕", "🌽", "🥔", "🍔", "🍕", "🌮",
-    "🍟", "🍗", "🥚", "🥓", "🧀", "🍳", "☕", "🍵", "🥛", "🍷",
-    "🍺", "🥂", "🎸", "🎹", "🥁", "🎤", "🎧", "🎮", "🏀", "⚽",
-    "🏈", "🎾", "🏐", "🏓", "⛳", "🏊", "🏄", "🚴", "🚗", "✈️",
-    "🚀", "🛸", "🌍", "🌙", "⭐", "🌞", "☁️", "⛅", "🌧️", "⛄",
-    "⚡", "🔥", "💧", "🌊", "🌴", "🌵", "🌷", "🌸", "🌹", "🥀"
+    "😀",
+    "😊",
+    "😂",
+    "🤓",
+    "😎",
+    "😍",
+    "🥰",
+    "😘",
+    "😜",
+    "😛",
+    "😇",
+    "🙃",
+    "😏",
+    "😴",
+    "🤗",
+    "🤔",
+    "🤤",
+    "😢",
+    "😭",
+    "😤",
+    "😡",
+    "🤬",
+    "😳",
+    "😱",
+    "😨",
+    "😰",
+    "😥",
+    "😓",
+    "🙄",
+    "😬",
+    "🤐",
+    "😷",
+    "🤒",
+    "🤕",
+    "🥳",
+    "🤩",
+    "🥺",
+    "🙌",
+    "👏",
+    "👍",
+    "👎",
+    "✌️",
+    "🤘",
+    "👌",
+    "👈",
+    "👉",
+    "👆",
+    "👇",
+    "✋",
+    "🤚",
+    "🖐️",
+    "👋",
+    "🤝",
+    "🙏",
+    "💪",
+    "🦵",
+    "🦶",
+    "👀",
+    "👁️",
+    "👅",
+    "👄",
+    "💋",
+    "❤️",
+    "💔",
+    "💖",
+    "💙",
+    "💚",
+    "💛",
+    "💜",
+    "🖤",
+    "🤎",
+    "💯",
+    "💥",
+    "💦",
+    "💤",
+    "💨",
+    "🎉",
+    "🎈",
+    "🎁",
+    "🎂",
+    "🍰",
+    "🍫",
+    "🍬",
+    "🍭",
+    "🍎",
+    "🍊",
+    "🍋",
+    "🍇",
+    "🍉",
+    "🍓",
+    "🥝",
+    "🍍",
+    "🥭",
+    "🥑",
+    "🥕",
+    "🌽",
+    "🥔",
+    "🍔",
+    "🍕",
+    "🌮",
+    "🍟",
+    "🍗",
+    "🥚",
+    "🥓",
+    "🧀",
+    "🍳",
+    "☕",
+    "🍵",
+    "🥛",
+    "🍷",
+    "🍺",
+    "🥂",
+    "🎸",
+    "🎹",
+    "🥁",
+    "🎤",
+    "🎧",
+    "🎮",
+    "🏀",
+    "⚽",
+    "🏈",
+    "🎾",
+    "🏐",
+    "🏓",
+    "⛳",
+    "🏊",
+    "🏄",
+    "🚴",
+    "🚗",
+    "✈️",
+    "🚀",
+    "🛸",
+    "🌍",
+    "🌙",
+    "⭐",
+    "🌞",
+    "☁️",
+    "⛅",
+    "🌧️",
+    "⛄",
+    "⚡",
+    "🔥",
+    "💧",
+    "🌊",
+    "🌴",
+    "🌵",
+    "🌷",
+    "🌸",
+    "🌹",
+    "🥀",
   ];
 
-  // Fetch conversations for sidebar (initial load only)
   useEffect(() => {
     const fetchConversations = async () => {
       try {
@@ -88,12 +225,11 @@ function MessageFinalClass2() {
       }
     };
 
-    if (token) {
+    if (token && senderId) {
       fetchConversations();
     }
   }, [senderId, token]);
 
-  // Fetch conversation messages (with polling)
   const fetchConversation = async () => {
     try {
       const response = await fetch(
@@ -117,7 +253,8 @@ function MessageFinalClass2() {
         .map((msg) => ({
           id: msg.id || msg._id,
           senderId: msg.senderId,
-          sender: msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
+          sender:
+            msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
           text: msg.content || msg.lastMessage,
           timestamp: msg.timestamp || msg.createdAt,
           image: msg.image || null,
@@ -125,13 +262,15 @@ function MessageFinalClass2() {
         }))
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-      // Only update if there are changes to avoid unnecessary re-renders
-      if (JSON.stringify(chatMessages) !== JSON.stringify(transformedMessages)) {
+      if (
+        JSON.stringify(chatMessages) !== JSON.stringify(transformedMessages)
+      ) {
         setChatMessages(transformedMessages);
       }
 
       if (messages.length > 0) {
-        const receiver = messages.find((msg) => msg.senderId !== senderId)?.user || {};
+        const receiver =
+          messages.find((msg) => msg.senderId !== senderId)?.user || {};
         setReceiverData({
           username: receiver.username || "Unknown",
         });
@@ -141,72 +280,86 @@ function MessageFinalClass2() {
     }
   };
 
-  // Polling logic for conversation updates
+  // Polling effect with scroll position check
   useEffect(() => {
-    if (!messageId || !token) return;
+    if (!messageId || !token || !senderId) return;
 
-    // Initial fetch
     fetchConversation();
 
-    // Poll every 2 seconds
     const intervalId = setInterval(() => {
-      fetchConversation();
+      // Only fetch if user is at the bottom
+      if (isAtBottom) {
+        fetchConversation();
+      }
     }, 2000);
 
-    // Cleanup interval on unmount or dependency change
     return () => clearInterval(intervalId);
-  }, [messageId, token]);
+  }, [messageId, token, senderId, isAtBottom]);
 
-  // Auto-scroll to bottom when messages update
+  // Scroll handling
   useEffect(() => {
-    if (chatBodyRef.current) {
+    const chatBody = chatBodyRef.current;
+    if (!chatBody) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = chatBody;
+      const isBottom = scrollTop + clientHeight >= scrollHeight - 10; // Small buffer
+      setIsAtBottom(isBottom);
+    };
+
+    chatBody.addEventListener("scroll", handleScroll);
+    return () => chatBody.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Auto-scroll only when at bottom or new message sent
+  useEffect(() => {
+    if (chatBodyRef.current && isAtBottom) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }
-  }, [chatMessages]);
+  }, [chatMessages, isAtBottom]);
 
-  // Send text message
   const sendMessage = async (content) => {
     if (!content.trim()) return;
 
     try {
-      const response = await fetch("https://uniisphere-1.onrender.com/api/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          receiverId: messageId,
-          content,
-        }),
-      });
+      const response = await fetch(
+        "https://uniisphere-1.onrender.com/api/messages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            receiverId: messageId,
+            content,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to send message");
       }
 
-      // Refresh conversation after sending
       await fetchConversation();
       setMessageInput("");
+      setIsAtBottom(true); // Force scroll to bottom after sending
     } catch (error) {
       setError(error.message);
     }
   };
 
-  // Handle sticker click
   const handleStickerClick = () => {
     setShowStickers(!showStickers);
     setShowGallery(false);
   };
 
-  // Add emoji to input
   const addEmojiToInput = (emoji) => {
     setMessageInput((prev) => prev + emoji);
     setShowStickers(false);
   };
 
-  // Gallery functionality
   const handleGalleryClick = () => {
     setShowGallery(!showGallery);
     setShowStickers(false);
@@ -222,26 +375,28 @@ function MessageFinalClass2() {
         formData.append("content", "Image");
         formData.append("file", file);
 
-        const response = await fetch("https://uniisphere-1.onrender.com/api/messages", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
+        const response = await fetch(
+          "https://uniisphere-1.onrender.com/api/messages",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to send image");
         }
         setShowGallery(false);
-        // Polling will update the chat
+        setIsAtBottom(true); // Force scroll to bottom after sending
       } catch (error) {
         setError(error.message);
       }
     }
   };
 
-  // Voice recording (placeholder implementation)
   const handleVoiceRecord = () => {
     if (!isRecording) {
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
@@ -277,12 +432,15 @@ function MessageFinalClass2() {
     }
   };
 
-  const currentConversation = conversations.find((conv) => conv.id === messageId);
+  const currentConversation = conversations.find(
+    (conv) => conv.id === messageId
+  );
 
   return (
-    <>
+    <div className="message-part-container">
+      <DesktopNavbarr />
       <div className="message-part-2-app">
-        <Background />
+        <Background2 />
         <div className="message-part-2-sidebar">
           <h1>Messages</h1>
           {error && <p>Error: {error}</p>}
@@ -293,7 +451,9 @@ function MessageFinalClass2() {
               className={`message-part-2-message-item ${
                 conversation.id === messageId ? "active" : ""
               }`}
-              onClick={() => (window.location.href = `/MessageFinalClass2/${conversation.id}`)}
+              onClick={() =>
+                (window.location.href = `/MessageFinalClass2/${conversation.id}`)
+              }
               style={{ cursor: "pointer" }}
             >
               <img
@@ -303,8 +463,12 @@ function MessageFinalClass2() {
               />
               <div className="message-part-2-message-info">
                 <div className="message-part-2-message-header">
-                  <span className="message-part-2-name">{conversation.name}</span>
-                  <span className="message-part-2-time">{conversation.time}</span>
+                  <span className="message-part-2-name">
+                    {conversation.name}
+                  </span>
+                  <span className="message-part-2-time">
+                    {conversation.time}
+                  </span>
                 </div>
                 <p className="message-part-2-preview">{conversation.preview}</p>
               </div>
@@ -314,6 +478,9 @@ function MessageFinalClass2() {
 
         <div className="message-part-2-chat">
           <div className="message-part-2-chat-header">
+            <span className="mobile-back-icon">
+              <IoArrowBackCircleSharp onClick={() => window.history.back()} />
+            </span>
             <img
               src={currentConversation?.profilePictureUrl || profilePicSmall}
               alt="profile"
@@ -335,8 +502,11 @@ function MessageFinalClass2() {
             )}
             {chatMessages.map((message, index) => {
               const isNewSender =
-                index === 0 || message.senderId !== chatMessages[index - 1]?.senderId;
-              const messageTime = new Date(message.timestamp).toLocaleTimeString([], {
+                index === 0 ||
+                message.senderId !== chatMessages[index - 1]?.senderId;
+              const messageTime = new Date(
+                message.timestamp
+              ).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               });
@@ -359,15 +529,24 @@ function MessageFinalClass2() {
                       {message.senderId !== senderId && (
                         <img
                           className="message-part-2-message-person-image"
-                          src={currentConversation?.profilePictureUrl || profilePicSmall}
+                          src={
+                            currentConversation?.profilePictureUrl ||
+                            profilePicSmall
+                          }
                           alt=""
                         />
                       )}
                       <div className="message-part-2-message-content">
-                        {message.image && <img src={message.image} alt="Message content" />}
-                        {message.audio && <audio controls src={message.audio} />}
+                        {message.image && (
+                          <img src={message.image} alt="Message content" />
+                        )}
+                        {message.audio && (
+                          <audio controls src={message.audio} />
+                        )}
                         <p>{message.text}</p>
-                        <span className="message-part-2-time">{messageTime}</span>
+                        <span className="message-part-2-time">
+                          {messageTime}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -411,18 +590,31 @@ function MessageFinalClass2() {
               onChange={handleImageSelect}
             />
             <div className="message-part-2-icons">
-              <span className="message-part-2-send-icon" onClick={handleSendClick}>
+              <span
+                className="message-part-2-send-icon"
+                onClick={handleSendClick}
+              >
                 <IoSend />
               </span>
               <span onClick={handleStickerClick}>
-                <img className="message-part-2-chat-all-icon" src={stickerIcon} alt="StickerIcon" />
+                <img
+                  className="message-part-2-chat-all-icon"
+                  src={stickerIcon}
+                  alt="StickerIcon"
+                />
               </span>
               <span onClick={handleGalleryClick}>
-                <img className="message-part-2-chat-all-icon" src={gallaryIcon} alt="GallaryIcon" />
+                <img
+                  className="message-part-2-chat-all-icon"
+                  src={gallaryIcon}
+                  alt="GallaryIcon"
+                />
               </span>
               <span onClick={handleVoiceRecord}>
                 <img
-                  className={`message-part-2-chat-all-icon ${isRecording ? "recording" : ""}`}
+                  className={`message-part-2-chat-all-icon ${
+                    isRecording ? "recording" : ""
+                  }`}
                   src={microphoneIcon}
                   alt="MicrophoneIcon"
                 />
@@ -431,95 +623,7 @@ function MessageFinalClass2() {
           </div>
         </div>
       </div>
-
-      {/* Mobile Chat Section */}
-      <div className="mobile-chat-profile-container">
-        <div className="mobile-chat-container">
-          <div className="mobile-chat-header">
-            <div className="mobile-chat-header-top">
-              <div className="mobile-chat-back-icon">
-                <img className="mobile-chat-all-icon" src={backIcon} alt="Back" />
-              </div>
-              <div className="mobile-chat-profile-pic-small">
-                <img
-                  src={currentConversation?.profilePictureUrl || profilePicSmall}
-                  alt="Profile"
-                />
-                <div className="mobile-chat-header-bottom">
-                  <span className="mobile-chat-name">
-                    {currentConversation?.name || "Loading..."}
-                  </span>
-                  <span className="mobile-chat-username">{receiverData.username || ""}</span>
-                </div>
-              </div>
-            </div>
-            <img className="mobile-chat-all-icon" src={callingIcon} alt="Call" />
-          </div>
-          <div className="mobile-chat-profile">
-            <div className="mobile-chat-profile-pic-large">
-              <img
-                src={currentConversation?.profilePictureUrl || profilePicSmall}
-                alt="Profile"
-              />
-            </div>
-            <div className="mobile-chat-big-name">
-              {currentConversation?.name || "Loading..."}
-            </div>
-            <div className="mobile-chat-big-username">{receiverData.username || ""}</div>
-            <button className="mobile-chat-voice-call">Voice Call</button>
-            <div className="mobile-chat-interests">Loading interests...</div>
-          </div>
-          <div className="mobile-chat-input">
-            <input
-              type="text"
-              className="mobile-chat-text-input"
-              placeholder="Type a message"
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-              onKeyDown={handleSendMessage}
-            />
-            {showStickers && (
-              <div className="emoji-panel">
-                {emojis.map((emoji, index) => (
-                  <span
-                    key={index}
-                    className="emoji-option"
-                    onClick={() => addEmojiToInput(emoji)}
-                  >
-                    {emoji}
-                  </span>
-                ))}
-              </div>
-            )}
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleImageSelect}
-            />
-            <div className="mobile-chat-icons">
-              <span onClick={handleStickerClick}>
-                <img className="mobile-chat-all-icon" src={stickerIcon} alt="StickerIcon" />
-              </span>
-              <span onClick={handleGalleryClick}>
-                <img className="mobile-chat-all-icon" src={gallaryIcon} alt="GallaryIcon" />
-              </span>
-              <span onClick={handleVoiceRecord}>
-                <img
-                  className={`mobile-chat-all-icon ${isRecording ? "recording" : ""}`}
-                  src={microphoneIcon}
-                  alt="MicrophoneIcon"
-                />
-              </span>
-              <span className="mobile-chat-send-icon" onClick={handleSendClick}>
-                <IoSend />
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 
