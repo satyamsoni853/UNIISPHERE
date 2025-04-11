@@ -19,7 +19,8 @@ function MessageFinalClass2() {
   const [messageInput, setMessageInput] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [conversations, setConversations] = useState([]);
-  const [error, setError] = useState(null);
+  const [conversationError, setConversationError] = useState(null);
+  const [sendError, setSendError] = useState(null);
   const [receiverData, setReceiverData] = useState({});
   const [showStickers, setShowStickers] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -32,9 +33,7 @@ function MessageFinalClass2() {
   const fileInputRef = useRef(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
 
-  const senderId =
-    localStorage.getItem("LoginuserId") ||
-    "18114725-fcc6-4cbe-a617-894a464b9fc8";
+  const senderId = localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8";
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
 
   const emojis = [
@@ -59,6 +58,7 @@ function MessageFinalClass2() {
     const fetchConversations = async () => {
       try {
         setIsLoading(true);
+        setConversationError(null);
         const response = await fetch(
           `https://uniisphere-1.onrender.com/api/messages/conversations?userId=${senderId}`,
           {
@@ -88,7 +88,7 @@ function MessageFinalClass2() {
 
         setConversations(transformedConversations);
       } catch (err) {
-        setError(err.message);
+        setConversationError(err.message);
       } finally {
         setIsLoading(false);
       }
@@ -141,7 +141,7 @@ function MessageFinalClass2() {
         });
       }
     } catch (err) {
-      setError(err.message);
+      console.error("Error fetching conversation:", err);
     }
   };
 
@@ -181,14 +181,17 @@ function MessageFinalClass2() {
 
   const sendMessage = async (content) => {
     if (!content.trim() || content.length > 1000) {
-      setError("Message must be between 1 and 1000 characters");
+      setSendError("Message must be between 1 and 1000 characters");
       return;
     }
 
     if (!navigator.onLine) {
-      setError("No internet connection");
+      setSendError("No internet connection");
       return;
     }
+
+    // Clear any previous errors
+    setSendError(null);
 
     // Optimistic update
     const tempId = Date.now().toString();
@@ -235,9 +238,9 @@ function MessageFinalClass2() {
         throw new Error(errorMsg);
       }
 
-      await fetchConversation();
+      // Success - no need to fetch conversation if optimistic update is working
     } catch (error) {
-      setError(error.message);
+      setSendError(error.message);
       console.error("Message send error:", error);
     } finally {
       setIsSending(false);
@@ -265,12 +268,12 @@ function MessageFinalClass2() {
     if (!file) return;
 
     if (!file.type.match('image.*')) {
-      setError("Please select an image file");
+      setSendError("Please select an image file");
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
-      setError("Image size should be less than 5MB");
+    if (file.size > 5 * 1024 * 1024) {
+      setSendError("Image size should be less than 5MB");
       return;
     }
 
@@ -287,6 +290,7 @@ function MessageFinalClass2() {
     setChatMessages(prev => [...prev, tempMessage]);
     setIsAtBottom(true);
     setShowGallery(false);
+    setSendError(null);
 
     try {
       const formData = new FormData();
@@ -308,11 +312,9 @@ function MessageFinalClass2() {
       if (!response.ok) {
         throw new Error("Failed to send image");
       }
-
-      await fetchConversation();
     } catch (error) {
       setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
-      setError(error.message);
+      setSendError(error.message);
     }
   };
 
@@ -333,7 +335,7 @@ function MessageFinalClass2() {
           handleSendAudio(blob);
         };
       }).catch(err => {
-        setError("Microphone access denied: " + err.message);
+        setSendError("Microphone access denied: " + err.message);
       });
     } else {
       mediaRecorderRef.current.stop();
@@ -354,6 +356,7 @@ function MessageFinalClass2() {
 
     setChatMessages(prev => [...prev, tempMessage]);
     setIsAtBottom(true);
+    setSendError(null);
 
     try {
       const formData = new FormData();
@@ -375,11 +378,9 @@ function MessageFinalClass2() {
       if (!response.ok) {
         throw new Error("Failed to send audio");
       }
-
-      await fetchConversation();
     } catch (error) {
       setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
-      setError(error.message);
+      setSendError(error.message);
     }
   };
 
@@ -407,16 +408,16 @@ function MessageFinalClass2() {
         <Background2 />
         <div className="message-part-2-sidebar">
           <h1>Messages</h1>
-          {error && (
+          {conversationError && (
             <div className="message-error-alert">
-              <span>{error}</span>
-              <button onClick={() => setError(null)} className="error-close-btn">
+              {/* <span>{conversationError}</span> */}
+              <button onClick={() => setConversationError(null)} className="error-close-btn">
                 ✕
               </button>
             </div>
           )}
           {isLoading && <p>Loading conversations...</p>}
-          {!isLoading && !conversations.length && !error && (
+          {!isLoading && !conversations.length && !conversationError && (
             <p>No conversations found.</p>
           )}
           {conversations.map((conversation) => (
@@ -540,6 +541,20 @@ function MessageFinalClass2() {
               onKeyDown={handleSendMessage}
               disabled={isSending}
             />
+            {sendError && (
+              <div className="message-error-alert">
+                <span>{sendError}</span>
+                <button 
+                  className="error-close-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSendError(null);
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+            )}
             {showStickers && (
               <div className="emoji-panel">
                 {emojis.map((emoji, index) => (
