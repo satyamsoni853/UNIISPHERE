@@ -149,7 +149,7 @@
   display: flex;
   justify-content: space-around;
   width: 70%;
-  gap: 200px;
+  gap: 150px;
   /* position: relative; */
 }
 
@@ -195,7 +195,7 @@
   font-size: 15px;
   display: flex;
   bottom: -25px;
-  /* left: 15px; */
+  left: 15px; /* this places it at the left end with 15px spacing */
   border-radius: 25px;
   background-color: #d7d7d7;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -203,6 +203,7 @@
   justify-content: center;
   cursor: pointer;
 }
+
 
 .afterconnectinginProfile-full-section-profile-info p:first-child {
   font-size: 23px;
