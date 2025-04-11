@@ -20,6 +20,7 @@ import largesvg3 from "./large svg3.svg";
 import largesvg4 from "./large svg4.svg";
 import largesvg5 from "./large svg5.svg";
 import largesvg6 from "./large svg6.svg";
+import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 
 const MentorSection = () => {
   const [showMentorProfile, setShowMentorProfile] = useState(false);
@@ -238,7 +239,6 @@ const MentorSection = () => {
               </div>
               <IoIosArrowForward className="mentor-desktop-arrow" />
             </div>
-          
           </div>
         </div>
       )}
