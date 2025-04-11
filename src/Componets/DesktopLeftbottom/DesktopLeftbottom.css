@@ -14,14 +14,15 @@
   
   max-width: 28vw;
 
-  height: auto; /* Allow height to adjust */
-  /* min-height: 353px;  */
-  height: 400px;
+
+  height: 370px;
   overflow: hidden;
   margin-top: 100px;
   margin-left: 20px;
   position: fixed;
-  top: 460px; 
+  top: 420px; 
+  bottom: 20;
+  /* display: none; */
 }
 
 /* Heading */

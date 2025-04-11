@@ -37,13 +37,12 @@ function DesktopNavbarr() {
   const [disableComments, setDisableComments] = useState(false);
   const [mentions, setMentions] = useState([]);
   const [mediaList, setMediaList] = useState([]);
-  const [totalLikes, setTotalLikes] = useState(0); // New state for total likes
-  const [totalComments, setTotalComments] = useState(0); // New state for total comments
-  const [posts, setPosts] = useState(0); // Add this with your other state declarations
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [totalComments, setTotalComments] = useState(0);
+  const [posts, setPosts] = useState(0);
   const [Username, setUsername] = useState("");
   const [UserProfileImage, setUserProfileImage] = useState("");
   const [loading, setLoading] = useState(true);
-  
   const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -60,36 +59,54 @@ function DesktopNavbarr() {
     { time: "18 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-blue-400" },
     { time: "2 days", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
   ]);
+
+  // Fetch connections from the API
+  useEffect(() => {
+    const fetchConnections = async () => {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        console.error("Authentication token not found");
+        return;
+      }
+      try {
+        const response = await axios.get(
+          "https://uniisphere-1.onrender.com/api/connections",
+          { headers: { Authorization: `Bearer ${authToken}` } }
+        );
+        console.log("Connections API Response:", response.data);
+      } catch (err) {
+        console.error("Error fetching connections:", err.response ? err.response.data : err.message);
+      }
+    };
+    fetchConnections();
+  }, []);
+
+  // Fetch all users
   useEffect(() => {
     const fetchAllUsers = async () => {
       const authToken = localStorage.getItem("authToken");
-
       if (!authToken) {
         setError("Authentication token not found");
         setLoading(false);
         return;
       }
-
       try {
         setLoading(true);
         const response = await axios.get(
           "https://uniisphere-1.onrender.com/users/getAll",
-          {
-            headers: { Authorization: `Bearer ${authToken}` },
-          }
+          { headers: { Authorization: `Bearer ${authToken}` } }
         );
-
-        setAllUsersResponse(response.data);
+        // Ensure response.data is an array
+        setAllUsersResponse(Array.isArray(response.data) ? response.data : []);
         console.log("Get All Users API Response:", response.data);
       } catch (err) {
         console.error("Error fetching all users:", err);
         setError(err.message || "Failed to fetch users");
-        setAllUsersResponse({ error: err.message });
+        setAllUsersResponse([]); // Default to empty array on error
       } finally {
         setLoading(false);
       }
     };
-
     fetchAllUsers();
   }, []);
 
@@ -129,41 +146,23 @@ function DesktopNavbarr() {
       setError("Authentication required");
       return;
     }
-
     try {
       const response = await axios.get(
         "https://uniisphere-1.onrender.com/posts/stats/total",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json"
-          }
-        }
+        { headers: { Authorization: `Bearer ${authToken}`, "Content-Type": "application/json" } }
       );
-
       console.log("Profile Stats response:", response.data);
-
       if (response.data.totalPosts && response.data.totalPosts.length > 0) {
-        // Filter posts where user.id matches the logged-in userId
         const userPosts = response.data.totalPosts.filter(post => post.user.id === userId);
-
-        // Extract username and profilePictureUrl from the first post
         if (userPosts.length > 0) {
           setUsername(userPosts[0].user.username || "");
           setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
         }
-
-        // Calculate total likes and comments for the filtered posts
         const totalLikesCount = userPosts.reduce((sum, post) => sum + (post._count?.Likes || 0), 0);
         const totalCommentsCount = userPosts.reduce((sum, post) => sum + (post._count?.Comments || 0), 0);
-
-        // Update the state with totals
         setTotalLikes(totalLikesCount);
         setTotalComments(totalCommentsCount);
-        
-        // Set the number of posts for the user
-        const totalPostsCount = userPosts.length;
-        setPosts(totalPostsCount);
+        setPosts(userPosts.length);
       }
     } catch (err) {
       console.error("Stats fetch error:", err);
@@ -183,7 +182,6 @@ function DesktopNavbarr() {
   const handleSearchChange = (e) => {
     const username = e.target.value;
     setSearchQuery(username);
-
     if (/^[a-z0-9_]*$/i.test(username)) {
       debouncedSearch(username);
     } else {
@@ -194,13 +192,22 @@ function DesktopNavbarr() {
   // Handle profile click
   const handleProfileClick = (userId) => {
     localStorage.setItem("SearchUserId", userId);
-    navigate(`/FollowerMiddleSectionPrivacy/${userId}`);
-    // navigate(`/FullFlowerSectionPage/${userId}`);
+    if (allUsersResponse && Array.isArray(allUsersResponse)) {
+      const idExists = allUsersResponse.some(user => user.id === userId);
+      if (idExists) {
+        navigate(`/AfterConnecting/${userId}`);
+      } else {
+        navigate(`/DesFollowerMiddleSectionPrivacy`);
+      }
+    } else {
+      console.error("User data not loaded yet or invalid:", allUsersResponse);
+      navigate(`/DesFollowerMiddleSectionPrivacy`); // Default if no data
+    }
     setShowResults(false);
     setSearchQuery("");
   };
 
-  // Initial load - fetch all profiles and stats
+  // Initial load
   useEffect(() => {
     fetchProfiles();
     fetchStats();
@@ -238,10 +245,9 @@ function DesktopNavbarr() {
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
     setShowNotificationDropdown(false);
-    
     switch (iconName) {
       case "home":
-        navigate("/");
+        navigate("/view");
         break;
       case "network":
         navigate("/network");
@@ -299,14 +305,10 @@ function DesktopNavbarr() {
     try {
       setIsLoading(true);
       setError(null);
-      
       const authToken = localStorage.getItem("authToken");
-      console.log("Auth Token:", authToken);
-
       if (!authToken) {
         throw new Error("User not authenticated. Please log in.");
       }
-
       const formData = new FormData();
       mediaList.forEach((media, index) => {
         formData.append(`media_${index}`, media.file);
@@ -316,15 +318,14 @@ function DesktopNavbarr() {
       formData.append('disableComments', disableComments);
       
       const profileResponse = await axios.patch(
-        `https://uniisphere-1.onrender.com/users/profile/`,
+        "https://uniisphere-1.onrender.com/users/profile/",
         { bio: caption },
         { headers: { Authorization: `Bearer ${authToken}` } }
       );
-
       console.log("Profile updated:", profileResponse.data);
 
-      const postResponse = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/`,
+      const postResponse = await axios.post( // Changed to POST for creating a post
+        "https://uniisphere-1.onrender.com/posts/",
         formData,
         {
           headers: {
@@ -333,7 +334,6 @@ function DesktopNavbarr() {
           },
         }
       );
-
       console.log("Post created:", postResponse.data);
       
       setMediaList([]);
@@ -343,7 +343,6 @@ function DesktopNavbarr() {
       setShowPostDetails(false);
       setShowAddMore(true);
       setShowUploadSection(false);
-
     } catch (error) {
       console.error("Error creating post:", error);
       setError(error.message || "Failed to create post. Please try again.");
@@ -415,14 +414,10 @@ function DesktopNavbarr() {
                 </button>
               ))}
             </div>
-
             <div className="notification-list">
               {filteredNotifications.length > 0 ? (
                 filteredNotifications.map((notif, index) => (
-                  <div
-                    key={index}
-                    className={`notification-item ${notif.color}`}
-                  >
+                  <div key={index} className={`notification-item ${notif.color}`}>
                     <img
                       src="https://via.placeholder.com/50"
                       alt="Profile"
@@ -465,14 +460,9 @@ function DesktopNavbarr() {
                 <p className="SelfProfile-label">Position</p>
               </div>
             </div>
-
-            <button
-              className="SelfProfile-edit-button"
-              onClick={handleEditProfile}
-            >
+            <button className="SelfProfile-edit-button" onClick={handleEditProfile}>
               Edit Profile
             </button>
-
             <div className="SelfProfile-stats">
               <div className="SelfProfile-stat">
                 <span>Posts</span>
@@ -487,19 +477,12 @@ function DesktopNavbarr() {
                 <span className="SelfProfile-stat-value">{totalComments}</span>
               </div>
             </div>
-
             <div className="SelfProfile-menu">
-              <div
-                className="SelfProfile-menu-item"
-                onClick={() => navigate("/SelfSetting")}
-              >
+              <div className="SelfProfile-menu-item" onClick={() => navigate("/SelfSetting")}>
                 Settings
               </div>
               <div className="SelfProfile-menu-item">Help</div>
-              <div
-                className="SelfProfile-menu-item SelfProfile-sign-out"
-                onClick={handleSignOut}
-              >
+              <div className="SelfProfile-menu-item SelfProfile-sign-out" onClick={handleSignOut}>
                 Sign Out
               </div>
             </div>
@@ -555,12 +538,8 @@ function DesktopNavbarr() {
                     className="desktop-search-result-avatar"
                   />
                   <div className="desktop-search-result-info">
-                    <span className="desktop-search-result-name">
-                      {user.username}
-                    </span>
-                    <span className="desktop-search-result-id">
-                      ID: {user.id}
-                    </span>
+                    <span className="desktop-search-result-name">{user.username}</span>
+                    <span className="desktop-search-result-id">ID: {user.id}</span>
                   </div>
                 </div>
               ))
@@ -581,10 +560,7 @@ function DesktopNavbarr() {
             {(mediaList.length === 0) && (
               <div>
                 <p className="upload-text">Drag & Drop your media here</p>
-                <button
-                  className="upload-button"
-                  onClick={() => inputRef.current.click()}
-                >
+                <button className="upload-button" onClick={() => inputRef.current.click()}>
                   Upload from computer
                 </button>
               </div>
@@ -594,40 +570,22 @@ function DesktopNavbarr() {
               <div className="after-upload">
                 <div className="navbar">
                   <img src={backicon} alt="Back" onClick={handleCloseUpload} />
-                  <h6
-                    onClick={() => {
-                      setShowPostDetails(true);
-                      setShowAddMore(false);
-                    }}
-                  >
+                  <h6 onClick={() => { setShowPostDetails(true); setShowAddMore(false); }}>
                     Continue
                   </h6>
                 </div>
-
                 <div className="preview-container">
                   {mediaList.map((media, index) => (
                     <div key={index} className="media-item">
                       {media.mediaType === "image" ? (
-                        <img
-                          className="imageAndVideo"
-                          src={media.previewURL}
-                          alt="Uploaded media"
-                        />
+                        <img className="imageAndVideo" src={media.previewURL} alt="Uploaded media" />
                       ) : (
-                        <video
-                          className="imageAndVideo"
-                          src={media.previewURL}
-                          controls
-                        />
+                        <video className="imageAndVideo" src={media.previewURL} controls />
                       )}
                     </div>
                   ))}
                 </div>
-
-                <button
-                  className="add-more-btn"
-                  onClick={() => inputRef.current.click()}
-                >
+                <button className="add-more-btn" onClick={() => inputRef.current.click()}>
                   Add More
                 </button>
               </div>
@@ -643,23 +601,14 @@ function DesktopNavbarr() {
                     </div>
                     <h6>Create Post</h6>
                   </div>
-
                   <div className="post-content-container">
                     <div className="image-and-caption">
                       {mediaList.map((media, index) => (
                         <div key={index} className="post-media-container">
                           {media.mediaType === "image" ? (
-                            <img
-                              className="create-post-imageAndVideo"
-                              src={media.previewURL}
-                              alt="Uploaded media"
-                            />
+                            <img className="create-post-imageAndVideo" src={media.previewURL} alt="Uploaded media" />
                           ) : (
-                            <video
-                              className="create-post-imageAndVideo"
-                              src={media.previewURL}
-                              controls
-                            />
+                            <video className="create-post-imageAndVideo" src={media.previewURL} controls />
                           )}
                         </div>
                       ))}
@@ -674,14 +623,10 @@ function DesktopNavbarr() {
                         />
                       </div>
                     </div>
-
                     <div className="mention-form-group">
                       <label className="input-label">Add Mentions</label>
-                      <div className="mention-button">
-                        +  
-                      </div>
+                      <div className="mention-button">+</div>
                     </div>
-
                     <div className="privacy-settings">
                       <div className="setting-item">
                         <div className="setting-info">
@@ -699,7 +644,6 @@ function DesktopNavbarr() {
                           <span className="slider round"></span>
                         </label>
                       </div>
-
                       <div className="setting-item">
                         <div className="setting-info">
                           <h4>Turn Off Comments</h4>
@@ -717,7 +661,6 @@ function DesktopNavbarr() {
                         </label>
                       </div>
                     </div>
-
                     <div className="submit-section">
                       <button 
                         className="submit-button" 
@@ -732,7 +675,6 @@ function DesktopNavbarr() {
                 </div>
               </div>
             )}
-
             <input
               type="file"
               accept="image/*,video/*"
@@ -745,7 +687,7 @@ function DesktopNavbarr() {
         </div>
       )}
 
-      {/* Hidden file input (for initial upload if needed outside overlay) */}
+      {/* Hidden file input */}
       <input
         type="file"
         ref={inputRef}

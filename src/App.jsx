@@ -26,7 +26,8 @@ import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
 import MobileAddPost from "./Componets/MobileAddPost/MobileAddPost.jsx";
 import MessageMobileInbox from "./Componets/MessageMobileInbox/MobileMessage.jsx";
 // import GoogleLoginComponent from './Componets/GoogleLogin/GoogleLoginComponent.jsx'
-import MentorSection from "./Componets/MentorSection/MentorSection.jsx";
+import AfterConnecting from "./Componets/AfterConnecting/AfterConnecting.jsx";
+import MentorSection from "./Componets/MentorSection/MentorSection.jsx"
 
 function App() {
   return (
@@ -54,7 +55,11 @@ function App() {
             path="/FullFlowerSectionPage/:userId"
             element={<FullFlowerSectionPage />}
           />
-         
+          <Route
+            path="/AfterConnecting/:userId"
+            element={<AfterConnecting />}
+          />
+
           <Route
             path="/PersonalInfoUpdate/:userId"
             element={<PersonalInfoUpdate />}
@@ -71,7 +76,10 @@ function App() {
           <Route path="/SelfProfile" element={<SelfProfile />} />
           <Route path="/SelfSetting" element={<SelfSetting />} />
           <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
-          <Route path="/MessageFinalClass2/:messageId" element={<MessageFinalClass2 />} />
+          <Route
+            path="/MessageFinalClass2/:messageId"
+            element={<MessageFinalClass2 />}
+          />
           <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/CollabPage" element={<CollabPage />} />
           <Route
@@ -82,8 +90,9 @@ function App() {
 
           <Route path="/MobileAddPost" element={<MobileAddPost />} />
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
+          <Route path="/MentorSection" element={<MentorSection />} />
+
           {/* <Route path="/GoogleLoginComponent" element={<GoogleLoginComponent />} /> */}
-          <Route path="/Mentor" element={<MentorSection/>} />
         </Routes>
       </div>
     </Router>

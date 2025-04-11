@@ -125,7 +125,7 @@ function DesktopRightsection() {
 
         <div className="profile-details">
           <h3 className="profile-name">{getFullName()}</h3>
-          <p className="profile-company">{profileData?.headline || "Uniisphere"}</p>
+          <p className="profile-company">{profileData?.username || "Uniisphere"}</p>
           <p className="profile-location">{profileData?.location || "Location not specified"}</p>
           <p className="profile-bio">
             {profileData?.About || "Bio not available"}
