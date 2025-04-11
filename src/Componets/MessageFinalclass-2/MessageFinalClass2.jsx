@@ -9,7 +9,7 @@ import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
 import microphoneIcon from "./on.svg";
 import "./MessageFinalClass2.css";
-import Background2 from "../Background/Background"; // Assuming you have a background image
+import Background2 from "../Background/Background";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
 
 const Background = () => <div className="message-background" />;
@@ -25,10 +25,12 @@ function MessageFinalClass2() {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const [showGallery, setShowGallery] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const chatBodyRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const fileInputRef = useRef(null);
-  const [isAtBottom, setIsAtBottom] = useState(true); // Track if user is at bottom
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
   const senderId =
     localStorage.getItem("LoginuserId") ||
@@ -36,161 +38,27 @@ function MessageFinalClass2() {
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
 
   const emojis = [
-    "😀",
-    "😊",
-    "😂",
-    "🤓",
-    "😎",
-    "😍",
-    "🥰",
-    "😘",
-    "😜",
-    "😛",
-    "😇",
-    "🙃",
-    "😏",
-    "😴",
-    "🤗",
-    "🤔",
-    "🤤",
-    "😢",
-    "😭",
-    "😤",
-    "😡",
-    "🤬",
-    "😳",
-    "😱",
-    "😨",
-    "😰",
-    "😥",
-    "😓",
-    "🙄",
-    "😬",
-    "🤐",
-    "😷",
-    "🤒",
-    "🤕",
-    "🥳",
-    "🤩",
-    "🥺",
-    "🙌",
-    "👏",
-    "👍",
-    "👎",
-    "✌️",
-    "🤘",
-    "👌",
-    "👈",
-    "👉",
-    "👆",
-    "👇",
-    "✋",
-    "🤚",
-    "🖐️",
-    "👋",
-    "🤝",
-    "🙏",
-    "💪",
-    "🦵",
-    "🦶",
-    "👀",
-    "👁️",
-    "👅",
-    "👄",
-    "💋",
-    "❤️",
-    "💔",
-    "💖",
-    "💙",
-    "💚",
-    "💛",
-    "💜",
-    "🖤",
-    "🤎",
-    "💯",
-    "💥",
-    "💦",
-    "💤",
-    "💨",
-    "🎉",
-    "🎈",
-    "🎁",
-    "🎂",
-    "🍰",
-    "🍫",
-    "🍬",
-    "🍭",
-    "🍎",
-    "🍊",
-    "🍋",
-    "🍇",
-    "🍉",
-    "🍓",
-    "🥝",
-    "🍍",
-    "🥭",
-    "🥑",
-    "🥕",
-    "🌽",
-    "🥔",
-    "🍔",
-    "🍕",
-    "🌮",
-    "🍟",
-    "🍗",
-    "🥚",
-    "🥓",
-    "🧀",
-    "🍳",
-    "☕",
-    "🍵",
-    "🥛",
-    "🍷",
-    "🍺",
-    "🥂",
-    "🎸",
-    "🎹",
-    "🥁",
-    "🎤",
-    "🎧",
-    "🎮",
-    "🏀",
-    "⚽",
-    "🏈",
-    "🎾",
-    "🏐",
-    "🏓",
-    "⛳",
-    "🏊",
-    "🏄",
-    "🚴",
-    "🚗",
-    "✈️",
-    "🚀",
-    "🛸",
-    "🌍",
-    "🌙",
-    "⭐",
-    "🌞",
-    "☁️",
-    "⛅",
-    "🌧️",
-    "⛄",
-    "⚡",
-    "🔥",
-    "💧",
-    "🌊",
-    "🌴",
-    "🌵",
-    "🌷",
-    "🌸",
-    "🌹",
-    "🥀",
+    "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛", 
+    "😇", "🙃", "😏", "😴", "🤗", "🤔", "🤤", "😢", "😭", "😤",
+    "😡", "🤬", "😳", "😱", "😨", "😰", "😥", "😓", "🙄", "😬",
+    "🤐", "😷", "🤒", "🤕", "🥳", "🤩", "🥺", "🙌", "👏", "👍",
+    "👎", "✌️", "🤘", "👌", "👈", "👉", "👆", "👇", "✋", "🤚",
+    "🖐️", "👋", "🤝", "🙏", "💪", "🦵", "🦶", "👀", "👁️", "👅",
+    "👄", "💋", "❤️", "💔", "💖", "💙", "💚", "💛", "💜", "🖤",
+    "🤎", "💯", "💥", "💦", "💤", "💨", "🎉", "🎈", "🎁", "🎂",
+    "🍰", "🍫", "🍬", "🍭", "🍎", "🍊", "🍋", "🍇", "🍉", "🍓",
+    "🥝", "🍍", "🥭", "🥑", "🥕", "🌽", "🥔", "🍔", "🍕", "🌮",
+    "🍟", "🍗", "🥚", "🥓", "🧀", "🍳", "☕", "🍵", "🥛", "🍷",
+    "🍺", "🥂", "🎸", "🎹", "🥁", "🎤", "🎧", "🎮", "🏀", "⚽",
+    "🏈", "🎾", "🏐", "🏓", "⛳", "🏊", "🏄", "🚴", "🚗", "✈️",
+    "🚀", "🛸", "🌍", "🌙", "⭐", "🌞", "☁️", "⛅", "🌧️", "⛄",
+    "⚡", "🔥", "💧", "🌊", "🌴", "🌵", "🌷", "🌸", "🌹", "🥀"
   ];
 
   useEffect(() => {
     const fetchConversations = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch(
           `https://uniisphere-1.onrender.com/api/messages/conversations?userId=${senderId}`,
           {
@@ -221,6 +89,8 @@ function MessageFinalClass2() {
         setConversations(transformedConversations);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -252,8 +122,7 @@ function MessageFinalClass2() {
         .map((msg) => ({
           id: msg.id || msg._id,
           senderId: msg.senderId,
-          sender:
-            msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
+          sender: msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
           text: msg.content || msg.lastMessage,
           timestamp: msg.timestamp || msg.createdAt,
           image: msg.image || null,
@@ -261,15 +130,12 @@ function MessageFinalClass2() {
         }))
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-      if (
-        JSON.stringify(chatMessages) !== JSON.stringify(transformedMessages)
-      ) {
+      if (JSON.stringify(chatMessages) !== JSON.stringify(transformedMessages)) {
         setChatMessages(transformedMessages);
       }
 
       if (messages.length > 0) {
-        const receiver =
-          messages.find((msg) => msg.senderId !== senderId)?.user || {};
+        const receiver = messages.find((msg) => msg.senderId !== senderId)?.user || {};
         setReceiverData({
           username: receiver.username || "Unknown",
         });
@@ -279,14 +145,12 @@ function MessageFinalClass2() {
     }
   };
 
-  // Polling effect with scroll position check
   useEffect(() => {
     if (!messageId || !token || !senderId) return;
 
     fetchConversation();
 
     const intervalId = setInterval(() => {
-      // Only fetch if user is at the bottom
       if (isAtBottom) {
         fetchConversation();
       }
@@ -295,14 +159,13 @@ function MessageFinalClass2() {
     return () => clearInterval(intervalId);
   }, [messageId, token, senderId, isAtBottom]);
 
-  // Scroll handling
   useEffect(() => {
     const chatBody = chatBodyRef.current;
     if (!chatBody) return;
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = chatBody;
-      const isBottom = scrollTop + clientHeight >= scrollHeight - 10; // Small buffer
+      const isBottom = scrollTop + clientHeight >= scrollHeight - 10;
       setIsAtBottom(isBottom);
     };
 
@@ -310,7 +173,6 @@ function MessageFinalClass2() {
     return () => chatBody.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Auto-scroll only when at bottom or new message sent
   useEffect(() => {
     if (chatBodyRef.current && isAtBottom) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
@@ -318,7 +180,30 @@ function MessageFinalClass2() {
   }, [chatMessages, isAtBottom]);
 
   const sendMessage = async (content) => {
-    if (!content.trim()) return;
+    if (!content.trim() || content.length > 1000) {
+      setError("Message must be between 1 and 1000 characters");
+      return;
+    }
+
+    if (!navigator.onLine) {
+      setError("No internet connection");
+      return;
+    }
+
+    // Optimistic update
+    const tempId = Date.now().toString();
+    const newMessage = {
+      id: tempId,
+      senderId: senderId,
+      sender: "You",
+      text: content,
+      timestamp: new Date().toISOString(),
+    };
+
+    setChatMessages(prev => [...prev, newMessage]);
+    setMessageInput("");
+    setIsAtBottom(true);
+    setIsSending(true);
 
     try {
       const response = await fetch(
@@ -337,15 +222,25 @@ function MessageFinalClass2() {
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to send message");
+        // Remove optimistic update if failed
+        setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
+        
+        let errorMsg = "Failed to send message";
+        try {
+          const errorData = await response.json();
+          errorMsg = errorData.error || errorMsg;
+        } catch (e) {
+          errorMsg = await response.text() || errorMsg;
+        }
+        throw new Error(errorMsg);
       }
 
       await fetchConversation();
-      setMessageInput("");
-      setIsAtBottom(true); // Force scroll to bottom after sending
     } catch (error) {
       setError(error.message);
+      console.error("Message send error:", error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -367,32 +262,57 @@ function MessageFinalClass2() {
 
   const handleImageSelect = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      try {
-        const formData = new FormData();
-        formData.append("receiverId", messageId);
-        formData.append("content", "Image");
-        formData.append("file", file);
+    if (!file) return;
 
-        const response = await fetch(
-          "https://uniisphere-1.onrender.com/api/messages",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          }
-        );
+    if (!file.type.match('image.*')) {
+      setError("Please select an image file");
+      return;
+    }
 
-        if (!response.ok) {
-          throw new Error("Failed to send image");
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      setError("Image size should be less than 5MB");
+      return;
+    }
+
+    const tempId = Date.now().toString();
+    const tempMessage = {
+      id: tempId,
+      senderId: senderId,
+      sender: "You",
+      text: "Sending image...",
+      timestamp: new Date().toISOString(),
+      image: URL.createObjectURL(file)
+    };
+
+    setChatMessages(prev => [...prev, tempMessage]);
+    setIsAtBottom(true);
+    setShowGallery(false);
+
+    try {
+      const formData = new FormData();
+      formData.append("receiverId", messageId);
+      formData.append("content", "Image");
+      formData.append("file", file);
+
+      const response = await fetch(
+        "https://uniisphere-1.onrender.com/api/messages",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
         }
-        setShowGallery(false);
-        setIsAtBottom(true); // Force scroll to bottom after sending
-      } catch (error) {
-        setError(error.message);
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send image");
       }
+
+      await fetchConversation();
+    } catch (error) {
+      setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
+      setError(error.message);
     }
   };
 
@@ -410,7 +330,10 @@ function MessageFinalClass2() {
           const blob = new Blob(audioChunks, { type: "audio/webm" });
           setAudioBlob(blob);
           stream.getTracks().forEach((track) => track.stop());
+          handleSendAudio(blob);
         };
+      }).catch(err => {
+        setError("Microphone access denied: " + err.message);
       });
     } else {
       mediaRecorderRef.current.stop();
@@ -418,14 +341,56 @@ function MessageFinalClass2() {
     }
   };
 
+  const handleSendAudio = async (blob) => {
+    const tempId = Date.now().toString();
+    const tempMessage = {
+      id: tempId,
+      senderId: senderId,
+      sender: "You",
+      text: "Audio message",
+      timestamp: new Date().toISOString(),
+      audio: URL.createObjectURL(blob)
+    };
+
+    setChatMessages(prev => [...prev, tempMessage]);
+    setIsAtBottom(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("receiverId", messageId);
+      formData.append("content", "Audio");
+      formData.append("file", blob, "audio.webm");
+
+      const response = await fetch(
+        "https://uniisphere-1.onrender.com/api/messages",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send audio");
+      }
+
+      await fetchConversation();
+    } catch (error) {
+      setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
+      setError(error.message);
+    }
+  };
+
   const handleSendClick = () => {
-    if (messageInput.trim()) {
+    if (messageInput.trim() && !isSending) {
       sendMessage(messageInput);
     }
   };
 
   const handleSendMessage = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !isSending) {
       e.preventDefault();
       sendMessage(messageInput);
     }
@@ -442,8 +407,18 @@ function MessageFinalClass2() {
         <Background2 />
         <div className="message-part-2-sidebar">
           <h1>Messages</h1>
-          {error && <p>Error: {error}</p>}
-          {!conversations.length && !error && <p>No conversations found.</p>}
+          {error && (
+            <div className="message-error-alert">
+              <span>{error}</span>
+              <button onClick={() => setError(null)} className="error-close-btn">
+                ✕
+              </button>
+            </div>
+          )}
+          {isLoading && <p>Loading conversations...</p>}
+          {!isLoading && !conversations.length && !error && (
+            <p>No conversations found.</p>
+          )}
           {conversations.map((conversation) => (
             <div
               key={conversation.id}
@@ -496,16 +471,14 @@ function MessageFinalClass2() {
             </div>
           </div>
           <div className="message-part-2-chat-body" ref={chatBodyRef}>
-            {!chatMessages.length && (
-              <p className="message-part-2-no-messages">No messages yet.</p>
+            {!chatMessages.length && !isLoading && (
+              <p className="message-part-2-no-messages">No messages yet. Start the conversation!</p>
             )}
             {chatMessages.map((message, index) => {
               const isNewSender =
                 index === 0 ||
                 message.senderId !== chatMessages[index - 1]?.senderId;
-              const messageTime = new Date(
-                message.timestamp
-              ).toLocaleTimeString([], {
+              const messageTime = new Date(message.timestamp).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               });
@@ -537,7 +510,11 @@ function MessageFinalClass2() {
                       )}
                       <div className="message-part-2-message-content">
                         {message.image && (
-                          <img src={message.image} alt="Message content" />
+                          <img 
+                            src={message.image} 
+                            alt="Message content" 
+                            className="message-image"
+                          />
                         )}
                         {message.audio && (
                           <audio controls src={message.audio} />
@@ -561,13 +538,8 @@ function MessageFinalClass2() {
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
               onKeyDown={handleSendMessage}
+              disabled={isSending}
             />
-            {error && (
-              <div className="message-error-alert">
-                {error}
-                <button onClick={() => setError(null)}>✕</button>
-              </div>
-            )}
             {showStickers && (
               <div className="emoji-panel">
                 {emojis.map((emoji, index) => (
@@ -590,8 +562,8 @@ function MessageFinalClass2() {
             />
             <div className="message-part-2-icons">
               <span
-                className="message-part-2-send-icon"
-                onClick={handleSendClick}
+                className={`message-part-2-send-icon ${isSending ? 'disabled' : ''}`}
+                onClick={!isSending ? handleSendClick : undefined}
               >
                 <IoSend />
               </span>
