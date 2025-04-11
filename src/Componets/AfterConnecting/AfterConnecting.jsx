@@ -609,7 +609,7 @@ function AfterConnecting() {
                             )}
                           </h4>
                           <div className="afterconnectinginProfile-full-section-subCollabrators">
-                            <div className="afterconnectinginProfile-full-section-sunCollabrators-name">
+                            {/* <div className="afterconnectinginProfile-full-section-sunCollabrators-name">
                               {(data.subCollaborators && data.subCollaborators.length > 0
                                 ? data.subCollaborators
                                 : dummyCollabs.subCollaborators
@@ -622,7 +622,7 @@ function AfterConnecting() {
                                   {index < (data.subCollaborators?.length || dummyCollabs.subCollaborators.length) - 1 ? ", " : ""}
                                 </p>
                               ))}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>

@@ -35,6 +35,7 @@ function MessageFinalClass2() {
 
   const senderId = localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8";
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
+  
 
   const emojis = [
     "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛", 
