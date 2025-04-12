@@ -248,7 +248,8 @@ function DesktopNavbarr() {
     if (allUsersResponse && Array.isArray(allUsersResponse)) {
       const idExists = allUsersResponse.some((user) => user.id === userId);
       if (idExists) {
-        navigate(`/AfterConnecting/${userId}`);
+        // navigate(`/AfterConnecting/${userId}`);
+        navigate(`/DesFollowerMiddleSectionPrivacy/${userId}`);
       } else {
         navigate(`/DesFollowerMiddleSectionPrivacy`);
       }

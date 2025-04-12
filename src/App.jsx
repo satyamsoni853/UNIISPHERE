@@ -45,9 +45,13 @@ function App() {
           {/* Protected Routes (require userId) */}
           <Route path="/View" element={<View />} />
           <Route
-            path="/FollowerMiddleSectionPrivacy/:userId"
+  path="/DesFollowerMiddleSectionPrivacy/:userId"
+  element={<DesFollowerMiddleSectionPrivacy />}
+/>
+          {/* <Route
+            path="/FollowerMiddleSectionPrivacy"
             element={<DesFollowerMiddleSectionPrivacy />}
-          />
+          /> */}
           <Route
             path="/ProfileEditSection/:userId"
             element={<ProfileEditSection />}

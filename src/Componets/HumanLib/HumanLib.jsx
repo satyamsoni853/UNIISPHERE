@@ -74,11 +74,18 @@ function HumanLib() {
           }
         );
 
+        // Log the response status and headers
+        console.log("Chat History API Response Status:", response.status);
+        console.log("Chat History API Response Headers:", [...response.headers.entries()]);
+
         if (!response.ok) {
           throw new Error(`Failed to fetch chat history: ${response.status}`);
         }
 
         const data = await response.json();
+        // Log the response data
+        console.log("Chat History API Response Data:", data);
+
         if (data && data.length > 0) {
           // Transform the chat history for display
           const transformedHistory = data.map((chat) => ({
@@ -101,6 +108,7 @@ function HumanLib() {
         }
       } catch (err) {
         setError(err.message);
+        console.error("Chat History API Error:", err.message);
       } finally {
         setIsLoading(false);
       }
@@ -128,11 +136,18 @@ function HumanLib() {
           }
         );
 
+        // Log the response status and headers
+        console.log("Messages API Response Status:", response.status);
+        console.log("Messages API Response Headers:", [...response.headers.entries()]);
+
         if (!response.ok) {
           throw new Error("Failed to fetch messages");
         }
 
         const data = await response.json();
+        // Log the response data
+        console.log("Messages API Response Data:", data);
+
         const transformedMessages = data.map((msg) => ({
           sender: msg.senderId === senderId ? "You" : msg.senderNickname || "Anonymous",
           text: msg.content,
@@ -147,6 +162,7 @@ function HumanLib() {
         setChatMessages(transformedMessages);
       } catch (err) {
         setError(err.message);
+        console.error("Messages API Error:", err.message);
       }
     };
 
@@ -199,11 +215,20 @@ function HumanLib() {
         }
       );
 
+      // Log the response status and headers
+      console.log("Send Message API Response Status:", response.status);
+      console.log("Send Message API Response Headers:", [...response.headers.entries()]);
+
       if (!response.ok) {
         throw new Error("Failed to send message");
       }
+
+      const data = await response.json();
+      // Log the response data
+      console.log("Send Message API Response Data:", data);
     } catch (err) {
       setError(err.message);
+      console.error("Send Message API Error:", err.message);
       // Remove the optimistic update if the request fails
       setChatMessages((prev) => prev.filter((msg) => msg !== newMessage));
     }
