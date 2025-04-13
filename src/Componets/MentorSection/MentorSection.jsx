@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './MentorSection.css'; 
+import "./MentorSection.css";
 import photoIcon from "./ProfileIcon.png";
 import profilePhoto from "./profilephoto.png";
 import { Link } from "react-router-dom";
@@ -21,6 +21,7 @@ import largesvg4 from "./large svg4.svg";
 import largesvg5 from "./large svg5.svg";
 import largesvg6 from "./large svg6.svg";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
+import DesktopRightsection from "../DesktopRight/DesktopRight.jsx";
 
 const MentorSection = () => {
   const [showMentorProfile, setShowMentorProfile] = useState(false);
@@ -29,6 +30,7 @@ const MentorSection = () => {
     useState(true);
   const [showDesktopMentorProfile, setShowDesktopMentorProfile] =
     useState(false);
+    const [showDesktopBookSlot, setShowDesktopBookSlot] =useState(false)
   // Mentor data managed with useState
   const backGroundColors = ["#FFF8F1", "#E8FFF8", "#EEF7FF"];
   const textColors = ["#E79464", "#46AA87", "#6F8BE8"];
@@ -100,245 +102,322 @@ const MentorSection = () => {
   return (
     <>
       {/* ******************------------DESKTOP VIEW ----------------------******************** */}
-      {showDesktopMentorDefault && (
-        <div className="mentor-desktop-main-container">
-          {/* Header Section */}
-          <div className="mentor-desktop-header">
-            <div className="mentor-desktop-header-left">
-              <h1 className="mentor-desktop-title">Mentors for You</h1>
-              <div className="mentor-desktop-header-text">
-                <h2 className="mentor-desktop-subheading">
-                  Get Connected to the Best Mentors
-                </h2>
-                <p className="mentor-desktop-description">
-                  Book and meet with the experts in there respective fields. To
-                  get the shortcuts of success.
-                </p>
+      <div className="mentor-desktop-main-wrapper">
+        {showDesktopMentorDefault && (
+          <div className="mentor-desktop-main-container">
+            {/* Header Section */}
+            <div className="mentor-desktop-header">
+              <div className="mentor-desktop-header-left">
+                <h1 className="mentor-desktop-title">Mentors for You</h1>
+                <div className="mentor-desktop-header-text">
+                  <h2 className="mentor-desktop-subheading">
+                    Get Connected to the Best Mentors
+                  </h2>
+                  <p className="mentor-desktop-description">
+                    Book and meet with the experts in there respective fields.
+                    To get the shortcuts of success.
+                  </p>
 
-                <div className="mentor-desktop-search-bar">
-                  <input
-                    type="text"
-                    placeholder="Search Mentor"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    className="mentor-desktop-search-input"
-                  />
-                  <span className="mentor-desktop-search-icon">🔍</span>
-                </div>
-              </div>
-            </div>
-            {/* Mentor Images with Decorative Shapes */}
-            <div className="mentor-desktop-right-section">
-              <div className="mentor-desktop-profile-stack">
-                <img
-                  className="mentor-desktop-profile-stack-image1"
-                  src={svg1}
-                  alt=""
-                />
-
-                <div className="mentor-desktop-profile-stack-image-con">
-                  <img src={largesvg2} alt="" />
-                  <img
-                    className="mentor-desktop-profile-stack-image2"
-                    src={person2}
-                    alt=""
-                  />
-                </div>
-                <div className="mentor-desktop-profile-stack-image-con">
-                  <img src={largesvg3} alt="" />
-                  <img
-                    className="mentor-desktop-profile-stack-image3"
-                    src={person3}
-                    alt=""
-                  />
-                </div>
-                <div className="mentor-desktop-profile-stack-image-con">
-                  <img src={largesvg4} alt="" />
-                  <img
-                    className="mentor-desktop-profile-stack-image4"
-                    src={person4}
-                    alt=""
-                  />
-                </div>
-
-                <div className="mentor-desktop-profile-stack-image-con">
-                  <img src={largesvg5} alt="" />
-                  <img
-                    className="mentor-desktop-profile-stack-image5"
-                    src={person5}
-                    alt=""
-                  />
-                </div>
-                <div className="mentor-desktop-profile-stack-image-con">
-                  <img src={largesvg6} alt="" />
-                  <img
-                    className="mentor-desktop-profile-stack-image6"
-                    src={person6}
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Recommendation Section */}
-          <div className="mentor-desktop-recommendation">
-            <div className="mentor-desktop-recommendation-header">
-              <h3 className="mentor-desktop-recommendation-title">
-                Recommend for you
-              </h3>
-              <button className="mentor-desktop-show-all">
-                Show all {">"}
-              </button>
-            </div>
-            <div className="mentor-desktop-arrow-and-cards">
-              <IoIosArrowBack className="mentor-desktop-arrow" />
-              <div className="mentor-desktop-cards-container">
-                {mentors.map((mentor, index) => (
-                  <div
-                    onClick={() => {
-                      setShowDesktopMentorDefault(false);
-                      setShowDesktopMentorProfile(true);
-                    }}
-                    key={index}
-                    className="mentor-desktop-card"
-                  >
-                    <img
-                      src={mentor.image}
-                      alt="Yash Jadoun"
-                      className="mentor-desktop-card-image"
+                  <div className="mentor-desktop-search-bar">
+                    <input
+                      type="text"
+                      placeholder="Search Mentor"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      className="mentor-desktop-search-input"
                     />
+                    <span className="mentor-desktop-search-icon">🔍</span>
+                  </div>
+                </div>
+              </div>
+              {/* Mentor Images with Decorative Shapes */}
+              <div className="mentor-desktop-right-section">
+                <div className="mentor-desktop-profile-stack">
+                  <img
+                    className="mentor-desktop-profile-stack-image1"
+                    src={svg1}
+                    alt=""
+                  />
+
+                  <div className="mentor-desktop-profile-stack-image-con">
+                    <img src={largesvg2} alt="" />
+                    <img
+                      className="mentor-desktop-profile-stack-image2"
+                      src={person2}
+                      alt=""
+                    />
+                  </div>
+                  <div className="mentor-desktop-profile-stack-image-con">
+                    <img src={largesvg3} alt="" />
+                    <img
+                      className="mentor-desktop-profile-stack-image3"
+                      src={person3}
+                      alt=""
+                    />
+                  </div>
+                  <div className="mentor-desktop-profile-stack-image-con">
+                    <img src={largesvg4} alt="" />
+                    <img
+                      className="mentor-desktop-profile-stack-image4"
+                      src={person4}
+                      alt=""
+                    />
+                  </div>
+
+                  <div className="mentor-desktop-profile-stack-image-con">
+                    <img src={largesvg5} alt="" />
+                    <img
+                      className="mentor-desktop-profile-stack-image5"
+                      src={person5}
+                      alt=""
+                    />
+                  </div>
+                  <div className="mentor-desktop-profile-stack-image-con">
+                    <img src={largesvg6} alt="" />
+                    <img
+                      className="mentor-desktop-profile-stack-image6"
+                      src={person6}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recommendation Section */}
+            <div className="mentor-desktop-recommendation">
+              <div className="mentor-desktop-recommendation-header">
+                <h3 className="mentor-desktop-recommendation-title">
+                  Recommend for you
+                </h3>
+                <button className="mentor-desktop-show-all">
+                  Show all {">"}
+                </button>
+              </div>
+              <div className="mentor-desktop-arrow-and-cards">
+                <IoIosArrowBack className="mentor-desktop-arrow" />
+                <div className="mentor-desktop-cards-container">
+                  {mentors.map((mentor, index) => (
                     <div
-                      style={{
-                        backgroundColor:
-                          backGroundColors[index % backGroundColors.length],
+                      onClick={() => {
+                        setShowDesktopMentorDefault(false);
+                        setShowDesktopMentorProfile(true);
                       }}
-                      className="mentor-desktop-card-heading-div"
+                      key={index}
+                      className="mentor-desktop-card"
                     >
-                      <h4 className="mentor-desktop-card-name">
-                        {mentor.name}
-                      </h4>
-                      <span className="mentor-desktop-card-title">
-                        {mentor.title}
-                      </span>
-                      <div className="mentor-desktop-card-company">
-                        <img src={photoIcon} alt="" />
-                        <span>{mentor.company}</span>
-                      </div>
-                      <div className="mentor-desktop-card-info">
-                        <div className="mentor-desktop-card-info-image">
+                      <img
+                        src={mentor.image}
+                        alt="Yash Jadoun"
+                        className="mentor-desktop-card-image"
+                      />
+                      <div
+                        style={{
+                          backgroundColor:
+                            backGroundColors[index % backGroundColors.length],
+                        }}
+                        className="mentor-desktop-card-heading-div"
+                      >
+                        <h4 className="mentor-desktop-card-name">
+                          {mentor.name}
+                        </h4>
+                        <span className="mentor-desktop-card-title">
+                          {mentor.title}
+                        </span>
+                        <div className="mentor-desktop-card-company">
                           <img src={photoIcon} alt="" />
-                          <img src={photoIcon} alt="" />
-                          <img src={photoIcon} alt="" />
+                          <span>{mentor.company}</span>
                         </div>
-                        <span>{mentor.mentees}+ mentee</span>
+                        <div className="mentor-desktop-card-info">
+                          <div className="mentor-desktop-card-info-image">
+                            <img src={photoIcon} alt="" />
+                            <img src={photoIcon} alt="" />
+                            <img src={photoIcon} alt="" />
+                          </div>
+                          <span>{mentor.mentees}+ mentee</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <IoIosArrowForward className="mentor-desktop-arrow" />
               </div>
-              <IoIosArrowForward className="mentor-desktop-arrow" />
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {showDesktopMentorProfile && (
-        <div className="mentor-desktop-profile-card">
-          {/* Top Section */}
-          <div className="mentor-desktop-profile-left-section">
+        {showDesktopMentorProfile && (
+          <div className="mentor-desktop-profile-card">
+            {/* Top Section */}
+            <div className="mentor-desktop-profile-left-section">
+              <img
+                src={profilePhoto}
+                alt="Yash Jadoun"
+                className="mentor-desktop-profile-photo"
+              />
+            </div>
+
+            <div className="mentor-desktop-profile-right-section">
+              <div className="mentor-desktop-profile-middle">
+                <div className="mentor-desktop-profile-name-tagline">
+                  <span className="mentor-desktop-profile-name">
+                    Yash Jadoun
+                  </span>
+                  <span className="mentor-desktop-profile-tagline">
+                    Book and Meet with the experts in there respective fields.
+                    To get the shortcuts of success.
+                  </span>
+                </div>
+                <div className="mentor-desktop-profile-buttons">
+                  <button className="mentor-desktop-profile-button-overview">
+                    Overview
+                  </button>
+                  <button 
+                  onClick={()=>{
+                    setShowDesktopBookSlot(true)
+                    setShowDesktopMentorProfile(false)
+                  }}
+                  className="mentor-desktop-profile-button-book">
+                    Book Slot
+                  </button>
+                </div>
+                <div className="mentor-desktop-profile-experience">
+                  <div className="mentor-desktop-profile-experience-heading">
+                    <div>
+                      <span>3+</span> <span>Years of</span>
+                    </div>
+                    <span className="mentor-desktop-profile-experience-last-heading">
+                      designing experience
+                    </span>
+                  </div>
+                  <div className="mentor-desktop-profile-experience-profiles">
+                    <img
+                      src={profilePhoto}
+                      alt="Experience Icon"
+                      className="mentor-desktop-profile-experience-profile"
+                    />
+                    <img
+                      src={profilePhoto}
+                      alt="Profile 1"
+                      className="mentor-desktop-profile-experience-profile"
+                    />
+                    <img
+                      src={profilePhoto}
+                      alt="Profile 2"
+                      className="mentor-desktop-profile-experience-profile"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Section */}
+              <div className="mentor-desktop-profile-bottom">
+                <div className="mentor-desktop-profile-expertise">
+                  <h3>Expertise</h3>
+                  <div className="mentor-desktop-profile-skills">
+                    {skills.map((val, index) => (
+                      <span
+                        key={index}
+                        style={{
+                          backgroundColor: backGroundColors[index],
+                          color: textColors[index],
+                        }}
+                        className="mentor-desktop-profile-skill "
+                      >
+                        {val}
+                      </span>
+                    ))}
+                    <span className="mentor-desktop-profile-skill-more">
+                      15 more
+                    </span>
+                  </div>
+                </div>
+                <div className="mentor-desktop-profile-projects">
+                  <h3>Projects</h3>
+                  <ul className="mentor-desktop-profile-project-list">
+                    <li>The Pink Town</li>
+                    <li>2018 era</li>
+                    <li>Red Ant</li>
+
+                    <span className="mentor-desktop-profile-project-more">
+                      7 more
+                    </span>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+     {showDesktopBookSlot &&    <div className="mentor-book-slot-main-wrapper">
+          <div className="mentor-book-slot-left-section">
             <img
               src={profilePhoto}
               alt="Yash Jadoun"
-              className="mentor-desktop-profile-photo"
+              className="mentor-book-slot-profile-photo"
             />
+            
+           <span className="mentor-book-slot-photo-span-1">Yash</span>
+            <span className="mentor-book-slot-photo-span-2">Jadoun</span>
+            <span className="mentor-book-slot-photo-span-3">Product Designer</span>
+           
           </div>
-
-          <div className="mentor-desktop-profile-right-section">
-            <div className="mentor-desktop-profile-middle">
-              <div className="mentor-desktop-profile-name-tagline">
-                <span className="mentor-desktop-profile-name">Yash Jadoun</span>
-                <span className="mentor-desktop-profile-tagline">
-                  Book and Meet with the experts in there respective fields. To
-                  get the shortcuts of success.
-                </span>
-              </div>
-              <div className="mentor-desktop-profile-buttons">
-                <button className="mentor-desktop-profile-button-overview">
+          <div className="mentor-book-slot-container">
+            {/* Top Section */}
+            <div className="mentor-book-slot-header">
+              <div className="mentor-book-slot-buttons">
+                <button className="mentor-book-slot-overview-btn">
                   Overview
                 </button>
-                <button className="mentor-desktop-profile-button-book">
-                  Book Slot
-                </button>
+                <button className="mentor-book-slot-book-btn">Book Slot</button>
               </div>
-              <div className="mentor-desktop-profile-experience">
-                <div className="mentor-desktop-profile-experience-heading">
-                  <div>
-                    <span>3+</span> <span>Years of</span>
-                  </div>
-                  <span className="mentor-desktop-profile-experience-last-heading">
-                    designing experience
-                  </span>
-                </div>
-                <div className="mentor-desktop-profile-experience-profiles">
-                  <img
-                    src={profilePhoto}
-                    alt="Experience Icon"
-                    className="mentor-desktop-profile-experience-profile"
-                  />
-                  <img
-                    src={profilePhoto}
-                    alt="Profile 1"
-                    className="mentor-desktop-profile-experience-profile"
-                  />
-                  <img
-                    src={profilePhoto}
-                    alt="Profile 2"
-                    className="mentor-desktop-profile-experience-profile"
-                  />
-                </div>
+              <div className="mentor-book-slot-title-section">
+                <h2 className="mentor-book-slot-title">
+                  Connect & Learn from Saminar
+                </h2>
+                <span className="mentor-book-slot-date">
+                  20TH MARCH 2025 10:00P.M.
+                </span>
+                <button className="mentor-book-slot-apply-button">Apply</button>
               </div>
             </div>
 
             {/* Bottom Section */}
-            <div className="mentor-desktop-profile-bottom">
-              <div className="mentor-desktop-profile-expertise">
-                <h3>Expertise</h3>
-                <div className="mentor-desktop-profile-skills">
-                  {skills.map((val, index) => (
-                    <span
-                      key={index}
-                      style={{
-                        backgroundColor: backGroundColors[index],
-                        color: textColors[index],
-                      }}
-                      className="mentor-desktop-profile-skill "
-                    >
-                      {val}
-                    </span>
-                  ))}
-                  <span className="mentor-desktop-profile-skill-more">
-                    15 more
-                  </span>
+            <div className="mentor-book-slot-form-section">
+              <div className="mentor-book-slot-heading">
+                <h3 className="mentor-book-slot-form-title">
+                  Get your vision clear by expert advice
+                </h3>
+                <span className="mentor-book-slot-form-subtitle">
+                  Attach a Few details.
+                </span>
+              </div>
+              <form className="mentor-book-slot-form">
+                <div className="mentor-book-slot-form-input-lablel">
+                  <label className="mentor-book-slot-label">Name</label>
+                  <input type="text" className="mentor-book-slot-input" />
                 </div>
-              </div>
-              <div className="mentor-desktop-profile-projects">
-                <h3>Projects</h3>
-                <ul className="mentor-desktop-profile-project-list">
-                  <li>The Pink Town</li>
-                  <li>2018 era</li>
-                  <li>Red Ant</li>
+                <div className="mentor-book-slot-form-input-lablel">
+                  <label className="mentor-book-slot-label">
+                    What you looking for
+                  </label>
+                  <textarea className="mentor-book-slot-textarea"></textarea>
+                </div>
 
-                  <span className="mentor-desktop-profile-project-more">
-                    7 more
-                  </span>
-                </ul>
-              </div>
+                <button
+                  type="submit"
+                  className="mentor-book-slot-submit-button"
+                >
+                  Send Request
+                </button>
+              </form>
             </div>
           </div>
+        </div>}
+        <div className="mentor-desktop-right-section-view">
+          <DesktopRightsection />
         </div>
-      )}
-
+      </div>
       {/* =========================MOBILE VIEW OF THE MENTOR ========================================= */}
       {showMentorDefault && (
         <div className="mentor-mobile-container">
