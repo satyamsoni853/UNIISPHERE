@@ -468,9 +468,8 @@ function DesktopNavbarr() {
               {Object.keys(timeFilters).map((tab) => (
                 <button
                   key={tab}
-                  className={`notification-tab-button ${
-                    activeNotificationTab === tab ? "active" : ""
-                  }`}
+                  className={`notification-tab-button ${activeNotificationTab === tab ? "active" : ""
+                    }`}
                   onClick={() => setActiveNotificationTab(tab)}
                 >
                   {tab}
@@ -521,12 +520,12 @@ function DesktopNavbarr() {
           <div className="SelfProfile-card">
             <div className="SelfProfile-header">
               <img
-                src={UserProfileImage || "https://via.placeholder.com/50"}
+                src={localStorage.profilePicture || "https://via.placeholder.com/50"}
                 alt="Profile"
                 className="SelfProfile-pic"
               />
               <div className="SelfProfile-info">
-                <h2 className="SelfProfile-name">{Username || "User Name"}</h2>
+                <h2 className="SelfProfile-name">{localStorage.username || "User Name"}</h2>
                 <p className="SelfProfile-label">Position</p>
               </div>
             </div>
