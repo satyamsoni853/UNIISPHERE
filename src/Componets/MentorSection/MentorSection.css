@@ -1,5 +1,17 @@
 /* CSS Variables for Consistency */
+.mentor-desktop-main-wrapper {
+  width: 100%;
+  min-height: 100vh;
 
+  position: relative;
+}
+.mentor-desktop-right-section-view {
+  position: absolute;
+  width: 20vw;
+  height: 100vh;
+  right: 6%;
+  bottom: 100px;
+}
 /* Main Container */
 .mentor-desktop-main-container {
   display: flex;
@@ -8,7 +20,7 @@
   gap: 40px;
 
   height: 100vh;
-  width: 70vw;
+  width: 75vw;
   position: relative;
 }
 
@@ -192,15 +204,13 @@
 }
 
 .mentor-desktop-cards-container {
-display: grid;
- grid-template-columns: repeat(3,1fr);
- gap: 50px;
- justify-content: space-between;
- height: 375px;
- align-items: center;
- 
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  justify-content: space-between;
+  height: 375px;
+  align-items: center;
 }
-
 
 .mentor-desktop-card {
   display: flex;
@@ -214,15 +224,12 @@ display: grid;
   position: relative;
   overflow-y: visible;
 }
-.mentor-desktop-arrow-and-cards{
+.mentor-desktop-arrow-and-cards {
   display: flex;
   align-items: center;
- width: 100%;
- 
-
-  
+  width: 100%;
 }
-.mentor-desktop-arrow{
+.mentor-desktop-arrow {
   font-size: 50px;
   font-weight: 100;
   cursor: pointer;
@@ -292,7 +299,7 @@ display: grid;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  width: 75vw;
+  width: 70vw;
   min-height: 100vh;
   background-color: #ffffff;
   border-radius: 10px;
@@ -501,6 +508,221 @@ display: grid;
 .mentor-desktop-profile-project-more {
   font-size: 10px;
   color: #1c5bfb;
+}
+
+/* -----------------------------------------------------------------------------------------------------------------------------------------------------Desktop book slot code ---------------------------------------------------------------------------------------- */
+.mentor-book-slot-main-wrapper {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-evenly;
+  width: 70vw;
+  min-height: 100vh;
+   
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.mentor-book-slot-left-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+
+  position: relative;
+}
+
+.mentor-book-slot-profile-photo {
+  width: 90%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+ 
+.mentor-book-slot-photo-span-3 {
+  font-size: 25px;
+  bottom: 80px;
+
+  position: absolute;
+
+  color: white;
+  text-align: center;
+}
+.mentor-book-slot-photo-span-2 {
+  font-size: 50px;
+  bottom: 100px;
+
+  position: absolute;
+
+  color: white;
+  text-align: center;
+}
+.mentor-book-slot-photo-span-1 {
+  font-size: 50px;
+  bottom: 140px;
+
+  position: absolute;
+
+  color: white;
+  text-align: center;
+}
+
+.mentor-book-slot-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  gap: 10px;
+  
+  border-radius: 15px;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.mentor-book-slot-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+.mentor-book-slot-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.mentor-book-slot-overview-btn {
+  font-size: 18px;
+  padding: 7px 15px;
+  border-radius: 20px;
+}
+.mentor-book-slot-book-btn {
+  padding: 7px 15px;
+  background:linear-gradient(to bottom, #82ef8ea0,#a5f4fd8d);
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.mentor-book-slot-title-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:linear-gradient(to bottom,#fcd6d6,#d5ffdb);
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mentor-book-slot-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+  text-align: center;
+}
+
+.mentor-book-slot-date {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  padding-top: 5px;
+}
+
+.mentor-book-slot-apply-button {
+ background-color: #0467d1;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  width: 80%;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.mentor-book-slot-apply-button:hover {
+  background-color: #0056b3;
+}
+
+/* Form Section */
+.mentor-book-slot-form-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  background:linear-gradient(to bottom,#e5e1fb,#f9def0);
+  border-radius: 15px;
+
+}
+
+.mentor-book-slot-form-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  text-align: start;
+}
+
+.mentor-book-slot-form-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-left: 20px;
+  text-align: start;
+ 
+}
+
+.mentor-book-slot-form-input-lablel {
+  width: 100%;
+}
+.mentor-book-slot-label {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+}
+
+.mentor-book-slot-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  padding: 15px;
+}
+
+.mentor-book-slot-input,
+.mentor-book-slot-textarea {
+  width: 90%;
+  margin-left: auto;
+  height: 23x;
+  padding: 5px;
+  border: 2px solid #000000;
+  border-radius: 15px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.mentor-book-slot-textarea {
+  height: 80px;
+  resize: none;
+}
+
+.mentor-book-slot-submit-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  width: 80%;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: center;
+}
+
+.mentor-book-slot-submit-button:hover {
+  background-color: #0056b3;
 }
 
 /* ===========================================================================================================MOBILE VIEW OF THE MENTOR SECTION ======================================================= */
