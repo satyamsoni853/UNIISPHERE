@@ -42,6 +42,10 @@ function MobileMiddlesection() {
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
+  const [posts, setPosts] = useState([]); // Added missing state
+  const [error, setError] = useState(null); // Added missing state
+  const [imageLoading, setImageLoading] = useState(false); // Added missing state
+  const [commentsLoading, setCommentsLoading] = useState(false); // Added missing state
   const optionsRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -188,6 +192,18 @@ function MobileMiddlesection() {
       return;
     }
 
+    const previousPosts = [...posts]; // Store previous state for rollback
+    const updatedPost = {
+      ...post,
+      isLiked: !post.isLiked,
+      likes: post.isLiked ? post.likes - 1 : post.likes + 1,
+    };
+
+    // Optimistic UI update
+    setPosts((prevPosts) =>
+      prevPosts.map((p, i) => (i === index ? updatedPost : p))
+    );
+
     try {
       const endpoint = post.isLiked
         ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
@@ -203,36 +219,10 @@ function MobileMiddlesection() {
       });
 
       console.log("Like/Unlike response:", response.data);
-
-      // Update UI optimistically
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index
-            ? {
-                ...p,
-                isLiked: !p.isLiked,
-                likes: p.isLiked ? p.likes - 1 : p.likes + 1,
-              }
-            : p
-        )
-      );
     } catch (error) {
-      console.error(
-        "Like/Unlike error:",
-        error.response?.data || error.message
-      );
+      console.error("Like/Unlike error:", error.response?.data || error.message);
       // Revert UI state if the request failed
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index
-            ? {
-                ...p,
-                isLiked: !p.isLiked,
-                likes: p.isLiked ? p.likes + 1 : p.likes - 1,
-              }
-            : p
-        )
-      );
+      setPosts(previousPosts);
       setError("Failed to update like status");
     }
   };
@@ -352,7 +342,7 @@ function MobileMiddlesection() {
                       <span>Interest</span> <hr />
                     </button>
                     <button className="mobile-middle-options-item">
-                      <span>Not Interest</span> <hr />
+                      <span>Not Interested</span> <hr />
                     </button>
                     <button className="mobile-middle-options-item">
                       <span>Block</span>
@@ -448,7 +438,7 @@ function MobileMiddlesection() {
               <h1 className="mobile-Full-comment-section-heading">Comments</h1>
             </div>
             <div className="mobile-Full-comment-section-comments-list">
-              {userComments.map((comment, index) => (
+              {posts[activeCommentPostIndex]?.comments?.map((comment, index) => (
                 <div
                   className="mobile-Full-comment-section-comment-main-parent"
                   key={index}
@@ -469,7 +459,7 @@ function MobileMiddlesection() {
                         </span>
                       </div>
                       <div className="mobile-Full-comment-section-comment-text">
-                        {comment.text}
+                        {comment.content || comment.text}
                       </div>
                       <div className="mobile-Full-comment-section-comment-actions">
                         <span className="mobile-Full-comment-section-reply-link">
@@ -487,7 +477,7 @@ function MobileMiddlesection() {
                     <span>{comment.likes || 0}</span>
                   </div>
                 </div>
-              ))}
+              )) || <p>No comments available</p>}
             </div>
             <div className="mobile-Full-comment-section-comment-input-and-image">
               <img
