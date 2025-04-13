@@ -13,6 +13,7 @@ import person6 from "./person6.svg";
 import svg2 from "./svg2.svg";
 import svg3 from "./svg3.svg";
 import svg4 from "./svg4.svg";
+import svg5 from "./svg5.svg";
 import backIcon from "./backsvg.svg";
 import svg6 from "./svg6.svg";
 import largesvg2 from "./large svg2.svg";
@@ -20,7 +21,6 @@ import largesvg3 from "./large svg3.svg";
 import largesvg4 from "./large svg4.svg";
 import largesvg5 from "./large svg5.svg";
 import largesvg6 from "./large svg6.svg";
-import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopRightsection from "../DesktopRight/DesktopRight.jsx";
 
 const MentorSection = () => {
@@ -30,7 +30,7 @@ const MentorSection = () => {
     useState(true);
   const [showDesktopMentorProfile, setShowDesktopMentorProfile] =
     useState(false);
-    const [showDesktopBookSlot, setShowDesktopBookSlot] =useState(false)
+  const [showDesktopBookSlot, setShowDesktopBookSlot] = useState(false);
   // Mentor data managed with useState
   const backGroundColors = ["#FFF8F1", "#E8FFF8", "#EEF7FF"];
   const textColors = ["#E79464", "#46AA87", "#6F8BE8"];
@@ -272,12 +272,13 @@ const MentorSection = () => {
                   <button className="mentor-desktop-profile-button-overview">
                     Overview
                   </button>
-                  <button 
-                  onClick={()=>{
-                    setShowDesktopBookSlot(true)
-                    setShowDesktopMentorProfile(false)
-                  }}
-                  className="mentor-desktop-profile-button-book">
+                  <button
+                    onClick={() => {
+                      setShowDesktopBookSlot(true);
+                      setShowDesktopMentorProfile(false);
+                    }}
+                    className="mentor-desktop-profile-button-book"
+                  >
                     Book Slot
                   </button>
                 </div>
@@ -349,71 +350,78 @@ const MentorSection = () => {
           </div>
         )}
 
-     {showDesktopBookSlot &&    <div className="mentor-book-slot-main-wrapper">
-          <div className="mentor-book-slot-left-section">
-            <img
-              src={profilePhoto}
-              alt="Yash Jadoun"
-              className="mentor-book-slot-profile-photo"
-            />
-            
-           <span className="mentor-book-slot-photo-span-1">Yash</span>
-            <span className="mentor-book-slot-photo-span-2">Jadoun</span>
-            <span className="mentor-book-slot-photo-span-3">Product Designer</span>
-           
-          </div>
-          <div className="mentor-book-slot-container">
-            {/* Top Section */}
-            <div className="mentor-book-slot-header">
-              <div className="mentor-book-slot-buttons">
-                <button className="mentor-book-slot-overview-btn">
-                  Overview
-                </button>
-                <button className="mentor-book-slot-book-btn">Book Slot</button>
+        {showDesktopBookSlot && (
+          <div className="mentor-book-slot-main-wrapper">
+            <div className="mentor-book-slot-left-section">
+              <img
+                src={profilePhoto}
+                alt="Yash Jadoun"
+                className="mentor-book-slot-profile-photo"
+              />
+
+              <span className="mentor-book-slot-photo-span-1">Yash</span>
+              <span className="mentor-book-slot-photo-span-2">Jadoun</span>
+              <span className="mentor-book-slot-photo-span-3">
+                Product Designer
+              </span>
+            </div>
+            <div className="mentor-book-slot-container">
+              {/* Top Section */}
+              <div className="mentor-book-slot-header">
+                <div className="mentor-book-slot-buttons">
+                  <button className="mentor-book-slot-overview-btn">
+                    Overview
+                  </button>
+                  <button className="mentor-book-slot-book-btn">
+                    Book Slot
+                  </button>
+                </div>
+                <div className="mentor-book-slot-title-section">
+                  <h2 className="mentor-book-slot-title">
+                    Connect & Learn from Saminar
+                  </h2>
+                  <span className="mentor-book-slot-date">
+                    20TH MARCH 2025 10:00P.M.
+                  </span>
+                  <button className="mentor-book-slot-apply-button">
+                    Apply
+                  </button>
+                </div>
               </div>
-              <div className="mentor-book-slot-title-section">
-                <h2 className="mentor-book-slot-title">
-                  Connect & Learn from Saminar
-                </h2>
-                <span className="mentor-book-slot-date">
-                  20TH MARCH 2025 10:00P.M.
-                </span>
-                <button className="mentor-book-slot-apply-button">Apply</button>
+
+              {/* Bottom Section */}
+              <div className="mentor-book-slot-form-section">
+                <div className="mentor-book-slot-heading">
+                  <h3 className="mentor-book-slot-form-title">
+                    Get your vision clear by expert advice
+                  </h3>
+                  <span className="mentor-book-slot-form-subtitle">
+                    Attach a Few details.
+                  </span>
+                </div>
+                <form className="mentor-book-slot-form">
+                  <div className="mentor-book-slot-form-input-lablel">
+                    <label className="mentor-book-slot-label">Name</label>
+                    <input type="text" className="mentor-book-slot-input" />
+                  </div>
+                  <div className="mentor-book-slot-form-input-lablel">
+                    <label className="mentor-book-slot-label">
+                      What you looking for
+                    </label>
+                    <textarea className="mentor-book-slot-textarea"></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="mentor-book-slot-submit-button"
+                  >
+                    Send Request
+                  </button>
+                </form>
               </div>
             </div>
-
-            {/* Bottom Section */}
-            <div className="mentor-book-slot-form-section">
-              <div className="mentor-book-slot-heading">
-                <h3 className="mentor-book-slot-form-title">
-                  Get your vision clear by expert advice
-                </h3>
-                <span className="mentor-book-slot-form-subtitle">
-                  Attach a Few details.
-                </span>
-              </div>
-              <form className="mentor-book-slot-form">
-                <div className="mentor-book-slot-form-input-lablel">
-                  <label className="mentor-book-slot-label">Name</label>
-                  <input type="text" className="mentor-book-slot-input" />
-                </div>
-                <div className="mentor-book-slot-form-input-lablel">
-                  <label className="mentor-book-slot-label">
-                    What you looking for
-                  </label>
-                  <textarea className="mentor-book-slot-textarea"></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  className="mentor-book-slot-submit-button"
-                >
-                  Send Request
-                </button>
-              </form>
-            </div>
           </div>
-        </div>}
+        )}
         <div className="mentor-desktop-right-section-view">
           <DesktopRightsection />
         </div>
@@ -468,7 +476,14 @@ const MentorSection = () => {
                 />
               </div>
 
-              <img src={person5} alt="" />
+              <div className="mentor-mobile-profile-stack-image-con">
+                <img src={svg5} alt="" />
+                <img
+                  className="mentor-mobile-profile-stack-image5"
+                  src={person5}
+                  alt=""
+                />
+              </div>
               <div className="mentor-mobile-profile-stack-image-con">
                 <img src={svg6} alt="" />
                 <img
