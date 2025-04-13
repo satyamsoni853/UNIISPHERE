@@ -6,9 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
 
 // Replace these imports with your actual images/paths
-import CommentIcon from "./Comment.svg";
 import Commenticonsvg from "./Commenticon.svg";
-import Connect from "./Connect.png";
 import LikeIcon from "./Like.svg";
 import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
@@ -92,15 +90,18 @@ function DesktopMiddle() {
 
       if (response.data.posts && response.data.posts.length > 0) {
         const updatedPosts = response.data.posts.map((post) => ({
-          ...post,
           _id: post.id,
-          authorId: post.authorId || "unknown",
-          authorName: post.authorName || "Unknown Author",
-          likes: post.Likes ? post.Likes.length : 0, // Count of likes from Likes array
-          isLiked: post.Likes
-            ? post.Likes.some((like) => like.userId === authData.userId)
-            : false, // Check if current user liked
-          comments: post.Comments || [], // Comments from feed
+          authorId: post.userId,
+          authorName: post.user?.username || "Unknown Author",
+          authorDetails: post.user?.headline || "No headline available",
+          mediaUrl: post.mediaUrl,
+          caption: post.content,
+          createdAt: post.createdAt,
+          likes: post._count?.Likes || 0,
+          isLiked: post.Likes?.some((like) => like.userId === authData.userId) || false,
+          comments: post.Comments || [],
+          totalComments: post._count?.Comments || 0,
+          totalShares: post._count?.Share || 0
         }));
         setPosts(updatedPosts);
       }

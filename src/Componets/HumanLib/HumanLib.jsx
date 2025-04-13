@@ -93,9 +93,9 @@ function HumanLib() {
             lastMessage: chat.lastMessage || "No messages yet",
             timestamp: chat.updatedAt
               ? new Date(chat.updatedAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
+                hour: "2-digit",
+                minute: "2-digit",
+              })
               : "Unknown",
           }));
           setChatHistory(transformedHistory);
@@ -385,9 +385,8 @@ function HumanLib() {
                     {chatHistory.map((chat) => (
                       <div
                         key={chat.chatId}
-                        className={`HumanLib-chat-history-item ${
-                          selectedChatId === chat.chatId ? "active" : ""
-                        }`}
+                        className={`HumanLib-chat-history-item ${selectedChatId === chat.chatId ? "active" : ""
+                          }`}
                         onClick={() => setSelectedChatId(chat.chatId)}
                       >
                         <div className="HumanLib-chat-history-info">
@@ -423,9 +422,8 @@ function HumanLib() {
                       {chatMessages.map((message, index) => (
                         <div
                           key={index}
-                          className={`HumanLib-message ${
-                            message.isSent ? "HumanLib-message-sent" : "HumanLib-message-received"
-                          }`}
+                          className={`HumanLib-message ${message.isSent ? "HumanLib-message-sent" : "HumanLib-message-received"
+                            }`}
                         >
                           {/* Sender avatar for received messages */}
                           {!message.isSent && (
