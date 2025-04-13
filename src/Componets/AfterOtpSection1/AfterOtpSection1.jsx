@@ -258,7 +258,6 @@ function AfterOtpSection1() {
     });
   };
 
-  // Final submission handler with token and userId passing
   const handleNinthStepSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -357,7 +356,7 @@ function AfterOtpSection1() {
   };
 
   const handleSkip = async () => {
-    const syntheticEvent = { preventDefault: () => {} };
+    const syntheticEvent = { preventDefault: () => { } };
     await handleNinthStepSubmit(syntheticEvent);
   };
 
@@ -937,20 +936,20 @@ function AfterOtpSection1() {
           {step === 1
             ? renderFirstStep()
             : step === 2
-            ? renderSecondStep()
-            : step === 3
-            ? renderThirdStep()
-            : step === 4
-            ? renderFourthStep()
-            : step === 5
-            ? renderFifthStep()
-            : step === 6
-            ? renderSixthStep()
-            : step === 7
-            ? renderSeventhStep()
-            : step === 8
-            ? renderEighthStep()
-            : renderNinthStep()}
+              ? renderSecondStep()
+              : step === 3
+                ? renderThirdStep()
+                : step === 4
+                  ? renderFourthStep()
+                  : step === 5
+                    ? renderFifthStep()
+                    : step === 6
+                      ? renderSixthStep()
+                      : step === 7
+                        ? renderSeventhStep()
+                        : step === 8
+                          ? renderEighthStep()
+                          : renderNinthStep()}
           <p className="privacy-text">
             Your Privacy is Important <br />
             We may send you member uploads, recruiter messages, job suggestions,

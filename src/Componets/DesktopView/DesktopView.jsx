@@ -4,7 +4,7 @@ import Decktopleftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import Decklefttop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopMiddle from "../DesktopMiddle/DesktopMiddle.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
-import "./DesktopView.css";
+import "./DesktopView.css";     
  
 import Backgrund from "../Background/Background.jsx";
 

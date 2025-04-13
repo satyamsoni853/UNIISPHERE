@@ -60,7 +60,10 @@ function DesktopRightsection() {
           }
         );
         console.log("RightSection Full profile response:", profileResponse.data);
-
+        const username = profileResponse.data[0].username;
+        const profilePictureUrl = profileResponse.data[0].profilePictureUrl;
+        localStorage.setItem("profilePicture", profilePictureUrl);
+        localStorage.setItem("username", username);
         if (profileResponse.data && profileResponse.data.length > 0) {
           const userData = profileResponse.data[0];
           setProfileData(userData);
@@ -147,7 +150,7 @@ function DesktopRightsection() {
           ))}
         </div>
       </div>
-      <BottomMessageWidth/>
+      <BottomMessageWidth />
     </div>
   );
 }
