@@ -33,6 +33,7 @@ function DesktopNavbarr() {
   const [showPostDetails, setShowPostDetails] = useState(false);
   const [showAddmore, setShowAddMore] = useState(true);
   const [caption, setCaption] = useState("");
+  const [location, setLocation] = useState(""); // Added location state
   const [hideLikes, setHideLikes] = useState(false);
   const [disableComments, setDisableComments] = useState(false);
   const [mentions, setMentions] = useState([]);
@@ -135,13 +136,12 @@ function DesktopNavbarr() {
           "https://uniisphere-1.onrender.com/users/getAll",
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
-        // Ensure response.data is an array
         setAllUsersResponse(Array.isArray(response.data) ? response.data : []);
         console.log("Get All Users API Response:", response.data);
       } catch (err) {
         console.error("Error fetching all users:", err);
         setError(err.message || "Failed to fetch users");
-        setAllUsersResponse([]); // Default to empty array on error
+        setAllUsersResponse([]);
       } finally {
         setLoading(false);
       }
@@ -188,7 +188,7 @@ function DesktopNavbarr() {
     }
     try {
       const response = await axios.get(
-        "https://uniisphere-1.onrender.com/posts/stats/total",
+        "https://uniisphere-1.onrender.com/posts",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -248,14 +248,13 @@ function DesktopNavbarr() {
     if (allUsersResponse && Array.isArray(allUsersResponse)) {
       const idExists = allUsersResponse.some((user) => user.id === userId);
       if (idExists) {
-        // navigate(`/AfterConnecting/${userId}`);
         navigate(`/DesFollowerMiddleSectionPrivacy/${userId}`);
       } else {
         navigate(`/DesFollowerMiddleSectionPrivacy`);
       }
     } else {
       console.error("User data not loaded yet or invalid:", allUsersResponse);
-      navigate(`/DesFollowerMiddleSectionPrivacy`); // Default if no data
+      navigate(`/DesFollowerMiddleSectionPrivacy`);
     }
     setShowResults(false);
     setSearchQuery("");
@@ -362,17 +361,21 @@ function DesktopNavbarr() {
       setIsLoading(true);
       setError(null);
       const authToken = localStorage.getItem("authToken");
-      if (!authToken) {
+      const userId = localStorage.getItem("userId");
+      if (!authToken || !userId) {
         throw new Error("User not authenticated. Please log in.");
       }
-      const formData = new FormData();
-      mediaList.forEach((media, index) => {
-        formData.append(`media_${index}`, media.file);
-      });
-      formData.append("caption", caption);
-      formData.append("hideLikes", hideLikes);
-      formData.append("disableComments", disableComments);
 
+      const formData = new FormData();
+      mediaList.forEach((media) => {
+        formData.append("media", media.file); // Use "media" as the key
+      });
+      formData.append("content", caption); // Use "content" instead of "caption"
+      formData.append("visibility", hideLikes); // Use "visibility" instead of "hideLikes"
+      formData.append("location", location || "dehradun"); // Add location
+      formData.append("userId", userId); // Add userId
+
+      // Optionally update the user's profile
       const profileResponse = await axios.patch(
         "https://uniisphere-1.onrender.com/users/profile/",
         { bio: caption },
@@ -380,21 +383,23 @@ function DesktopNavbarr() {
       );
       console.log("Profile updated:", profileResponse.data);
 
+      // Post the data to the API
       const postResponse = await axios.post(
-        // Changed to POST for creating a post
         "https://uniisphere-1.onrender.com/posts/",
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${authToken}`,
+            // "Content-Type": "multipart/form-data" is automatically set by axios
           },
         }
       );
       console.log("Post created:", postResponse.data);
 
+      // Reset state after successful post
       setMediaList([]);
       setCaption("");
+      setLocation(""); // Reset location
       setHideLikes(false);
       setDisableComments(false);
       setShowPostDetails(false);
@@ -414,6 +419,7 @@ function DesktopNavbarr() {
     setShowAddMore(true);
     setMediaList([]);
     setCaption("");
+    setLocation(""); // Reset location
     setHideLikes(false);
     setDisableComments(false);
     setError(null);
@@ -579,7 +585,6 @@ function DesktopNavbarr() {
           </div>
           <div className="connections-item">Edu-vault</div>
           <div className="connections-item active">
-            {" "}
             <Link to="/HumanLib" className="connection-link">
               Human Library
             </Link>
@@ -745,6 +750,17 @@ function DesktopNavbarr() {
                           onChange={(e) => setCaption(e.target.value)}
                           placeholder="Write a caption..."
                           rows="4"
+                        />
+                      </div>
+                      {/* Added Location Input */}
+                      <div className="form-group">
+                        <label className="input-label">Location</label>
+                        <input
+                          type="text"
+                          className="location-input"
+                          value={location}
+                          onChange={(e) => setLocation(e.target.value)}
+                          placeholder="Enter location (e.g., Dehradun)"
                         />
                       </div>
                     </div>
