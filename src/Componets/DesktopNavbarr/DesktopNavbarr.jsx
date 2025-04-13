@@ -15,7 +15,7 @@ import NetworkBlack from "./NetworkBlack.svg";
 import Networkwhite from "./NetworkWhite.svg";
 import Notificationblack from "./notificationblack.svg";
 import Notificationwhite from "./notificationwhite.svg";
-import profileImage from './profilephoto.png';
+import profileImage from "./profilephoto.png";
 import Unispherelogoicon from "./Unispherelogoicon.png";
 import Usericon from "./Usericon.png";
 
@@ -48,16 +48,52 @@ function DesktopNavbarr() {
   const navigate = useNavigate();
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] =
+    useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
-    { time: "2 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-blue-400" },
-    { time: "3 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-yellow-400" },
-    { time: "6 hrs", message: "Hello brother how are you. I that ....", alert: true, color: "notification-border-red-400" },
-    { time: "8 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
-    { time: "12 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
-    { time: "18 hrs", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-blue-400" },
-    { time: "2 days", message: "Hello brother how are you. I am sure that ....", alert: false, color: "notification-border-gray-400" },
+    {
+      time: "2 hrs",
+      message: "Hello brother how are you. I that ....",
+      alert: true,
+      color: "notification-border-blue-400",
+    },
+    {
+      time: "3 hrs",
+      message: "Hello brother how are you. I that ....",
+      alert: true,
+      color: "notification-border-yellow-400",
+    },
+    {
+      time: "6 hrs",
+      message: "Hello brother how are you. I that ....",
+      alert: true,
+      color: "notification-border-red-400",
+    },
+    {
+      time: "8 hrs",
+      message: "Hello brother how are you. I am sure that ....",
+      alert: false,
+      color: "notification-border-gray-400",
+    },
+    {
+      time: "12 hrs",
+      message: "Hello brother how are you. I am sure that ....",
+      alert: false,
+      color: "notification-border-gray-400",
+    },
+    {
+      time: "18 hrs",
+      message: "Hello brother how are you. I am sure that ....",
+      alert: false,
+      color: "notification-border-blue-400",
+    },
+    {
+      time: "2 days",
+      message: "Hello brother how are you. I am sure that ....",
+      alert: false,
+      color: "notification-border-gray-400",
+    },
   ]);
 
   // Fetch connections from the API
@@ -75,7 +111,10 @@ function DesktopNavbarr() {
         );
         console.log("Connections API Response:", response.data);
       } catch (err) {
-        console.error("Error fetching connections:", err.response ? err.response.data : err.message);
+        console.error(
+          "Error fetching connections:",
+          err.response ? err.response.data : err.message
+        );
       }
     };
     fetchConnections();
@@ -114,7 +153,8 @@ function DesktopNavbarr() {
   const timeFilters = {
     Today: (time) => time.includes("hrs"),
     "Last Week": (time) => time.includes("days") && parseInt(time) <= 7,
-    "Last Month": (time) => time.includes("days") && parseInt(time) > 7 && parseInt(time) <= 30,
+    "Last Month": (time) =>
+      time.includes("days") && parseInt(time) > 7 && parseInt(time) <= 30,
     "Last Year": (time) => time.includes("days") && parseInt(time) > 30,
   };
 
@@ -149,17 +189,30 @@ function DesktopNavbarr() {
     try {
       const response = await axios.get(
         "https://uniisphere-1.onrender.com/posts/stats/total",
-        { headers: { Authorization: `Bearer ${authToken}`, "Content-Type": "application/json" } }
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log("Profile Stats response:", response.data);
       if (response.data.totalPosts && response.data.totalPosts.length > 0) {
-        const userPosts = response.data.totalPosts.filter(post => post.user.id === userId);
+        const userPosts = response.data.totalPosts.filter(
+          (post) => post.user.id === userId
+        );
         if (userPosts.length > 0) {
           setUsername(userPosts[0].user.username || "");
           setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
         }
-        const totalLikesCount = userPosts.reduce((sum, post) => sum + (post._count?.Likes || 0), 0);
-        const totalCommentsCount = userPosts.reduce((sum, post) => sum + (post._count?.Comments || 0), 0);
+        const totalLikesCount = userPosts.reduce(
+          (sum, post) => sum + (post._count?.Likes || 0),
+          0
+        );
+        const totalCommentsCount = userPosts.reduce(
+          (sum, post) => sum + (post._count?.Comments || 0),
+          0
+        );
         setTotalLikes(totalLikesCount);
         setTotalComments(totalCommentsCount);
         setPosts(userPosts.length);
@@ -193,9 +246,10 @@ function DesktopNavbarr() {
   const handleProfileClick = (userId) => {
     localStorage.setItem("SearchUserId", userId);
     if (allUsersResponse && Array.isArray(allUsersResponse)) {
-      const idExists = allUsersResponse.some(user => user.id === userId);
+      const idExists = allUsersResponse.some((user) => user.id === userId);
       if (idExists) {
-        navigate(`/AfterConnecting/${userId}`);
+        // navigate(`/AfterConnecting/${userId}`);
+        navigate(`/DesFollowerMiddleSectionPrivacy/${userId}`);
       } else {
         navigate(`/DesFollowerMiddleSectionPrivacy`);
       }
@@ -238,7 +292,9 @@ function DesktopNavbarr() {
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
     setIsUserDropdownOpen(false);
-    setActiveIcon(prev => prev === "notifications" ? null : "notifications");
+    setActiveIcon((prev) =>
+      prev === "notifications" ? null : "notifications"
+    );
   };
 
   // Navigation icon handlers
@@ -269,14 +325,14 @@ function DesktopNavbarr() {
     files.forEach((file) => {
       if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
         const previewURL = URL.createObjectURL(file);
-        setMediaList(prev => [
+        setMediaList((prev) => [
           ...prev,
           {
             file,
             previewURL,
             mediaType: file.type.startsWith("image/") ? "image" : "video",
-            comment: ""
-          }
+            comment: "",
+          },
         ]);
       }
     });
@@ -288,14 +344,14 @@ function DesktopNavbarr() {
     files.forEach((file) => {
       if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
         const previewURL = URL.createObjectURL(file);
-        setMediaList(prev => [
+        setMediaList((prev) => [
           ...prev,
           {
             file,
             previewURL,
             mediaType: file.type.startsWith("image/") ? "image" : "video",
-            comment: ""
-          }
+            comment: "",
+          },
         ]);
       }
     });
@@ -313,10 +369,10 @@ function DesktopNavbarr() {
       mediaList.forEach((media, index) => {
         formData.append(`media_${index}`, media.file);
       });
-      formData.append('caption', caption);
-      formData.append('hideLikes', hideLikes);
-      formData.append('disableComments', disableComments);
-      
+      formData.append("caption", caption);
+      formData.append("hideLikes", hideLikes);
+      formData.append("disableComments", disableComments);
+
       const profileResponse = await axios.patch(
         "https://uniisphere-1.onrender.com/users/profile/",
         { bio: caption },
@@ -324,18 +380,19 @@ function DesktopNavbarr() {
       );
       console.log("Profile updated:", profileResponse.data);
 
-      const postResponse = await axios.post( // Changed to POST for creating a post
+      const postResponse = await axios.post(
+        // Changed to POST for creating a post
         "https://uniisphere-1.onrender.com/posts/",
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${authToken}`,
           },
         }
       );
       console.log("Post created:", postResponse.data);
-      
+
       setMediaList([]);
       setCaption("");
       setHideLikes(false);
@@ -364,7 +421,7 @@ function DesktopNavbarr() {
 
   useEffect(() => {
     return () => {
-      mediaList.forEach(media => URL.revokeObjectURL(media.previewURL));
+      mediaList.forEach((media) => URL.revokeObjectURL(media.previewURL));
     };
   }, [mediaList]);
 
@@ -392,11 +449,15 @@ function DesktopNavbarr() {
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-      
+
       {/* Notification Icon with Dropdown */}
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "notifications" ? Notificationwhite : Notificationblack}
+          src={
+            activeIcon === "notifications"
+              ? Notificationwhite
+              : Notificationblack
+          }
           alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
@@ -407,7 +468,8 @@ function DesktopNavbarr() {
               {Object.keys(timeFilters).map((tab) => (
                 <button
                   key={tab}
-                  className={`notification-tab-button ${activeNotificationTab === tab ? 'active' : ''}`}
+                  className={`notification-tab-button ${activeNotificationTab === tab ? "active" : ""
+                    }`}
                   onClick={() => setActiveNotificationTab(tab)}
                 >
                   {tab}
@@ -417,7 +479,10 @@ function DesktopNavbarr() {
             <div className="notification-list">
               {filteredNotifications.length > 0 ? (
                 filteredNotifications.map((notif, index) => (
-                  <div key={index} className={`notification-item ${notif.color}`}>
+                  <div
+                    key={index}
+                    className={`notification-item ${notif.color}`}
+                  >
                     <img
                       src="https://via.placeholder.com/50"
                       alt="Profile"
@@ -428,11 +493,15 @@ function DesktopNavbarr() {
                       <p className="notification-message">{notif.message}</p>
                     </div>
                     <span className="notification-time">{notif.time}</span>
-                    {notif.alert && <span className="notification-alert">🔔</span>}
+                    {notif.alert && (
+                      <span className="notification-alert">🔔</span>
+                    )}
                   </div>
                 ))
               ) : (
-                <p className="notification-empty">No notifications in this time range.</p>
+                <p className="notification-empty">
+                  No notifications in this time range.
+                </p>
               )}
             </div>
           </div>
@@ -451,16 +520,19 @@ function DesktopNavbarr() {
           <div className="SelfProfile-card">
             <div className="SelfProfile-header">
               <img
-                src={UserProfileImage || "https://via.placeholder.com/50"}
+                src={localStorage.profilePicture || "https://via.placeholder.com/50"}
                 alt="Profile"
                 className="SelfProfile-pic"
               />
               <div className="SelfProfile-info">
-                <h2 className="SelfProfile-name">{Username || "User Name"}</h2>
+                <h2 className="SelfProfile-name">{localStorage.username || "User Name"}</h2>
                 <p className="SelfProfile-label">Position</p>
               </div>
             </div>
-            <button className="SelfProfile-edit-button" onClick={handleEditProfile}>
+            <button
+              className="SelfProfile-edit-button"
+              onClick={handleEditProfile}
+            >
               Edit Profile
             </button>
             <div className="SelfProfile-stats">
@@ -478,11 +550,17 @@ function DesktopNavbarr() {
               </div>
             </div>
             <div className="SelfProfile-menu">
-              <div className="SelfProfile-menu-item" onClick={() => navigate("/SelfSetting")}>
+              <div
+                className="SelfProfile-menu-item"
+                onClick={() => navigate("/SelfSetting")}
+              >
                 Settings
               </div>
               <div className="SelfProfile-menu-item">Help</div>
-              <div className="SelfProfile-menu-item SelfProfile-sign-out" onClick={handleSignOut}>
+              <div
+                className="SelfProfile-menu-item SelfProfile-sign-out"
+                onClick={handleSignOut}
+              >
                 Sign Out
               </div>
             </div>
@@ -494,10 +572,17 @@ function DesktopNavbarr() {
       {showDropdown && (
         <div className="connections-card">
           <div className="connections-item">
-            <Link to="/NetworkPage" className="connection-link">Connection</Link>
+            <Link to="/NetworkPage" className="connection-link">
+              Connection
+            </Link>
           </div>
           <div className="connections-item">Edu-vault</div>
-          <div className="connections-item active">Human Library</div>
+          <div className="connections-item active">
+            {" "}
+            <Link to="/HumanLib" className="connection-link">
+              Human Library
+            </Link>
+          </div>
           <div className="connections-item">Guidance</div>
           <div className="connections-item">NGOs</div>
         </div>
@@ -538,8 +623,12 @@ function DesktopNavbarr() {
                     className="desktop-search-result-avatar"
                   />
                   <div className="desktop-search-result-info">
-                    <span className="desktop-search-result-name">{user.username}</span>
-                    <span className="desktop-search-result-id">ID: {user.id}</span>
+                    <span className="desktop-search-result-name">
+                      {user.username}
+                    </span>
+                    <span className="desktop-search-result-id">
+                      ID: {user.id}
+                    </span>
                   </div>
                 </div>
               ))
@@ -556,21 +645,34 @@ function DesktopNavbarr() {
       {/* Upload Section Overlay */}
       {showUploadSection && (
         <div className="upload-overlay" onClick={handleCloseUpload}>
-          <div className="upload-container" onClick={(e) => e.stopPropagation()} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
-            {(mediaList.length === 0) && (
+          <div
+            className="upload-container"
+            onClick={(e) => e.stopPropagation()}
+            onDrop={handleDrop}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            {mediaList.length === 0 && (
               <div>
                 <p className="upload-text">Drag & Drop your media here</p>
-                <button className="upload-button" onClick={() => inputRef.current.click()}>
+                <button
+                  className="upload-button"
+                  onClick={() => inputRef.current.click()}
+                >
                   Upload from computer
                 </button>
               </div>
             )}
-            
-            {(mediaList.length !== 0 && showAddmore) && (
+
+            {mediaList.length !== 0 && showAddmore && (
               <div className="after-upload">
                 <div className="navbar">
                   <img src={backicon} alt="Back" onClick={handleCloseUpload} />
-                  <h6 onClick={() => { setShowPostDetails(true); setShowAddMore(false); }}>
+                  <h6
+                    onClick={() => {
+                      setShowPostDetails(true);
+                      setShowAddMore(false);
+                    }}
+                  >
                     Continue
                   </h6>
                 </div>
@@ -578,14 +680,25 @@ function DesktopNavbarr() {
                   {mediaList.map((media, index) => (
                     <div key={index} className="media-item">
                       {media.mediaType === "image" ? (
-                        <img className="imageAndVideo" src={media.previewURL} alt="Uploaded media" />
+                        <img
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          alt="Uploaded media"
+                        />
                       ) : (
-                        <video className="imageAndVideo" src={media.previewURL} controls />
+                        <video
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          controls
+                        />
                       )}
                     </div>
                   ))}
                 </div>
-                <button className="add-more-btn" onClick={() => inputRef.current.click()}>
+                <button
+                  className="add-more-btn"
+                  onClick={() => inputRef.current.click()}
+                >
                   Add More
                 </button>
               </div>
@@ -596,7 +709,10 @@ function DesktopNavbarr() {
                 <div className="create-post-after-upload">
                   <div className="create-post-navbar">
                     <div className="image-and-name">
-                      <img src={UserProfileImage || profileImage} alt="profileImage" />  
+                      <img
+                        src={UserProfileImage || profileImage}
+                        alt="profileImage"
+                      />
                       <h3>{Username || "Himanshu Choudary"}</h3>
                     </div>
                     <h6>Create Post</h6>
@@ -606,9 +722,17 @@ function DesktopNavbarr() {
                       {mediaList.map((media, index) => (
                         <div key={index} className="post-media-container">
                           {media.mediaType === "image" ? (
-                            <img className="create-post-imageAndVideo" src={media.previewURL} alt="Uploaded media" />
+                            <img
+                              className="create-post-imageAndVideo"
+                              src={media.previewURL}
+                              alt="Uploaded media"
+                            />
                           ) : (
-                            <video className="create-post-imageAndVideo" src={media.previewURL} controls />
+                            <video
+                              className="create-post-imageAndVideo"
+                              src={media.previewURL}
+                              controls
+                            />
                           )}
                         </div>
                       ))}
@@ -632,7 +756,8 @@ function DesktopNavbarr() {
                         <div className="setting-info">
                           <h4>Hide Likes</h4>
                           <p className="setting-description">
-                            No one will be able to see the number of likes on your post. Except you
+                            No one will be able to see the number of likes on
+                            your post. Except you
                           </p>
                         </div>
                         <label className="toggle-switch">
@@ -655,15 +780,17 @@ function DesktopNavbarr() {
                           <input
                             type="checkbox"
                             checked={disableComments}
-                            onChange={(e) => setDisableComments(e.target.checked)}
+                            onChange={(e) =>
+                              setDisableComments(e.target.checked)
+                            }
                           />
                           <span className="slider round"></span>
                         </label>
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button 
-                        className="submit-button" 
+                      <button
+                        className="submit-button"
                         onClick={handlePostSubmit}
                         disabled={isLoading}
                       >

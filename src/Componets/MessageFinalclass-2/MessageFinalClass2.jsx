@@ -28,17 +28,18 @@ function MessageFinalClass2() {
   const [showGallery, setShowGallery] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [contextMenu, setContextMenu] = useState(null); // State for context menu position and message ID
   const chatBodyRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const fileInputRef = useRef(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const longPressTimerRef = useRef(null); // Ref for long press timer
 
   const senderId = localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8";
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
-  
 
   const emojis = [
-    "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛", 
+    "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛",
     "😇", "🙃", "😏", "😴", "🤗", "🤔", "🤤", "😢", "😭", "😤",
     "😡", "🤬", "😳", "😱", "😨", "😰", "😥", "😓", "🙄", "😬",
     "🤐", "😷", "🤒", "🤕", "🥳", "🤩", "🥺", "🙌", "👏", "👍",
@@ -55,6 +56,7 @@ function MessageFinalClass2() {
     "⚡", "🔥", "💧", "🌊", "🌴", "🌵", "🌷", "🌸", "🌹", "🥀"
   ];
 
+  // Fetch conversations (sidebar)
   useEffect(() => {
     const fetchConversations = async () => {
       try {
@@ -100,6 +102,7 @@ function MessageFinalClass2() {
     }
   }, [senderId, token]);
 
+  // Fetch conversation messages
   const fetchConversation = async () => {
     try {
       const response = await fetch(
@@ -160,6 +163,7 @@ function MessageFinalClass2() {
     return () => clearInterval(intervalId);
   }, [messageId, token, senderId, isAtBottom]);
 
+  // Handle scroll to determine if at bottom
   useEffect(() => {
     const chatBody = chatBodyRef.current;
     if (!chatBody) return;
@@ -174,11 +178,76 @@ function MessageFinalClass2() {
     return () => chatBody.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Auto-scroll to bottom when new messages are added
   useEffect(() => {
     if (chatBodyRef.current && isAtBottom) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }
   }, [chatMessages, isAtBottom]);
+
+  // Close context menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setContextMenu(null);
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  // Handle right-click (desktop) to show context menu
+  const handleRightClick = (e, messageId) => {
+    e.preventDefault();
+    setContextMenu({
+      x: e.pageX,
+      y: e.pageY,
+      messageId,
+    });
+  };
+
+  // Handle long press (mobile) to show context menu
+  const handleTouchStart = (e, messageId) => {
+    longPressTimerRef.current = setTimeout(() => {
+      setContextMenu({
+        x: e.touches[0].pageX,
+        y: e.touches[0].pageY,
+        messageId,
+      });
+    }, 500); // 500ms for long press
+  };
+
+  const handleTouchEnd = () => {
+    clearTimeout(longPressTimerRef.current);
+  };
+
+  // Handle delete message
+  const handleDeleteMessage = async (messageId) => {
+    // Optimistic update: remove the message from the UI
+    const messageToDelete = chatMessages.find((msg) => msg.id === messageId);
+    setChatMessages((prev) => prev.filter((msg) => msg.id !== messageId));
+    setContextMenu(null); // Close the context menu
+
+    try {
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/messages/${messageId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete message");
+      }
+    } catch (err) {
+      // Revert optimistic update if the API call fails
+      setChatMessages((prev) => [...prev, messageToDelete].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)));
+      setSendError(err.message);
+    }
+  };
 
   const sendMessage = async (content) => {
     if (!content.trim() || content.length > 1000) {
@@ -204,7 +273,7 @@ function MessageFinalClass2() {
       timestamp: new Date().toISOString(),
     };
 
-    setChatMessages(prev => [...prev, newMessage]);
+    setChatMessages((prev) => [...prev, newMessage]);
     setMessageInput("");
     setIsAtBottom(true);
     setIsSending(true);
@@ -227,7 +296,7 @@ function MessageFinalClass2() {
 
       if (!response.ok) {
         // Remove optimistic update if failed
-        setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
+        setChatMessages((prev) => prev.filter((msg) => msg.id !== tempId));
         
         let errorMsg = "Failed to send message";
         try {
@@ -238,8 +307,6 @@ function MessageFinalClass2() {
         }
         throw new Error(errorMsg);
       }
-
-      // Success - no need to fetch conversation if optimistic update is working
     } catch (error) {
       setSendError(error.message);
       console.error("Message send error:", error);
@@ -285,10 +352,10 @@ function MessageFinalClass2() {
       sender: "You",
       text: "Sending image...",
       timestamp: new Date().toISOString(),
-      image: URL.createObjectURL(file)
+      image: URL.createObjectURL(file),
     };
 
-    setChatMessages(prev => [...prev, tempMessage]);
+    setChatMessages((prev) => [...prev, tempMessage]);
     setIsAtBottom(true);
     setShowGallery(false);
     setSendError(null);
@@ -314,7 +381,7 @@ function MessageFinalClass2() {
         throw new Error("Failed to send image");
       }
     } catch (error) {
-      setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
+      setChatMessages((prev) => prev.filter((msg) => msg.id !== tempId));
       setSendError(error.message);
     }
   };
@@ -335,7 +402,7 @@ function MessageFinalClass2() {
           stream.getTracks().forEach((track) => track.stop());
           handleSendAudio(blob);
         };
-      }).catch(err => {
+      }).catch((err) => {
         setSendError("Microphone access denied: " + err.message);
       });
     } else {
@@ -352,10 +419,10 @@ function MessageFinalClass2() {
       sender: "You",
       text: "Audio message",
       timestamp: new Date().toISOString(),
-      audio: URL.createObjectURL(blob)
+      audio: URL.createObjectURL(blob),
     };
 
-    setChatMessages(prev => [...prev, tempMessage]);
+    setChatMessages((prev) => [...prev, tempMessage]);
     setIsAtBottom(true);
     setSendError(null);
 
@@ -380,7 +447,7 @@ function MessageFinalClass2() {
         throw new Error("Failed to send audio");
       }
     } catch (error) {
-      setChatMessages(prev => prev.filter(msg => msg.id !== tempId));
+      setChatMessages((prev) => prev.filter((msg) => msg.id !== tempId));
       setSendError(error.message);
     }
   };
@@ -411,7 +478,6 @@ function MessageFinalClass2() {
           <h1>Messages</h1>
           {conversationError && (
             <div className="message-error-alert">
-              {/* <span>{conversationError}</span> */}
               <button onClick={() => setConversationError(null)} className="error-close-btn">
                 ✕
               </button>
@@ -439,12 +505,8 @@ function MessageFinalClass2() {
               />
               <div className="message-part-2-message-info">
                 <div className="message-part-2-message-header">
-                  <span className="message-part-2-name">
-                    {conversation.name}
-                  </span>
-                  <span className="message-part-2-time">
-                    {conversation.time}
-                  </span>
+                  <span className="message-part-2-name">{conversation.name}</span>
+                  <span className="message-part-2-time">{conversation.time}</span>
                 </div>
                 <p className="message-part-2-preview">{conversation.preview}</p>
               </div>
@@ -498,6 +560,9 @@ function MessageFinalClass2() {
                         ? "message-part-2-sent"
                         : "message-part-2-received"
                     }`}
+                    onContextMenu={(e) => handleRightClick(e, message.id)} // Right-click for desktop
+                    onTouchStart={(e) => handleTouchStart(e, message.id)} // Long press start for mobile
+                    onTouchEnd={handleTouchEnd} // Long press end for mobile
                   >
                     <div className="message-part-2-message-content-container">
                       {message.senderId !== senderId && (
@@ -512,25 +577,40 @@ function MessageFinalClass2() {
                       )}
                       <div className="message-part-2-message-content">
                         {message.image && (
-                          <img 
-                            src={message.image} 
-                            alt="Message content" 
+                          <img
+                            src={message.image}
+                            alt="Message content"
                             className="message-image"
                           />
                         )}
-                        {message.audio && (
-                          <audio controls src={message.audio} />
-                        )}
+                        {message.audio && <audio controls src={message.audio} />}
                         <p>{message.text}</p>
-                        <span className="message-part-2-time">
-                          {messageTime}
-                        </span>
+                        <span className="message-part-2-time">{messageTime}</span>
                       </div>
                     </div>
                   </div>
                 </React.Fragment>
               );
             })}
+            {/* Context menu for delete option */}
+            {contextMenu && (
+              <div
+                className="message-context-menu"
+                style={{
+                  top: contextMenu.y,
+                  left: contextMenu.x,
+                  position: "absolute",
+                  zIndex: 1000,
+                }}
+              >
+                <button
+                  onClick={() => handleDeleteMessage(contextMenu.messageId)}
+                  className="message-context-menu-item"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
           <div className="message-part-2-chat-footer">
             <input
@@ -545,7 +625,7 @@ function MessageFinalClass2() {
             {sendError && (
               <div className="message-error-alert">
                 <span>{sendError}</span>
-                <button 
+                <button
                   className="error-close-btn"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -578,7 +658,7 @@ function MessageFinalClass2() {
             />
             <div className="message-part-2-icons">
               <span
-                className={`message-part-2-send-icon ${isSending ? 'disabled' : ''}`}
+                className={`message-part-2-send-icon ${isSending ? "disabled" : ""}`}
                 onClick={!isSending ? handleSendClick : undefined}
               >
                 <IoSend />

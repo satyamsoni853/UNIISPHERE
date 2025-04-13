@@ -28,6 +28,7 @@ import MessageMobileInbox from "./Componets/MessageMobileInbox/MobileMessage.jsx
 // import GoogleLoginComponent from './Componets/GoogleLogin/GoogleLoginComponent.jsx'
 import AfterConnecting from "./Componets/AfterConnecting/AfterConnecting.jsx";
 import MentorSection from "./Componets/MentorSection/MentorSection.jsx"
+import HumanLib from  './Componets/HumanLib/HumanLib.jsx'
 
 function App() {
   return (
@@ -44,9 +45,13 @@ function App() {
           {/* Protected Routes (require userId) */}
           <Route path="/View" element={<View />} />
           <Route
-            path="/FollowerMiddleSectionPrivacy/:userId"
+  path="/DesFollowerMiddleSectionPrivacy/:userId"
+  element={<DesFollowerMiddleSectionPrivacy />}
+/>
+          {/* <Route
+            path="/FollowerMiddleSectionPrivacy"
             element={<DesFollowerMiddleSectionPrivacy />}
-          />
+          /> */}
           <Route
             path="/ProfileEditSection/:userId"
             element={<ProfileEditSection />}
@@ -91,6 +96,7 @@ function App() {
           <Route path="/MobileAddPost" element={<MobileAddPost />} />
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
           <Route path="/MentorSection" element={<MentorSection />} />
+          <Route path="/HumanLib" element={<HumanLib />} />
 
           {/* <Route path="/GoogleLoginComponent" element={<GoogleLoginComponent />} /> */}
         </Routes>

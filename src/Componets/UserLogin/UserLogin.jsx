@@ -29,7 +29,6 @@ function UserLogin() {
       if (response.status === 200) {
         // Extract token and user ID from response
         const token = response.data.token;
-
         localStorage.setItem("AuthToken", token);
         console.log("Stored Auth Token:", token);
 
@@ -65,9 +64,8 @@ function UserLogin() {
       }
     } catch (error) {
       alert(
-        `Login Failed: ${
-          error.response?.data?.message ||
-          "An error occurred. Please try again."
+        `Login Failed: ${error.response?.data?.message ||
+        "An error occurred. Please try again."
         }`
       );
       console.error("Login Error:", error);
