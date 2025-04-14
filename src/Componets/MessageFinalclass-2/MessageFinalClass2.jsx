@@ -471,7 +471,9 @@ function MessageFinalClass2() {
 
   return (
     <div className="message-part-container">
-      <DesktopNavbarr />
+    <div className="message-part-navbar">
+    <DesktopNavbarr />
+    </div>
       <div className="message-part-2-app">
         <Background2 />
         <div className="message-part-2-sidebar">

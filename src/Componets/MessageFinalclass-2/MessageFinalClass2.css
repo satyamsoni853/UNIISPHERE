@@ -105,6 +105,8 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
  margin-top: 20px;
+ 
+ 
   /* padding: 20px; */
   overflow: hidden;
 
@@ -379,20 +381,29 @@
 @media (max-width: 768px) {
   .message-part-2-app {
     flex-direction: column;
+    padding: 0;
+  
   }
+
 
   .message-part-2-sidebar {
     display: none; /* Hide sidebar on mobile */
   }
 
+  .message-part-navbar{
+    display: none;
+  }
   .message-part-2-chat {
     width: 100%;
     height: 100%;
     margin: 0;
+     
     border-radius: 0;
     box-shadow: none;
   }
-
+.message-part-2-message-item{
+  height: 100%;
+}
   .message-part-2-chat-header {
     padding: 15px;
   }
@@ -458,4 +469,10 @@
 
 .message-context-menu-item:hover {
   background-color: #f0f0f0;
+}
+
+@media (max-width:370px) {
+   .message-part-2-input{
+    width: 100%;
+  }
 }
