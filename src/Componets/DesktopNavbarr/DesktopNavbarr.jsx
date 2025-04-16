@@ -368,38 +368,30 @@ function DesktopNavbarr() {
 
       const formData = new FormData();
       mediaList.forEach((media) => {
-        formData.append("media", media.file); // Use "media" as the key
+        formData.append("media", media.file);
       });
-      formData.append("content", caption); // Use "content" instead of "caption"
-      formData.append("visibility", hideLikes); // Use "visibility" instead of "hideLikes"
-      formData.append("location", location || "dehradun"); // Add location
-      formData.append("userId", userId); // Add userId
+      
+      formData.append("content", caption);
+      formData.append("userId", userId);
+      formData.append("visibility", hideLikes ? "private" : "public");
+      formData.append("location", location || "");
+      formData.append("tags", ""); // Add tags if needed
 
-      // Optionally update the user's profile
-      const profileResponse = await axios.patch(
-        "https://uniisphere-1.onrender.com/users/profile/",
-        { bio: caption },
-        { headers: { Authorization: `Bearer ${authToken}` } }
-      );
-      console.log("Profile updated:", profileResponse.data);
-
-      // Post the data to the API
       const postResponse = await axios.post(
-        "https://uniisphere-1.onrender.com/posts/",
+        "https://uniisphere-1.onrender.com/posts",
         formData,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
-            // "Content-Type": "multipart/form-data" is automatically set by axios
           },
         }
       );
       console.log("Post created:", postResponse.data);
 
-      // Reset state after successful post
+      // Reset form state
       setMediaList([]);
       setCaption("");
-      setLocation(""); // Reset location
+      setLocation("");
       setHideLikes(false);
       setDisableComments(false);
       setShowPostDetails(false);

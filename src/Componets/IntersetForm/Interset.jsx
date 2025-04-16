@@ -77,35 +77,63 @@ function Interset() {
 
     try {
       const authToken = localStorage.getItem("authToken");
+      const userId = localStorage.getItem("userId");
 
-      // Log the authToken for debugging
+      // Log for debugging
       console.log("Auth Token:", authToken);
+      console.log("User ID:", userId);
+      console.log("Selected Interests:", selectedInterests);
 
-      if (!authToken) {
+      if (!authToken || !userId) {
         throw new Error("User not authenticated. Please log in.");
       }
 
+      // Create FormData
+      const formData = new FormData();
+      formData.append('userid', userId);
+      formData.append('interests', JSON.stringify(selectedInterests));
+
+      const tokenWithBearer = authToken.startsWith('Bearer ') ? authToken : `Bearer ${authToken}`;
+
       const response = await axios.patch(
-        `https://uniisphere-1.onrender.com/users/profile/`,
-        { interests: selectedInterests },
+        `https://uniisphere-1.onrender.com/users/profile`,
+        formData,
         {
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            'Authorization': tokenWithBearer,
+            // Don't set Content-Type here, it will be automatically set with boundary for FormData
           },
         }
       );
 
+      console.log("Response from server:", response.data);
+
       if (response.status === 200) {
-        console.log("Success response:", response.data);
         alert("Interests saved successfully!");
         navigate("/profile");
       }
     } catch (error) {
-      console.error("Error saving interests:", error.response?.data || error.message);
+      console.error("Error saving interests:", error);
+      
       if (error.response) {
-        alert(`Failed to save interests: ${error.response.data.message || error.response.statusText}`);
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        console.error("Error response headers:", error.response.headers);
+        console.error("Request payload:", error.config.data);
+        
+        if (error.response.status === 401) {
+          console.log("Token used in request:", authToken);
+          alert("Session expired or invalid. Please log in again.");
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("userId");
+          navigate("/login");
+        } else {
+          alert(`Failed to save interests: ${error.response.data.message || 'Please try again later.'}`);
+        }
+      } else if (error.request) {
+        alert("Network error. Please check your connection and try again.");
       } else {
-        alert("Failed to save interests. Check your network or try again later.");
+        alert("An error occurred while saving interests. Please try again.");
       }
     }
   };

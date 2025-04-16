@@ -92,6 +92,7 @@ function DesktopMiddle() {
         const updatedPosts = response.data.posts.map((post) => ({
           _id: post.id,
           authorId: post.userId,
+          profilePhoto: post.user?.profilePictureUrl ,
           authorName: post.user?.username || "Unknown Author",
           authorDetails: post.user?.headline || "No headline available",
           mediaUrl: post.mediaUrl,

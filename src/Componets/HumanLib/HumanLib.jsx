@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./HumanLib.css"; // Import the external CSS file
+import React, { useEffect, useRef, useState } from "react";
+import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
-import Background from "../Background/Background.jsx";
+import "./HumanLib.css"; // Import the external CSS file
 
 function HumanLib() {
   // State to track the current phase (1: Nickname, 2: Get connected, 3: Connecting, 4: Chat)
@@ -58,66 +58,50 @@ function HumanLib() {
   useEffect(() => {
     if (phase !== 4) return;
 
-    const fetchChatHistory = async () => {
+    const findOrCreateChat = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        // Pass userId as a query parameter
         const response = await fetch(
-          `https://uniisphere-1.onrender.com/api/anonymous-chat/history?userId=${senderId}`,
+          `https://uniisphere-1.onrender.com/api/anonymous/create`,
           {
-            method: "GET",
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
+            body: JSON.stringify({
+              userId: senderId,
+              nickname: nickname
+            }),
           }
         );
 
-        // Log the response status and headers
-        console.log("Chat History API Response Status:", response.status);
-        console.log("Chat History API Response Headers:", [...response.headers.entries()]);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch chat history: ${response.status}`);
-        }
-
         const data = await response.json();
-        // Log the response data
-        console.log("Chat History API Response Data:", data);
 
-        if (data && data.length > 0) {
-          // Transform the chat history for display
-          const transformedHistory = data.map((chat) => ({
-            chatId: chat.chatId,
-            lastMessage: chat.lastMessage || "No messages yet",
-            timestamp: chat.updatedAt
-              ? new Date(chat.updatedAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-              : "Unknown",
-          }));
-          setChatHistory(transformedHistory);
-          // Automatically select the most recent chat
-          setSelectedChatId(transformedHistory[0].chatId);
-          // Show alert when chat history is successfully fetched
-          alert("Now you are chatting with a random person.");
+        if (data.chatId) {
+          // Chat matched immediately
+          setSelectedChatId(data.chatId);
+          setIsPhase3TimerActive(false);
+          setPhase(4);
         } else {
-          throw new Error("No chat history found");
+          // Waiting for match
+          setPhase(3);
+          setIsPhase3TimerActive(true);
         }
       } catch (err) {
-        setError(err.message);
-        console.error("Chat History API Error:", err.message);
+        console.error("Chat initialization error:", err);
+        setError("Unable to start chat. Please try again.");
+        setPhase(2);
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (token && senderId) {
-      fetchChatHistory();
+    if (token) {
+      findOrCreateChat();
     }
-  }, [phase, token, senderId]);
+  }, [phase, token]);
 
   // Fetch chat messages when a chat is selected
   useEffect(() => {
@@ -126,7 +110,7 @@ function HumanLib() {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `https://uniisphere-1.onrender.com/api/anonymous-chat/${selectedChatId}/messages`,
+          `https://uniisphere-1.onrender.com/api/anonymous/message`,
           {
             method: "GET",
             headers: {
@@ -136,19 +120,20 @@ function HumanLib() {
           }
         );
 
-        // Log the response status and headers
-        console.log("Messages API Response Status:", response.status);
-        console.log("Messages API Response Headers:", [...response.headers.entries()]);
-
         if (!response.ok) {
-          throw new Error("Failed to fetch messages");
+          throw new Error(`Failed to fetch messages: ${response.status}`);
         }
 
         const data = await response.json();
-        // Log the response data
-        console.log("Messages API Response Data:", data);
+        console.log("Active Chat API Response:", data);
 
-        const transformedMessages = data.map((msg) => ({
+        if (!data || !data.messages) {
+          console.log("No active chat found");
+          setChatMessages([]);
+          return;
+        }
+
+        const transformedMessages = data.messages.map((msg) => ({
           sender: msg.senderId === senderId ? "You" : msg.senderNickname || "Anonymous",
           text: msg.content,
           timestamp: new Date(msg.createdAt).toLocaleTimeString([], {
@@ -162,13 +147,12 @@ function HumanLib() {
         setChatMessages(transformedMessages);
       } catch (err) {
         setError(err.message);
-        console.error("Messages API Error:", err.message);
+        console.error("Messages API Error:", err);
       }
     };
 
     fetchMessages();
 
-    // Poll for new messages every 2 seconds
     const intervalId = setInterval(fetchMessages, 2000);
     return () => clearInterval(intervalId);
   }, [selectedChatId, token, senderId]);
@@ -184,24 +168,9 @@ function HumanLib() {
   const handleSendMessage = async () => {
     if (!messageInput.trim() || !selectedChatId) return;
 
-    const newMessage = {
-      sender: "You",
-      text: messageInput,
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      isSent: true,
-      type: "text",
-    };
-
-    // Optimistic update
-    setChatMessages((prev) => [...prev, newMessage]);
-    setMessageInput("");
-
     try {
       const response = await fetch(
-        `https://uniisphere-1.onrender.com/api/anonymous-chat/${selectedChatId}/messages`,
+        `https://uniisphere-1.onrender.com/api/anonymous/message`,
         {
           method: "POST",
           headers: {
@@ -209,30 +178,108 @@ function HumanLib() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
+            chatId: selectedChatId,
             content: messageInput,
             senderId: senderId,
+            isUser1: false
           }),
         }
       );
 
-      // Log the response status and headers
-      console.log("Send Message API Response Status:", response.status);
-      console.log("Send Message API Response Headers:", [...response.headers.entries()]);
-
-      if (!response.ok) {
-        throw new Error("Failed to send message");
-      }
-
+      if (!response.ok) throw new Error("Failed to send message");
+      
       const data = await response.json();
-      // Log the response data
-      console.log("Send Message API Response Data:", data);
+      console.log("Message sent:", data);
+      setMessageInput("");
     } catch (err) {
-      setError(err.message);
-      console.error("Send Message API Error:", err.message);
-      // Remove the optimistic update if the request fails
-      setChatMessages((prev) => prev.filter((msg) => msg !== newMessage));
+      setError("Failed to send message. Please try again.");
+      console.error("Send message error:", err);
     }
   };
+
+  const handleReportUser = async (chatId, reason) => {
+    try {
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/anonymous-chat/${chatId}/report`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ reason }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to report user");
+      
+      const data = await response.json();
+      console.log("User reported:", data);
+      setPhase(2); // Return to search phase
+    } catch (err) {
+      setError("Failed to report user. Please try again.");
+      console.error("Report user error:", err);
+    }
+  };
+
+  const handleDeleteChat = async (chatId) => {
+    try {
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/anonymous-chat/${chatId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to delete chat");
+      
+      const data = await response.json();
+      console.log("Chat deleted:", data);
+      setChatHistory(prev => prev.filter(chat => chat.chatId !== chatId));
+    } catch (err) {
+      setError("Failed to delete chat. Please try again.");
+      console.error("Delete chat error:", err);
+    }
+  };
+
+  const handleEndChat = async () => {
+    if (!selectedChatId) return;
+
+    try {
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/anonymous/end/${selectedChatId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to end chat");
+      
+      setPhase(2); // Return to search phase
+    } catch (err) {
+      setError("Failed to end chat. Please try again.");
+      console.error("End chat error:", err);
+    }
+  };
+
+  // Add menu options for chat actions
+  const ChatActions = ({ chatId }) => (
+    <div className="HumanLib-chat-actions">
+      <button onClick={() => handleReportUser(chatId, "inappropriate")}>
+        Report User
+      </button>
+      <button onClick={() => handleDeleteChat(chatId)}>
+        Delete Chat
+      </button>
+    </div>
+  );
 
   // Handle Enter key to send message
   const handleKeyDown = (e) => {
@@ -245,17 +292,13 @@ function HumanLib() {
   // Dummy page component for when there's an error or no chat history
   const DummyPage = () => (
     <div className="HumanLib-dummy-page">
-      <h2 className="HumanLib-title">No Active Chat Found</h2>
+      <h2 className="HumanLib-title">Finding Someone to Chat With</h2>
       <p className="HumanLib-description">
-        It looks like we couldn’t find an active chat for you at the moment. <br />
-        Please try again later or start a new search.
+        We're looking for someone for you to chat with. Please wait a moment...
       </p>
-      <button
-        className="HumanLib-button HumanLib-start"
-        onClick={() => setPhase(2)} // Go back to Phase 2 to try again
-      >
-        Try Again
-      </button>
+      <div className="HumanLib-loading-indicator">
+        {/* Add loading animation here */}
+      </div>
     </div>
   );
 
@@ -393,6 +436,7 @@ function HumanLib() {
                           <p className="HumanLib-chat-history-preview">{chat.lastMessage}</p>
                           <p className="HumanLib-chat-history-timestamp">{chat.timestamp}</p>
                         </div>
+                        <ChatActions chatId={chat.chatId} />
                       </div>
                     ))}
                   </div>
