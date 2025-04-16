@@ -319,15 +319,18 @@ function DesktopMiddle() {
               </div>
 
               <div className="middle-main-image">
-                {post.mediaUrl ? (
-                  <img
-                    src={post.mediaUrl}
-                    alt={`Post ${index + 1}`}
-                    className="middle-content-image"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/300")
-                    }
-                  />
+                {post.mediaUrl && post.mediaUrl.length > 0 ? (
+                  post.mediaUrl.map((url, imgIndex) => (
+                    <img
+                      key={imgIndex}
+                      src={url}
+                      alt={`Post ${index + 1} - Image ${imgIndex + 1}`}
+                      className="middle-content-image"
+                      onError={(e) =>
+                        (e.target.src = "https://via.placeholder.com/300")
+                      }
+                    />
+                  ))
                 ) : (
                   <img
                     src={MiddlemainImage}
@@ -439,40 +442,23 @@ function DesktopMiddle() {
                   )}
               </div>
               <div className="Full-comment-section-desktop-photo-container">
-                <img
-                  src={
-                    posts[activeCommentPostIndex].mediaUrl ||
-                    userData.profilePicture
-                  }
-                  alt="Post"
-                  className="Full-comment-section-desktop-post-photo"
-                />
-                {/* <div className="Full-comment-section-desktop-action-buttons">
-                  <div className="Full-comment-section-desktop-connect-div">
+                {posts[activeCommentPostIndex].mediaUrl && 
+                 posts[activeCommentPostIndex].mediaUrl.length > 0 ? (
+                  posts[activeCommentPostIndex].mediaUrl.map((url, imgIndex) => (
                     <img
-                      src={Connect}
-                      className="Full-comment-section-desktop-connect-icon"
-                      alt="Connect"
+                      key={imgIndex}
+                      src={url}
+                      alt={`Post Image ${imgIndex + 1}`}
+                      className="Full-comment-section-desktop-post-photo"
                     />
-                  </div>
-                  <div className="Full-comment-section-desktop-share-like-comment-icon">
-                    <img
-                      src={ShareIcon}
-                      className="Full-comment-section-desktop-post-icons"
-                      alt="Share"
-                    />
-                    <img
-                      src={CommentIcon}
-                      className="Full-comment-section-desktop-post-icons"
-                      alt="Comment"
-                    />
-                    <img
-                      src={LikeIcon}
-                      className="Full-comment-section-desktop-post-icons"
-                      alt="Like"
-                    />
-                  </div>
-                </div> */}
+                  ))
+                ) : (
+                  <img
+                    src={userData.profilePicture}
+                    alt="Default Post"
+                    className="Full-comment-section-desktop-post-photo"
+                  />
+                )}
               </div>
             </div>
 
@@ -612,37 +598,23 @@ function DesktopMiddle() {
               />
             </div>
             <div className="Full-share-section-desktop-photo-container">
-              <img
-                src={userData.profilePicture}
-                alt="Post"
-                className="Full-share-section-desktop-post-photo"
-              />
-              {/* <div className="Full-share-section-desktop-action-buttons">
-                <div className="Full-share-section-desktop-connect-div">
+              {posts[activeCommentPostIndex]?.mediaUrl && 
+               posts[activeCommentPostIndex]?.mediaUrl.length > 0 ? (
+                posts[activeCommentPostIndex].mediaUrl.map((url, imgIndex) => (
                   <img
-                    src={Connect}
-                    className="Full-share-section-desktop-connect-icon"
-                    alt="Connect"
+                    key={imgIndex}
+                    src={url}
+                    alt={`Post Image ${imgIndex + 1}`}
+                    className="Full-share-section-desktop-post-photo"
                   />
-                </div>
-                <div className="Full-share-section-desktop-share-like-share-icon">
-                  <img
-                    src={ShareIcon}
-                    className="Full-share-section-desktop-post-icons"
-                    alt="Share"
-                  />
-                  <img
-                    src={CommentIcon}
-                    className="Full-share-section-desktop-post-icons"
-                    alt="Comment"
-                  />
-                  <img
-                    src={LikeIcon}
-                    className="Full-share-section-desktop-post-icons"
-                    alt="Like"
-                  />
-                </div>
-              </div> */}
+                ))
+              ) : (
+                <img
+                  src={userData.profilePicture}
+                  alt="Default Post"
+                  className="Full-share-section-desktop-post-photo"
+                />
+              )}
             </div>
           </div>
 
