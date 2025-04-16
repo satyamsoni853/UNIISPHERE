@@ -76,11 +76,12 @@ function Interset() {
     }
 
     try {
-      const authToken = localStorage.getItem("authToken");
-      const userId = localStorage.getItem("userId");
+      // Try both possible token keys
+      const authToken = localStorage.getItem("AuthToken") || localStorage.getItem("authToken");
+      const userId = localStorage.getItem("userId") || localStorage.getItem("LoginuserId");
 
       // Log for debugging
-      console.log("Auth Token:", authToken);
+      console.log("Auth Token:", authToken ? "Token exists" : "No token found");
       console.log("User ID:", userId);
       console.log("Selected Interests:", selectedInterests);
 
@@ -88,20 +89,17 @@ function Interset() {
         throw new Error("User not authenticated. Please log in.");
       }
 
-      // Create FormData
-      const formData = new FormData();
-      formData.append('userid', userId);
-      formData.append('interests', JSON.stringify(selectedInterests));
-
-      const tokenWithBearer = authToken.startsWith('Bearer ') ? authToken : `Bearer ${authToken}`;
-
+      // Send data as JSON instead of FormData
       const response = await axios.patch(
         `https://uniisphere-1.onrender.com/users/profile`,
-        formData,
+        {
+          userid: userId,
+          interests: selectedInterests // No need to stringify, axios will do it
+        },
         {
           headers: {
-            'Authorization': tokenWithBearer,
-            // Don't set Content-Type here, it will be automatically set with boundary for FormData
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
           },
         }
       );
@@ -118,17 +116,18 @@ function Interset() {
       if (error.response) {
         console.error("Error response data:", error.response.data);
         console.error("Error response status:", error.response.status);
-        console.error("Error response headers:", error.response.headers);
-        console.error("Request payload:", error.config.data);
         
         if (error.response.status === 401) {
-          console.log("Token used in request:", authToken);
-          alert("Session expired or invalid. Please log in again.");
+          alert("Your session has expired. Please log in again.");
+          // Clear both possible token keys
+          localStorage.removeItem("AuthToken");
           localStorage.removeItem("authToken");
           localStorage.removeItem("userId");
+          localStorage.removeItem("LoginuserId");
           navigate("/login");
         } else {
-          alert(`Failed to save interests: ${error.response.data.message || 'Please try again later.'}`);
+          const errorMessage = error.response.data?.message || error.response.data?.error || 'An error occurred while saving interests.';
+          alert(`Failed to save interests: ${errorMessage}`);
         }
       } else if (error.request) {
         alert("Network error. Please check your connection and try again.");

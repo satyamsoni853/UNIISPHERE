@@ -102,14 +102,16 @@
 .middle-main-image {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 10px;
   padding: 10px;
+  min-height: 200px;
 }
 
 .middle-content-image {
   width: 100%;
-  height: 300px;
+  height: 100%;
+  min-height: 200px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -666,14 +668,16 @@ top: 55%;
 .Full-comment-section-desktop-photo-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
   padding: 10px;
+  min-height: 200px;
 }
 
 .Full-comment-section-desktop-post-photo {
   width: 100%;
-  height: 250px;
+  height: 100%;
+  min-height: 200px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -915,14 +919,16 @@ top: 55%;
 .Full-share-section-desktop-photo-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
   padding: 10px;
+  min-height: 200px;
 }
 
 .Full-share-section-desktop-post-photo {
   width: 100%;
-  height: 250px;
+  height: 100%;
+  min-height: 200px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -1085,14 +1091,20 @@ top: 55%;
   max-width: 100%;
   height: auto;
   max-height: 600px;
+  width: 100%;
+  object-fit: contain;
 }
 
 /* For two images */
-.middle-main-image:has(> img:nth-child(2)) {
+.middle-main-image:has(> img:nth-child(2)),
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(2)),
+.Full-share-section-desktop-photo-container:has(> img:nth-child(2)) {
   grid-template-columns: repeat(2, 1fr);
 }
 
-/* For more than two images */
-.middle-main-image:has(> img:nth-child(3)) {
+/* For three or more images */
+.middle-main-image:has(> img:nth-child(3)),
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(3)),
+.Full-share-section-desktop-photo-container:has(> img:nth-child(3)) {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
