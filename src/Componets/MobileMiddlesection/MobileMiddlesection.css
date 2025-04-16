@@ -549,3 +549,15 @@
   top: 5px;
   right: 12px;
 }
+
+@media (max-width:320px) {
+  .mobile-Full-share-section-AvtaarAndName {
+    width: 57px;
+    height: 57px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+}

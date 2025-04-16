@@ -115,7 +115,12 @@ const MessagesWidget = () => {
         setUnreadMessages(
           unread.map((msg, index) => {
             // Try multiple possible ID fields, fallback to user.id or index
-            const messageId = msg.id || msg._id || msg.conversationId || msg.user?.id || `fallback-${index}`;
+            const messageId =
+              msg.id ||
+              msg._id ||
+              msg.conversationId ||
+              msg.user?.id ||
+              `fallback-${index}`;
             console.log("Mapping message:", msg, "Assigned ID:", messageId);
             return {
               id: messageId,
@@ -165,25 +170,33 @@ const MessagesWidget = () => {
           <div className="header">
             <button
               onClick={() => setActiveTab("Unread")}
-              className={`message-btn ${activeTab === "Unread" ? "active" : ""}`}
+              className={`message-btn ${
+                activeTab === "Unread" ? "active" : ""
+              }`}
             >
               Unread
             </button>
             <button
               onClick={() => setActiveTab("Drafts")}
-              className={`message-btn ${activeTab === "Drafts" ? "active" : ""}`}
+              className={`message-btn ${
+                activeTab === "Drafts" ? "active" : ""
+              }`}
             >
               Drafts
             </button>
             <button
               onClick={() => setActiveTab("Groups")}
-              className={`message-btn ${activeTab === "Groups" ? "active" : ""}`}
+              className={`message-btn ${
+                activeTab === "Groups" ? "active" : ""
+              }`}
             >
               Groups
             </button>
             <button
               onClick={() => setActiveTab("Filters")}
-              className={`message-btn ${activeTab === "Filters" ? "active" : ""}`}
+              className={`message-btn ${
+                activeTab === "Filters" ? "active" : ""
+              }`}
             >
               Filters
             </button>
@@ -230,20 +243,17 @@ const MessagesWidget = () => {
           </div>
         </div>
       )}
-      <div className="messages-widget" onClick={() => setIsOpen(!isOpen)}>
+      <div
+        className="messages-widget"
+        onClick={() => {
+          setShowMessages(!showMessages);
+
+          setIsOpen(!isOpen);
+        }}
+      >
         <img src={Usericon} alt="Profile" className="userIcon-image" />
-        <span
-          onClick={() => setShowMessages(!showMessages)}
-          className="messages-text"
-        >
-          Messages
-        </span>
-        <span
-          onClick={() => setShowMessages(!showMessages)}
-          className="icon"
-        >
-          {isOpen ? <ChevronUp /> : <ChevronDown />}
-        </span>
+        <span className="messages-text">Messages</span>
+        <span className="icon">{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
       </div>
     </div>
   );

@@ -474,8 +474,9 @@ function DesktopNavbarr() {
               {Object.keys(timeFilters).map((tab) => (
                 <button
                   key={tab}
-                  className={`notification-tab-button ${activeNotificationTab === tab ? "active" : ""
-                    }`}
+                  className={`notification-tab-button ${
+                    activeNotificationTab === tab ? "active" : ""
+                  }`}
                   onClick={() => setActiveNotificationTab(tab)}
                 >
                   {tab}
@@ -526,12 +527,17 @@ function DesktopNavbarr() {
           <div className="SelfProfile-card">
             <div className="SelfProfile-header">
               <img
-                src={localStorage.profilePicture || "https://via.placeholder.com/50"}
+                src={
+                  localStorage.profilePicture ||
+                  "https://via.placeholder.com/50"
+                }
                 alt="Profile"
                 className="SelfProfile-pic"
               />
               <div className="SelfProfile-info">
-                <h2 className="SelfProfile-name">{localStorage.username || "User Name"}</h2>
+                <h2 className="SelfProfile-name">
+                  {localStorage.username || "User Name"}
+                </h2>
                 <p className="SelfProfile-label">Position</p>
               </div>
             </div>
@@ -657,7 +663,7 @@ function DesktopNavbarr() {
             onDragOver={(e) => e.preventDefault()}
           >
             {mediaList.length === 0 && (
-              <div>
+              <div className="upload-first-div">
                 <p className="upload-text">Drag & Drop your media here</p>
                 <button
                   className="upload-button"
@@ -715,12 +721,15 @@ function DesktopNavbarr() {
                   <div className="create-post-navbar">
                     <div className="image-and-name">
                       <img
-                        src={UserProfileImage || profileImage}
+                        src={ profileImage}
                         alt="profileImage"
                       />
                       <h3>{Username || "Himanshu Choudary"}</h3>
                     </div>
-                    <h6>Create Post</h6>
+                    <h6
+                      onClick={handlePostSubmit}
+                      disabled={isLoading}
+                    > {isLoading ? "Posting..." : "Post"}</h6>
                   </div>
                   <div className="post-content-container">
                     <div className="image-and-caption">
@@ -752,7 +761,7 @@ function DesktopNavbarr() {
                         />
                       </div>
                       {/* Added Location Input */}
-                      <div className="form-group">
+                      {/* <div className="form-group">
                         <label className="input-label">Location</label>
                         <input
                           type="text"
@@ -761,7 +770,7 @@ function DesktopNavbarr() {
                           onChange={(e) => setLocation(e.target.value)}
                           placeholder="Enter location (e.g., Dehradun)"
                         />
-                      </div>
+                      </div> */}
                     </div>
                     <div className="mention-form-group">
                       <label className="input-label">Add Mentions</label>
@@ -805,13 +814,13 @@ function DesktopNavbarr() {
                       </div>
                     </div>
                     <div className="submit-section">
-                      <button
+                      {/* <button
                         className="submit-button"
                         onClick={handlePostSubmit}
                         disabled={isLoading}
                       >
                         {isLoading ? "Posting..." : "Post"}
-                      </button>
+                      </button> */}
                       {error && <p className="error-message">{error}</p>}
                     </div>
                   </div>
