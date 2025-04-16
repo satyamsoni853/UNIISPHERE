@@ -99,7 +99,7 @@ function ProfileEditSection() {
     fetchUserData();
   }, []);
 
-  // Log user details
+
   const logUserDetails = (data) => {
     const user = Array.isArray(data) ? data[0] : data;
     console.log("=== User Details ===");
