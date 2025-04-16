@@ -729,7 +729,7 @@ function DesktopNavbarr() {
                     <h6
                       onClick={handlePostSubmit}
                       disabled={isLoading}
-                    > {isLoading ? "Posting..." : "Post"}</h6>
+                    > {isLoading ? "Posting..." : "Create Post"}</h6>
                   </div>
                   <div className="post-content-container">
                     <div className="image-and-caption">
