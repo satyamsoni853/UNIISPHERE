@@ -143,7 +143,7 @@ function SkillForm() {
 
       if (response.status === 200) {
         alert("Skills saved successfully!");
-        navigate("/profile");
+        navigate(`/ProfileEditSection/${userId}`);
       }
     } catch (error) {
       console.error("Error saving skills:", error);

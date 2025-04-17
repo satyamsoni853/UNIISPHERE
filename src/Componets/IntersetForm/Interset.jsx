@@ -76,11 +76,9 @@ function Interset() {
     }
 
     try {
-      // Try both possible token keys
       const authToken = localStorage.getItem("AuthToken") || localStorage.getItem("authToken");
       const userId = localStorage.getItem("userId") || localStorage.getItem("LoginuserId");
 
-      // Log for debugging
       console.log("Auth Token:", authToken ? "Token exists" : "No token found");
       console.log("User ID:", userId);
       console.log("Selected Interests:", selectedInterests);
@@ -89,12 +87,11 @@ function Interset() {
         throw new Error("User not authenticated. Please log in.");
       }
 
-      // Send data as JSON instead of FormData
       const response = await axios.patch(
         `https://uniisphere-1.onrender.com/users/profile`,
         {
           userid: userId,
-          interests: selectedInterests // No need to stringify, axios will do it
+          interests: selectedInterests
         },
         {
           headers: {
@@ -108,7 +105,7 @@ function Interset() {
 
       if (response.status === 200) {
         alert("Interests saved successfully!");
-        navigate("/profile");
+        navigate(`/ProfileEditSection/${userId}`);
       }
     } catch (error) {
       console.error("Error saving interests:", error);
@@ -119,7 +116,6 @@ function Interset() {
         
         if (error.response.status === 401) {
           alert("Your session has expired. Please log in again.");
-          // Clear both possible token keys
           localStorage.removeItem("AuthToken");
           localStorage.removeItem("authToken");
           localStorage.removeItem("userId");
