@@ -289,6 +289,7 @@ function ProfileEditSection() {
                 </div>
 
                 {/* Profile Details */}
+                {/* jai ho */}
                 <div className="Followers-middle-section-2-profile-header-public">
                   <div className="Followers-middle-section-2-imageContainer-public">
                     <img
