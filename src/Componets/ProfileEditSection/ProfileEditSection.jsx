@@ -27,7 +27,7 @@ function ProfileEditSection() {
   const [name, setName] = useState("John Doe");
   const [title, setTitle] = useState("Building Uniisphere|Masters Union");
   const [address, setAddress] = useState("New York, USA");
-  const [buttons, setButtons] = useState(["Message", "Connect"]);
+  const [buttons, setButtons] = useState(["Message", "Connect "]);
   const [skills, setSkills] = useState([]);
   const [interests, setInterests] = useState([]);
   const [education, setEducation] = useState([]);
@@ -69,7 +69,10 @@ function ProfileEditSection() {
         }
 
         setUserId(storedUserId);
-        console.log("Profile Edit Section The stored user ID is:", storedUserId);
+        console.log(
+          "Profile Edit Section The stored user ID is:",
+          storedUserId
+        );
 
         const response = await axios.get(
           `https://uniisphere-1.onrender.com/users/profile/${storedUserId}`,
@@ -303,21 +306,25 @@ function ProfileEditSection() {
                     <Link to={`/PersonalInfoUpdate/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
-                    <p>{name}</p>
+                    <p><span>(He/Him)</span>{name}</p>
                   </div>
-                  <p>{title}</p>
-                  <p>{address}</p>
+                  <p className="Followers-middle-section-2-profile-info-public-title">
+                    {title}
+                  </p>
+                  <p className="Followers-middle-section-2-profile-info-public-address">
+                    {address}
+                  </p>
                 </div>
 
                 <div className="Followers-middle-section-2-profile-buttons-public">
-                  {buttons.map((btn, index) => (
-                    <button
-                      key={index}
-                      className="Followers-middle-section-2-btn-public"
-                    >
-                      {btn}
-                    </button>
-                  ))}
+                  <button
+                  
+                    className="Followers-middle-section-2-btn-public"
+                  >Master Union</button>
+                  <button
+                  
+                    className="Followers-middle-section-2-btn-public  "
+                  >SBM</button>
                 </div>
 
                 {/* About Section */}

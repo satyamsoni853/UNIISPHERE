@@ -57,41 +57,75 @@
 .Followers-middle-section-2-profile-header-public {
   display: flex;
   flex-direction: row-reverse;
-  gap: 20px;
+  /* gap: 20px; */
+  width: 90%;
+justify-self: end;
   align-items: center;
+  justify-content: space-between;
   padding: 5px;
+ 
   font-size: 18px;
 }
 
 .Followers-middle-section-2-collabsDetails-public h4,
 .Followers-middle-section-2-connectionsDetails-public h4 {
-  font-size: 25px;
-  font-weight: 200;
+  font-size: 18px;
+ letter-spacing: 0.1px;
+  font-weight: 400;
 }
 
 .Followers-middle-section-2-collabsDetails-public span,
 .Followers-middle-section-2-connectionsDetails-public span {
-  font-weight: 900;
+  font-weight: 500;
+  font-size: 30px;
+  text-align: center;
 }
 
 .Followers-middle-section-2-profile-info-public {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  line-height: 0.5;
+  line-height: 0.15;
+}
+.Followers-middle-section-2-profile-info-public-title{
+  font-size: 18px;
+  font-weight: 400;
+ 
+}
+.Followers-middle-section-2-profile-info-public-address{
+  font-size: 16px;
+ 
+  font-weight: 400;
+ 
 }
 
-.Followers-middle-section-2-nameAndEdit-public {
+
+.Followers-middle-section-2-nameAndEdit-public  {
   display: flex;
   justify-content: space-between;
   width: 90%;
-  font-size: 26px;
+ 
+}
+.Followers-middle-section-2-nameAndEdit-public p {
+ font-size: 22px;
+ font-weight: 500;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+}
+.Followers-middle-section-2-nameAndEdit-public p span {
+ font-size: 15px;
+ 
+ font-weight: 400;
+ color: #9e9b9b;
+ margin-right: 3px;
+ 
 }
 
 .Followers-middle-section-2-imageContainer-public {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 20px;
@@ -101,6 +135,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+   
 }
 
 .Followers-middle-section-2-profile-header-public div {
@@ -112,6 +147,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
 .Followers-middle-section-2-about-button-public {
@@ -135,16 +171,22 @@
 }
 
 .Followers-middle-section-2-btn-public {
-  background: linear-gradient(to bottom, #ffe9ed, white);
+  /* background: linear-gradient(to bottom, #ffe9ed, white); */
   color: black;
   border: 1px solid black;
   padding: 8px 12px;
   width: 100%;
-  max-width: 170px;
+  max-width: 190px;
   font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
   outline: none;
+}
+.Followers-middle-section-2-profile-buttons-public button:nth-child(1){
+ background: linear-gradient(to bottom,#04E6FF1A,#FFD9001A);
+}
+.Followers-middle-section-2-profile-buttons-public button:nth-child(2){
+ background: linear-gradient(to bottom,#4304FF1A,#FF00001A);
 }
 
 .Followers-middle-section-2-scroll-container {
