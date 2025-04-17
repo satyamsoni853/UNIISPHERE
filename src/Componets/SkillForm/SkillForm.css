@@ -118,6 +118,9 @@
 }
 
 .middle-skills-tag {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
   text-align: center;
   border-radius: 10px;
   font-size: 20px;
@@ -128,6 +131,17 @@
   width: 113px;
   height: 40px;
   flex-shrink: 0;
+}
+
+.middle-skills-tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.middle-skills-tag.selected {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border: none;
 }
 
 .middle-skills-parentOfPrompt {
@@ -233,6 +247,12 @@
 .middle-skills-cancel:hover,
 .middle-skills-save:hover {
   transform: scale(1.05);
+}
+
+.middle-skills-save:disabled,
+.middle-skills-cancel:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .middle-skills-header{

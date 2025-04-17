@@ -1,5 +1,3 @@
-
-
 /* Parent Container */
 .middle-container {
   display: flex;
@@ -102,17 +100,20 @@
 
 /* Main Image */
 .middle-main-image {
-  display: flex;
-  justify-content: center;
-  padding: 10px 20px;
-  height: 70vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  min-height: 200px;
 }
 
 .middle-content-image {
-  width: 90%;
-  border-radius: 10px;
+  width: 100%;
   height: 100%;
+  min-height: 200px;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 /* Action Bar */
@@ -665,14 +666,20 @@ top: 55%;
 
 
 .Full-comment-section-desktop-photo-container {
-  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  min-height: 200px;
 }
 
 .Full-comment-section-desktop-post-photo {
   width: 100%;
-  height: 95%;
-  border-radius: 10px;
+  height: 100%;
+  min-height: 200px;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 /* Right Section */
@@ -910,16 +917,20 @@ top: 55%;
 }
 
 .Full-share-section-desktop-photo-container {
- 
-  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  min-height: 200px;
 }
 
 .Full-share-section-desktop-post-photo {
   width: 100%;
-  height: 90%;
-  border-radius: 10px;
+  height: 100%;
+  min-height: 200px;
   object-fit: cover;
-  display: block; /* Ensure it behaves as a block element */
+  border-radius: 8px;
 }
 
 .Full-share-section-action-buttons-desktop {
@@ -1071,4 +1082,29 @@ top: 55%;
 }
 .middle-get-id-button:hover {
   background-color: #0056b3;
+}
+
+/* For single image posts */
+.middle-main-image:has(> img:only-child) .middle-content-image,
+.Full-comment-section-desktop-photo-container:has(> img:only-child) .Full-comment-section-desktop-post-photo,
+.Full-share-section-desktop-photo-container:has(> img:only-child) .Full-share-section-desktop-post-photo {
+  max-width: 100%;
+  height: auto;
+  max-height: 600px;
+  width: 100%;
+  object-fit: contain;
+}
+
+/* For two images */
+.middle-main-image:has(> img:nth-child(2)),
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(2)),
+.Full-share-section-desktop-photo-container:has(> img:nth-child(2)) {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* For three or more images */
+.middle-main-image:has(> img:nth-child(3)),
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(3)),
+.Full-share-section-desktop-photo-container:has(> img:nth-child(3)) {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }

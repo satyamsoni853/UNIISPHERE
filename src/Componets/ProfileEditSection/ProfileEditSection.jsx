@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ProfileEditSection.css";
 import { FiEdit } from "react-icons/fi";
@@ -15,10 +15,12 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function ProfileEditSection() {
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [profilePic, setProfilePic] = useState(image); // Default to fallback image
   const [collabs, setCollabs] = useState(10);
   const [connections, setConnections] = useState(50);
@@ -33,6 +35,7 @@ function ProfileEditSection() {
   const [fullAboutText, setFullAboutText] = useState(
     "Passionate developer with experience in web and mobile development."
   );
+  const [profilePicture, setProfilePicture] = useState(null);
 
   const hasAlerted = useRef(false);
   const hasFetched = useRef(false);
@@ -60,9 +63,12 @@ function ProfileEditSection() {
       console.log("Fetching user data...");
       try {
         const storedUserId = localStorage.getItem("userId");
-        if (!storedUserId) {
+        const authToken = localStorage.getItem("authToken");
+        
+        if (!storedUserId || !authToken) {
           throw new Error("User ID not found in localStorage.");
         }
+        
         setUserId(storedUserId);
         console.log("Profile Edit Section The stored user ID is:", storedUserId);
 
@@ -70,18 +76,21 @@ function ProfileEditSection() {
           `https://uniisphere-1.onrender.com/users/profile/${storedUserId}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+              Authorization: `Bearer ${authToken}`,
             },
           }
         );
+
+        console.log("API Response:", response.data);
 
         if (response.status === 200) {
           setUserData(response.data);
           logUserDetails(response.data);
         }
       } catch (err) {
-        alert("Failed to load data. Please try again later.");
         console.error("Error fetching user data:", err);
+        console.error("Error response:", err.response?.data);
+        setError("Failed to load data. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -90,7 +99,7 @@ function ProfileEditSection() {
     fetchUserData();
   }, []);
 
-  // Log user details
+
   const logUserDetails = (data) => {
     const user = Array.isArray(data) ? data[0] : data;
     console.log("=== User Details ===");
@@ -136,6 +145,100 @@ function ProfileEditSection() {
     }
   }, [userData]);
 
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log("Selected file:", file.name, "Size:", file.size);
+      setProfilePicture(file);
+      
+      try {
+        const authToken = localStorage.getItem("authToken");
+        const userId = localStorage.getItem("userId");
+
+        if (!authToken || !userId) {
+          throw new Error("User not authenticated. Please log in.");
+        }
+
+        console.log("User ID for profile update:", userId);
+        
+        // Create FormData and append fields with correct case
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("profilePicture", file);
+
+        // Log the exact contents being sent
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}:`, value);
+        }
+
+        // Ensure token has Bearer prefix
+        const tokenWithBearer = authToken.startsWith('Bearer ') ? authToken : `Bearer ${authToken}`;
+        
+        console.log("Authorization header:", tokenWithBearer);
+        
+        const response = await axios.patch(
+          "https://uniisphere-1.onrender.com/users/profile",
+          formData,
+          {
+            headers: {
+              'Authorization': tokenWithBearer,
+              'Accept': 'application/json',
+            },
+            maxBodyLength: Infinity,
+            maxContentLength: Infinity,
+            // Log request configuration
+            onUploadProgress: (progressEvent) => {
+              console.log("Upload progress:", Math.round((progressEvent.loaded * 100) / progressEvent.total));
+            }
+          }
+        );
+
+        console.log("Profile picture update response:", response.data);
+        if (response.status === 200) {
+          setProfilePic(response.data.user.profilePictureUrl);
+          alert("Profile picture updated successfully!");
+        }
+      } catch (err) {
+        console.error("Error updating profile picture:", err);
+        if (err.response) {
+          console.error("Error response data:", err.response.data);
+          console.error("Error response status:", err.response.status);
+          console.error("Error response headers:", err.response.headers);
+          console.error("Request config:", {
+            url: err.config.url,
+            method: err.config.method,
+            headers: err.config.headers,
+            data: err.config.data // Log the actual data being sent
+          });
+          
+          if (err.response.status === 401) {
+            console.error("Token used:", err.config.headers['Authorization']);
+            // Log the FormData contents for debugging
+            const formDataDebug = new FormData(err.config.data);
+            for (let [key, value] of formDataDebug.entries()) {
+              console.error(`FormData ${key}:`, value);
+            }
+            alert("Session expired or unauthorized. Please log in again.");
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("userId");
+            navigate("/login");
+          } else {
+            alert(`Failed to update profile picture: ${err.response.data.message || 'Please try again later.'}`);
+          }
+        } else if (err.request) {
+          console.error("Network error details:", {
+            readyState: err.request.readyState,
+            status: err.request.status,
+            statusText: err.request.statusText
+          });
+          alert("Connection error. Please check your internet connection and try again.");
+        } else {
+          alert("An error occurred while updating profile picture. Please try again.");
+        }
+      }
+    }
+  };
+
   // Scroll functions
   const scrollLeft = (ref) => {
     if (ref.current) ref.current.scrollBy({ left: -200, behavior: "smooth" });
@@ -153,7 +256,8 @@ function ProfileEditSection() {
     : fullAboutText.slice(0, maxLength) +
       (fullAboutText.length > maxLength ? "..." : "");
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
@@ -169,17 +273,29 @@ function ProfileEditSection() {
             <div className="Followers-middle-section-2-middle-container-public">
               <div className="Followers-middle-section-2-middle-section-public">
                 <div className="Followers-middle-section-2-top-nav-Icon">
-                  <IoArrowBackCircleOutline className="Followers-middle-section-2-backLogo" />
+                  <IoArrowBackCircleOutline 
+                    className="Followers-middle-section-2-backLogo" 
+                    onClick={() => navigate(-1)}
+                  />
                 </div>
 
                 {/* Profile Details */}
                 <div className="Followers-middle-section-2-profile-header-public">
                   <div className="Followers-middle-section-2-imageContainer-public">
                     <img
-                      src={userData?.profilePictureUrl || profilePic}
+                      src={profilePic}
                       alt="Profile"
                       className="Followers-middle-section-2-profile-pic-public"
                     />
+                    <label className="profile-picture-edit-label">
+                      <FiEdit className="edit-icon" />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
                   </div>
                   <div className="Followers-middle-section-2-collabsDetails-public">
                     <h4>Collabs</h4> <span>{collabs}</span>

@@ -89,17 +89,18 @@
 }
 
 .Followers-middle-section-2-imageContainer-public {
-  height: 90px;
-  width: 90px;
+  position: relative;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .Followers-middle-section-2-profile-pic-public {
-  height: 100%;
   width: 100%;
-  border-radius: 50%;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
 }
 
 .Followers-middle-section-2-profile-header-public div {
@@ -282,6 +283,29 @@
   color: black;
 }
 
+.profile-picture-edit-label {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #007bff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-picture-edit-label:hover {
+  background-color: #0056b3;
+}
+
+.edit-icon {
+  color: white;
+  font-size: 16px;
+}
 
 @media (max-width: 1023px) {
   .ProfileEditSection-main-container {

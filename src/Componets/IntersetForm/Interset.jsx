@@ -76,36 +76,63 @@ function Interset() {
     }
 
     try {
-      const authToken = localStorage.getItem("authToken");
+      // Try both possible token keys
+      const authToken = localStorage.getItem("AuthToken") || localStorage.getItem("authToken");
+      const userId = localStorage.getItem("userId") || localStorage.getItem("LoginuserId");
 
-      // Log the authToken for debugging
-      console.log("Auth Token:", authToken);
+      // Log for debugging
+      console.log("Auth Token:", authToken ? "Token exists" : "No token found");
+      console.log("User ID:", userId);
+      console.log("Selected Interests:", selectedInterests);
 
-      if (!authToken) {
+      if (!authToken || !userId) {
         throw new Error("User not authenticated. Please log in.");
       }
 
+      // Send data as JSON instead of FormData
       const response = await axios.patch(
-        `https://uniisphere-1.onrender.com/users/profile/`,
-        { interests: selectedInterests },
+        `https://uniisphere-1.onrender.com/users/profile`,
+        {
+          userid: userId,
+          interests: selectedInterests // No need to stringify, axios will do it
+        },
         {
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
           },
         }
       );
 
+      console.log("Response from server:", response.data);
+
       if (response.status === 200) {
-        console.log("Success response:", response.data);
         alert("Interests saved successfully!");
         navigate("/profile");
       }
     } catch (error) {
-      console.error("Error saving interests:", error.response?.data || error.message);
+      console.error("Error saving interests:", error);
+      
       if (error.response) {
-        alert(`Failed to save interests: ${error.response.data.message || error.response.statusText}`);
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        
+        if (error.response.status === 401) {
+          alert("Your session has expired. Please log in again.");
+          // Clear both possible token keys
+          localStorage.removeItem("AuthToken");
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("LoginuserId");
+          navigate("/login");
+        } else {
+          const errorMessage = error.response.data?.message || error.response.data?.error || 'An error occurred while saving interests.';
+          alert(`Failed to save interests: ${errorMessage}`);
+        }
+      } else if (error.request) {
+        alert("Network error. Please check your connection and try again.");
       } else {
-        alert("Failed to save interests. Check your network or try again later.");
+        alert("An error occurred while saving interests. Please try again.");
       }
     }
   };

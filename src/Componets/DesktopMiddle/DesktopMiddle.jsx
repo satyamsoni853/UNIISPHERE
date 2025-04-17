@@ -11,7 +11,6 @@ import LikeIcon from "./Like.svg";
 import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
-import profilePhoto from "./profilephoto.png";
 import ShareIcon from "./Share.svg";
 import Threedot from "./Threedot.svg";
 
@@ -25,7 +24,7 @@ import xIcon from "./X.svg";
 
 function DesktopMiddle() {
   const userData = {
-    profilePicture: profilePhoto,
+    profilePicture: Profileimage,
     name: "VIJAY PRASAD",
     education: "University of Delhi",
     workPlace: "Works at Google",
@@ -91,18 +90,25 @@ function DesktopMiddle() {
       if (response.data.posts && response.data.posts.length > 0) {
         const updatedPosts = response.data.posts.map((post) => ({
           _id: post.id,
-          authorId: post.userId,
+          authorId: post.user?.id,
+          profilePhoto: post.user?.profilePictureUrl || Profileimage,
           authorName: post.user?.username || "Unknown Author",
           authorDetails: post.user?.headline || "No headline available",
-          mediaUrl: post.mediaUrl,
+          mediaUrl: post.mediaUrl || [],
           caption: post.content,
           createdAt: post.createdAt,
-          likes: post._count?.Likes || 0,
+          likes: post.totalLikes || 0,
           isLiked: post.Likes?.some((like) => like.userId === authData.userId) || false,
           comments: post.Comments || [],
-          totalComments: post._count?.Comments || 0,
-          totalShares: post._count?.Share || 0
+          totalComments: post.totalComments || 0,
+          totalShares: post.totalShares || 0,
+          location: post.location || "",
+          postType: post.postType || "text",
+          tags: post.tags || [],
+          updatedAt: post.updatedAt,
+          visibility: post.user?.visibility || "public"
         }));
+        console.log(Profileimage);
         setPosts(updatedPosts);
       }
     } catch (error) {
@@ -249,20 +255,20 @@ function DesktopMiddle() {
   };
 
   const persons = [
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
-    { name: "Anjali", avatar: profilePhoto },
-    { name: "Rohit", avatar: profilePhoto },
+    { name: "Anjali", avatar: Profileimage },
+    { name: "Rohit", avatar: Profileimage },
+    { name: "Anjali", avatar: Profileimage },
+    { name: "Rohit", avatar: Profileimage },
+    { name: "Anjali", avatar: Profileimage },
+    { name: "Rohit", avatar: Profileimage },
+    { name: "Anjali", avatar: Profileimage },
+    { name: "Rohit", avatar: Profileimage },
+    { name: "Anjali", avatar: Profileimage },
+    { name: "Rohit", avatar: Profileimage },
+    { name: "Anjali", avatar: Profileimage },
+    { name: "Rohit", avatar: Profileimage },
+    { name: "Anjali", avatar: Profileimage },
+    { name: "Rohit", avatar: Profileimage },
   ];
 
   return (
@@ -281,9 +287,12 @@ function DesktopMiddle() {
                   style={{ cursor: "pointer" }}
                 >
                   <img
-                    src={Profileimage}
+                    src={post.profilePhoto}
                     alt="Profile"
                     className="middle-profile-pic"
+                    onError={(e) => {
+                      e.target.src = Profileimage;
+                    }}
                   />
                 </div>
                 <div className="middle-profile-info">
@@ -318,18 +327,34 @@ function DesktopMiddle() {
               </div>
 
               <div className="middle-main-image">
-                {post.mediaUrl ? (
-                  <img
-                    src={post.mediaUrl}
-                    alt={`Post ${index + 1}`}
-                    className="middle-content-image"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/300")
-                    }
-                  />
+                {post.mediaUrl && post.mediaUrl.length > 0 ? (
+                  Array.isArray(post.mediaUrl) ? (
+                    post.mediaUrl.map((url, imgIndex) => (
+                      <img
+                        key={imgIndex}
+                        src={url}
+                        alt={`Post ${index + 1} - Image ${imgIndex + 1}`}
+                        className="middle-content-image"
+                        onError={(e) => {
+                          console.error(`Failed to load image: ${url}`);
+                          e.target.src = Profileimage;
+                        }}
+                      />
+                    ))
+                  ) : (
+                    <img
+                      src={post.mediaUrl}
+                      alt={`Post ${index + 1}`}
+                      className="middle-content-image"
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${post.mediaUrl}`);
+                        e.target.src = Profileimage;
+                      }}
+                    />
+                  )
                 ) : (
                   <img
-                    src={MiddlemainImage}
+                    src={Profileimage}
                     alt="Default Post"
                     className="middle-content-image"
                   />
@@ -438,40 +463,38 @@ function DesktopMiddle() {
                   )}
               </div>
               <div className="Full-comment-section-desktop-photo-container">
-                <img
-                  src={
-                    posts[activeCommentPostIndex].mediaUrl ||
-                    userData.profilePicture
-                  }
-                  alt="Post"
-                  className="Full-comment-section-desktop-post-photo"
-                />
-                {/* <div className="Full-comment-section-desktop-action-buttons">
-                  <div className="Full-comment-section-desktop-connect-div">
+                {posts[activeCommentPostIndex]?.mediaUrl ? (
+                  Array.isArray(posts[activeCommentPostIndex].mediaUrl) ? (
+                    posts[activeCommentPostIndex].mediaUrl.map((url, imgIndex) => (
+                      <img
+                        key={imgIndex}
+                        src={url}
+                        alt={`Post Image ${imgIndex + 1}`}
+                        className="Full-comment-section-desktop-post-photo"
+                        onError={(e) => {
+                          console.error(`Failed to load image: ${url}`);
+                          e.target.src = Profileimage;
+                        }}
+                      />
+                    ))
+                  ) : (
                     <img
-                      src={Connect}
-                      className="Full-comment-section-desktop-connect-icon"
-                      alt="Connect"
+                      src={posts[activeCommentPostIndex].mediaUrl}
+                      alt="Post Image"
+                      className="Full-comment-section-desktop-post-photo"
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${posts[activeCommentPostIndex].mediaUrl}`);
+                        e.target.src = Profileimage;
+                      }}
                     />
-                  </div>
-                  <div className="Full-comment-section-desktop-share-like-comment-icon">
-                    <img
-                      src={ShareIcon}
-                      className="Full-comment-section-desktop-post-icons"
-                      alt="Share"
-                    />
-                    <img
-                      src={CommentIcon}
-                      className="Full-comment-section-desktop-post-icons"
-                      alt="Comment"
-                    />
-                    <img
-                      src={LikeIcon}
-                      className="Full-comment-section-desktop-post-icons"
-                      alt="Like"
-                    />
-                  </div>
-                </div> */}
+                  )
+                ) : (
+                  <img
+                    src={Profileimage}
+                    alt="Default Post"
+                    className="Full-comment-section-desktop-post-photo"
+                  />
+                )}
               </div>
             </div>
 
@@ -493,9 +516,12 @@ function DesktopMiddle() {
                       >
                         <div className="Full-comment-section-desktop-comment">
                           <img
-                            src={comment.user.profilePictureUrl || profilePhoto}
+                            src={comment.user?.profilePictureUrl || Profileimage}
                             alt="Profile"
                             className="Full-comment-section-desktop-comment-profile-picture"
+                            onError={(e) => {
+                              e.target.src = Profileimage;
+                            }}
                           />
                           <div className="Full-comment-section-desktop-comment-content">
                             <div className="Full-comment-section-desktop-comment-user-info">
@@ -537,7 +563,7 @@ function DesktopMiddle() {
               </div>
               <div className="Full-comment-section-desktop-comment-input-and-image">
                 <img
-                  src={profilePhoto}
+                  src={Profileimage}
                   className="Full-comment-section-desktop-commentPerson-image"
                   alt="Comment Person"
                 />
@@ -611,37 +637,38 @@ function DesktopMiddle() {
               />
             </div>
             <div className="Full-share-section-desktop-photo-container">
-              <img
-                src={userData.profilePicture}
-                alt="Post"
-                className="Full-share-section-desktop-post-photo"
-              />
-              {/* <div className="Full-share-section-desktop-action-buttons">
-                <div className="Full-share-section-desktop-connect-div">
+              {posts[activeCommentPostIndex]?.mediaUrl ? (
+                Array.isArray(posts[activeCommentPostIndex].mediaUrl) ? (
+                  posts[activeCommentPostIndex].mediaUrl.map((url, imgIndex) => (
+                    <img
+                      key={imgIndex}
+                      src={url}
+                      alt={`Post Image ${imgIndex + 1}`}
+                      className="Full-share-section-desktop-post-photo"
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${url}`);
+                        e.target.src = Profileimage;
+                      }}
+                    />
+                  ))
+                ) : (
                   <img
-                    src={Connect}
-                    className="Full-share-section-desktop-connect-icon"
-                    alt="Connect"
+                    src={posts[activeCommentPostIndex].mediaUrl}
+                    alt="Post Image"
+                    className="Full-share-section-desktop-post-photo"
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${posts[activeCommentPostIndex].mediaUrl}`);
+                      e.target.src = Profileimage;
+                    }}
                   />
-                </div>
-                <div className="Full-share-section-desktop-share-like-share-icon">
-                  <img
-                    src={ShareIcon}
-                    className="Full-share-section-desktop-post-icons"
-                    alt="Share"
-                  />
-                  <img
-                    src={CommentIcon}
-                    className="Full-share-section-desktop-post-icons"
-                    alt="Comment"
-                  />
-                  <img
-                    src={LikeIcon}
-                    className="Full-share-section-desktop-post-icons"
-                    alt="Like"
-                  />
-                </div>
-              </div> */}
+                )
+              ) : (
+                <img
+                  src={Profileimage}
+                  alt="Default Post"
+                  className="Full-share-section-desktop-post-photo"
+                />
+              )}
             </div>
           </div>
 
@@ -670,7 +697,7 @@ function DesktopMiddle() {
             </div>
             <div className="Full-share-section-desktop-share-input-and-image">
               <img
-                src={profilePhoto}
+                src={Profileimage}
                 className="Full-share-section-desktop-sharePerson-image"
                 alt="Share Person"
               />
