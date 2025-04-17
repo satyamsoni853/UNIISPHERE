@@ -5,7 +5,7 @@ import { IoSendOutline } from "react-icons/io5";
 import { FcLike } from "react-icons/fc";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
-import ProfilePhoto from './Profilephoto2.png'
+
 
 // Replace these imports with your actual images/paths
 import Commenticonsvg from "./Commenticon.svg";
