@@ -37,7 +37,6 @@ function ProfileEditSection() {
   );
   const [profilePicture, setProfilePicture] = useState(null);
 
-  const hasAlerted = useRef(false);
   const hasFetched = useRef(false);
   const skillsRef = useRef(null);
   const interestsRef = useRef(null);
@@ -64,11 +63,11 @@ function ProfileEditSection() {
       try {
         const storedUserId = localStorage.getItem("userId");
         const authToken = localStorage.getItem("authToken");
-        
+
         if (!storedUserId || !authToken) {
           throw new Error("User ID not found in localStorage.");
         }
-        
+
         setUserId(storedUserId);
         console.log("Profile Edit Section The stored user ID is:", storedUserId);
 
@@ -98,7 +97,6 @@ function ProfileEditSection() {
 
     fetchUserData();
   }, []);
-
 
   const logUserDetails = (data) => {
     const user = Array.isArray(data) ? data[0] : data;
@@ -138,10 +136,6 @@ function ProfileEditSection() {
       setInterests(user.Interests || user.interests || []);
       setEducation(user.education || []);
       setFullAboutText(user.About || user.about || "Passionate developer...");
-      if (!hasAlerted.current) {
-        hasAlerted.current = true;
-        alert("Data loaded successfully!");
-      }
     }
   }, [userData]);
 
@@ -150,7 +144,7 @@ function ProfileEditSection() {
     if (file) {
       console.log("Selected file:", file.name, "Size:", file.size);
       setProfilePicture(file);
-      
+
       try {
         const authToken = localStorage.getItem("authToken");
         const userId = localStorage.getItem("userId");
@@ -160,7 +154,7 @@ function ProfileEditSection() {
         }
 
         console.log("User ID for profile update:", userId);
-        
+
         // Create FormData and append fields with correct case
         const formData = new FormData();
         formData.append("userId", userId);
@@ -172,31 +166,35 @@ function ProfileEditSection() {
         }
 
         // Ensure token has Bearer prefix
-        const tokenWithBearer = authToken.startsWith('Bearer ') ? authToken : `Bearer ${authToken}`;
-        
+        const tokenWithBearer = authToken.startsWith("Bearer ")
+          ? authToken
+          : `Bearer ${authToken}`;
+
         console.log("Authorization header:", tokenWithBearer);
-        
+
         const response = await axios.patch(
           "https://uniisphere-1.onrender.com/users/profile",
           formData,
           {
             headers: {
-              'Authorization': tokenWithBearer,
-              'Accept': 'application/json',
+              Authorization: tokenWithBearer,
+              Accept: "application/json",
             },
             maxBodyLength: Infinity,
             maxContentLength: Infinity,
             // Log request configuration
             onUploadProgress: (progressEvent) => {
-              console.log("Upload progress:", Math.round((progressEvent.loaded * 100) / progressEvent.total));
-            }
+              console.log(
+                "Upload progress:",
+                Math.round((progressEvent.loaded * 100) / progressEvent.total)
+              );
+            },
           }
         );
 
         console.log("Profile picture update response:", response.data);
         if (response.status === 200) {
           setProfilePic(response.data.user.profilePictureUrl);
-          alert("Profile picture updated successfully!");
         }
       } catch (err) {
         console.error("Error updating profile picture:", err);
@@ -208,32 +206,26 @@ function ProfileEditSection() {
             url: err.config.url,
             method: err.config.method,
             headers: err.config.headers,
-            data: err.config.data // Log the actual data being sent
+            data: err.config.data, // Log the actual data being sent
           });
-          
+
           if (err.response.status === 401) {
-            console.error("Token used:", err.config.headers['Authorization']);
+            console.error("Token used:", err.config.headers["Authorization"]);
             // Log the FormData contents for debugging
             const formDataDebug = new FormData(err.config.data);
             for (let [key, value] of formDataDebug.entries()) {
               console.error(`FormData ${key}:`, value);
             }
-            alert("Session expired or unauthorized. Please log in again.");
             localStorage.removeItem("authToken");
             localStorage.removeItem("userId");
             navigate("/login");
-          } else {
-            alert(`Failed to update profile picture: ${err.response.data.message || 'Please try again later.'}`);
           }
         } else if (err.request) {
           console.error("Network error details:", {
             readyState: err.request.readyState,
             status: err.request.status,
-            statusText: err.request.statusText
+            statusText: err.request.statusText,
           });
-          alert("Connection error. Please check your internet connection and try again.");
-        } else {
-          alert("An error occurred while updating profile picture. Please try again.");
         }
       }
     }
@@ -273,8 +265,8 @@ function ProfileEditSection() {
             <div className="Followers-middle-section-2-middle-container-public">
               <div className="Followers-middle-section-2-middle-section-public">
                 <div className="Followers-middle-section-2-top-nav-Icon">
-                  <IoArrowBackCircleOutline 
-                    className="Followers-middle-section-2-backLogo" 
+                  <IoArrowBackCircleOutline
+                    className="Followers-middle-section-2-backLogo"
                     onClick={() => navigate(-1)}
                   />
                 </div>
@@ -293,7 +285,7 @@ function ProfileEditSection() {
                         type="file"
                         accept="image/*"
                         onChange={handleImageChange}
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                       />
                     </label>
                   </div>

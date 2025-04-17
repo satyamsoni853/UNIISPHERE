@@ -4,6 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSendOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
+import profilePhoto from  './profilePhoto.png'
 
 // Replace these imports with your actual images/paths
 import Commenticonsvg from "./Commenticon.svg";
