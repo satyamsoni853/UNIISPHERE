@@ -482,7 +482,7 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-main-education-public">
                   <div className="Followers-middle-section-2-education-headingAndEdit-public">
                     <h3>Education</h3>
-                    <Link to={`/Collab/${userId}`}>
+                    <Link to={`/EducationEdit/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
