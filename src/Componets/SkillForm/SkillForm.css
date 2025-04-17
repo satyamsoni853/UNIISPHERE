@@ -123,12 +123,13 @@
   user-select: none;
   text-align: center;
   border-radius: 10px;
-  font-size: 20px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5px 15px;
-  width: 113px;
+  width: 115px;
+  line-height: 1.2;
   height: 40px;
   flex-shrink: 0;
 }
@@ -139,8 +140,6 @@
 }
 
 .middle-skills-tag.selected {
-  background-color: #4CAF50 !important;
-  color: white !important;
   border: none;
 }
 

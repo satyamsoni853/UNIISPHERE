@@ -214,10 +214,8 @@ function SkillForm() {
                           key={index}
                           className={`middle-skills-tag ${selectedSkills.includes(skill) ? 'selected' : ''}`}
                           style={{
-                            backgroundColor: selectedSkills.includes(skill) 
-                              ? '#4CAF50' 
-                              : color[index % color.length],
-                            color: selectedSkills.includes(skill) ? 'white' : 'black'
+                            backgroundColor: color[index % color.length],
+                            
                           }}
                           onClick={() => handleSkillClick(skill)}
                         >
@@ -232,10 +230,8 @@ function SkillForm() {
                           key={index + row1.length}
                           className={`middle-skills-tag ${selectedSkills.includes(skill) ? 'selected' : ''}`}
                           style={{
-                            backgroundColor: selectedSkills.includes(skill) 
-                              ? '#4CAF50' 
-                              : color[index % color.length],
-                            color: selectedSkills.includes(skill) ? 'white' : 'black'
+                            backgroundColor:color[index % color.length],
+                           
                           }}
                           onClick={() => handleSkillClick(skill)}
                         >
@@ -261,7 +257,7 @@ function SkillForm() {
                 {selectedSkills.map((skill, index) => (
                   <div
                     key={index}
-                    style={{ backgroundColor: '#4CAF50', color: 'white' }}
+                   style={{  backgroundColor:color[index % color.length],}}
                     className="middle-skills-tag"
                     onClick={() => handleSkillClick(skill)}
                   >
