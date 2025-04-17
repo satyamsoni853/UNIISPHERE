@@ -1108,3 +1108,12 @@ top: 55%;
 .Full-share-section-desktop-photo-container:has(> img:nth-child(3)) {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
+.middle-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.middle-icon.liked {
+  color: red; /* Adjust for FcLike if needed */
+}

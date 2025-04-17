@@ -2,14 +2,14 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSendOutline } from "react-icons/io5";
+import { FcLike } from "react-icons/fc";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
-import profilePhoto from  './profilePhoto.png'
+import ProfilePhoto from './Profilephoto2.png'
 
 // Replace these imports with your actual images/paths
 import Commenticonsvg from "./Commenticon.svg";
 import LikeIcon from "./Like.svg";
-import MiddlemainImage from "./Middle-image-main.png";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
 import ShareIcon from "./Share.svg";
@@ -24,15 +24,8 @@ import whatsappIcon from "./Whatsapp.svg";
 import xIcon from "./X.svg";
 
 function DesktopMiddle() {
-  const userData = {
-    profilePicture: Profileimage,
-    name: "VIJAY PRASAD",
-    education: "University of Delhi",
-    workPlace: "Works at Google",
-  };
-
   const [showComment, setShowComment] = useState(false);
-  const [showCommentOptions,setShowCommentOptions] =useState(false)
+  const [showCommentOptions, setShowCommentOptions] = useState(false);
   const [showShare, setShowshare] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef(null);
@@ -53,6 +46,7 @@ function DesktopMiddle() {
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
+  const [userProfile, setUserProfile] = useState(null); // State for current user's profile
   const [commentsLoading, setCommentsLoading] = useState(false);
 
   const location = useLocation();
@@ -62,6 +56,33 @@ function DesktopMiddle() {
     const token = localStorage.getItem("authToken");
     const userId = localStorage.getItem("userId");
     return token && userId ? { token, userId } : null;
+  };
+
+  // Fetch current user's profile (optional, if API provides this)
+  const fetchUserProfile = async (userId, token) => {
+    try {
+      const response = await axios.get(
+        `https://uniisphere-1.onrender.com/api/users/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 10000,
+        }
+      );
+      setUserProfile({
+        profilePicture: response.data.profilePictureUrl || Profileimage,
+        name: response.data.username || "Anonymous",
+        education: response.data.education || "Not specified",
+        workPlace: response.data.workPlace || "Not specified",
+      });
+    } catch (error) {
+      console.error("Fetch user profile error:", error.response?.data || error);
+      setUserProfile({
+        profilePicture: Profileimage,
+        name: "Anonymous",
+        education: "Not specified",
+        workPlace: "Not specified",
+      });
+    }
   };
 
   const fetchFeed = async () => {
@@ -86,6 +107,7 @@ function DesktopMiddle() {
       if (response.data.userId) {
         setUserId(response.data.userId);
         localStorage.setItem("userId", response.data.userId);
+        await fetchUserProfile(response.data.userId, authData.token); // Fetch user profile
       }
 
       if (response.data.posts && response.data.posts.length > 0) {
@@ -107,9 +129,8 @@ function DesktopMiddle() {
           postType: post.postType || "text",
           tags: post.tags || [],
           updatedAt: post.updatedAt,
-          visibility: post.user?.visibility || "public"
+          visibility: post.user?.visibility || "public",
         }));
-        console.log(Profileimage);
         setPosts(updatedPosts);
       }
     } catch (error) {
@@ -143,10 +164,26 @@ function DesktopMiddle() {
       return;
     }
 
+    const originalPost = { ...post };
+    setPosts((prevPosts) =>
+      prevPosts.map((p, i) =>
+        i === index
+          ? {
+              ...p,
+              isLiked: !p.isLiked,
+              likes: p.isLiked ? p.likes - 1 : p.likes + 1,
+            }
+          : p
+      )
+    );
+
     try {
       const endpoint = post.isLiked
         ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
         : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
+
+      console.log("Attempting to like/unlike post:", post._id, "isLiked:", post.isLiked);
+      console.log("Endpoint:", endpoint);
 
       const response = await axios({
         method: "post",
@@ -155,40 +192,25 @@ function DesktopMiddle() {
           Authorization: `Bearer ${authData.token}`,
           "Content-Type": "application/json",
         },
+        timeout: 10000,
       });
 
       console.log("Like/Unlike response:", response.data);
-
-      // Update UI optimistically
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index
-            ? {
-                ...p,
-                isLiked: !p.isLiked,
-                likes: p.isLiked ? p.likes - 1 : p.likes + 1,
-              }
-            : p
-        )
-      );
+      await fetchFeed();
     } catch (error) {
-      console.error(
-        "Like/Unlike error:",
-        error.response?.data || error.message
-      );
-      // Revert UI state if the request failed
+      console.error("Like/Unlike error:", error.response?.data || error.message);
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
             ? {
                 ...p,
-                isLiked: !p.isLiked,
-                likes: p.isLiked ? p.likes + 1 : p.likes - 1,
+                isLiked: originalPost.isLiked,
+                likes: originalPost.likes,
               }
             : p
         )
       );
-      setError("Failed to update like status");
+      setError("Failed to update like status. Please try again.");
     }
   };
 
@@ -218,11 +240,9 @@ function DesktopMiddle() {
           timeout: 10000,
         }
       );
-      console.log("commentapi:", response.data);
+      console.log("Comment API response:", response.data);
 
-      // Refresh the entire feed to get updated comments and likes
       await fetchFeed();
-
       setNewComment("");
       setError(null);
     } catch (error) {
@@ -238,7 +258,7 @@ function DesktopMiddle() {
     setActiveCommentPostIndex(index);
     setShowComment(true);
     setNewComment("");
-    setCommentsLoading(false); // No separate fetch, comments are already in posts
+    setCommentsLoading(false);
   };
 
   const handleCloseCommentModal = () => {
@@ -255,23 +275,6 @@ function DesktopMiddle() {
     }
   };
 
-  const persons = [
-    { name: "Anjali", avatar: Profileimage },
-    { name: "Rohit", avatar: Profileimage },
-    { name: "Anjali", avatar: Profileimage },
-    { name: "Rohit", avatar: Profileimage },
-    { name: "Anjali", avatar: Profileimage },
-    { name: "Rohit", avatar: Profileimage },
-    { name: "Anjali", avatar: Profileimage },
-    { name: "Rohit", avatar: Profileimage },
-    { name: "Anjali", avatar: Profileimage },
-    { name: "Rohit", avatar: Profileimage },
-    { name: "Anjali", avatar: Profileimage },
-    { name: "Rohit", avatar: Profileimage },
-    { name: "Anjali", avatar: Profileimage },
-    { name: "Rohit", avatar: Profileimage },
-  ];
-
   return (
     <div className="middle-container">
       <div className="middle-middle-card">
@@ -281,7 +284,7 @@ function DesktopMiddle() {
           <p>Loading posts...</p>
         ) : posts.length > 0 ? (
           posts.map((post, index) => (
-            <div key={post._id|| index} className="post-container">
+            <div key={post._id || index} className="post-container">
               <div className="middle-profile-header">
                 <div
                   onClick={() => handleProfileClick(post.authorId || userId)}
@@ -304,8 +307,7 @@ function DesktopMiddle() {
                     <span className="middle-post-time">18h</span>
                   </div>
                   <p className="middle-profile-details">
-                    {post.authorDetails ||
-                      "University of Delhi | Works at Google"}
+                    {post.authorDetails || "No details available"}
                   </p>
                 </div>
                 <div className="middle-options-container" ref={optionsRef}>
@@ -374,11 +376,15 @@ function DesktopMiddle() {
                     onClick={() => handleLike(index)}
                   >
                     <span className="middle-icon-count">{post.likes}</span>
-                    <img
-                      src={LikeIcon}
-                      className={`middle-icon ${post.isLiked ? "liked" : ""}`}
-                      alt="Like"
-                    />
+                    {post.isLiked ? (
+                      <FcLike className="middle-icon liked" />
+                    ) : (
+                      <img
+                        src={LikeIcon}
+                        className="middle-icon"
+                        alt="Like"
+                      />
+                    )}
                   </div>
                   <div
                     className="middle-icon-container"
@@ -419,14 +425,14 @@ function DesktopMiddle() {
               <div className="Full-comment-section-desktop-user-profile-header">
                 <div className="Full-comment-section-profile-image-and-heading">
                   <img
-                    src={userData.profilePicture}
+                    src={userProfile?.profilePicture || Profileimage}
                     alt="Profile"
                     className="Full-comment-section-desktop-profile-picture"
                   />
                   <div className="Full-comment-section-desktop-user-info">
                     <div className="Full-comment-section-desktop-name-and-postTime">
                       <span className="Full-comment-section-desktop-user-name">
-                        {userData.name}
+                        {userProfile?.name || "Anonymous"}
                       </span>
                       <span className="Full-comment-section-desktop-user-details">
                         18h
@@ -434,13 +440,13 @@ function DesktopMiddle() {
                     </div>
                     <div className="Full-comment-section-desktop-work-and-education">
                       <span className="Full-comment-section-desktop-user-details">
-                        {userData.education}
+                        {userProfile?.education || "Not specified"}
                       </span>
                       <span className="Full-comment-section-desktop-user-details">
                         ||
                       </span>
                       <span className="Full-comment-section-desktop-user-details">
-                        {userData.workPlace}
+                        {userProfile?.workPlace || "Not specified"}
                       </span>
                     </div>
                   </div>
@@ -451,17 +457,17 @@ function DesktopMiddle() {
                   className="Full-comment-section-desktop-menu-icon"
                   alt="Menu"
                 />
-                  {showCommentOptions && (
-                    <div className="comment-threedot-options-dropdown">
-                      <button className="comment-threedot-options-item">Interest</button>
-                      <button className="comment-threedot-options-item">
-                        Not Interest
-                      </button>
-                      <button className="comment-threedot-options-item">Block</button>
-                      <button className="comment-threedot-options-item">Report</button>
-                      <button className="comment-threedot-options-item">Message</button>
-                    </div>
-                  )}
+                {showCommentOptions && (
+                  <div className="comment-threedot-options-dropdown">
+                    <button className="comment-threedot-options-item">Interest</button>
+                    <button className="comment-threedot-options-item">
+                      Not Interest
+                    </button>
+                    <button className="comment-threedot-options-item">Block</button>
+                    <button className="comment-threedot-options-item">Report</button>
+                    <button className="comment-threedot-options-item">Message</button>
+                  </div>
+                )}
               </div>
               <div className="Full-comment-section-desktop-photo-container">
                 {posts[activeCommentPostIndex]?.mediaUrl ? (
@@ -527,7 +533,7 @@ function DesktopMiddle() {
                           <div className="Full-comment-section-desktop-comment-content">
                             <div className="Full-comment-section-desktop-comment-user-info">
                               <span className="Full-comment-section-desktop-comment-username">
-                                {comment.user.username || "Anonymous"}
+                                {comment.user?.username || "Anonymous"}
                               </span>
                               <span className="Full-comment-section-desktop-comment-timestamp">
                                 {new Date(
@@ -564,7 +570,7 @@ function DesktopMiddle() {
               </div>
               <div className="Full-comment-section-desktop-comment-input-and-image">
                 <img
-                  src={Profileimage}
+                  src={userProfile?.profilePicture || Profileimage}
                   className="Full-comment-section-desktop-commentPerson-image"
                   alt="Comment Person"
                 />
@@ -605,14 +611,14 @@ function DesktopMiddle() {
             <div className="Full-share-section-desktop-user-profile-header">
               <div className="Full-share-section-desktop-top-image-and-names">
                 <img
-                  src={userData.profilePicture}
+                  src={userProfile?.profilePicture || Profileimage}
                   alt="Profile"
                   className="Full-share-section-desktop-profile-picture"
                 />
                 <div className="Full-share-section-desktop-user-info">
                   <div className="Full-share-section-desktop-name-and-postTime">
                     <span className="Full-share-section-desktop-user-name">
-                      {userData.name}
+                      {userProfile?.name || "Anonymous"}
                     </span>
                     <span className="Full-share-section-desktop-user-details">
                       18h
@@ -620,13 +626,13 @@ function DesktopMiddle() {
                   </div>
                   <div className="Full-share-section-desktop-work-and-education">
                     <span className="Full-share-section-desktop-user-details">
-                      {userData.education}
+                      {userProfile?.education || "Not specified"}
                     </span>
                     <span className="Full-share-section-desktop-user-details">
                       ||
                     </span>
                     <span className="Full-share-section-desktop-user-details">
-                      {userData.workPlace}
+                      {userProfile?.workPlace || "Not specified"}
                     </span>
                   </div>
                 </div>
@@ -677,15 +683,8 @@ function DesktopMiddle() {
             <h1 className="Full-share-section-desktop-heading">Share</h1>
             <div className="Full-share-section-desktop-innerDiv">
               <div className="Full-share-section-desktop-AvtaarAndName-collection">
-                {persons.map((val, i) => (
-                  <div
-                    className="Full-share-section-desktop-AvtaarAndName"
-                    key={i}
-                  >
-                    <img src={val.avatar} alt={val.name} />
-                    <h1>{val.name}</h1>
-                  </div>
-                ))}
+                {/* Placeholder for dynamic share contacts */}
+                <p>No contacts available. Fetch contacts from API to share.</p>
               </div>
               <div className="Full-share-section-desktop-AllIcons">
                 <img src={savedIcon} alt="Saved" />
@@ -698,11 +697,14 @@ function DesktopMiddle() {
             </div>
             <div className="Full-share-section-desktop-share-input-and-image">
               <img
-                src={Profileimage}
+                src={userProfile?.profilePicture || Profileimage}
                 className="Full-share-section-desktop-sharePerson-image"
                 alt="Share Person"
               />
-              <input type="text" placeholder="Write a share to VIJAY PRASAD" />
+              <input
+                type="text"
+                placeholder={`Write a share to ${posts[activeCommentPostIndex]?.authorName || "someone"}`}
+              />
             </div>
             <button
               onClick={() => setShowshare(false)}
