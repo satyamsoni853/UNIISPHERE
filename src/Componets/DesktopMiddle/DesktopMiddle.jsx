@@ -6,7 +6,6 @@ import { FcLike } from "react-icons/fc";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
 
-
 // Replace these imports with your actual images/paths
 import Commenticonsvg from "./Commenticon.svg";
 import LikeIcon from "./Like.svg";
@@ -27,6 +26,10 @@ function DesktopMiddle() {
   const [showComment, setShowComment] = useState(false);
   const [showCommentOptions, setShowCommentOptions] = useState(false);
   const [showShare, setShowshare] = useState(false);
+  const [shareMessage, setShareMessage] = useState("");
+  const [activeSharePostIndex, setActiveSharePostIndex] = useState(null);
+  const [connections, setConnections] = useState([]);
+  const [shareError, setShareError] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef(null);
 
@@ -46,7 +49,7 @@ function DesktopMiddle() {
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
-  const [userProfile, setUserProfile] = useState(null); // State for current user's profile
+  const [userProfile, setUserProfile] = useState(null);
   const [commentsLoading, setCommentsLoading] = useState(false);
 
   const location = useLocation();
@@ -58,7 +61,6 @@ function DesktopMiddle() {
     return token && userId ? { token, userId } : null;
   };
 
-  // Fetch current user's profile (optional, if API provides this)
   const fetchUserProfile = async (userId, token) => {
     try {
       const response = await axios.get(
@@ -85,6 +87,43 @@ function DesktopMiddle() {
     }
   };
 
+  const fetchConnections = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/api/connections",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Share Connections API Response:", response.data);
+      // Log each connection's id and username
+      if (response.data && Array.isArray(response.data)) {
+        console.log("Share All Connections:");
+        response.data.forEach((conn, index) => {
+          console.log(`Connection ${index + 1}: ID = ${conn.id}, Name = ${conn.username || "Unknown"}`);
+        });
+      } else {
+        console.log("No connections found or invalid response format.");
+      }
+      // Assuming response.data is an array of connections with id, username, profilePictureUrl
+      setConnections(
+        response.data.map((conn) => ({
+          id: conn.id,
+          username: conn.username || "Unknown",
+          profilePictureUrl: conn.profilePictureUrl || Profileimage,
+        })) || []
+      );
+    } catch (err) {
+      console.error(
+        "Error fetching connections:",
+        err.response ? err.response.data : err.message
+      );
+      setConnections([]);
+      setError("Failed to fetch connections. Please try again.");
+    }
+  };
+
   const fetchFeed = async () => {
     const authData = getAuthData();
     if (!authData) {
@@ -107,7 +146,8 @@ function DesktopMiddle() {
       if (response.data.userId) {
         setUserId(response.data.userId);
         localStorage.setItem("userId", response.data.userId);
-        await fetchUserProfile(response.data.userId, authData.token); // Fetch user profile
+        await fetchUserProfile(response.data.userId, authData.token);
+        await fetchConnections(authData.token);
       }
 
       if (response.data.posts && response.data.posts.length > 0) {
@@ -203,7 +243,7 @@ function DesktopMiddle() {
         prevPosts.map((p, i) =>
           i === index
             ? {
-                ...p,
+...p,
                 isLiked: originalPost.isLiked,
                 likes: originalPost.likes,
               }
@@ -265,6 +305,134 @@ function DesktopMiddle() {
     setActiveCommentPostIndex(null);
     setShowComment(false);
     setError(null);
+  };
+
+  const handleShareClick = (index) => {
+    setActiveSharePostIndex(index);
+    setShowshare(true);
+    setShareMessage("");
+    setShareError(null);
+  };
+
+  const handleCloseShareModal = () => {
+    setActiveSharePostIndex(null);
+    setShowshare(false);
+    setShareMessage("");
+    setShareError(null);
+  };
+
+  const handleShareSubmit = async () => {
+    if (!shareMessage.trim()) {
+      setShareError("Please enter a share message.");
+      return;
+    }
+
+    const post = posts[activeSharePostIndex];
+    const authData = getAuthData();
+    if (!authData) {
+      setShareError("Please log in to share posts.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `https://uniisphere-1.onrender.com/posts/${post._id}/share`,
+        {
+          postId: post._id,
+          userId: authData.userId,
+          message: shareMessage,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+        }
+      );
+      console.log("Share API response:", response.data);
+
+      await fetchFeed();
+      setShareMessage("");
+      setShareError(null);
+      setShowshare(false);
+    } catch (error) {
+      console.error("Share submission error:", error.response?.data || error);
+      setShareError(
+        error.response?.data?.message ||
+          "Failed to share post. Please try again."
+      );
+    }
+  };
+
+  const handleCopyLink = () => {
+    const post = posts[activeSharePostIndex];
+    const postUrl = `${window.location.origin}/post/${post._id}`;
+    navigator.clipboard.writeText(postUrl).then(() => {
+      alert("Link copied to clipboard!");
+    }).catch((err) => {
+      console.error("Failed to copy link:", err);
+      setShareError("Failed to copy link.");
+    });
+  };
+
+  const handleShareToWhatsApp = () => {
+    const post = posts[activeSharePostIndex];
+    const postUrl = `${window.location.origin}/post/${post._id}`;
+    const message = encodeURIComponent(`${shareMessage} ${postUrl}`);
+    window.open(`https://wa.me/?text=${message}`, "_blank");
+  };
+
+  const handleShareToFacebook = () => {
+    const post = posts[activeSharePostIndex];
+    const postUrl = `${window.location.origin}/post/${post._id}`;
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`,
+      "_blank"
+    );
+  };
+
+  const handleShareToX = () => {
+    const post = posts[activeSharePostIndex];
+    const postUrl = `${window.location.origin}/post/${post._id}`;
+    const message = encodeURIComponent(`${shareMessage} ${postUrl}`);
+    window.open(`https://twitter.com/intent/tweet?text=${message}`, "_blank");
+  };
+
+  const handleShareToInstagram = () => {
+    setShareError(
+      "Instagram sharing is not supported directly. Please copy the link and share manually."
+    );
+  };
+
+  const handleSavePost = async () => {
+    const post = posts[activeSharePostIndex];
+    const authData = getAuthData();
+    if (!authData) {
+      setShareError("Please log in to save posts.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `https://uniisphere-1.onrender.com/posts/${post._id}/save`,
+        { userId: authData.userId },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+        }
+      );
+      console.log("Save post response:", response.data);
+      alert("Post saved successfully!");
+    } catch (error) {
+      console.error("Save post error:", error.response?.data || error);
+      setShareError(
+        error.response?.data?.message || "Failed to save post. Please try again."
+      );
+    }
   };
 
   const handleProfileClick = (userId) => {
@@ -338,6 +506,8 @@ function DesktopMiddle() {
                         src={url}
                         alt={`Post ${index + 1} - Image ${imgIndex + 1}`}
                         className="middle-content-image"
+                        onClick={() => handleCommentClick(index)}
+                        style={{ cursor: "pointer" }}
                         onError={(e) => {
                           console.error(`Failed to load image: ${url}`);
                           e.target.src = Profileimage;
@@ -349,6 +519,8 @@ function DesktopMiddle() {
                       src={post.mediaUrl}
                       alt={`Post ${index + 1}`}
                       className="middle-content-image"
+                      onClick={() => handleCommentClick(index)}
+                      style={{ cursor: "pointer" }}
                       onError={(e) => {
                         console.error(`Failed to load image: ${post.mediaUrl}`);
                         e.target.src = Profileimage;
@@ -360,6 +532,8 @@ function DesktopMiddle() {
                     src={Profileimage}
                     alt="Default Post"
                     className="middle-content-image"
+                    onClick={() => handleCommentClick(index)}
+                    style={{ cursor: "pointer" }}
                   />
                 )}
               </div>
@@ -396,9 +570,10 @@ function DesktopMiddle() {
                     <img src={Commenticonsvg} alt="Comment" />
                   </div>
                   <div
-                    onClick={() => setShowshare(true)}
+                    onClick={() => handleShareClick(index)}
                     className="middle-icon-container"
                   >
+                    <span className="middle-icon-count">{post.totalShares}</span>
                     <img src={ShareIcon} className="middle-icon" alt="Share" />
                   </div>
                 </div>
@@ -605,7 +780,7 @@ function DesktopMiddle() {
         </div>
       )}
 
-      {showShare && (
+      {showShare && activeSharePostIndex !== null && (
         <div className="Full-share-section-desktop-main-container">
           <div className="Full-share-section-desktop-left-section">
             <div className="Full-share-section-desktop-user-profile-header">
@@ -644,9 +819,9 @@ function DesktopMiddle() {
               />
             </div>
             <div className="Full-share-section-desktop-photo-container">
-              {posts[activeCommentPostIndex]?.mediaUrl ? (
-                Array.isArray(posts[activeCommentPostIndex].mediaUrl) ? (
-                  posts[activeCommentPostIndex].mediaUrl.map((url, imgIndex) => (
+              {posts[activeSharePostIndex]?.mediaUrl ? (
+                Array.isArray(posts[activeSharePostIndex].mediaUrl) ? (
+                  posts[activeSharePostIndex].mediaUrl.map((url, imgIndex) => (
                     <img
                       key={imgIndex}
                       src={url}
@@ -660,11 +835,11 @@ function DesktopMiddle() {
                   ))
                 ) : (
                   <img
-                    src={posts[activeCommentPostIndex].mediaUrl}
+                    src={posts[activeSharePostIndex].mediaUrl}
                     alt="Post Image"
                     className="Full-share-section-desktop-post-photo"
                     onError={(e) => {
-                      console.error(`Failed to load image: ${posts[activeCommentPostIndex].mediaUrl}`);
+                      console.error(`Failed to load image: ${posts[activeSharePostIndex].mediaUrl}`);
                       e.target.src = Profileimage;
                     }}
                   />
@@ -681,18 +856,72 @@ function DesktopMiddle() {
 
           <div className="Full-share-section-desktop-right-section">
             <h1 className="Full-share-section-desktop-heading">Share</h1>
+            {shareError && <div className="share-error-message">{shareError}</div>}
             <div className="Full-share-section-desktop-innerDiv">
               <div className="Full-share-section-desktop-AvtaarAndName-collection">
-                {/* Placeholder for dynamic share contacts */}
-                <p>No contacts available. Fetch contacts from API to share.</p>
+                {connections.length > 0 ? (
+                  connections.map((connection) => (
+                    <div
+                      key={connection.id}
+                      className="Full-share-section-desktop-contact"
+                      onClick={() => {
+                        setShareMessage(`@${connection.username} ${shareMessage}`);
+                      }}
+                      style={{ cursor: "pointer", display: "flex", alignItems: "center", marginBottom: "10px" }}
+                    >
+                      <img
+                        src={connection.profilePictureUrl || Profileimage}
+                        alt={connection.username}
+                        className="Full-share-section-desktop-contact-image"
+                        style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "10px" }}
+                        onError={(e) => {
+                          e.target.src = Profileimage;
+                        }}
+                      />
+                      <span>{connection.username}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p>No connections available.</p>
+                )}
               </div>
               <div className="Full-share-section-desktop-AllIcons">
-                <img src={savedIcon} alt="Saved" />
-                <img src={linkIcon} alt="Link" />
-                <img src={xIcon} alt="X" />
-                <img src={whatsappIcon} alt="WhatsApp" />
-                <img src={facebookIcon} alt="Facebook" />
-                <img src={instaIcon} alt="Instagram" />
+                <img
+                  src={savedIcon}
+                  alt="Saved"
+                  onClick={handleSavePost}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={linkIcon}
+                  alt="Link"
+                  onClick={handleCopyLink}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={xIcon}
+                  alt="X"
+                  onClick={handleShareToX}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={whatsappIcon}
+                  alt="WhatsApp"
+                  onClick={handleShareToWhatsApp}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={facebookIcon}
+                  alt="Facebook"
+                  onClick={handleShareToFacebook}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={instaIcon}
+                  alt="Instagram"
+                  onClick={handleShareToInstagram}
+                  style={{ cursor: "pointer" }}
+                />
               </div>
             </div>
             <div className="Full-share-section-desktop-share-input-and-image">
@@ -703,11 +932,23 @@ function DesktopMiddle() {
               />
               <input
                 type="text"
-                placeholder={`Write a share to ${posts[activeCommentPostIndex]?.authorName || "someone"}`}
+                placeholder={`Write a share to ${posts[activeSharePostIndex]?.authorName || "someone"}`}
+                value={shareMessage}
+                onChange={(e) => setShareMessage(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleShareSubmit()}
+              />
+              <IoSendOutline
+                className="share-send-icon"
+                onClick={handleShareSubmit}
+                style={{
+                  cursor: "pointer",
+                  marginLeft: "10px",
+                  fontSize: "20px",
+                }}
               />
             </div>
             <button
-              onClick={() => setShowshare(false)}
+              onClick={handleCloseShareModal}
               className="Full-share-section-desktop-cross-button"
             >
               ×
