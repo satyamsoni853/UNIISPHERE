@@ -40,11 +40,12 @@ function ProfileEditSection() {
   const hasFetched = useRef(false);
   const skillsRef = useRef(null);
   const interestsRef = useRef(null);
-const bgGradients = [ 
-  'linear-gradient(to bottom, #44A9B133, #33FF0033)',
-  'linear-gradient(to bottom, #DC4A4533, #E1C86B33)',
-  'linear-gradient(to bottom, #AC89A333, #67646433)',
-  'linear-gradient(to bottom, #44A9B133, #75757533)', ]
+  const bgGradients = [
+    "linear-gradient(to bottom, #44A9B133, #33FF0033)",
+    "linear-gradient(to bottom, #DC4A4533, #E1C86B33)",
+    "linear-gradient(to bottom, #AC89A333, #67646433)",
+    "linear-gradient(to bottom, #44A9B133, #75757533)",
+  ];
   // Handle window resize for mobile detection
   useEffect(() => {
     const handleResize = () => {
@@ -319,23 +320,32 @@ const bgGradients = [
                     <Link to={`/PersonalInfoUpdate/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
-                    <p><span>(He/Him)</span>{name}</p>
+                    <p style={{ lineHeight: "1.5" }}>
+                      <span style={{ marginRight: "12px" }}>(He/Him)</span>
+                      {name}
+                    </p>
                   </div>
-                  <p className="Followers-middle-section-2-profile-info-public-title">
+                  <p
+                    className="Followers-middle-section-2-profile-info-public-title"
+                    style={{ lineHeight: "1" }}
+                  >
                     {title}
                   </p>
-                  <p className="Followers-middle-section-2-profile-info-public-address">
+                  <p
+                    className="Followers-middle-section-2-profile-info-public-address"
+                    style={{ lineHeight: "1" }}
+                  >
                     {address}
                   </p>
                 </div>
 
                 <div className="Followers-middle-section-2-profile-buttons-public">
-                  <button
-                    className="Followers-middle-section-2-btn-public"
-                  >Master Union</button>
-                  <button
-                    className="Followers-middle-section-2-btn-public"
-                  >SBM</button>
+                  <button className="Followers-middle-section-2-btn-public">
+                    Master Union
+                  </button>
+                  <button className="Followers-middle-section-2-btn-public">
+                    SBM
+                  </button>
                 </div>
 
                 {/* About Section */}
@@ -398,7 +408,9 @@ const bgGradients = [
                       {skills.map((val, index) => (
                         <div
                           key={index}
-                          style={{background: bgGradients[index % bgGradients.length]}}
+                          style={{
+                            background: bgGradients[index % bgGradients.length],
+                          }}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
@@ -447,7 +459,9 @@ const bgGradients = [
                       {interests.map((val, index) => (
                         <div
                           key={index}
-                          style={{background: bgGradients[index % bgGradients.length]}}
+                          style={{
+                            background: bgGradients[index % bgGradients.length],
+                          }}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
