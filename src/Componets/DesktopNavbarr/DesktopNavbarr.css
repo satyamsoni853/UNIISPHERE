@@ -554,13 +554,20 @@
   align-items: center;
   z-index: 1000;
 }
-
+.upload-first-div{
+  /* background-color: blue; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .upload-container {
   width: 100%;
   max-width: 600px;
   background: white;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   padding: 20px;
+ 
   position: relative;
   max-height: 90vh;
   /* overflow-y: auto; */
@@ -627,6 +634,8 @@
 
 .create-post-main-container {
   width: 100%;
+  box-shadow: none;
+  height: 100%;
 }
 
 .create-post-after-upload {
@@ -666,6 +675,7 @@
 .create-post-imageAndVideo {
   max-width: 100%;
   max-height: 200px;
+ 
   border-radius: 5px;
 }
 
@@ -766,7 +776,9 @@ input:checked + .slider {
 }
 
 
-
+.after-upload{
+box-shadow: none;
+}
 .submit-section {
   text-align: center;
 }
