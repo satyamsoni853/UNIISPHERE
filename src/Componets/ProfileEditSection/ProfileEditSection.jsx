@@ -83,7 +83,7 @@ function ProfileEditSection() {
           }
         );
 
-        console.log("API Response:", response.data);
+        console.log("Profile edit response API Response:", response.data);
 
         if (response.status === 200) {
           setUserData(response.data);
@@ -100,6 +100,15 @@ function ProfileEditSection() {
 
     fetchUserData();
   }, []);
+
+  // Alert for data loaded or not
+  useEffect(() => {
+    if (!loading && !error) {
+      alert("Data Loaded Successfully!");
+    } else if (!loading && error) {
+      alert("Data Failed to Load: " + error);
+    }
+  }, [loading, error]);
 
   const logUserDetails = (data) => {
     const user = Array.isArray(data) ? data[0] : data;
@@ -318,12 +327,10 @@ function ProfileEditSection() {
 
                 <div className="Followers-middle-section-2-profile-buttons-public">
                   <button
-                  
                     className="Followers-middle-section-2-btn-public"
                   >Master Union</button>
                   <button
-                  
-                    className="Followers-middle-section-2-btn-public  "
+                    className="Followers-middle-section-2-btn-public"
                   >SBM</button>
                 </div>
 
