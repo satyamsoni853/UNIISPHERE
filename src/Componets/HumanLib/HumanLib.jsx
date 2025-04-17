@@ -75,7 +75,7 @@ function HumanLib() {
         );
 
         const data = await response.json();
-        console.log("Connection API Response:", data); // Log full API response
+        console.log("Human Connection API Response:", data); // Log full API response
 
         if (!response.ok) {
           throw new Error(data.message || "Failed to initialize chat");
