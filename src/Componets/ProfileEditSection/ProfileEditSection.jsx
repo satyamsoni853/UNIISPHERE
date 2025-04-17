@@ -40,7 +40,11 @@ function ProfileEditSection() {
   const hasFetched = useRef(false);
   const skillsRef = useRef(null);
   const interestsRef = useRef(null);
-
+const bgGradients = [ 
+  'linear-gradient(to bottom, #44A9B133, #33FF0033)',
+  'linear-gradient(to bottom, #DC4A4533, #E1C86B33)',
+  'linear-gradient(to bottom, #AC89A333, #67646433)',
+  'linear-gradient(to bottom, #44A9B133, #75757533)', ]
   // Handle window resize for mobile detection
   useEffect(() => {
     const handleResize = () => {
@@ -387,6 +391,7 @@ function ProfileEditSection() {
                       {skills.map((val, index) => (
                         <div
                           key={index}
+                          style={{background: bgGradients[index % bgGradients.length]}}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
@@ -435,6 +440,7 @@ function ProfileEditSection() {
                       {interests.map((val, index) => (
                         <div
                           key={index}
+                          style={{background: bgGradients[index % bgGradients.length]}}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
