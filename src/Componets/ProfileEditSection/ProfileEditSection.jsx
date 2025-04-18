@@ -269,7 +269,7 @@ function ProfileEditSection() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
+    <div className="Profile-section-all-wrapper">
       <DesktopNavbarr />
       <div className="ProfileEditSection-main-container">
         <Background />
@@ -321,7 +321,10 @@ function ProfileEditSection() {
                     <Link to={`/PersonalInfoUpdate/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
-                    <p style={{ lineHeight: "1.5" }}>
+                    <p
+                    className="Followers-middle-section-2-profile-info-public-name"
+                    style={{ lineHeight: "1.5" }}>
+                    
                       <span style={{ marginRight: "12px" }}>(He/Him)</span>
                       {name}
                     </p>
