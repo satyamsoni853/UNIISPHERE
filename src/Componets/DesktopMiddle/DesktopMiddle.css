@@ -1113,3 +1113,12 @@
 .middle-icon.liked {
   color: red; /* Adjust for FcLike if needed */
 }
+
+
+
+.connection-status-message {
+  color: #007bff;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+

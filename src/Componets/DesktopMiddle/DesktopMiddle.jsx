@@ -31,6 +31,7 @@ function DesktopMiddle() {
   const [connections, setConnections] = useState([]);
   const [shareError, setShareError] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
+  const [connectionStatuses, setConnectionStatuses] = useState({}); // Track pending requests per authorId
   const optionsRef = useRef(null);
 
   useEffect(() => {
@@ -96,24 +97,17 @@ function DesktopMiddle() {
           timeout: 10000,
         }
       );
-      console.log("Share Connections API Response:", response.data);
-      // Log each connection's id and username
+      console.log("Connections API Response:", response.data);
       if (response.data && Array.isArray(response.data)) {
-        console.log("Share All Connections:");
+        console.log("All Connections:");
         response.data.forEach((conn, index) => {
           console.log(`Connection ${index + 1}: ID = ${conn.id}, Name = ${conn.username || "Unknown"}`);
         });
+        setConnections(response.data);
       } else {
         console.log("No connections found or invalid response format.");
+        setConnections([]);
       }
-      // Assuming response.data is an array of connections with id, username, profilePictureUrl
-      setConnections(
-        response.data.map((conn) => ({
-          id: conn.id,
-          username: conn.username || "Unknown",
-          profilePictureUrl: conn.profilePictureUrl || Profileimage,
-        })) || []
-      );
     } catch (err) {
       console.error(
         "Error fetching connections:",
@@ -121,6 +115,33 @@ function DesktopMiddle() {
       );
       setConnections([]);
       setError("Failed to fetch connections. Please try again.");
+    }
+  };
+
+  const fetchSentConnectionRequests = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/api/connections/sent",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Sent Connection Requests API Response:", response.data);
+      // Assuming response.data is an array of { receiverId, status }
+      const statuses = {};
+      response.data.forEach((request) => {
+        if (request.status === "requested") {
+          statuses[request.receiverId] = "requested";
+        }
+      });
+      return statuses;
+    } catch (err) {
+      console.error(
+        "Error fetching sent connection requests:",
+        err.response ? err.response.data : err.message
+      );
+      return {};
     }
   };
 
@@ -134,24 +155,26 @@ function DesktopMiddle() {
 
     setImageLoading(true);
     try {
-      const response = await axios.get(
-        "https://uniisphere-1.onrender.com/api/feed",
-        {
+      const [feedResponse, sentRequests] = await Promise.all([
+        axios.get("https://uniisphere-1.onrender.com/api/feed", {
           headers: { Authorization: `Bearer ${authData.token}` },
           timeout: 10000,
-        }
-      );
-      console.log("Feed API response:", response.data);
+        }),
+        fetchSentConnectionRequests(authData.token),
+      ]);
 
-      if (response.data.userId) {
-        setUserId(response.data.userId);
-        localStorage.setItem("userId", response.data.userId);
-        await fetchUserProfile(response.data.userId, authData.token);
+      console.log("Feed API response:", feedResponse.data);
+      setConnectionStatuses(sentRequests);
+
+      if (feedResponse.data.userId) {
+        setUserId(feedResponse.data.userId);
+        localStorage.setItem("userId", feedResponse.data.userId);
+        await fetchUserProfile(feedResponse.data.userId, authData.token);
         await fetchConnections(authData.token);
       }
 
-      if (response.data.posts && response.data.posts.length > 0) {
-        const updatedPosts = response.data.posts.map((post) => ({
+      if (feedResponse.data.posts && feedResponse.data.posts.length > 0) {
+        const updatedPosts = feedResponse.data.posts.map((post) => ({
           _id: post.id,
           authorId: post.user?.id,
           profilePhoto: post.user?.profilePictureUrl || Profileimage,
@@ -196,15 +219,53 @@ function DesktopMiddle() {
     fetchFeed();
   }, [location.state]);
 
+  const sendConnectionRequest = async (receiverId) => {
+    const authData = getAuthData();
+    if (!authData) {
+      setError("Please log in to send connection requests.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
+        {
+          userId: authData.userId,
+          senderName: userProfile?.name || "Anonymous",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+        }
+      );
+      console.log("Connection request response:", response.data);
+      setConnectionStatuses((prev) => ({
+        ...prev,
+        [receiverId]: "requested",
+      }));
+      setError(null);
+    } catch (error) {
+      console.error("Connection request error:", error.response?.data || error.message);
+      setError(
+        error.response?.data?.message || "Failed to send connection request."
+      );
+    }
+  };
+
   const handleLike = async (index) => {
     const post = posts[index];
     const authData = getAuthData();
     if (!authData) {
-      setError("Please log in to like posts");
+      setError("Please log in to like posts.");
       return;
     }
 
     const originalPost = { ...post };
+    console.log("Before update - Post state:", { isLiked: post.isLiked, likes: post.likes });
+
     setPosts((prevPosts) =>
       prevPosts.map((p, i) =>
         i === index
@@ -222,28 +283,43 @@ function DesktopMiddle() {
         ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
         : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
 
-      console.log("Attempting to like/unlike post:", post._id, "isLiked:", post.isLiked);
-      console.log("Endpoint:", endpoint);
+      console.log("Calling endpoint:", endpoint, "Post ID:", post._id);
 
-      const response = await axios({
-        method: "post",
-        url: endpoint,
-        headers: {
-          Authorization: `Bearer ${authData.token}`,
-          "Content-Type": "application/json",
-        },
-        timeout: 10000,
-      });
+      const response = await axios.post(
+        endpoint,
+        { userId: authData.userId },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+        }
+      );
 
       console.log("Like/Unlike response:", response.data);
+
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index
+            ? {
+                ...p,
+                isLiked: response.data.isLiked ?? !post.isLiked,
+                likes: response.data.totalLikes ?? (post.isLiked ? post.likes - 1 : post.likes + 1),
+              }
+            : p
+        )
+      );
+
       await fetchFeed();
+      console.log("After fetchFeed - Post state:", posts[index]);
     } catch (error) {
       console.error("Like/Unlike error:", error.response?.data || error.message);
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
             ? {
-...p,
+                ...p,
                 isLiked: originalPost.isLiked,
                 likes: originalPost.likes,
               }
@@ -260,7 +336,7 @@ function DesktopMiddle() {
     const post = posts[index];
     const authData = getAuthData();
     if (!authData) {
-      setError("Please log in to comment");
+      setError("Please log in to comment.");
       return;
     }
 
@@ -451,143 +527,164 @@ function DesktopMiddle() {
         {imageLoading ? (
           <p>Loading posts...</p>
         ) : posts.length > 0 ? (
-          posts.map((post, index) => (
-            <div key={post._id || index} className="post-container">
-              <div className="middle-profile-header">
-                <div
-                  onClick={() => handleProfileClick(post.authorId || userId)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <img
-                    src={post.profilePhoto}
-                    alt="Profile"
-                    className="middle-profile-pic"
-                    onError={(e) => {
-                      e.target.src = Profileimage;
-                    }}
-                  />
-                </div>
-                <div className="middle-profile-info">
-                  <div className="middle-profile-top">
-                    <span className="middle-profile-name">
-                      {post.authorName || "Unknown Author"}
-                    </span>
-                    <span className="middle-post-time">18h</span>
-                  </div>
-                  <p className="middle-profile-details">
-                    {post.authorDetails || "No details available"}
-                  </p>
-                </div>
-                <div className="middle-options-container" ref={optionsRef}>
-                  <BsThreeDotsVertical
-                    className="middle-options-icon"
-                    onClick={() => setShowOptions(!showOptions)}
-                  />
-                  {showOptions && (
-                    <div className="middle-options-dropdown">
-                      <button className="middle-options-item">Interest</button>
-                      <button className="middle-options-item">
-                        Not Interest
-                      </button>
-                      <button className="middle-options-item">Block</button>
-                      <button className="middle-options-item">Report</button>
-                      <button className="middle-options-item">Message</button>
-                    </div>
-                  )}
-                </div>
-              </div>
+          posts.map((post, index) => {
+            const authData = getAuthData();
+            const isSelf = authData && post.authorId === authData.userId;
+            const isConnected = connections.some((conn) => conn.id === post.authorId);
+            const isRequestSent = connectionStatuses[post.authorId] === "requested";
 
-              <div className="middle-main-image">
-                {post.mediaUrl && post.mediaUrl.length > 0 ? (
-                  Array.isArray(post.mediaUrl) ? (
-                    post.mediaUrl.map((url, imgIndex) => (
+            return (
+              <div key={post._id || index} className="post-container">
+                <div className="middle-profile-header">
+                  <div
+                    onClick={() => handleProfileClick(post.authorId || userId)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      src={post.profilePhoto}
+                      alt="Profile"
+                      className="middle-profile-pic"
+                      onError={(e) => {
+                        e.target.src = Profileimage;
+                      }}
+                    />
+                  </div>
+                  <div className="middle-profile-info">
+                    <div className="middle-profile-top">
+                      <span className="middle-profile-name">
+                        {post.authorName || "Unknown Author"}
+                      </span>
+                      <span className="middle-post-time">18h</span>
+                    </div>
+                    <p className="middle-profile-details">
+                      {post.authorDetails || "No details available"}
+                    </p>
+                  </div>
+                  <div className="middle-options-container" ref={optionsRef}>
+                    <BsThreeDotsVertical
+                      className="middle-options-icon"
+                      onClick={() => setShowOptions(!showOptions)}
+                    />
+                    {showOptions && (
+                      <div className="middle-options-dropdown">
+                        <button className="middle-options-item">Interest</button>
+                        <button className="middle-options-item">
+                          Not Interest
+                        </button>
+                        <button className="middle-options-item">Block</button>
+                        <button className="middle-options-item">Report</button>
+                        <button className="middle-options-item">Message</button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="middle-main-image">
+                  {post.mediaUrl && post.mediaUrl.length > 0 ? (
+                    Array.isArray(post.mediaUrl) ? (
+                      post.mediaUrl.map((url, imgIndex) => (
+                        <img
+                          key={imgIndex}
+                          src={url}
+                          alt={`Post ${index + 1} - Image ${imgIndex + 1}`}
+                          className="middle-content-image"
+                          onClick={() => handleCommentClick(index)}
+                          style={{ cursor: "pointer" }}
+                          onError={(e) => {
+                            console.error(`Failed to load image: ${url}`);
+                            e.target.src = Profileimage;
+                          }}
+                        />
+                      ))
+                    ) : (
                       <img
-                        key={imgIndex}
-                        src={url}
-                        alt={`Post ${index + 1} - Image ${imgIndex + 1}`}
+                        src={post.mediaUrl}
+                        alt={`Post ${index + 1}`}
                         className="middle-content-image"
                         onClick={() => handleCommentClick(index)}
                         style={{ cursor: "pointer" }}
                         onError={(e) => {
-                          console.error(`Failed to load image: ${url}`);
+                          console.error(`Failed to load image: ${post.mediaUrl}`);
                           e.target.src = Profileimage;
                         }}
                       />
-                    ))
+                    )
                   ) : (
                     <img
-                      src={post.mediaUrl}
-                      alt={`Post ${index + 1}`}
+                      src={Profileimage}
+                      alt="Default Post"
                       className="middle-content-image"
                       onClick={() => handleCommentClick(index)}
                       style={{ cursor: "pointer" }}
-                      onError={(e) => {
-                        console.error(`Failed to load image: ${post.mediaUrl}`);
-                        e.target.src = Profileimage;
-                      }}
                     />
-                  )
-                ) : (
-                  <img
-                    src={Profileimage}
-                    alt="Default Post"
-                    className="middle-content-image"
-                    onClick={() => handleCommentClick(index)}
-                    style={{ cursor: "pointer" }}
-                  />
-                )}
-              </div>
+                  )}
+                </div>
 
-              <div className="middle-action-bar">
-                <img
-                  src={ConnectMidlleimage}
-                  alt="Connect"
-                  className="middle-connect-image"
-                />
-                <div className="middle-action-icons">
-                  <div
-                    className="middle-icon-container"
-                    onClick={() => handleLike(index)}
-                  >
-                    <span className="middle-icon-count">{post.likes}</span>
-                    {post.isLiked ? (
-                      <FcLike className="middle-icon liked" />
-                    ) : (
-                      <img
-                        src={LikeIcon}
-                        className="middle-icon"
-                        alt="Like"
-                      />
-                    )}
-                  </div>
-                  <div
-                    className="middle-icon-container"
-                    onClick={() => handleCommentClick(index)}
-                  >
-                    <span className="middle-icon-count">
-                      {post.comments.length}
-                    </span>
-                    <img src={Commenticonsvg} alt="Comment" />
-                  </div>
-                  <div
-                    onClick={() => handleShareClick(index)}
-                    className="middle-icon-container"
-                  >
-                    <span className="middle-icon-count">{post.totalShares}</span>
-                    <img src={ShareIcon} className="middle-icon" alt="Share" />
+                <div className="middle-action-bar">
+                  {isSelf ? (
+                    <div className="connection-status-message">
+                      You cannot send a connection request to yourself.
+                    </div>
+                  ) : isConnected ? (
+                    <div className="connection-status-message">
+                      Connection already exists.
+                    </div>
+                  ) : isRequestSent ? (
+                    <div className="connection-status-message">Request Sent!</div>
+                  ) : (
+                    <img
+                      src={ConnectMidlleimage}
+                      alt="Connect"
+                      className="middle-connect-image"
+                      onClick={() => sendConnectionRequest(post.authorId)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  )}
+                  <div className="middle-action-icons">
+                    <div
+                      className="middle-icon-container"
+                      onClick={() => handleLike(index)}
+                    >
+                      <span className="middle-icon-count">{post.likes}</span>
+                      {post.isLiked ? (
+                        <FcLike className="middle-icon liked" />
+                      ) : (
+                        <img
+                          src={LikeIcon}
+                          className="middle-icon"
+                          alt="Like"
+                        />
+                      )}
+                    </div>
+                    <div
+                      className="middle-icon-container"
+                      onClick={() => handleCommentClick(index)}
+                    >
+                      <span className="middle-icon-count">
+                        {post.comments.length}
+                      </span>
+                      <img src={Commenticonsvg} alt="Comment" />
+                    </div>
+                    <div
+                      onClick={() => handleShareClick(index)}
+                      className="middle-icon-container"
+                    >
+                      <span className="middle-icon-count">{post.totalShares}</span>
+                      <img src={ShareIcon} className="middle-icon" alt="Share" />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="middle-post-text">
-                <span className="middle-post-author">
-                  {post.authorName || "Unknown Author"}
-                </span>{" "}
-                {post.caption || post.content || "No caption available"}
-                <span className="middle-see-more">...more</span>
+                <div className="middle-post-text">
+                  <span className="middle-post-author">
+                    {post.authorName || "Unknown Author"}
+                  </span>{" "}
+                  {post.caption || post.content || "No caption available"}
+                  <span className="middle-see-more">...more</span>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>No posts available</p>
         )}

@@ -23,9 +23,11 @@
 
 .networkpage-card {
   border-radius: 10px;
-  padding: 10px;
+  padding: 50px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 400px;
+  height: 300px;
 }
 
 .networkpage-profile-pic-container {

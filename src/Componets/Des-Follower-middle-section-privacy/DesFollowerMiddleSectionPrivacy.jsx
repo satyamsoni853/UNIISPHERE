@@ -282,9 +282,7 @@ function DesFollowerMiddleSectionPrivacy() {
                 </div>
 
                 <div className="Followers-middle-section-1-about-section-privacy">
-                  <p>
-                    <strong>About:</strong>
-                  </p>
+                <p className="DesFollowerMiddleSectionPrivacy-heading">About</p>
                   <p>
                     {displayedText}
                     {data.about?.length > maxLength && (
@@ -299,7 +297,7 @@ function DesFollowerMiddleSectionPrivacy() {
                 </div>
 
                 <div className="Followers-middle-section-1-collabs-section-privacy">
-                  <p>Collabs</p>
+                <p className="DesFollowerMiddleSectionPrivacy-heading">Collabs</p>
                   <div className="Followers-middle-section-1-collabratorCard-privacy">
                     <div className="Followers-middle-section-1-collabrator-lower-left-privacy">
                       <div className="Followers-middle-section-1-collab-profile-privacy">
@@ -307,7 +305,7 @@ function DesFollowerMiddleSectionPrivacy() {
                           <img src={Personimage} alt="Collaborator" />
                         </div>
                         <div className="Followers-middle-section-1-collabratorDetails-privacy">
-                          <h7>{data.collaboratorName || "N/A"}</h7>
+                          {/* <h7>{data.collaboratorName || "N/A"}</h7> */}
                           <div className="Followers-middle-section-1-education-privacy">
                             {(data.education || defaultData.education).map(
                               (val, index) => (
@@ -344,7 +342,8 @@ function DesFollowerMiddleSectionPrivacy() {
                 </div>
 
                 <div className="Followers-middle-section-1-skills-section-privacy">
-                  <h3>Skills</h3>
+                  
+                  <p className="DesFollowerMiddleSectionPrivacy-heading">Skills</p>
                   <div className="Followers-middle-section-1-skill-list-privacy">
                     {(data.skills || defaultData.skills).map((val, index) => (
                       <div
