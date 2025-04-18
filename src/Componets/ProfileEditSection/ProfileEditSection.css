@@ -23,6 +23,24 @@
   align-items: center;
 }
 
+
+.Followers-middle-section-2-about-section-public{
+  padding-bottom: 10px;
+  border-bottom: 10px solid #c5c4c4;
+}
+.Followers-middle-section-2-profile-buttons-public{
+padding-bottom: 10px;
+border-bottom: 10px solid #c5c4c4;
+}
+.Followers-middle-section-2-upload-section-public{
+padding-bottom: 10px;
+border-bottom: 10px solid #c5c4c4;
+}
+.Followers-middle-section-2-skills-section-public{
+padding-bottom: 10px;
+border-bottom: 10px solid #c5c4c4;
+}
+ 
 /* Right Container */
 .ProfileEditSection-right-main-container {
   width: 30%;
@@ -46,6 +64,7 @@
 .Followers-middle-section-2-middle-section-public {
   width: 100%;
   max-width: 30vw;
+ 
   border-radius: 15px;
   margin-top: 90px;
   margin-left: 59%;
@@ -86,6 +105,8 @@ justify-self: end;
   flex-direction: column;
   align-items: flex-end;
   line-height: 0.15;
+ 
+  /* background-color: blue; */
 }
 .Followers-middle-section-2-profile-info-public-title{
   font-size: 18px;
@@ -94,7 +115,6 @@ justify-self: end;
 }
 .Followers-middle-section-2-profile-info-public-address{
   font-size: 16px;
- 
   font-weight: 400;
  
 }
@@ -106,7 +126,7 @@ justify-self: end;
   width: 90%;
  
 }
-.Followers-middle-section-2-nameAndEdit-public p {
+.Followers-middle-section-2-profile-info-public-name {
  font-size: 22px;
  font-weight: 500;
   margin-top: auto;
@@ -115,7 +135,7 @@ justify-self: end;
 }
 .Followers-middle-section-2-nameAndEdit-public p span {
  font-size: 15px;
- 
+ line-height: 0.15;
  font-weight: 400;
  color: #9e9b9b;
  margin-right: 3px;
@@ -200,6 +220,8 @@ justify-self: end;
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+ 
+ 
   scroll-behavior: smooth;
   gap: 10px;
   padding: 5px 0;
@@ -209,7 +231,7 @@ justify-self: end;
 
 .Followers-middle-section-2-skill-list-public
   .Followers-middle-section-2-skillsMiniDiv-public {
-  background: linear-gradient(to top, #f3eeee, #e8a4a4);
+ 
   border-radius: 5px;
   padding: 10px 15px;
   display: inline-block;
@@ -353,6 +375,7 @@ justify-self: end;
   .ProfileEditSection-main-container {
     flex-wrap: wrap;
     height: auto;
+   
   }
 
   .ProfileEditSection-left-main-container,
@@ -363,6 +386,7 @@ justify-self: end;
   .ProfileEditSection-middle-main-container {
     width: 100%;
     order: 3;
+
     margin-top: 20px;
   }
 
@@ -395,12 +419,13 @@ justify-self: end;
     margin-left: 0px;
    
   }
-
   .ProfileEditSection-main-container {
     flex-direction: column;
     padding: 10px;
     height: auto;
   }
+
+   
 
   .ProfileEditSection-left-main-container,
   .ProfileEditSection-right-main-container {
@@ -421,13 +446,17 @@ justify-self: end;
 
   .Followers-middle-section-2-profile-header-public {
     /* flex-direction: column; */
+   
     text-align: center;
     gap: 10px;
   }
 
   .Followers-middle-section-2-profile-info-public {
-    align-items: center;
-    line-height: 1.2;
+    align-items: end;
+  
+    justify-content: center;
+    gap: 0;
+    line-height: 1;
   }
 
   .Followers-middle-section-2-nameAndEdit-public {
@@ -467,10 +496,12 @@ justify-self: end;
 
   .Followers-middle-section-2-skill-list-public {
     display: grid;
-    width: 70vw;
-    grid-template-rows: repeat(2, auto);
+    width: 100%;
+    height: 100px;
+    grid-template-rows: repeat(1, auto);
     grid-auto-flow: column;
     gap: 10px;
+    align-items: center;
     overflow-x: auto;
     scroll-behavior: smooth;
     padding: 5px 0;
@@ -541,3 +572,43 @@ justify-self: end;
   }
 }
 
+@media (max-width:600px) {
+  .Profile-section-all-wrapper{
+    margin-left: 12vw;
+  }
+}
+@media (max-width:560px) {
+  .Profile-section-all-wrapper{
+    margin-left: 15vh;
+  }
+}
+@media (max-width:510px) {
+  .Profile-section-all-wrapper{
+    margin-left: 18vh;
+  }
+}
+@media (max-width:485px) {
+  .Profile-section-all-wrapper{
+    margin-left: 25vh;
+  }
+}
+@media (max-width:445px) {
+  .Profile-section-all-wrapper{
+    margin-left: 30vh;
+  }
+}
+@media (max-width:400px) {
+  .Profile-section-all-wrapper{
+    margin-left: 35vh;
+  }
+}
+@media (max-width:368px) {
+  .Profile-section-all-wrapper{
+    margin-left: 40vh;
+  }
+}
+@media (max-width:340px) {
+  .Profile-section-all-wrapper{
+    margin-left: 45vh;
+  }
+}

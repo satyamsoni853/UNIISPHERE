@@ -40,7 +40,12 @@ function ProfileEditSection() {
   const hasFetched = useRef(false);
   const skillsRef = useRef(null);
   const interestsRef = useRef(null);
-
+  const bgGradients = [
+    "linear-gradient(to bottom, #44A9B133, #33FF0033)",
+    "linear-gradient(to bottom, #DC4A4533, #E1C86B33)",
+    "linear-gradient(to bottom, #AC89A333, #67646433)",
+    "linear-gradient(to bottom, #44A9B133, #75757533)",
+  ];
   // Handle window resize for mobile detection
   useEffect(() => {
     const handleResize = () => {
@@ -83,7 +88,7 @@ function ProfileEditSection() {
           }
         );
 
-        console.log("API Response:", response.data);
+        console.log("Profile edit response API Response:", response.data);
 
         if (response.status === 200) {
           setUserData(response.data);
@@ -100,6 +105,15 @@ function ProfileEditSection() {
 
     fetchUserData();
   }, []);
+
+  // Alert for data loaded or not
+  useEffect(() => {
+    if (!loading && !error) {
+      alert("Data Loaded Successfully!");
+    } else if (!loading && error) {
+      alert("Data Failed to Load: " + error);
+    }
+  }, [loading, error]);
 
   const logUserDetails = (data) => {
     const user = Array.isArray(data) ? data[0] : data;
@@ -255,7 +269,7 @@ function ProfileEditSection() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
+    <div className="Profile-section-all-wrapper">
       <DesktopNavbarr />
       <div className="ProfileEditSection-main-container">
         <Background />
@@ -275,6 +289,7 @@ function ProfileEditSection() {
                 </div>
 
                 {/* Profile Details */}
+                {/* jai ho */}
                 <div className="Followers-middle-section-2-profile-header-public">
                   <div className="Followers-middle-section-2-imageContainer-public">
                     <img
@@ -306,25 +321,35 @@ function ProfileEditSection() {
                     <Link to={`/PersonalInfoUpdate/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
-                    <p><span>(He/Him)</span>{name}</p>
+                    <p
+                    className="Followers-middle-section-2-profile-info-public-name"
+                    style={{ lineHeight: "1.5" }}>
+                    
+                      <span style={{ marginRight: "12px" }}>(He/Him)</span>
+                      {name}
+                    </p>
                   </div>
-                  <p className="Followers-middle-section-2-profile-info-public-title">
+                  <p
+                    className="Followers-middle-section-2-profile-info-public-title"
+                    style={{ lineHeight: "1" }}
+                  >
                     {title}
                   </p>
-                  <p className="Followers-middle-section-2-profile-info-public-address">
+                  <p
+                    className="Followers-middle-section-2-profile-info-public-address"
+                    style={{ lineHeight: "1" }}
+                  >
                     {address}
                   </p>
                 </div>
 
                 <div className="Followers-middle-section-2-profile-buttons-public">
-                  <button
-                  
-                    className="Followers-middle-section-2-btn-public"
-                  >Master Union</button>
-                  <button
-                  
-                    className="Followers-middle-section-2-btn-public  "
-                  >SBM</button>
+                  <button className="Followers-middle-section-2-btn-public">
+                    Master Union
+                  </button>
+                  <button className="Followers-middle-section-2-btn-public">
+                    SBM
+                  </button>
                 </div>
 
                 {/* About Section */}
@@ -387,6 +412,9 @@ function ProfileEditSection() {
                       {skills.map((val, index) => (
                         <div
                           key={index}
+                          style={{
+                            background: bgGradients[index % bgGradients.length],
+                          }}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
@@ -435,6 +463,9 @@ function ProfileEditSection() {
                       {interests.map((val, index) => (
                         <div
                           key={index}
+                          style={{
+                            background: bgGradients[index % bgGradients.length],
+                          }}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
@@ -454,7 +485,7 @@ function ProfileEditSection() {
                 <div className="Followers-middle-section-2-main-education-public">
                   <div className="Followers-middle-section-2-education-headingAndEdit-public">
                     <h3>Education</h3>
-                    <Link to={`/Collab/${userId}`}>
+                    <Link to={`/EducationEdit/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
