@@ -367,8 +367,8 @@ function NetworkPage() {
                           />
                         </div>
                         <div className="networkpage-stats">
-                          <span>Request ID: {request.id}</span>
-                          <span>From: {request.userId1}</span>
+                          {/* <span>Request ID: {request.id}</span>
+                          <span>From: {request.userId1}</span> */}
                         </div>
                       </div>
                     ))
