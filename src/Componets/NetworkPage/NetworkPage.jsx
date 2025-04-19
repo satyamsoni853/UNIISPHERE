@@ -298,7 +298,7 @@ function NetworkPage() {
         <div className="networkpage">
           <div className="networkpage-container">
             <div className="networkpage-left-section">
-              <button
+              {/* <button
                 onClick={toggleDummyData}
                 style={{
                   position: "absolute",
@@ -314,7 +314,7 @@ function NetworkPage() {
                 }}
               >
                 {useDummyData ? "Using Dummy Data" : "Using Real API"}
-              </button>
+              </button> */}
 
               {showRequestMode ? (
                 <div className="networkpage-grid">

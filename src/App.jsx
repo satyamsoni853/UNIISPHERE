@@ -24,14 +24,14 @@ import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessage
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
 
 import MobileAddPost from "./Componets/MobileAddPost/MobileAddPost.jsx";
-import MessageMobileInbox from "./Componets/MessageMobileInbox/MobileMessage.jsx";
+
 // import GoogleLoginComponent from './Componets/GoogleLogin/GoogleLoginComponent.jsx'
 import AfterConnecting from "./Componets/AfterConnecting/AfterConnecting.jsx";
 import MentorSection from "./Componets/MentorSection/MentorSection.jsx"
 import HumanLib from  './Componets/HumanLib/HumanLib.jsx'
 import EducationEdit from "./Componets/EducationForm/EducationEdit.jsx";
 import Blog from  './Componets/Blog/Blog.jsx'
-
+import MessageMobileInbox from "./Componets/MessageMobileInbox/MessageMobileInbox.jsx";
 function App() {
   return (
     <Router>
@@ -75,6 +75,7 @@ function App() {
           <Route path="/Collab/:userId" element={<CollabForm />} />
           <Route path="/Interset/:userId" element={<Interset />} />
           <Route path="/EducationEdit/:userId" element={<EducationEdit />} />
+          <Route path="/blog/:userId" element={<Blog />} />
           <Route
             path="/AboutAndExperiance/:userId"
             element={<AboutAndExperiance />}
@@ -100,7 +101,7 @@ function App() {
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
           <Route path="/MentorSection" element={<MentorSection />} />
           <Route path="/HumanLib" element={<HumanLib />} />
-          <Route path="/Blog" element={<Blog />} />
+         
           
 
           {/* <Route path="/GoogleLoginComponent" element={<GoogleLoginComponent />} /> */}

@@ -375,6 +375,9 @@
 .connections-card :nth-child(5) {
   box-shadow: 0 2px 5px 2px #8d61e38c;
 }
+.connections-card :nth-child(6) {
+  box-shadow: 0 2px 5px 2px #73d2868c;
+}
 
 .connections-item {
   width: 282px;

@@ -370,7 +370,7 @@ function DesktopNavbarr() {
       mediaList.forEach((media) => {
         formData.append("media", media.file);
       });
-      
+
       formData.append("content", caption);
       formData.append("userId", userId);
       formData.append("visibility", hideLikes ? "private" : "public");
@@ -588,6 +588,18 @@ function DesktopNavbarr() {
           </div>
           <div className="connections-item">Guidance</div>
           <div className="connections-item">NGOs</div>
+          <div className="connections-item">
+            <Link
+              to={
+                localStorage.getItem("userId")
+                  ? `/blog/${localStorage.getItem("userId")}`
+                  : "/blog"
+              }
+              className="connection-link"
+            >
+              Blog
+            </Link>
+          </div>
         </div>
       )}
 
@@ -712,16 +724,13 @@ function DesktopNavbarr() {
                 <div className="create-post-after-upload">
                   <div className="create-post-navbar">
                     <div className="image-and-name">
-                      <img
-                        src={ profileImage}
-                        alt="profileImage"
-                      />
+                      <img src={profileImage} alt="profileImage" />
                       <h3>{Username || "Himanshu Choudary"}</h3>
                     </div>
-                    <h6
-                      onClick={handlePostSubmit}
-                      disabled={isLoading}
-                    > {isLoading ? "Posting..." : "Create Post"}</h6>
+                    <h6 onClick={handlePostSubmit} disabled={isLoading}>
+                      {" "}
+                      {isLoading ? "Posting..." : "Create Post"}
+                    </h6>
                   </div>
                   <div className="post-content-container">
                     <div className="image-and-caption">
