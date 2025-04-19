@@ -30,14 +30,14 @@ function DesktopMiddle() {
   const [activeSharePostIndex, setActiveSharePostIndex] = useState(null);
   const [connections, setConnections] = useState([]);
   const [shareError, setShareError] = useState(null);
-  const [showOptions, setShowOptions] = useState(false);
-  const [connectionStatuses, setConnectionStatuses] = useState({}); // Track pending requests per authorId
+  const [activeOptionsPostIndex, setActiveOptionsPostIndex] = useState(null); // Track which post's options are shown
+  const [connectionStatuses, setConnectionStatuses] = useState({});
   const optionsRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
-        setShowOptions(false);
+        setActiveOptionsPostIndex(null); // Close dropdown
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -128,7 +128,6 @@ function DesktopMiddle() {
         }
       );
       console.log("Sent Connection Requests API Response:", response.data);
-      // Assuming response.data is an array of { receiverId, status }
       const statuses = {};
       response.data.forEach((request) => {
         if (request.status === "requested") {
@@ -519,6 +518,13 @@ function DesktopMiddle() {
     }
   };
 
+  // Toggle options dropdown for a specific post
+  const handleOptionsClick = (index, isSelf) => {
+    if (isSelf) {
+      setActiveOptionsPostIndex(activeOptionsPostIndex === index ? null : index);
+    }
+  };
+
   return (
     <div className="middle-container">
       <div className="middle-middle-card">
@@ -563,9 +569,9 @@ function DesktopMiddle() {
                   <div className="middle-options-container" ref={optionsRef}>
                     <BsThreeDotsVertical
                       className="middle-options-icon"
-                      onClick={() => setShowOptions(!showOptions)}
+                      onClick={() => handleOptionsClick(index, isSelf)}
                     />
-                    {showOptions && (
+                    {activeOptionsPostIndex === index && isSelf && (
                       <div className="middle-options-dropdown">
                         <button className="middle-options-item">Interest</button>
                         <button className="middle-options-item">
@@ -670,7 +676,7 @@ function DesktopMiddle() {
                       className="middle-icon-container"
                     >
                       <span className="middle-icon-count">{post.totalShares}</span>
-                      <img src={ShareIcon} className="middle-icon" alt="Share" />
+                      <img src={ShareIcon} className="middle-icon-share" alt="Share" />
                     </div>
                   </div>
                 </div>
@@ -678,6 +684,7 @@ function DesktopMiddle() {
                 <div className="middle-post-text">
                   <span className="middle-post-author">
                     {post.authorName || "Unknown Author"}
+                    
                   </span>{" "}
                   {post.caption || post.content || "No caption available"}
                   <span className="middle-see-more">...more</span>

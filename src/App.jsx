@@ -24,14 +24,14 @@ import BottomMessagesWidget from "./Componets/BottomMessagesWidget/BottomMessage
 import UploadSection from "./Componets/UploadSection/UploadSection.jsx";
 
 import MobileAddPost from "./Componets/MobileAddPost/MobileAddPost.jsx";
-import MessageMobileInbox from "./Componets/MessageMobileInbox/MobileMessage.jsx";
+
 // import GoogleLoginComponent from './Componets/GoogleLogin/GoogleLoginComponent.jsx'
 import AfterConnecting from "./Componets/AfterConnecting/AfterConnecting.jsx";
 import MentorSection from "./Componets/MentorSection/MentorSection.jsx"
 import HumanLib from  './Componets/HumanLib/HumanLib.jsx'
 import EducationEdit from "./Componets/EducationForm/EducationEdit.jsx";
 import Blog from  './Componets/Blog/Blog.jsx'
-
+import MessageMobileInbox from "./Componets/MessageMobileInbox/MessageMobileInbox.jsx";
 function App() {
   return (
     <Router>

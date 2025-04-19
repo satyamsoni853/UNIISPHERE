@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./MobileFooter.css"; // Import CSS for styling
 
@@ -15,12 +16,59 @@ function MobileFooter() {
   const [showAddMore, setShowAddMore] = useState(true);
   const [showPostDetails, setShowPostDetails] = useState(false);
   const [caption, setCaption] = useState("");
+  const [location, setLocation] = useState(""); // Added location state
   const [hideLikes, setHideLikes] = useState(false);
   const [disableComments, setDisableComments] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [mentions, setMentions] = useState([]); // Added mentions state
+  const [username, setUsername] = useState(""); // Added username state
+  const [userProfileImage, setUserProfileImage] = useState(""); // Added profile image state
   const inputRef = useRef(null);
   const navigate = useNavigate();
+
+  // Fetch user profile data (username and profile image)
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const authToken = localStorage.getItem("authToken");
+      const userId = localStorage.getItem("userId");
+      if (!authToken || !userId) {
+        setError("Authentication required");
+        return;
+      }
+      try {
+        const response = await axios.get(
+          "https://uniisphere-1.onrender.com/posts",
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.totalPosts && response.data.totalPosts.length > 0) {
+          const userPosts = response.data.totalPosts.filter(
+            (post) => post.user.id === userId
+          );
+          if (userPosts.length > 0) {
+            setUsername(userPosts[0].user.username || "Himanshu Choudary");
+            setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+        setError("Failed to fetch user profile");
+      }
+    };
+    fetchUserProfile();
+  }, []);
+
+  // Clean up media URLs on component unmount or mediaList change
+  useEffect(() => {
+    return () => {
+      mediaList.forEach((media) => URL.revokeObjectURL(media.previewURL));
+    };
+  }, [mediaList]);
 
   const handleCloseUpload = () => {
     setShowUploadSection(false);
@@ -28,40 +76,86 @@ function MobileFooter() {
     setShowAddMore(true);
     setShowPostDetails(false);
     setCaption("");
+    setLocation("");
     setHideLikes(false);
     setDisableComments(false);
+    setMentions([]);
+    setError("");
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
-    const newMedia = files.map((file) => ({
-      mediaType: file.type.startsWith("image") ? "image" : "video",
-      previewURL: URL.createObjectURL(file),
-      file,
-    }));
-    setMediaList((prev) => [...prev, ...newMedia]);
+    files.forEach((file) => {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        const previewURL = URL.createObjectURL(file);
+        setMediaList((prev) => [
+          ...prev,
+          {
+            file,
+            previewURL,
+            mediaType: file.type.startsWith("image/") ? "image" : "video",
+          },
+        ]);
+      }
+    });
   };
 
   const handleFileInput = (e) => {
     const files = Array.from(e.target.files);
-    const newMedia = files.map((file) => ({
-      mediaType: file.type.startsWith("image") ? "image" : "video",
-      previewURL: URL.createObjectURL(file),
-      file,
-    }));
-    setMediaList((prev) => [...prev, ...newMedia]);
+    files.forEach((file) => {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        const previewURL = URL.createObjectURL(file);
+        setMediaList((prev) => [
+          ...prev,
+          {
+            file,
+            previewURL,
+            mediaType: file.type.startsWith("image/") ? "image" : "video",
+          },
+        ]);
+      }
+    });
   };
 
   const handlePostSubmit = async () => {
-    setIsLoading(true);
     try {
-      // Simulate API call for posting
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setIsLoading(true);
+      setError(null);
+      const authToken = localStorage.getItem("authToken");
+      const userId = localStorage.getItem("userId");
+      if (!authToken || !userId) {
+        throw new Error("User not authenticated. Please log in.");
+      }
+
+      const formData = new FormData();
+      mediaList.forEach((media) => {
+        formData.append("media", media.file);
+      });
+
+      formData.append("content", caption);
+      formData.append("userId", userId);
+      formData.append("visibility", hideLikes ? "private" : "public");
+      formData.append("location", location || "");
+      formData.append("tags", mentions.join(",")); // Convert mentions array to comma-separated string
+
+      const postResponse = await axios.post(
+        "https://uniisphere-1.onrender.com/posts",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      console.log("Post created:", postResponse.data);
+
+      // Reset form state
       handleCloseUpload();
       navigate("/"); // Navigate to home after posting
-    } catch (err) {
-      setError("Failed to create post. Try again.");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      setError(error.message || "Failed to create post. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -111,6 +205,7 @@ function MobileFooter() {
           </div>
           <div className="mobile-connections-item">Guidance</div>
           <div className="mobile-connections-item">NGOs</div>
+          <div className="mobile-connections-item">BLOGs</div>
         </div>
       )}
       {showUploadSection && (
@@ -178,10 +273,10 @@ function MobileFooter() {
                   <div className="create-post-navbar">
                     <div className="image-and-name">
                       <img
-                        src="/profile-image.png"
+                        src={userProfileImage || "/profile-image.png"}
                         alt="profileImage"
                       />
-                      <h3>Himanshu Choudary</h3>
+                      <h3>{username || "Himanshu Choudary"}</h3>
                     </div>
                     <h6
                       onClick={handlePostSubmit}
@@ -217,6 +312,16 @@ function MobileFooter() {
                           onChange={(e) => setCaption(e.target.value)}
                           placeholder="Write a caption..."
                           rows="4"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="input-label">Location</label>
+                        <input
+                          type="text"
+                          className="location-input"
+                          value={location}
+                          onChange={(e) => setLocation(e.target.value)}
+                          placeholder="Enter location (e.g., Dehradun)"
                         />
                       </div>
                     </div>

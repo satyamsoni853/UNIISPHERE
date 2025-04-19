@@ -18,7 +18,10 @@ function MobileNavbarr() {
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0); // New state for unread message count
   const navigate = useNavigate();
+  const userId = localStorage.getItem("userId") || "your-user-id-here"; // Replace with actual userId retrieval
+  const token = localStorage.getItem("authToken");
 
   // Fetch profiles by username
   const fetchProfiles = useCallback(async (username = "") => {
@@ -36,6 +39,40 @@ function MobileNavbarr() {
       setIsLoading(false);
     }
   }, []);
+
+  // Fetch unread messages count
+  useEffect(() => {
+    const fetchUnreadMessages = async () => {
+      try {
+        const response = await fetch(
+          `https://uniisphere-1.onrender.com/api/messages/conversations?userId=${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch conversations: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const unread = data.filter(
+          (msg) => msg.status === "unread" || !msg.read
+        );
+        setUnreadCount(unread.length);
+      } catch (err) {
+        console.error("Error fetching unread messages:", err);
+      }
+    };
+
+    if (token) {
+      fetchUnreadMessages();
+    }
+  }, [userId, token]);
 
   // Debounced search
   const debouncedSearch = useCallback(
@@ -125,16 +162,17 @@ function MobileNavbarr() {
           )}
         </div>
 
-        {/* Message Icon */}
-        <Link to="/MessageMobileInbox">
+        {/* Message Icon with Unread Badge */}
+        <Link to="/MessageMobileInbox" className="message-icon-container">
           <img
             src={Messageicon}
             alt="Message"
             className="mobile-navbarr-icon"
           />
+          {unreadCount > 0 && (
+            <span className="unread-badge">{unreadCount}</span>
+          )}
         </Link>
-
-        {/* User Icon */}
       </div>
     </div>
   );
