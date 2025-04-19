@@ -219,7 +219,7 @@ function DesktopNavbarr() {
       }
     } catch (err) {
       console.error("Stats fetch error:", err);
-      setError("Failed to fetch stats");
+      // setError("Failed to fetch stats");
     }
   };
 
