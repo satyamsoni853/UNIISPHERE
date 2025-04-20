@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode"; // Reintroduced for userId extraction
+import { jwtDecode } from "jwt-decode";
 import backIcon from "./backsvg.svg";
 import "./BlogCreate.css";
 import DesktopRightsection from "../DesktopRight/DesktopRight";
@@ -11,16 +11,18 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const BlogCreate = () => {
   const navigate = useNavigate();
-  const inputRef = useRef(null);
+  const titlePhotoRef = useRef(null);
 
   // State for form inputs
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
+  const [contentVideo, setContentVideo] = useState("");
+  const [mediaUrl, setMediaUrl] = useState("");
   const [published, setPublished] = useState(false);
-  const [file, setFile] = useState(null);
-  const [objectUrl, setObjectUrl] = useState(null);
+  const [titlePhoto, setTitlePhoto] = useState(null);
+  const [titlePhotoUrl, setTitlePhotoUrl] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
@@ -29,14 +31,15 @@ const BlogCreate = () => {
   const validateForm = () => {
     const errors = {};
     if (!title.trim()) errors.title = "Title is required";
+    else if (title.length > 255) errors.title = "Title must be 255 characters or less";
     if (!content.trim()) errors.content = "Content is required";
-    if (file) {
+    if (titlePhoto) {
       const validTypes = ["image/jpeg", "image/png"];
-      if (!validTypes.includes(file.type)) {
-        errors.file = "Title photo must be a JPEG or PNG";
+      if (!validTypes.includes(titlePhoto.type)) {
+        errors.titlePhoto = "Title photo must be a JPEG or PNG";
       }
-      if (file.size > 2 * 1024 * 1024) {
-        errors.file = "Title photo must be less than 2MB";
+      if (titlePhoto.size > 2 * 1024 * 1024) {
+        errors.titlePhoto = "Title photo must be less than 2MB";
       }
     }
     if (tags.trim()) {
@@ -45,30 +48,52 @@ const BlogCreate = () => {
         errors.tags = "Tags must be non-empty strings";
       }
     }
+    if (contentVideo.trim()) {
+      const videoArray = contentVideo.split(",").map((url) => url.trim()).filter((url) => url);
+      if (videoArray.some((url) => !isValidUrl(url))) {
+        errors.contentVideo = "Content videos must be valid URLs";
+      }
+    }
+    if (mediaUrl.trim()) {
+      const mediaArray = mediaUrl.split(",").map((url) => url.trim()).filter((url) => url);
+      if (mediaArray.some((url) => !isValidUrl(url))) {
+        errors.mediaUrl = "Media URLs must be valid URLs";
+      }
+    }
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  // Handle file selection
-  const handleFileChange = (event) => {
-    if (objectUrl) URL.revokeObjectURL(objectUrl);
+  // Helper to validate URLs
+  const isValidUrl = (string) => {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
+
+  // Handle title photo selection
+  const handleTitlePhotoChange = (event) => {
+    if (titlePhotoUrl) URL.revokeObjectURL(titlePhotoUrl);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const newObjectUrl = URL.createObjectURL(selectedFile);
-      setFile(selectedFile);
-      setObjectUrl(newObjectUrl);
+      setTitlePhoto(selectedFile);
+      setTitlePhotoUrl(newObjectUrl);
     } else {
-      setFile(null);
-      setObjectUrl(null);
+      setTitlePhoto(null);
+      setTitlePhotoUrl(null);
     }
   };
 
   // Cleanup object URL
   useEffect(() => {
     return () => {
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      if (titlePhotoUrl) URL.revokeObjectURL(titlePhotoUrl);
     };
-  }, [objectUrl]);
+  }, [titlePhotoUrl]);
 
   // Create new blog post (POST request)
   const handleSubmit = async () => {
@@ -82,7 +107,10 @@ const BlogCreate = () => {
       setError(null);
       setLoading(true);
       const authToken = localStorage.getItem("authToken");
-      if (!authToken) throw new Error("Authentication token not found");
+      if (!authToken) {
+        navigate("/login");
+        throw new Error("Authentication token not found");
+      }
 
       // Decode JWT to get userId (authorId)
       let userId;
@@ -92,6 +120,7 @@ const BlogCreate = () => {
         if (!userId) throw new Error("User ID not found in token");
         console.log("Extracted userId (authorId):", userId);
       } catch (err) {
+        navigate("/login");
         throw new Error("Failed to decode token: " + err.message);
       }
 
@@ -99,13 +128,21 @@ const BlogCreate = () => {
       formData.append("title", title);
       if (description.trim()) formData.append("description", description);
       formData.append("content", content);
-      formData.append("authorId", userId); // Use extracted userId
+      formData.append("authorId", userId);
       if (tags.trim()) {
         const tagArray = tags.split(",").map((tag) => tag.trim()).filter((tag) => tag);
         formData.append("tags", JSON.stringify(tagArray));
       }
+      if (contentVideo.trim()) {
+        const videoArray = contentVideo.split(",").map((url) => url.trim()).filter((url) => url);
+        formData.append("contentVideo", JSON.stringify(videoArray));
+      }
+      if (mediaUrl.trim()) {
+        const mediaArray = mediaUrl.split(",").map((url) => url.trim()).filter((url) => url);
+        formData.append("mediaUrl", JSON.stringify(mediaArray));
+      }
       formData.append("published", published);
-      if (file) formData.append("titlePhoto", file);
+      if (titlePhoto) formData.append("titlePhoto", titlePhoto);
 
       const config = {
         headers: {
@@ -121,8 +158,10 @@ const BlogCreate = () => {
         content,
         authorId: userId,
         tags: tags ? tags.split(",").map((tag) => tag.trim()).filter((tag) => tag) : [],
+        contentVideo: contentVideo ? contentVideo.split(",").map((url) => url.trim()).filter((url) => url) : [],
+        mediaUrl: mediaUrl ? mediaUrl.split(",").map((url) => url.trim()).filter((url) => url) : [],
         published,
-        titlePhoto: file ? file.name : null,
+        titlePhoto: titlePhoto ? titlePhoto.name : null,
       });
       const response = await axios.post(
         "https://uniisphere-1.onrender.com/api/blog/create",
@@ -139,12 +178,13 @@ const BlogCreate = () => {
         message: err.message,
         response: err.response?.data,
       });
-      // Handle validation errors from API
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to save blog"
+      );
       if (err.response?.data?.errors) {
-        setError("Validation error: Check the form fields");
         setValidationErrors(err.response.data.errors);
-      } else {
-        setError(err.response?.data?.message || "Failed to save blog");
       }
     } finally {
       setLoading(false);
@@ -157,10 +197,12 @@ const BlogCreate = () => {
     setDescription("");
     setContent("");
     setTags("");
+    setContentVideo("");
+    setMediaUrl("");
     setPublished(false);
-    setFile(null);
-    if (objectUrl) URL.revokeObjectURL(objectUrl);
-    setObjectUrl(null);
+    setTitlePhoto(null);
+    if (titlePhotoUrl) URL.revokeObjectURL(titlePhotoUrl);
+    setTitlePhotoUrl(null);
     setValidationErrors({});
   };
 
@@ -202,7 +244,7 @@ const BlogCreate = () => {
               <section className="desktop-blog-create-form">
                 <div className="desktop-blog-create-input-group">
                   <label htmlFor="title" className="desktop-blog-create-label">
-                    Title
+                    Title <span className="required">*</span>
                   </label>
                   <input
                     type="text"
@@ -237,7 +279,7 @@ const BlogCreate = () => {
                     htmlFor="content"
                     className="desktop-blog-create-label"
                   >
-                    Content
+                    Content <span className="required">*</span>
                   </label>
                   <textarea
                     id="content"
@@ -263,6 +305,44 @@ const BlogCreate = () => {
                   />
                   {validationErrors.tags && (
                     <p className="error-message">{validationErrors.tags}</p>
+                  )}
+                </div>
+                <div className="desktop-blog-create-input-group">
+                  <label
+                    htmlFor="contentVideo"
+                    className="desktop-blog-create-label"
+                  >
+                    Content Videos (Optional, comma-separated URLs)
+                  </label>
+                  <input
+                    type="text"
+                    id="contentVideo"
+                    className="desktop-blog-create-input"
+                    value={contentVideo}
+                    onChange={(e) => setContentVideo(e.target.value)}
+                    placeholder="e.g., https://example.com/video1, https://example.com/video2"
+                  />
+                  {validationErrors.contentVideo && (
+                    <p className="error-message">{validationErrors.contentVideo}</p>
+                  )}
+                </div>
+                <div className="desktop-blog-create-input-group">
+                  <label
+                    htmlFor="mediaUrl"
+                    className="desktop-blog-create-label"
+                  >
+                    Media URLs (Optional, comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    id="mediaUrl"
+                    className="desktop-blog-create-input"
+                    value={mediaUrl}
+                    onChange={(e) => setMediaUrl(e.target.value)}
+                    placeholder="e.g., https://example.com/image1, https://example.com/image2"
+                  />
+                  {validationErrors.mediaUrl && (
+                    <p className="error-message">{validationErrors.mediaUrl}</p>
                   )}
                 </div>
                 <div className="desktop-blog-create-input-group">
@@ -298,22 +378,22 @@ const BlogCreate = () => {
                     accept="image/jpeg,image/png"
                     className="desktop-blog-create-media-input"
                     style={{ display: "none" }}
-                    ref={inputRef}
-                    onChange={handleFileChange}
+                    ref={titlePhotoRef}
+                    onChange={handleTitlePhotoChange}
                   />
                   <button
-                    onClick={() => inputRef.current.click()}
+                    onClick={() => titlePhotoRef.current.click()}
                     className="desktop-blog-create-upload-button"
                   >
                     Upload Title Photo
                   </button>
                   <p className="desktop-blog-create-instructional-text">
-                    {objectUrl
+                    {titlePhotoUrl
                       ? "File selected"
                       : "Add a JPEG or PNG to make your blog more attractive."}
                   </p>
-                  {validationErrors.file && (
-                    <p className="error-message">{validationErrors.file}</p>
+                  {validationErrors.titlePhoto && (
+                    <p className="error-message">{validationErrors.titlePhoto}</p>
                   )}
                 </div>
               </section>
@@ -326,15 +406,16 @@ const BlogCreate = () => {
                     navigate(-1);
                   }}
                   className="desktop-blog-create-upload-button-2"
+                  disabled={loading}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSubmit}
                   className="desktop-blog-create-upload-button-2"
-                  disabled={loading}
+                  disabled={loading || !title.trim() || !content.trim()}
                 >
-                  Create
+                  {loading ? "Creating..." : "Create"}
                 </button>
               </footer>
               {error && <p className="error-message">{error}</p>}
