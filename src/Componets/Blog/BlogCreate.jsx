@@ -1,111 +1,180 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode"; // Reintroduced for userId extraction
+import React, { useEffect, useRef, useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { Link, useNavigate } from "react-router-dom";
+import Background from "../Background/Background";
+import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
+import DesktopRightsection from "../DesktopRight/DesktopRight";
 import backIcon from "./backsvg.svg";
 import "./BlogCreate.css";
 
-import { useRef, useState } from "react";
-import DesktopRightsection from "../DesktopRight/DesktopRight";
-import Background from "../Background/Background";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
-import profile from "./profile.jpg";
-import { IoIosArrowDown } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
-``
-const check = "https://youtu.be/oolJWcOhHCw?si=2I7a2i3PAeTiOoxT";
 const BlogCreate = () => {
-  const Navigate = useNavigate();
-   
-  const [showDefaultCreateBlog, setShowDefaultCreateBlog] =
-    useState(true);
-  const [showUpdateBlog, setShowUpdateBlog] = useState(false);
-  const inputref = useRef(null);
-  const [file, setFile] = useState(check);
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
+
+  // State for form inputs
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
+  const [tags, setTags] = useState("");
+  const [published, setPublished] = useState(false);
+  const [file, setFile] = useState(null);
   const [objectUrl, setObjectUrl] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+
+  // Validate form inputs based on schema
+  const validateForm = () => {
+    const errors = {};
+    if (!title.trim()) errors.title = "Title is required";
+    if (!content.trim()) errors.content = "Content is required";
+    if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        errors.file = "Title photo must be a JPEG or PNG";
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        errors.file = "Title photo must be less than 2MB";
+      }
+    }
+    if (tags.trim()) {
+      const tagArray = tags.split(",").map((tag) => tag.trim()).filter((tag) => tag);
+      if (tagArray.some((tag) => !tag)) {
+        errors.tags = "Tags must be non-empty strings";
+      }
+    }
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   // Handle file selection
   const handleFileChange = (event) => {
-    // Revoke the previous object URL if it exists to free memory
-    if (objectUrl) {
-      URL.revokeObjectURL(objectUrl);
-    }
-
-    // Get the selected file (single file selection)
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
     const selectedFile = event.target.files[0];
-
     if (selectedFile) {
-      // Create a temporary URL for the file
       const newObjectUrl = URL.createObjectURL(selectedFile);
       setFile(selectedFile);
       setObjectUrl(newObjectUrl);
     } else {
-      // Clear state if no file is selected
-      setFile(check);
-      setObjectUrl(check);
+      setFile(null);
+      setObjectUrl(null);
     }
   };
 
-  // Cleanup: Revoke object URL when the component unmounts
+  // Cleanup object URL
   useEffect(() => {
     return () => {
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [file, objectUrl]);
-  const [posts, setPosts] = useState([
-    {
-      author: "Vijay Prasad",
-      affiliation: "University of Delhi...",
-      timestamp: "18h",
-      title: "Again the notice",
-      content:
-        "Vijay Prashad  Been have evolved to go in the university and will probably prefer the university of.Been have evolved to go in the university and will probably prefer the university of.Been have evolved to go in the university and will probably prefer the of.Been have evolved to go in the university and will probably prefer the university of.Been have evolved to go in the university and will probably prefer the university of.",
-      likes: 4012,
-      imageUrl: file, // Replace with actual image path
-    },
-  ]);
-  const blogList = [
-    {
-      name: "Arjun Verma",
-      description:
-        "As per the rumors it is said that the elections of this year is going",
-      avatar: profile,
-    },
-    {
-      name: "Sakshi Soni",
-      description:
-        "As per the rumors it is said that the elections of this year is going",
-      avatar: profile,
-    },
-    {
-      name: "Vijay Sharma",
-      description:
-        "As per the rumors it is said that the elections of this year is going",
-      avatar: profile,
-    },
-    {
-      name: "Arjun Singh",
-      description:
-        "As per the rumors it is said that the elections of this year is going",
-      avatar: profile,
-    },
-    {
-      name: "Juhi Sharma",
-      description:
-        "As per the rumors it is said that the elections of this year is going",
-      avatar: profile,
-    },
-    {
-      name: "Vijay Sharma",
-      description:
-        "As per the rumors it is said that the elections of this year is going",
-      avatar: profile,
-    },
-    {
-      name: "Arjun Verma",
-      description:
-        "As per the rumors it is said that the elections of this year is going",
-      avatar: profile,
-    },
-  ];
+  }, [objectUrl]);
+
+  // Create new blog post (POST request)
+  const handleSubmit = async () => {
+    // Perform client-side validation
+    if (!validateForm()) {
+      console.log("Client-side validation errors:", validationErrors);
+      return;
+    }
+
+    try {
+      setError(null);
+      setLoading(true);
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) throw new Error("Authentication token not found");
+
+      // Decode JWT to get userId (authorId)
+      let userId;
+      try {
+        const decodedToken = jwtDecode(authToken);
+        userId = decodedToken.id || decodedToken.sub || decodedToken.userId;
+        if (!userId) throw new Error("User ID not found in token");
+      } catch (err) {
+        throw new Error("Failed to decode token: " + err.message);
+      }
+
+      // Create blog data directly (without FormData)
+      const blogData = {
+        title: title.trim(),
+        content: content.trim(),
+        authorId: userId,
+        published: published
+      };
+
+      if (description.trim()) {
+        blogData.description = description.trim();
+      }
+      
+      if (tags.trim()) {
+        blogData.tags = tags.split(",").map(tag => tag.trim()).filter(tag => tag);
+      }
+
+      // If there's a file, use FormData
+      if (file) {
+        const formData = new FormData();
+        formData.append('title', blogData.title);
+        formData.append('content', blogData.content);
+        formData.append('authorId', blogData.authorId);
+        formData.append('published', blogData.published);
+        if (blogData.description) formData.append('description', blogData.description);
+        if (blogData.tags) formData.append('tags', JSON.stringify(blogData.tags));
+        formData.append('titlePhoto', file);
+
+        const response = await axios.post(
+          "https://uniisphere-1.onrender.com/api/blog/create",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Blog created successfully:", response.data);
+      } else {
+        // If no file, send JSON directly
+        const response = await axios.post(
+          "https://uniisphere-1.onrender.com/api/blog/create",
+          blogData,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Blog created successfully:", response.data);
+      }
+
+      resetForm();
+      navigate(-1);
+
+    } catch (err) {
+      console.error("POST /api/blog error:", err);
+      if (err.response?.data?.errors) {
+        const errorMessages = err.response.data.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+        setError(`Validation errors: ${errorMessages.join(', ')}`);
+      } else {
+        setError(err.response?.data?.message || "Failed to save blog");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reset form
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setTags("");
+    setPublished(false);
+    setFile(null);
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    setObjectUrl(null);
+    setValidationErrors({});
+  };
 
   return (
   <>
@@ -123,254 +192,168 @@ const BlogCreate = () => {
             <div className="desktop-blog-dropdown">
               Recommended <IoIosArrowDown />
             </div>
-            <Link to={"/createblog"}>
-              <button
-                onClick={() => {
-                  setShowDesktopDefaultSection(false);
-                }}
-                className="desktop-blog-create-btn"
-              >
-                + CREATE
-              </button>
+            <Link to="/createblog">
+              <button className="desktop-blog-create-btn">+ CREATE</button>
             </Link>
           </div>
-          <div className="desktop-blog-sidebar-blogs">
-            <div className="desktop-blog-sidebar-blogs-title">Top Blogs</div>
-            <div className="desktop-blog-sidebar-blogs-list">
-              {blogList.map((blog, index) => (
-                <div key={index} className="desktop-blog-sidebar-blogs-item">
-                  <img
-                    src={blog.avatar}
-                    alt="Avatar"
-                    className="desktop-blog-sidebar-blogs-avatar"
+        </div>
+        <div className="desktop-blog-create-content-parent">
+          <div className="desktop-blog-create-content">
+            <div className="desktop-blog-create-section-wrapper">
+              <header className="desktop-blog-create-header">
+                <img
+                  onClick={() => navigate(-1)}
+                  className="desktop-blog-create-backIcon"
+                  src={backIcon}
+                  alt=""
+                />
+                <h1 className="desktop-blog-create-header-heading">
+                  Create Blog
+                </h1>
+              </header>
+            </div>
+            <div className="desktop-blog-create-section-wrapper">
+              <section className="desktop-blog-create-form">
+                <div className="desktop-blog-create-input-group">
+                  <label htmlFor="title" className="desktop-blog-create-label">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    className="desktop-blog-create-input"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
-                  <div className="desktop-blog-sidebar-blogs-text">
-                    <div className="desktop-blog-sidebar-blogs-name">
-                      {blog.name}
-                    </div>
-                    <div className="desktop-blog-sidebar-blogs-description">
-                      {blog.description}
-                      <span className="desktop-blog-more-link">...more</span>
-                    </div>
-                  </div>
+                  {validationErrors.title && (
+                    <p className="error-message">{validationErrors.title}</p>
+                  )}
                 </div>
-              ))}
+                <div className="desktop-blog-create-input-group">
+                  <label
+                    htmlFor="description"
+                    className="desktop-blog-create-label"
+                  >
+                    Description (Optional)
+                  </label>
+                  <textarea
+                    id="description"
+                    className="desktop-blog-create-textarea"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  ></textarea>
+                  {validationErrors.description && (
+                    <p className="error-message">{validationErrors.description}</p>
+                  )}
+                </div>
+                <div className="desktop-blog-create-input-group">
+                  <label
+                    htmlFor="content"
+                    className="desktop-blog-create-label"
+                  >
+                    Content
+                  </label>
+                  <textarea
+                    id="content"
+                    className="desktop-blog-create-textarea"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                  ></textarea>
+                  {validationErrors.content && (
+                    <p className="error-message">{validationErrors.content}</p>
+                  )}
+                </div>
+                <div className="desktop-blog-create-input-group">
+                  <label htmlFor="tags" className="desktop-blog-create-label">
+                    Tags (Optional, comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    id="tags"
+                    className="desktop-blog-create-input"
+                    value={tags}
+                    onChange={(e) => setTags(e.target.value)}
+                    placeholder="e.g., tech, news, tutorial"
+                  />
+                  {validationErrors.tags && (
+                    <p className="error-message">{validationErrors.tags}</p>
+                  )}
+                </div>
+                <div className="desktop-blog-create-input-group">
+                  <label
+                    htmlFor="published"
+                    className="desktop-blog-create-label"
+                  >
+                    Published
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="published"
+                    checked={published}
+                    onChange={(e) => setPublished(e.target.checked)}
+                  />
+                  {validationErrors.published && (
+                    <p className="error-message">{validationErrors.published}</p>
+                  )}
+                </div>
+              </section>
+            </div>
+            <div className="desktop-blog-create-section-wrapper">
+              <section className="desktop-blog-create-media-upload">
+                <div className="desktop-blog-create-media-container">
+                  <label
+                    htmlFor="titlePhoto"
+                    className="desktop-blog-create-label"
+                  >
+                    Title Photo (Optional)
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png"
+                    className="desktop-blog-create-media-input"
+                    style={{ display: "none" }}
+                    ref={inputRef}
+                    onChange={handleFileChange}
+                  />
+                  <button
+                    onClick={() => inputRef.current.click()}
+                    className="desktop-blog-create-upload-button"
+                  >
+                    Upload Title Photo
+                  </button>
+                  <p className="desktop-blog-create-instructional-text">
+                    {objectUrl
+                      ? "File selected"
+                      : "Add a JPEG or PNG to make your blog more attractive."}
+                  </p>
+                  {validationErrors.file && (
+                    <p className="error-message">{validationErrors.file}</p>
+                  )}
+                </div>
+              </section>
+            </div>
+            <div className="desktop-blog-create-section-wrapper">
+              <footer className="desktop-blog-create-actions">
+                <button
+                  onClick={() => {
+                    resetForm();
+                    navigate(-1);
+                  }}
+                  className="desktop-blog-create-upload-button-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  className="desktop-blog-create-upload-button-2"
+                  disabled={loading}
+                >
+                  Create
+                </button>
+              </footer>
+              {error && <p className="error-message">{error}</p>}
             </div>
           </div>
-        </div>
-       <div className="desktop-blog-create-content-parent">
-         {showDefaultCreateBlog && (
-           <div className="desktop-blog-create-content">
-           <div className="desktop-blog-create-section-wrapper">
-             <header className="desktop-blog-create-header">
-               <img
-                 onClick={() => Navigate(-1)} // Navigate back to the previous page
-                 className="desktop-blog-create-backIcon"
-                 src={backIcon}
-                 alt=""
-               />
-               <h1 className="desktop-blog-create-header-heading">
-                 Create Blog
-               </h1>
-             </header>
-           </div>
-           <div className="desktop-blog-create-section-wrapper">
-             <section className="desktop-blog-create-form">
-               <div className="desktop-blog-create-input-group">
-                 <label
-                   htmlFor="headline"
-                   className="desktop-blog-create-label"
-                 >
-                   Headline
-                 </label>
-                 <input
-                   type="text"
-                   id="headline"
-                   className="desktop-blog-create-input"
-                 />
-               </div>
-               <div className="desktop-blog-create-input-group">
-                 <label
-                   htmlFor="written-by"
-                   className="desktop-blog-create-label"
-                 >
-                   Written by
-                 </label>
-                 <input
-                   type="text"
-                   id="written-by"
-                   className="desktop-blog-create-input"
-                 />
-               </div>
-               <div className="desktop-blog-create-input-group">
-                 <label htmlFor="about" className="desktop-blog-create-label">
-                   About
-                 </label>
-                 <textarea
-                   id="about"
-                   className="desktop-blog-create-textarea"
-                 ></textarea>
-               </div>
-             </section>
-           </div>
-           <div className="desktop-blog-create-section-wrapper">
-             <section className="desktop-blog-create-media-upload">
-               <div className="desktop-blog-create-media-container">
-                 <input
-                   type="file"
-                   accept="image/, video/"
-                   className="desktop-blog-create-media-input"
-                   style={{ display: "none" }}
-                   ref={inputref}
-                   onChange={handleFileChange}
-                 />
-                 <button
-                   onClick={() => inputref.current.click()}
-                   className="desktop-blog-create-upload-button"
-                 >
-                   Upload media
-                 </button>
-                 <p className="desktop-blog-create-instructional-text">
-                   {objectUrl
-                     ? "File selected"
-                     : "  Add media to make your blog more attractive & relative."}
-                 </p>
-               </div>
-             </section>
-           </div>
-           <div className="desktop-blog-create-section-wrapper">
-             <footer className="desktop-blog-create-actions">
-             <div className="desktop-blog-both-buttons">
-             <button
-               onClick={() => { 
-                 Navigate(-1)  // Navigate back to the previous page 
-               }
-               }
-               className="desktop-blog-create-cancel-button">
-                 Cancel
-               </button>
-               <button className="desktop-blog-create-upload-button-2">
-                 Create
-               </button>
-             </div>
-             <div className="desktop-blog-both-buttons">
-               <button className="desktop-blog-create-delete-button ">
-                 Delete
-               </button>
-               <button 
-               onClick={()=>{
-                setShowUpdateBlog(true)
-                setShowDefaultCreateBlog(false)
-               }}
-               className="desktop-blog-create-update-button  ">
-                 Update
-               </button>
-             </div>
-             </footer>
-           </div>
-         </div>
-         )}
-
-         {showUpdateBlog && (
-           <div className="desktop-blog-create-content">
-           <div className="desktop-blog-create-section-wrapper">
-             <header className="desktop-blog-create-header">
-               <img
-                 onClick={() => Navigate(-1)} // Navigate back to the previous page
-                 className="desktop-blog-create-backIcon"
-                 src={backIcon}
-                 alt=""
-               />
-               <h1 className="desktop-blog-create-header-heading">
-                Update Blog
-               </h1>
-             </header>
-           </div>
-           <div className="desktop-blog-create-section-wrapper">
-             <section className="desktop-blog-create-form">
-               <div className="desktop-blog-create-input-group">
-                 <label
-                   htmlFor="headline"
-                   className="desktop-blog-create-label"
-                 >
-                   Headline
-                 </label>
-                 <input
-                   type="text"
-                   id="headline"
-                   className="desktop-blog-create-input"
-                 />
-               </div>
-               <div className="desktop-blog-create-input-group">
-                 <label
-                   htmlFor="written-by"
-                   className="desktop-blog-create-label"
-                 >
-                   Written by
-                 </label>
-                 <input
-                   type="text"
-                   id="written-by"
-                   className="desktop-blog-create-input"
-                 />
-               </div>
-               <div className="desktop-blog-create-input-group">
-                 <label htmlFor="about" className="desktop-blog-create-label">
-                   About
-                 </label>
-                 <textarea
-                   id="about"
-                   className="desktop-blog-create-textarea"
-                 ></textarea>
-               </div>
-             </section>
-           </div>
-           <div className="desktop-blog-create-section-wrapper">
-             <section className="desktop-blog-create-media-upload">
-               <div className="desktop-blog-create-media-container">
-                 <input
-                   type="file"
-                   accept="image/, video/"
-                   className="desktop-blog-create-media-input"
-                   style={{ display: "none" }}
-                   ref={inputref}
-                   onChange={handleFileChange}
-                 />
-                 <button
-                   onClick={() => inputref.current.click()}
-                   className="desktop-blog-create-upload-button"
-                 >
-                   Upload media
-                 </button>
-                 <p className="desktop-blog-create-instructional-text">
-                   {objectUrl
-                     ? "File selected"
-                     : "  Add media to make your blog more attractive & relative."}
-                 </p>
-               </div>
-             </section>
-           </div>
-           <div className="desktop-blog-create-section-wrapper">
-             <footer className="desktop-blog-create-actions">
-             <div className="desktop-blog-both-buttons">
-             <button
-               onClick={() => { 
-              setShowUpdateBlog(false)
-              setShowDefaultCreateBlog(true) 
-               }
-               }
-               className="desktop-blog-create-cancel-button">
-                 Cancel
-               </button>
-               <button className="desktop-blog-create-update-button  ">
-                 Update
-               </button>
-             </div>
-            
-             </footer>
-           </div>
-         </div>
-         )}
           <div className="desktop-right-section-fixed">
             <DesktopRightsection />
           </div>

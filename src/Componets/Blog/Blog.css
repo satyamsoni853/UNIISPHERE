@@ -708,3 +708,15 @@
     display: none;
   }
 }
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.blog-tags, .desktop-blog-tags {
+  font-size: 12px;
+  color: #888;
+  margin: 10px 0;
+}
