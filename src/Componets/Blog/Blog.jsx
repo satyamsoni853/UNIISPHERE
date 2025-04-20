@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./Blog.css";
+
 import CollegeEnter from "./collegeEnter.svg";
 import profile from "./profile.jpg";
 import backIcon from "./backsvg.svg";
@@ -16,12 +17,13 @@ import cc from "./cc.svg";
 import expand from "./expand.svg";
 import { IoIosArrowDown } from "react-icons/io";
 import MobileNavBarr from "../MobileNavbarr/MobileNavbarr";
-import MobileFooter from "../MobileFooter/MobileFooter";
 import Background from "../Background/Background";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
 import DesktopRightsection from "../DesktopRight/DesktopRight";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 
 const Blog = () => {
+  const navigate = useNavigate();
   const { userId } = useParams(); // Extract userId from URL
   const inputRef = useRef(null);
   const videoRef = useRef(null);
@@ -622,7 +624,7 @@ const Blog = () => {
               </div>
               <button
                 onClick={() => {
-                  setShowDesktopCreateBlog(true);
+                 navigate("/Blogcreate"); // Navigate to the blog creation page
                   setShowDesktopDefaultSection(false);
                 }}
                 className="desktop-blog-create-btn"
@@ -839,127 +841,7 @@ const Blog = () => {
             </div>
           )}
 
-          {showDesktopCreateBlog && (
-            <div className="desktop-blog-create-content-parent">
-              <div className="desktop-blog-create-content">
-                <div className="desktop-blog-create-section-wrapper">
-                  <header className="desktop-blog-create-header">
-                    <img
-                      className="desktop-blog-create-backIcon"
-                      src={backIcon}
-                      alt=""
-                      onClick={() => {
-                        setShowDesktopCreateBlog(false);
-                        setShowDesktopDefaultSection(true);
-                        resetForm();
-                      }}
-                    />
-                    <h1 className="desktop-blog-create-header-heading">
-                      {editingBlogId ? "Edit Blog" : "Create Blog"}
-                    </h1>
-                  </header>
-                </div>
-                <div className="desktop-blog-create-section-wrapper">
-                  <section className="desktop-blog-create-form">
-                    <div className="desktop-blog-create-input-group">
-                      <label
-                        htmlFor="headline"
-                        className="desktop-blog-create-label"
-                      >
-                        Headline
-                      </label>
-                      <input
-                        type="text"
-                        id="headline"
-                        className="desktop-blog-create-input"
-                        value={headline}
-                        onChange={(e) => setHeadline(e.target.value)}
-                      />
-                    </div>
-                    <div className="desktop-blog-create-input-group">
-                      <label
-                        htmlFor="written-by"
-                        className="desktop-blog-create-label"
-                      >
-                        Written by
-                      </label>
-                      <input
-                        type="text"
-                        id="written-by"
-                        className="desktop-blog-create-input"
-                        value={writtenBy}
-                        onChange={(e) => setWrittenBy(e.target.value)}
-                      />
-                    </div>
-                    <div className="desktop-blog-create-input-group">
-                      <label
-                        htmlFor="about"
-                        className="desktop-blog-create-label"
-                      >
-                        About
-                      </label>
-                      <textarea
-                        id="about"
-                        className="desktop-blog-create-textarea"
-                        value={about}
-                        onChange={(e) => setAbout(e.target.value)}
-                      ></textarea>
-                    </div>
-                  </section>
-                </div>
-                <div className="desktop-blog-create-section-wrapper">
-                  <section className="desktop-blog-create-media-upload">
-                    <div className="desktop-blog-create-media-container">
-                      <input
-                        type="file"
-                        accept="image/*,video/*"
-                        className="desktop-blog-create-media-input"
-                        style={{ display: "none" }}
-                        ref={inputRef}
-                        onChange={handleFileChange}
-                      />
-                      <button
-                        onClick={() => inputRef.current.click()}
-                        className="desktop-blog-create-upload-button"
-                      >
-                        Upload media
-                      </button>
-                      <p className="desktop-blog-create-instructional-text">
-                        {objectUrl
-                          ? "File selected"
-                          : "Add media to make your blog more attractive & relative."}
-                      </p>
-                    </div>
-                  </section>
-                </div>
-                <div className="desktop-blog-create-section-wrapper">
-                  <footer className="desktop-blog-create-actions">
-                    <button
-                      onClick={() => {
-                        setShowDesktopCreateBlog(false);
-                        setShowDesktopDefaultSection(true);
-                        resetForm();
-                      }}
-                      className="desktop-blog-create-upload-button-2"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSubmit}
-                      className="desktop-blog-create-upload-button-2"
-                      disabled={loading}
-                    >
-                      {editingBlogId ? "Update" : "Upload"}
-                    </button>
-                  </footer>
-                  {error && <p className="error-message">{error}</p>}
-                </div>
-              </div>
-              <div className="desktop-right-section-fixed">
-                <DesktopRightsection />
-              </div>
-            </div>
-          )}
+        
         </div>
       </div>
     </>
