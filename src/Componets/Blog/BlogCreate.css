@@ -95,20 +95,53 @@
   
   .desktop-blog-create-actions {
     display: flex;
+  flex-direction: column;
+  gap: 10px;
+  }
+  
+  
+  .desktop-blog-create-update-button {
+    background-color: #f6ff00ed;
+    border-radius: 20px;
+    width: 120px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  
+  .desktop-blog-create-cancel-button {
+    background-color: #e6e6e5ed;
+    border-radius: 20px;
+    width: 120px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  .desktop-blog-create-delete-button {
+    background-color: #ee5757;
+    border-radius: 20px;
+    width: 120px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  
+  .desktop-blog-both-buttons{
+    width: 100%;
+
+    display: flex;
     justify-content: space-between;
-  }
   
-  .desktop-blog-create-actions button:nth-child(1) {
-    background-color: #f2eded;
   }
-  
-  .desktop-blog-create-actions button:nth-child(2) {
-    background-color: #003cffcc;
-    color: #fff;
-  }
-  
   .desktop-blog-create-upload-button-2 {
     border: none;
+    background-color: #003cffcc; /* Blue */
     border-radius: 20px;
     width: 120px;
     padding: 5px 10px;

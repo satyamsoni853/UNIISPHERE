@@ -9,10 +9,14 @@ import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
 import profile from "./profile.jpg";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-
+``
 const check = "https://youtu.be/oolJWcOhHCw?si=2I7a2i3PAeTiOoxT";
 const BlogCreate = () => {
   const Navigate = useNavigate();
+   
+  const [showDefaultCreateBlog, setShowDefaultCreateBlog] =
+    useState(true);
+  const [showUpdateBlog, setShowUpdateBlog] = useState(false);
   const inputref = useRef(null);
   const [file, setFile] = useState(check);
   const [objectUrl, setObjectUrl] = useState(null);
@@ -104,7 +108,9 @@ const BlogCreate = () => {
   ];
 
   return (
-    <div className="desktop-blog-main-wrapper">
+  <>
+  <div className="desktop-blog-main-parent-container">
+  <div className="desktop-blog-main-wrapper">
       <div className="desktop-blog-nav-fixed">
         <DesktopNavbarr />
       </div>
@@ -152,107 +158,229 @@ const BlogCreate = () => {
             </div>
           </div>
         </div>
-        <div className="desktop-blog-create-content-parent">
-          <div className="desktop-blog-create-content">
-            <div className="desktop-blog-create-section-wrapper">
-              <header className="desktop-blog-create-header">
-                <img
-                  onClick={() => Navigate(-1)} // Navigate back to the previous page
-                  className="desktop-blog-create-backIcon"
-                  src={backIcon}
-                  alt=""
-                />
-                <h1 className="desktop-blog-create-header-heading">
-                  Create Blog
-                </h1>
-              </header>
-            </div>
-            <div className="desktop-blog-create-section-wrapper">
-              <section className="desktop-blog-create-form">
-                <div className="desktop-blog-create-input-group">
-                  <label
-                    htmlFor="headline"
-                    className="desktop-blog-create-label"
-                  >
-                    Headline
-                  </label>
-                  <input
-                    type="text"
-                    id="headline"
-                    className="desktop-blog-create-input"
-                  />
-                </div>
-                <div className="desktop-blog-create-input-group">
-                  <label
-                    htmlFor="written-by"
-                    className="desktop-blog-create-label"
-                  >
-                    Written by
-                  </label>
-                  <input
-                    type="text"
-                    id="written-by"
-                    className="desktop-blog-create-input"
-                  />
-                </div>
-                <div className="desktop-blog-create-input-group">
-                  <label htmlFor="about" className="desktop-blog-create-label">
-                    About
-                  </label>
-                  <textarea
-                    id="about"
-                    className="desktop-blog-create-textarea"
-                  ></textarea>
-                </div>
-              </section>
-            </div>
-            <div className="desktop-blog-create-section-wrapper">
-              <section className="desktop-blog-create-media-upload">
-                <div className="desktop-blog-create-media-container">
-                  <input
-                    type="file"
-                    accept="image/, video/"
-                    className="desktop-blog-create-media-input"
-                    style={{ display: "none" }}
-                    ref={inputref}
-                    onChange={handleFileChange}
-                  />
-                  <button
-                    onClick={() => inputref.current.click()}
-                    className="desktop-blog-create-upload-button"
-                  >
-                    Upload media
-                  </button>
-                  <p className="desktop-blog-create-instructional-text">
-                    {objectUrl
-                      ? "File selected"
-                      : "  Add media to make your blog more attractive & relative."}
-                  </p>
-                </div>
-              </section>
-            </div>
-            <div className="desktop-blog-create-section-wrapper">
-              <footer className="desktop-blog-create-actions">
-                <button
-                onClick={() => { 
-                  Navigate(-1)  // Navigate back to the previous page 
-                }
-                }
-                className="desktop-blog-create-upload-button-2">
-                  Cancel
-                </button>
-                <button className="desktop-blog-create-upload-button-2">
-                  Create
-                </button>
-              </footer>
-            </div>
-          </div>
+       <div className="desktop-blog-create-content-parent">
+         {showDefaultCreateBlog && (
+           <div className="desktop-blog-create-content">
+           <div className="desktop-blog-create-section-wrapper">
+             <header className="desktop-blog-create-header">
+               <img
+                 onClick={() => Navigate(-1)} // Navigate back to the previous page
+                 className="desktop-blog-create-backIcon"
+                 src={backIcon}
+                 alt=""
+               />
+               <h1 className="desktop-blog-create-header-heading">
+                 Create Blog
+               </h1>
+             </header>
+           </div>
+           <div className="desktop-blog-create-section-wrapper">
+             <section className="desktop-blog-create-form">
+               <div className="desktop-blog-create-input-group">
+                 <label
+                   htmlFor="headline"
+                   className="desktop-blog-create-label"
+                 >
+                   Headline
+                 </label>
+                 <input
+                   type="text"
+                   id="headline"
+                   className="desktop-blog-create-input"
+                 />
+               </div>
+               <div className="desktop-blog-create-input-group">
+                 <label
+                   htmlFor="written-by"
+                   className="desktop-blog-create-label"
+                 >
+                   Written by
+                 </label>
+                 <input
+                   type="text"
+                   id="written-by"
+                   className="desktop-blog-create-input"
+                 />
+               </div>
+               <div className="desktop-blog-create-input-group">
+                 <label htmlFor="about" className="desktop-blog-create-label">
+                   About
+                 </label>
+                 <textarea
+                   id="about"
+                   className="desktop-blog-create-textarea"
+                 ></textarea>
+               </div>
+             </section>
+           </div>
+           <div className="desktop-blog-create-section-wrapper">
+             <section className="desktop-blog-create-media-upload">
+               <div className="desktop-blog-create-media-container">
+                 <input
+                   type="file"
+                   accept="image/, video/"
+                   className="desktop-blog-create-media-input"
+                   style={{ display: "none" }}
+                   ref={inputref}
+                   onChange={handleFileChange}
+                 />
+                 <button
+                   onClick={() => inputref.current.click()}
+                   className="desktop-blog-create-upload-button"
+                 >
+                   Upload media
+                 </button>
+                 <p className="desktop-blog-create-instructional-text">
+                   {objectUrl
+                     ? "File selected"
+                     : "  Add media to make your blog more attractive & relative."}
+                 </p>
+               </div>
+             </section>
+           </div>
+           <div className="desktop-blog-create-section-wrapper">
+             <footer className="desktop-blog-create-actions">
+             <div className="desktop-blog-both-buttons">
+             <button
+               onClick={() => { 
+                 Navigate(-1)  // Navigate back to the previous page 
+               }
+               }
+               className="desktop-blog-create-cancel-button">
+                 Cancel
+               </button>
+               <button className="desktop-blog-create-upload-button-2">
+                 Create
+               </button>
+             </div>
+             <div className="desktop-blog-both-buttons">
+               <button className="desktop-blog-create-delete-button ">
+                 Delete
+               </button>
+               <button 
+               onClick={()=>{
+                setShowUpdateBlog(true)
+                setShowDefaultCreateBlog(false)
+               }}
+               className="desktop-blog-create-update-button  ">
+                 Update
+               </button>
+             </div>
+             </footer>
+           </div>
+         </div>
+         )}
+
+         {showUpdateBlog && (
+           <div className="desktop-blog-create-content">
+           <div className="desktop-blog-create-section-wrapper">
+             <header className="desktop-blog-create-header">
+               <img
+                 onClick={() => Navigate(-1)} // Navigate back to the previous page
+                 className="desktop-blog-create-backIcon"
+                 src={backIcon}
+                 alt=""
+               />
+               <h1 className="desktop-blog-create-header-heading">
+                Update Blog
+               </h1>
+             </header>
+           </div>
+           <div className="desktop-blog-create-section-wrapper">
+             <section className="desktop-blog-create-form">
+               <div className="desktop-blog-create-input-group">
+                 <label
+                   htmlFor="headline"
+                   className="desktop-blog-create-label"
+                 >
+                   Headline
+                 </label>
+                 <input
+                   type="text"
+                   id="headline"
+                   className="desktop-blog-create-input"
+                 />
+               </div>
+               <div className="desktop-blog-create-input-group">
+                 <label
+                   htmlFor="written-by"
+                   className="desktop-blog-create-label"
+                 >
+                   Written by
+                 </label>
+                 <input
+                   type="text"
+                   id="written-by"
+                   className="desktop-blog-create-input"
+                 />
+               </div>
+               <div className="desktop-blog-create-input-group">
+                 <label htmlFor="about" className="desktop-blog-create-label">
+                   About
+                 </label>
+                 <textarea
+                   id="about"
+                   className="desktop-blog-create-textarea"
+                 ></textarea>
+               </div>
+             </section>
+           </div>
+           <div className="desktop-blog-create-section-wrapper">
+             <section className="desktop-blog-create-media-upload">
+               <div className="desktop-blog-create-media-container">
+                 <input
+                   type="file"
+                   accept="image/, video/"
+                   className="desktop-blog-create-media-input"
+                   style={{ display: "none" }}
+                   ref={inputref}
+                   onChange={handleFileChange}
+                 />
+                 <button
+                   onClick={() => inputref.current.click()}
+                   className="desktop-blog-create-upload-button"
+                 >
+                   Upload media
+                 </button>
+                 <p className="desktop-blog-create-instructional-text">
+                   {objectUrl
+                     ? "File selected"
+                     : "  Add media to make your blog more attractive & relative."}
+                 </p>
+               </div>
+             </section>
+           </div>
+           <div className="desktop-blog-create-section-wrapper">
+             <footer className="desktop-blog-create-actions">
+             <div className="desktop-blog-both-buttons">
+             <button
+               onClick={() => { 
+              setShowUpdateBlog(false)
+              setShowDefaultCreateBlog(true) 
+               }
+               }
+               className="desktop-blog-create-cancel-button">
+                 Cancel
+               </button>
+               <button className="desktop-blog-create-update-button  ">
+                 Update
+               </button>
+             </div>
+            
+             </footer>
+           </div>
+         </div>
+         )}
           <div className="desktop-right-section-fixed">
             <DesktopRightsection />
           </div>
         </div>
+
+      
       </div>
     </div>
+  </div>
+  </>
   );
 };
 
