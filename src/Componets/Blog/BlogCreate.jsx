@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode"; // Reintroduced for userId extraction
-import backIcon from "./backsvg.svg";
-import "./BlogCreate.css";
-import DesktopRightsection from "../DesktopRight/DesktopRight";
+import React, { useEffect, useRef, useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { Link, useNavigate } from "react-router-dom";
 import Background from "../Background/Background";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
-import { IoIosArrowDown } from "react-icons/io";
+import DesktopRightsection from "../DesktopRight/DesktopRight";
+import backIcon from "./backsvg.svg";
+import "./BlogCreate.css";
 
 const BlogCreate = () => {
   const navigate = useNavigate();
@@ -90,59 +90,71 @@ const BlogCreate = () => {
         const decodedToken = jwtDecode(authToken);
         userId = decodedToken.id || decodedToken.sub || decodedToken.userId;
         if (!userId) throw new Error("User ID not found in token");
-        console.log("Extracted userId (authorId):", userId);
       } catch (err) {
         throw new Error("Failed to decode token: " + err.message);
       }
 
-      const formData = new FormData();
-      formData.append("title", title);
-      if (description.trim()) formData.append("description", description);
-      formData.append("content", content);
-      formData.append("authorId", userId); // Use extracted userId
-      if (tags.trim()) {
-        const tagArray = tags.split(",").map((tag) => tag.trim()).filter((tag) => tag);
-        formData.append("tags", JSON.stringify(tagArray));
-      }
-      formData.append("published", published);
-      if (file) formData.append("titlePhoto", file);
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data",
-        },
+      // Create blog data directly (without FormData)
+      const blogData = {
+        title: title.trim(),
+        content: content.trim(),
+        authorId: userId,
+        published: published
       };
 
-      // Create new blog (POST)
-      console.log("POST /api/blog/create request:", {
-        title,
-        description,
-        content,
-        authorId: userId,
-        tags: tags ? tags.split(",").map((tag) => tag.trim()).filter((tag) => tag) : [],
-        published,
-        titlePhoto: file ? file.name : null,
-      });
-      const response = await axios.post(
-        "https://uniisphere-1.onrender.com/api/blog/create",
-        formData,
-        config
-      );
-      console.log("POST /api/blog/create response:", response.data);
+      if (description.trim()) {
+        blogData.description = description.trim();
+      }
+      
+      if (tags.trim()) {
+        blogData.tags = tags.split(",").map(tag => tag.trim()).filter(tag => tag);
+      }
 
-      // Reset form and navigate back
+      // If there's a file, use FormData
+      if (file) {
+        const formData = new FormData();
+        formData.append('title', blogData.title);
+        formData.append('content', blogData.content);
+        formData.append('authorId', blogData.authorId);
+        formData.append('published', blogData.published);
+        if (blogData.description) formData.append('description', blogData.description);
+        if (blogData.tags) formData.append('tags', JSON.stringify(blogData.tags));
+        formData.append('titlePhoto', file);
+
+        const response = await axios.post(
+          "https://uniisphere-1.onrender.com/api/blog/create",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Blog created successfully:", response.data);
+      } else {
+        // If no file, send JSON directly
+        const response = await axios.post(
+          "https://uniisphere-1.onrender.com/api/blog/create",
+          blogData,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Blog created successfully:", response.data);
+      }
+
       resetForm();
       navigate(-1);
+
     } catch (err) {
-      console.error("POST /api/blog error:", {
-        message: err.message,
-        response: err.response?.data,
-      });
-      // Handle validation errors from API
+      console.error("POST /api/blog error:", err);
       if (err.response?.data?.errors) {
-        setError("Validation error: Check the form fields");
-        setValidationErrors(err.response.data.errors);
+        const errorMessages = err.response.data.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+        setError(`Validation errors: ${errorMessages.join(', ')}`);
       } else {
         setError(err.response?.data?.message || "Failed to save blog");
       }
