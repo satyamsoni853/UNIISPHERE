@@ -40,24 +40,6 @@ const DUMMY_DATA = [
   },
 ];
 
-// Static user data for the network page
-const staticUsers = [
-  {
-    name: "Karan",
-    education: "Delhi University",
-    description: "The actual idea of Unlisphere is of the founder Himanshu ...",
-    connections: 17,
-    collaborations: 2,
-  },
-  {
-    name: "Vikash Dubey",
-    education: "UPES",
-    description: "The actual idea of Unlisphere is of the founder Himanshu ...",
-    connections: 88,
-    collaborations: 8,
-  },
-];
-
 // Limited dummy data for request section (exactly 2 requests)
 const REQUEST_DUMMY_DATA = [
   {
@@ -90,13 +72,15 @@ function NetworkPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [showRequestMode, setShowRequestMode] = useState(false);
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [connections, setConnections] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [connectionsLoading, setConnectionsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [useDummyData, setUseDummyData] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [showRightSection, setShowRightSection] = useState(false);
 
-  const token = localStorage.getItem("AuthToken");
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -107,8 +91,91 @@ function NetworkPage() {
   useEffect(() => {
     if (showRequestMode) {
       fetchPendingRequests();
+    } else {
+      fetchConnections();
     }
   }, [showRequestMode]);
+
+  const fetchConnections = async () => {
+    setConnectionsLoading(true);
+    setError(null);
+
+    if (useDummyData) {
+      console.log("Using DUMMY_DATA for connections");
+      const acceptedConnections = DUMMY_DATA.filter(
+        (conn) => conn.status === "accepted"
+      ).map((conn) => ({
+        id: conn.user1.id,
+        username: conn.user1.username,
+        profilePictureUrl: conn.user1.profilePictureUrl || profilePhoto,
+        headline: conn.user1.headline || "No headline",
+        connections: Math.floor(Math.random() * 100),
+        collaborations: Math.floor(Math.random() * 10),
+      }));
+      setConnections(acceptedConnections);
+      setConnectionsLoading(false);
+      return;
+    }
+
+    const LoginuserId = localStorage.getItem("LoginuserId");
+    console.log("Fetching connections for userId:", LoginuserId);
+
+    try {
+      if (!token) {
+        throw new Error("Missing authentication token");
+      }
+      if (!LoginuserId) {
+        throw new Error("Missing LoginuserId in localStorage");
+      }
+
+      const response = await fetch(
+        `https://uniisphere-1.onrender.com/api/connections?userId=${LoginuserId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+      console.log("Connections API response:", data);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const mappedConnections = Array.isArray(data)
+        ? data.map((conn, index) => ({
+            id: conn.id || `conn-${index}`,
+            username: conn.username || "Unknown User",
+            profilePictureUrl: conn.profilePictureUrl || profilePhoto,
+            headline: conn.headline || "No headline",
+            connections: conn.connections || Math.floor(Math.random() * 100),
+            collaborations: conn.collaborations || Math.floor(Math.random() * 10),
+          }))
+        : [];
+
+      setConnections(mappedConnections);
+    } catch (err) {
+      console.error("Error fetching connections:", err);
+      setError(err.message);
+      const fallbackConnections = DUMMY_DATA.filter(
+        (conn) => conn.status === "accepted"
+      ).map((conn) => ({
+        id: conn.user1.id,
+        username: conn.user1.username,
+        profilePictureUrl: conn.user1.profilePictureUrl || profilePhoto,
+        headline: conn.user1.headline || "No headline",
+        connections: Math.floor(Math.random() * 100),
+        collaborations: Math.floor(Math.random() * 10),
+      }));
+      setConnections(fallbackConnections);
+    } finally {
+      setConnectionsLoading(false);
+    }
+  };
 
   const fetchPendingRequests = async () => {
     setLoading(true);
@@ -152,7 +219,11 @@ function NetworkPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const requests = Array.isArray(data.pendingRequests) ? data.pendingRequests : Array.isArray(data) ? data : [];
+      const requests = Array.isArray(data.pendingRequests)
+        ? data.pendingRequests
+        : Array.isArray(data)
+        ? data
+        : [];
 
       if (requests.length > 0 && requests[0].userId2) {
         setCurrentUserId(requests[0].userId2);
@@ -184,6 +255,22 @@ function NetworkPage() {
       setPendingRequests((prev) =>
         prev.filter((req) => req.id !== connectionId)
       );
+      const acceptedRequest = pendingRequests.find(
+        (req) => req.id === connectionId
+      );
+      if (acceptedRequest) {
+        setConnections((prev) => [
+          ...prev,
+          {
+            id: acceptedRequest.user1.id,
+            username: acceptedRequest.user1.username,
+            profilePictureUrl: acceptedRequest.user1.profilePictureUrl || profilePhoto,
+            headline: acceptedRequest.user1.headline || "No headline",
+            connections: Math.floor(Math.random() * 100),
+            collaborations: Math.floor(Math.random() * 10),
+          },
+        ]);
+      }
       return;
     }
 
@@ -197,7 +284,7 @@ function NetworkPage() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            userId: LoginuserId
+            userId: LoginuserId,
           }),
         }
       );
@@ -210,10 +297,11 @@ function NetworkPage() {
 
       console.log("Accept request successful:", data);
 
-      // Remove the accepted request from the pending requests list
       setPendingRequests((prev) =>
         prev.filter((req) => req.id !== connectionId)
       );
+
+      fetchConnections();
     } catch (err) {
       console.error("Error accepting request:", err);
       setError(err.message);
@@ -378,39 +466,50 @@ function NetworkPage() {
                 </div>
               ) : (
                 <div className="networkpage-grid">
-                  {staticUsers.map((user, index) => (
-                    <div
-                      key={user.name}
-                      className="networkpage-card"
-                      style={{
-                        backgroundColor:
-                          backgroundColors[index % backgroundColors.length],
-                      }}
-                    >
-                      <div className="networkpage-profile-pic-container">
-                        <img
-                          src={profilePhoto}
-                          alt={`${user.name}'s profile`}
-                          className="networkpage-profile-pic"
-                        />
-                      </div>
-                      <h3 className="networkpage-name">{user.name}</h3>
-                      <p className="networkpage-education">{user.education}</p>
-                      <p className="networkpage-description">
-                        {user.description}
-                      </p>
+                  {connectionsLoading ? (
+                    <div>Loading connections...</div>
+                  ) : error ? (
+                    <div>Error: {error}</div>
+                  ) : connections.length > 0 ? (
+                    connections.map((user, index) => (
                       <div
-                        className="networkpage-connect-icon"
-                        onClick={handleConnectClick}
+                        key={user.id}
+                        className="networkpage-card"
+                        style={{
+                          backgroundColor:
+                            backgroundColors[index % backgroundColors.length],
+                        }}
                       >
-                        <img src={connectsvg} alt="Connect" />
+                        <div className="networkpage-profile-pic-container">
+                          <img
+                            src={user.profilePictureUrl}
+                            alt={`${user.username}'s profile`}
+                            className="networkpage-profile-pic"
+                            onError={(e) => {
+                              e.target.src = profilePhoto;
+                            }}
+                          />
+                        </div>
+                        <h3 className="networkpage-name">{user.username}</h3>
+                        <p className="networkpage-education">{user.headline}</p>
+                        <p className="networkpage-description">
+                          {user.description || "No description available"}
+                        </p>
+                        <div
+                          className="networkpage-connect-icon"
+                          onClick={handleConnectClick}
+                        >
+                          <img src={connectsvg} alt="Connect" />
+                        </div>
+                        <div className="networkpage-stats">
+                          <span>{user.connections} connect</span>
+                          <span>{user.collaborations} collaborate</span>
+                        </div>
                       </div>
-                      <div className="networkpage-stats">
-                        <span>{user.connections} connect</span>
-                        <span>{user.collaborations} collaborate</span>
-                      </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <div>No connections found</div>
+                  )}
                 </div>
               )}
 
@@ -427,7 +526,10 @@ function NetworkPage() {
                 >
                   REQUEST
                 </button>
-                <button onClick={fetchPendingRequests} className="networkpage-action-btn">
+                <button
+                  onClick={fetchPendingRequests}
+                  className="networkpage-action-btn"
+                >
                   NEW CONNECTION
                 </button>
               </div>
@@ -436,7 +538,7 @@ function NetworkPage() {
           {isMobile && <MobileFooter />}
         </div>
       </div>
-      
+
       {showRightSection && (
         <div className="Networkpage-rightsection">
           <DesktopRightsection
