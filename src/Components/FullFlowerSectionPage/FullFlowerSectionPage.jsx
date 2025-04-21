@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Background from "../Background/Background.jsx";
-import DesktopLeftbottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight";
@@ -302,7 +302,7 @@ function FullFlowerSectionPage() {
         <Background />
         <div className="Interest-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftbottom />
+          <DesktopLeftBottom />
         </div>
         <div className="Interest-middle-main-container">
           <div>
