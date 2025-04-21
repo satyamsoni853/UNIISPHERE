@@ -6,7 +6,7 @@ import { RiArrowDropRightLine } from "react-icons/ri";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import Personimage from "./Person.png";
 import middleconnectimage from "./middleconnectimage.png";
-import DesktopRight from "../DesktopRight/DesktopRight";
+import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";

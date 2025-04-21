@@ -6,7 +6,7 @@ import AfterOtpSection1 from "./Components/AfterOtpSection1/AfterOtpSection1.jsx
 import UserSignupWithEmailAndPassword from "./Components/UserSignupWithEmailAndPassword/UserSignupWithEmailAndPassword.jsx";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
 import View from "./Components/View/View.jsx";
-import DesFollowerMiddleSectionPrivacy from "./Components/Des-Follower-middle-section-privacy/DesFollowerMiddleSectionPrivacy.jsx";
+import DesFollowerMiddleSectionPrivacy from './Components/DesFollowerMiddleSectionPrivacy/DesFollowerMiddleSectionPrivacy.jsx'
 import InterestForm from './Components/IntersetForm/InterestForm.jsx'
 import CollabForm from "./Components/CollabForm/CollabForm.jsx";
 import AboutAndExperience from "./Components/AboutAndExperience/AboutAndExperience.jsx";
