@@ -1,44 +1,41 @@
-import React, { useState } from "react";
-import DesktopNavbar from '../DesktopNavbar/DesktopNavbar.jsx'
-import Decktopleftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
-import Decklefttop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import DesktopMiddle from "../DesktopMiddle/DesktopMiddle.jsx";
-import DesktopRight from "../DesktopRight/DesktopRight.jsx";
-import "./DesktopView.css";     
- 
-import Backgrund from "../Background/Background.jsx";
+import React from 'react';
+import DesktopNavbar from '../DesktopNavbar/DesktopNavbar';
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom';
+import DesktopLeftTop from '../DesktopLeftTop/DesktopLeftTop';
+import DesktopMiddle from '../DesktopMiddle/DesktopMiddle';
+import DesktopRight from '../DesktopRight/DesktopRight';
+import Background from '../Background/Background';
+import './DesktopView.css';
 
 function DesktopView() {
-
-
   return (
-    <>
-      <Backgrund />
+    <div className="desktop-view-wrapper">
+      <Background />
+      
       {/* Navbar */}
-      <div className="desktop-navbar">
+      <header className="desktop-navbar">
         <DesktopNavbar />
-      </div>
+      </header>
 
       {/* Main View Container */}
-      <div className="desktop-view-container">
+      <main className="desktop-view-container">
         {/* Left Section - left2 above left1 */}
-        <div className="desktop-view-left">
-          <Decklefttop />
-          <Decktopleftbottom />
-        </div>
+        <aside className="desktop-view-left">
+          <DesktopLeftTop />
+          <DesktopLeftBottom />
+        </aside>
 
         {/* Middle Section */}
-        <div className="desktop-view-middle">
+        <section className="desktop-view-middle">
           <DesktopMiddle />
- 
-        </div>
+        </section>
 
         {/* Right Section */}
-        <div className="desktop-view-right">
+        <aside className="desktop-view-right">
           <DesktopRight />
-        </div>
-      </div>
-    </>
+        </aside>
+      </main>
+    </div>
   );
 }
 

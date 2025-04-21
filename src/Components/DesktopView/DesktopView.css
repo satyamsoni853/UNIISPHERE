@@ -4,25 +4,42 @@
   box-sizing: border-box;
 }
 
+.desktop-view-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.desktop-navbar {
+  width: 100%;
+  z-index: 10; /* Ensure navbar stays above other content */
+  /* Add specific height or other styles as needed, e.g., height: 60px; */
+}
+
 .desktop-view-container {
   display: flex;
   width: 100%;
-  height: calc(100vh - navbar height);
+  flex: 1; /* Take remaining height after navbar */
+  min-height: calc(100vh - 60px); /* Adjust 60px to match navbar height */
 }
 
 .desktop-view-left {
   display: flex;
   flex-direction: column; /* Stack vertically */
   width: 25%; /* Adjust as needed */
+  min-width: 200px; /* Prevent collapsing on smaller screens */
 }
 
 .desktop-view-middle {
   position: relative;
   width: 50%; /* Adjust as needed */
+  min-width: 300px; /* Prevent collapsing */
 }
 
 .desktop-view-right {
-  width: 25%;
+  width: 25%; /* Adjust as needed */
+  min-width: 200px; /* Prevent collapsing */
 }
 
 /* Ensure the left components stack properly */
@@ -30,18 +47,37 @@
   width: 100%;
 }
 
-/* Optional: Add specific heights if needed */
-.desktop-left2 {
-  flex: 1; /* Will take available space */
+/* Optional: Add specific heights for left components */
+.desktop-left-top,
+.desktop-left-bottom {
+  flex: 1; /* Equal height distribution */
 }
 
-.desktop-left1 {
-  flex: 1; /* Will take available space */
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .desktop-view-container {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .desktop-view-left,
+  .desktop-view-middle,
+  .desktop-view-right {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .desktop-view-left {
+    flex-direction: row; /* Optional: Stack horizontally on smaller screens */
+  }
 }
 
-/* Navbar styling */
-.desktop-navbar {
+/* Ensure Background component doesn't interfere with layout */
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  /* Add any additional navbar styling here */
+  height: 100%;
+  z-index: -1; /* Keep background behind other content */
 }
-
