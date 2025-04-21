@@ -14,7 +14,7 @@ import SkillForm from "./Components/SkillForm/SkillForm.jsx";
 import ProfileEditSection from "./Components/ProfileEditSection/ProfileEditSection.jsx";
 import FullFlowerSectionPage from "./Components/FullFlowerSectionPage/FullFlowerSectionPage.jsx";
 import PersonalInfoUpdate from "./Components/PersonalInfoUpdate/PersonalInfoUpdate.jsx";
-import MessageFinalClass from "./Components/MessageFinalClass/MessageFinalClass.jsx";
+import MessageFinalClass from './Components/MessageFinalClass/MessageFinalclass.jsx'
 import SelfProfile from "./Components/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Components/SelfSetting/SelfSetting.jsx";
 import MessageFinalClass2 from "./Components/MessageFinalClass-2/MessageFinalClass2.jsx";
