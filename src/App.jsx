@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import UserLogin from "./Components/UserLogin/UserLogin.jsx";
 import AfterOtpSection1 from "./Components/AfterOtpSection1/AfterOtpSection1.jsx";
-import UserSignupwithemailandpass from "./Components/UserSignupWithEmailAndPassword/UserSignupWithEmailAndPassword.jsx";
+import UserSignupWithEmailAndPassword from "./Components/UserSignupWithEmailAndPassword/UserSignupWithEmailAndPassword.jsx";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
 import View from "./Components/View/View.jsx";
 import DesFollowerMiddleSectionPrivacy from "./Components/Des-Follower-middle-section-privacy/DesFollowerMiddleSectionPrivacy.jsx";
@@ -13,10 +13,10 @@ import SkillForm from "./Components/SkillForm/SkillForm.jsx";
 import ProfileEditSection from "./Components/ProfileEditSection/ProfileEditSection.jsx";
 import FullFlowerSectionPage from "./Components/FullFlowerSectionPage/FullFlowerSectionPage.jsx";
 import PersonalInfoUpdate from "./Components/PersonalInfoUpdate/PersonalInfoUpdate.jsx";
-import MessageFinalclass from "./Components/MessageFinalClass/MessageFinalclass.jsx";
+import MessageFinalClass from "./Components/MessageFinalClass/MessageFinalClass.jsx";
 import SelfProfile from "./Components/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Components/SelfSetting/SelfSetting.jsx";
-import MessageFinalClass2 from "./Components/MessageFinalclass-2/MessageFinalClass2.jsx";
+import MessageFinalClass2 from "./Components/MessageFinalClass-2/MessageFinalClass2.jsx";
 import NetworkPage from "./Components/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Components/CollabPage/CollabPage.jsx";
 import BottomMessagesWidget from "./Components/BottomMessagesWidget/BottomMessagesWidget.jsx";
@@ -38,67 +38,62 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<UserLogin />} />
           <Route path="/home" element={<UserLogin />} />
-          <Route path="/ForgotPassword" element={<ForgotPassword />} />
-          <Route path="/signup" element={<UserSignupwithemailandpass />} />
-          <Route path="/AfterOtpSection1" element={<AfterOtpSection1 />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/signup" element={<UserSignupWithEmailAndPassword />} />
+          <Route path="/after-otp" element={<AfterOtpSection1 />} />
 
           {/* Protected Routes (require userId) */}
-          <Route path="/View" element={<View />} />
+          <Route path="/view" element={<View />} />
           <Route
-            path="/DesFollowerMiddleSectionPrivacy/:userId"
+            path="/follower-privacy/:userId"
             element={<DesFollowerMiddleSectionPrivacy />}
           />
-          {/* <Route
-            path="/FollowerMiddleSectionPrivacy"
-            element={<DesFollowerMiddleSectionPrivacy />}
-          /> */}
           <Route
-            path="/ProfileEditSection/:userId"
+            path="/profile-edit/:userId"
             element={<ProfileEditSection />}
           />
           <Route
-            path="/FullFlowerSectionPage/:userId"
+            path="/follower-section/:userId"
             element={<FullFlowerSectionPage />}
           />
           <Route
-            path="/AfterConnecting/:userId"
+            path="/after-connecting/:userId"
             element={<AfterConnecting />}
           />
           <Route
-            path="/PersonalInfoUpdate/:userId"
+            path="/personal-info/:userId"
             element={<PersonalInfoUpdate />}
           />
-          <Route path="/Skill/:userId" element={<SkillForm />} />
-          <Route path="/Collab/:userId" element={<CollabForm />} />
-          <Route path="/Interset/:userId" element={<Interset />} />
-          <Route path="/EducationEdit/:userId" element={<EducationEdit />} />
+          <Route path="/skills/:userId" element={<SkillForm />} />
+          <Route path="/collab/:userId" element={<CollabForm />} />
+          <Route path="/interests/:userId" element={<InterestForm />} />
+          <Route path="/education/:userId" element={<EducationEdit />} />
           <Route path="/blog/:userId" element={<Blog />} />
-          <Route path="/BlogCreate/:userId" element={<BlogCreate />} />
+          <Route path="/blog-create/:userId" element={<BlogCreate />} />
           <Route
-            path="/AboutAndExperiance/:userId"
-            element={<AboutAndExperiance />}
+            path="/about-experience/:userId"
+            element={<AboutAndExperience />}
           />
 
           {/* Other Routes */}
-          <Route path="/SelfProfile" element={<SelfProfile />} />
-          <Route path="/SelfSetting" element={<SelfSetting />} />
-          <Route path="/MessageFinalclass" element={<MessageFinalclass />} />
+          <Route path="/self-profile" element={<SelfProfile />} />
+          <Route path="/settings" element={<SelfSetting />} />
+          <Route path="/messages" element={<MessageFinalClass />} />
           <Route
-            path="/MessageFinalClass2/:messageId"
+            path="/messages/:messageId"
             element={<MessageFinalClass2 />}
           />
-          <Route path="/NetworkPage" element={<NetworkPage />} />
-          <Route path="/CollabPage" element={<CollabPage />} />
+          <Route path="/network" element={<NetworkPage />} />
+          <Route path="/collabs" element={<CollabPage />} />
           <Route
-            path="/BottomMessagesWidget"
+            path="/messages-widget"
             element={<BottomMessagesWidget />}
           />
-          <Route path="/uploadsection/:userId" element={<UploadSection />} />
-          <Route path="/MobileAddPost" element={<MobileAddPost />} />
-          <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
-          <Route path="/MentorSection" element={<MentorSection />} />
-          <Route path="/HumanLib" element={<HumanLib />} />
-          <Route path="/Blog" element={<Blog />} />
+          <Route path="/upload/:userId" element={<UploadSection />} />
+          <Route path="/add-post" element={<MobileAddPost />} />
+          <Route path="/inbox" element={<MessageMobileInbox />} />
+          <Route path="/mentors" element={<MentorSection />} />
+          <Route path="/human-lib" element={<HumanLib />} />
         </Routes>
       </div>
     </Router>
