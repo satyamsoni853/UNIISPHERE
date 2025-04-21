@@ -11,7 +11,7 @@ import microphoneIcon from "./on.svg";
 import "./MessageFinalClass2.css";
 import Background2 from "../Background/Background";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
-
+import { MdOutlineDeleteOutline } from "react-icons/md"
 const Background = () => <div className="message-background" />;
 
 function MessageFinalClass2() {
@@ -28,33 +28,258 @@ function MessageFinalClass2() {
   const [showGallery, setShowGallery] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [contextMenu, setContextMenu] = useState(null); // State for context menu position and message ID
+  const [contextMenu, setContextMenu] = useState(null);
   const chatBodyRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const fileInputRef = useRef(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
-  const longPressTimerRef = useRef(null); // Ref for long press timer
+  const longPressTimerRef = useRef(null);
 
-  const senderId = localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8";
+  // State for selected emoji category
+  const [selectedCategory, setSelectedCategory] = useState("Recently Used");
+
+  // State for recently used emojis
+  const [recentEmojis, setRecentEmojis] = useState(() => {
+    const saved = localStorage.getItem("recentEmojis");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const senderId =
+    localStorage.getItem("LoginuserId") ||
+    "18114725-fcc6-4cbe-a617-894a464b9fc8";
   const token = localStorage.getItem("authToken") || "your-auth-token-here";
 
-  const emojis = [
-    "😀", "😊", "😂", "🤓", "😎", "😍", "🥰", "😘", "😜", "😛",
-    "😇", "🙃", "😏", "😴", "🤗", "🤔", "🤤", "😢", "😭", "😤",
-    "😡", "🤬", "😳", "😱", "😨", "😰", "😥", "😓", "🙄", "😬",
-    "🤐", "😷", "🤒", "🤕", "🥳", "🤩", "🥺", "🙌", "👏", "👍",
-    "👎", "✌️", "🤘", "👌", "👈", "👉", "👆", "👇", "✋", "🤚",
-    "🖐️", "👋", "🤝", "🙏", "💪", "🦵", "🦶", "👀", "👁️", "👅",
-    "👄", "💋", "❤️", "💔", "💖", "💙", "💚", "💛", "💜", "🖤",
-    "🤎", "💯", "💥", "💦", "💤", "💨", "🎉", "🎈", "🎁", "🎂",
-    "🍰", "🍫", "🍬", "🍭", "🍎", "🍊", "🍋", "🍇", "🍉", "🍓",
-    "🥝", "🍍", "🥭", "🥑", "🥕", "🌽", "🥔", "🍔", "🍕", "🌮",
-    "🍟", "🍗", "🥚", "🥓", "🧀", "🍳", "☕", "🍵", "🥛", "🍷",
-    "🍺", "🥂", "🎸", "🎹", "🥁", "🎤", "🎧", "🎮", "🏀", "⚽",
-    "🏈", "🎾", "🏐", "🏓", "⛳", "🏊", "🏄", "🚴", "🚗", "✈️",
-    "🚀", "🛸", "🌍", "🌙", "⭐", "🌞", "☁️", "⛅", "🌧️", "⛄",
-    "⚡", "🔥", "💧", "🌊", "🌴", "🌵", "🌷", "🌸", "🌹", "🥀"
+  // Categorized emojis
+  const emojisByCategory = [
+    {
+      category: "Recently Used",
+      emojis: recentEmojis.length > 0 ? recentEmojis : ["😊"], // Fallback emoji if empty
+    },
+    {
+      category: "Smileys & Emotions",
+      emojis: [
+        "😀",
+        "😊",
+        "😂",
+        "🤓",
+        "😎",
+        "😍",
+        "🥰",
+        "😘",
+        "😜",
+        "😛",
+        "😇",
+        "🙃",
+        "😏",
+        "😴",
+        "🤗",
+        "🤔",
+        "🤤",
+        "😢",
+        "😭",
+        "😤",
+        "😡",
+        "🤬",
+        "😳",
+        "😱",
+        "😨",
+        "😰",
+        "😥",
+        "😓",
+        "🙄",
+        "😬",
+        "🤐",
+        "😷",
+        "🤒",
+        "🤕",
+        "🥳",
+        "🤩",
+        "🥺",
+      ],
+    },
+    {
+      category: "Gestures & Body Parts",
+      emojis: [
+        "🙌",
+        "👏",
+        "👍",
+        "👎",
+        "✌️",
+        "🤘",
+        "👌",
+        "👈",
+        "👉",
+        "👆",
+        "👇",
+        "✋",
+        "🤚",
+        "🖐️",
+        "👋",
+        "🤝",
+        "🙏",
+        "💪",
+        "🦵",
+        "🦶",
+        "👀",
+        "👁️",
+        "👅",
+        "👄",
+        "💋",
+      ],
+    },
+    {
+      category: "Hearts & Symbols",
+      emojis: [
+        "❤️",
+        "💔",
+        "💖",
+        "💙",
+        "💚",
+        "💛",
+        "💜",
+        "🖤",
+        "🤎",
+        "💯",
+        "💥",
+        "💦",
+        "💤",
+        "💨",
+        "🎉",
+        "🎈",
+        "🎁",
+      ],
+    },
+    {
+      category: "Food & Drink",
+      emojis: [
+        "🍎",
+        "🍊",
+        "🍋",
+        "🍇",
+        "🍉",
+        "🍓",
+        "🥝",
+        "🍍",
+        "🥭",
+        "🥑",
+        "🥕",
+        "🌽",
+        "🥔",
+        "🍔",
+        "🍕",
+        "🌮",
+        "🍟",
+        "🍗",
+        "🥚",
+        "🥓",
+        "🧀",
+        "🍳",
+        "☕",
+        "🍵",
+        "🥛",
+        "🍷",
+        "🍺",
+        "🥂",
+      ],
+    },
+    {
+      category: "Animals & Nature",
+      emojis: [
+        "🐶",
+        "🐱",
+        "🐭",
+        "🐰",
+        "🦊",
+        "🐻",
+        "🐼",
+        "🐨",
+        "🦁",
+        "🐮",
+        "🐷",
+        "🐸",
+        "🐵",
+        "🐦",
+        "🐧",
+        "🦄",
+        "🐝",
+        "🦋",
+        "🌴",
+        "🌵",
+        "🌷",
+        "🌸",
+        "🌹",
+        "🥀",
+      ],
+    },
+    {
+      category: "Activities & Sports",
+      emojis: [
+        "🎸",
+        "🎹",
+        "🥁",
+        "🎤",
+        "🎧",
+        "🎮",
+        "🏀",
+        "⚽",
+        "🏈",
+        "🎾",
+        "🏐",
+        "🏓",
+        "⛳",
+        "🏊",
+        "🏄",
+        "🚴",
+      ],
+    },
+    {
+      category: "Travel & Places",
+      emojis: [
+        "🚗",
+        "✈️",
+        "🚀",
+        "🛸",
+        "🌍",
+        "🌙",
+        "⭐",
+        "🌞",
+        "☁️",
+        "⛅",
+        "🌧️",
+        "⛄",
+        "⚡",
+        "🔥",
+        "💧",
+        "🌊",
+      ],
+    },
+    {
+      category: "Objects",
+      emojis: [
+        "💡",
+        "📱",
+        "💻",
+        "📷",
+        "📹",
+        "🕰️",
+        "🔑",
+        "🔒",
+        "🔓",
+        "✂️",
+        "🖌️",
+        "🖍️",
+        "📚",
+        "🗳️",
+        "🛠️",
+        "⚖️",
+      ],
+    },
   ];
+
+  // Update recent emojis in localStorage
+  useEffect(() => {
+    localStorage.setItem("recentEmojis", JSON.stringify(recentEmojis));
+  }, [recentEmojis]);
 
   // Fetch conversations (sidebar)
   useEffect(() => {
@@ -126,7 +351,8 @@ function MessageFinalClass2() {
         .map((msg) => ({
           id: msg.id || msg._id,
           senderId: msg.senderId,
-          sender: msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
+          sender:
+            msg.senderId === senderId ? "You" : msg.user?.username || "Unknown",
           text: msg.content || msg.lastMessage,
           timestamp: msg.timestamp || msg.createdAt,
           image: msg.image || null,
@@ -134,12 +360,15 @@ function MessageFinalClass2() {
         }))
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-      if (JSON.stringify(chatMessages) !== JSON.stringify(transformedMessages)) {
+      if (
+        JSON.stringify(chatMessages) !== JSON.stringify(transformedMessages)
+      ) {
         setChatMessages(transformedMessages);
       }
 
       if (messages.length > 0) {
-        const receiver = messages.find((msg) => msg.senderId !== senderId)?.user || {};
+        const receiver =
+          messages.find((msg) => msg.senderId !== senderId)?.user || {};
         setReceiverData({
           username: receiver.username || "Unknown",
         });
@@ -213,7 +442,7 @@ function MessageFinalClass2() {
         y: e.touches[0].pageY,
         messageId,
       });
-    }, 500); // 500ms for long press
+    }, 500);
   };
 
   const handleTouchEnd = () => {
@@ -222,10 +451,9 @@ function MessageFinalClass2() {
 
   // Handle delete message
   const handleDeleteMessage = async (messageId) => {
-    // Optimistic update: remove the message from the UI
     const messageToDelete = chatMessages.find((msg) => msg.id === messageId);
     setChatMessages((prev) => prev.filter((msg) => msg.id !== messageId));
-    setContextMenu(null); // Close the context menu
+    setContextMenu(null);
 
     try {
       const response = await fetch(
@@ -243,8 +471,11 @@ function MessageFinalClass2() {
         throw new Error("Failed to delete message");
       }
     } catch (err) {
-      // Revert optimistic update if the API call fails
-      setChatMessages((prev) => [...prev, messageToDelete].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)));
+      setChatMessages((prev) =>
+        [...prev, messageToDelete].sort(
+          (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+        )
+      );
       setSendError(err.message);
     }
   };
@@ -260,10 +491,8 @@ function MessageFinalClass2() {
       return;
     }
 
-    // Clear any previous errors
     setSendError(null);
 
-    // Optimistic update
     const tempId = Date.now().toString();
     const newMessage = {
       id: tempId,
@@ -295,15 +524,14 @@ function MessageFinalClass2() {
       );
 
       if (!response.ok) {
-        // Remove optimistic update if failed
         setChatMessages((prev) => prev.filter((msg) => msg.id !== tempId));
-        
+
         let errorMsg = "Failed to send message";
         try {
           const errorData = await response.json();
           errorMsg = errorData.error || errorMsg;
         } catch (e) {
-          errorMsg = await response.text() || errorMsg;
+          errorMsg = (await response.text()) || errorMsg;
         }
         throw new Error(errorMsg);
       }
@@ -323,6 +551,11 @@ function MessageFinalClass2() {
   const addEmojiToInput = (emoji) => {
     setMessageInput((prev) => prev + emoji);
     setShowStickers(false);
+    // Update recent emojis
+    setRecentEmojis((prev) => {
+      const updated = [emoji, ...prev.filter((e) => e !== emoji)].slice(0, 10);
+      return updated;
+    });
   };
 
   const handleGalleryClick = () => {
@@ -335,7 +568,7 @@ function MessageFinalClass2() {
     const file = event.target.files[0];
     if (!file) return;
 
-    if (!file.type.match('image.*')) {
+    if (!file.type.match("image.*")) {
       setSendError("Please select an image file");
       return;
     }
@@ -388,23 +621,26 @@ function MessageFinalClass2() {
 
   const handleVoiceRecord = () => {
     if (!isRecording) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        const recorder = new MediaRecorder(stream);
-        mediaRecorderRef.current = recorder;
-        recorder.start();
-        setIsRecording(true);
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          const recorder = new MediaRecorder(stream);
+          mediaRecorderRef.current = recorder;
+          recorder.start();
+          setIsRecording(true);
 
-        const audioChunks = [];
-        recorder.ondataavailable = (event) => audioChunks.push(event.data);
-        recorder.onstop = () => {
-          const blob = new Blob(audioChunks, { type: "audio/webm" });
-          setAudioBlob(blob);
-          stream.getTracks().forEach((track) => track.stop());
-          handleSendAudio(blob);
-        };
-      }).catch((err) => {
-        setSendError("Microphone access denied: " + err.message);
-      });
+          const audioChunks = [];
+          recorder.ondataavailable = (event) => audioChunks.push(event.data);
+          recorder.onstop = () => {
+            const blob = new Blob(audioChunks, { type: "audio/webm" });
+            setAudioBlob(blob);
+            stream.getTracks().forEach((track) => track.stop());
+            handleSendAudio(blob);
+          };
+        })
+        .catch((err) => {
+          setSendError("Microphone access denied: " + err.message);
+        });
     } else {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
@@ -471,16 +707,19 @@ function MessageFinalClass2() {
 
   return (
     <div className="message-part-container">
-    <div className="message-part-navbar">
-    <DesktopNavbarr />
-    </div>
+      <div className="message-part-navbar">
+        <DesktopNavbarr />
+      </div>
       <div className="message-part-2-app">
         <Background2 />
         <div className="message-part-2-sidebar">
           <h1>Messages</h1>
           {conversationError && (
             <div className="message-error-alert">
-              <button onClick={() => setConversationError(null)} className="error-close-btn">
+              <button
+                onClick={() => setConversationError(null)}
+                className="error-close-btn"
+              >
                 ✕
               </button>
             </div>
@@ -507,8 +746,12 @@ function MessageFinalClass2() {
               />
               <div className="message-part-2-message-info">
                 <div className="message-part-2-message-header">
-                  <span className="message-part-2-name">{conversation.name}</span>
-                  <span className="message-part-2-time">{conversation.time}</span>
+                  <span className="message-part-2-name">
+                    {conversation.name}
+                  </span>
+                  <span className="message-part-2-time">
+                    {conversation.time}
+                  </span>
                 </div>
                 <p className="message-part-2-preview">{conversation.preview}</p>
               </div>
@@ -528,23 +771,27 @@ function MessageFinalClass2() {
             />
             <h3>{currentConversation?.name || "Loading..."}</h3>
             <div className="call-video-icon">
-              <span>
+              <span style={{ fontSize: "34px" }}>
                 <IoCall />
               </span>
-              <span>
+              <span style={{ fontSize: "34px" }}>
                 <MdOutlineVideoCall />
               </span>
             </div>
           </div>
           <div className="message-part-2-chat-body" ref={chatBodyRef}>
             {!chatMessages.length && !isLoading && (
-              <p className="message-part-2-no-messages">No messages yet. Start the conversation!</p>
+              <p className="message-part-2-no-messages">
+                No messages yet. Start the conversation!
+              </p>
             )}
             {chatMessages.map((message, index) => {
               const isNewSender =
                 index === 0 ||
                 message.senderId !== chatMessages[index - 1]?.senderId;
-              const messageTime = new Date(message.timestamp).toLocaleTimeString([], {
+              const messageTime = new Date(
+                message.timestamp
+              ).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               });
@@ -562,9 +809,9 @@ function MessageFinalClass2() {
                         ? "message-part-2-sent"
                         : "message-part-2-received"
                     }`}
-                    onContextMenu={(e) => handleRightClick(e, message.id)} // Right-click for desktop
-                    onTouchStart={(e) => handleTouchStart(e, message.id)} // Long press start for mobile
-                    onTouchEnd={handleTouchEnd} // Long press end for mobile
+                    onContextMenu={(e) => handleRightClick(e, message.id)}
+                    onTouchStart={(e) => handleTouchStart(e, message.id)}
+                    onTouchEnd={handleTouchEnd}
                   >
                     <div className="message-part-2-message-content-container">
                       {message.senderId !== senderId && (
@@ -585,31 +832,29 @@ function MessageFinalClass2() {
                             className="message-image"
                           />
                         )}
-                        {message.audio && <audio controls src={message.audio} />}
+                        {message.audio && (
+                          <audio controls src={message.audio} />
+                        )}
                         <p>{message.text}</p>
-                        <span className="message-part-2-time">{messageTime}</span>
+                        <span className="message-part-2-time">
+                          {messageTime}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </React.Fragment>
               );
             })}
-            {/* Context menu for delete option */}
             {contextMenu && (
               <div
                 className="message-context-menu"
-                style={{
-                  top: contextMenu.y,
-                  left: contextMenu.x,
-                  position: "absolute",
-                  zIndex: 1000,
-                }}
+               
               >
                 <button
                   onClick={() => handleDeleteMessage(contextMenu.messageId)}
                   className="message-context-menu-item"
                 >
-                  Delete
+                  Delete <MdOutlineDeleteOutline/>
                 </button>
               </div>
             )}
@@ -639,16 +884,76 @@ function MessageFinalClass2() {
               </div>
             )}
             {showStickers && (
-              <div className="emoji-panel">
-                {emojis.map((emoji, index) => (
-                  <span
-                    key={index}
-                    className="emoji-option"
-                    onClick={() => addEmojiToInput(emoji)}
-                  >
-                    {emoji}
-                  </span>
-                ))}
+              <div
+                className="emoji-panel"
+                style={{
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                  padding: "10px",
+                  background: "#fff",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                }}
+              >
+                <div
+                  className="emoji-categories"
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "5px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {emojisByCategory.map((category) => (
+                    <button
+                      key={category.category}
+                      onClick={() => setSelectedCategory(category.category)}
+                      style={{
+                        padding: "5px 10px",
+                        fontSize: "14px",
+                        background:
+                          selectedCategory === category.category
+                            ? "#007bff"
+                            : "#f0f0f0",
+                        color:
+                          selectedCategory === category.category
+                            ? "#fff"
+                            : "#000",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {category.category}
+                    </button>
+                  ))}
+                </div>
+                <div
+                  className="emoji-list"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(30px, 1fr))",
+                    gap: "5px",
+                  }}
+                >
+                  {emojisByCategory
+                    .find((cat) => cat.category === selectedCategory)
+                    ?.emojis.map((emoji, index) => (
+                      <span
+                        key={index}
+                        className="emoji-option"
+                        onClick={() => addEmojiToInput(emoji)}
+                        style={{
+                          fontSize: "24px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                        }}
+                        aria-label={`Emoji ${emoji}`}
+                      >
+                        {emoji}
+                      </span>
+                    ))}
+                </div>
               </div>
             )}
             <input
@@ -660,7 +965,9 @@ function MessageFinalClass2() {
             />
             <div className="message-part-2-icons">
               <span
-                className={`message-part-2-send-icon ${isSending ? "disabled" : ""}`}
+                className={`message-part-2-send-icon ${
+                  isSending ? "disabled" : ""
+                }`}
                 onClick={!isSending ? handleSendClick : undefined}
               >
                 <IoSend />

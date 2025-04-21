@@ -48,7 +48,7 @@ function DesktopRightsection() {
 
       setUserId(authData.userId);
       const storedUserId = localStorage.getItem("userId");
-      console.log("RightSection The stored user ID is:", storedUserId);
+      // console.log("RightSection The stored user ID is:", storedUserId);
 
       try {
         const profileResponse = await axios.get(
@@ -59,7 +59,7 @@ function DesktopRightsection() {
             }
           }
         );
-        console.log("RightSection Full profile response:", profileResponse.data);
+        // console.log("RightSection Full profile response:", profileResponse.data);
         const username = profileResponse.data[0].username;
         const profilePictureUrl = profileResponse.data[0].profilePictureUrl;
         localStorage.setItem("profilePicture", profilePictureUrl);

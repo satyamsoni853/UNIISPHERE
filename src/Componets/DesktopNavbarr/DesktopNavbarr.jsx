@@ -33,7 +33,7 @@ function DesktopNavbarr() {
   const [showPostDetails, setShowPostDetails] = useState(false);
   const [showAddmore, setShowAddMore] = useState(true);
   const [caption, setCaption] = useState("");
-  const [location, setLocation] = useState(""); // Added location state
+  const [location, setLocation] = useState("");
   const [hideLikes, setHideLikes] = useState(false);
   const [disableComments, setDisableComments] = useState(false);
   const [mentions, setMentions] = useState([]);
@@ -121,7 +121,7 @@ function DesktopNavbarr() {
     fetchConnections();
   }, []);
 
-  // Fetch all users
+  // Fetch all users and print user IDs
   useEffect(() => {
     const fetchAllUsers = async () => {
       const authToken = localStorage.getItem("authToken");
@@ -136,8 +136,14 @@ function DesktopNavbarr() {
           "https://uniisphere-1.onrender.com/users/getAll",
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
-        setAllUsersResponse(Array.isArray(response.data) ? response.data : []);
-        console.log("Get All Users API Response:", response.data);
+        // Ensure response.data is an array
+        const users = Array.isArray(response.data) ? response.data : [];
+        setAllUsersResponse(users);
+        // Print all user IDs to console
+        console.log("All User IDs:");
+        users.forEach((user) => {
+          console.log(`User ID: ${user.id}`);
+        });
       } catch (err) {
         console.error("Error fetching all users:", err);
         setError(err.message || "Failed to fetch users");
@@ -178,7 +184,7 @@ function DesktopNavbarr() {
     }
   }, []);
 
-  // Fetch stats from /posts/stats/total
+  // Fetch stats from /posts
   const fetchStats = async () => {
     const authToken = localStorage.getItem("authToken");
     const userId = localStorage.getItem("userId");
@@ -242,17 +248,21 @@ function DesktopNavbarr() {
     }
   };
 
-  // Handle profile click
+  // Handle profile click with ID comparison
   const handleProfileClick = (userId) => {
     localStorage.setItem("SearchUserId", userId);
+    // Check if allUsersResponse is loaded and is an array
     if (allUsersResponse && Array.isArray(allUsersResponse)) {
+      // Check if userId exists in allUsersResponse
       const idExists = allUsersResponse.some((user) => user.id === userId);
+      console.log(`Checking if User ID ${userId} exists: ${idExists}`);
       if (idExists) {
-        navigate(`/DesFollowerMiddleSectionPrivacy/${userId}`);
+        navigate(`/AfterConnecting/${userId}`);
       } else {
         navigate(`/DesFollowerMiddleSectionPrivacy`);
       }
     } else {
+      // Fallback if allUsersResponse is not loaded
       console.error("User data not loaded yet or invalid:", allUsersResponse);
       navigate(`/DesFollowerMiddleSectionPrivacy`);
     }
@@ -375,7 +385,7 @@ function DesktopNavbarr() {
       formData.append("userId", userId);
       formData.append("visibility", hideLikes ? "private" : "public");
       formData.append("location", location || "");
-      formData.append("tags", ""); // Add tags if needed
+      formData.append("tags", "");
 
       const postResponse = await axios.post(
         "https://uniisphere-1.onrender.com/posts",
@@ -411,7 +421,7 @@ function DesktopNavbarr() {
     setShowAddMore(true);
     setMediaList([]);
     setCaption("");
-    setLocation(""); // Reset location
+    setLocation("");
     setHideLikes(false);
     setDisableComments(false);
     setError(null);
@@ -728,7 +738,6 @@ function DesktopNavbarr() {
                       <h3>{Username || "Himanshu Choudary"}</h3>
                     </div>
                     <h6 onClick={handlePostSubmit} disabled={isLoading}>
-                      {" "}
                       {isLoading ? "Posting..." : "Create Post"}
                     </h6>
                   </div>
@@ -761,17 +770,6 @@ function DesktopNavbarr() {
                           rows="4"
                         />
                       </div>
-                      {/* Added Location Input */}
-                      {/* <div className="form-group">
-                        <label className="input-label">Location</label>
-                        <input
-                          type="text"
-                          className="location-input"
-                          value={location}
-                          onChange={(e) => setLocation(e.target.value)}
-                          placeholder="Enter location (e.g., Dehradun)"
-                        />
-                      </div> */}
                     </div>
                     <div className="mention-form-group">
                       <label className="input-label">Add Mentions</label>
@@ -815,13 +813,6 @@ function DesktopNavbarr() {
                       </div>
                     </div>
                     <div className="submit-section">
-                      {/* <button
-                        className="submit-button"
-                        onClick={handlePostSubmit}
-                        disabled={isLoading}
-                      >
-                        {isLoading ? "Posting..." : "Post"}
-                      </button> */}
                       {error && <p className="error-message">{error}</p>}
                     </div>
                   </div>

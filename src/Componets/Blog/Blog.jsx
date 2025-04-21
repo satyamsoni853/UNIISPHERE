@@ -31,6 +31,7 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [profileCache, setProfileCache] = useState({}); // Cache for user profiles
 
   // State for mobile section
   const [showDefaultBlog, setShowDefaultBlog] = useState(true);
@@ -49,9 +50,9 @@ const Blog = () => {
     },
   ];
 
-  // Fetch blogs by userId
+  // Fetch blogs and user profiles
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchBlogsAndProfiles = async () => {
       try {
         setLoading(true);
         setError(null);
@@ -69,10 +70,10 @@ const Blog = () => {
           throw new Error("Failed to decode token: " + err.message);
         }
 
-    
         console.log("User ID from URL:", userId); // Log the user ID from URL
-        // Fetch blogs by userId
-        const response = await axios.get(
+
+        // Fetch blogs
+        const blogResponse = await axios.get(
           `https://uniisphere-1.onrender.com/api/allBlogs`,
           {
             headers: {
@@ -82,8 +83,58 @@ const Blog = () => {
           }
         );
 
-        console.log("Get Blog API Response:", response.data); // Log the API response
-        setBlogs(response.data.data); // Updated to handle the new response structure with data property
+        console.log("Get Blog API Response:", blogResponse.data); // Log the API response
+        const blogData = blogResponse.data.data;
+
+        // Fetch user profiles for each blog's author
+        const updatedBlogs = await Promise.all(
+          blogData.map(async (blog) => {
+            const authorId = blog.authorId || blog.userId || currentUserId; // Adjust based on your API
+            if (!authorId) {
+              return {
+                ...blog,
+                author: { name: "Unknown Author", affiliation: "Unknown Affiliation", avatar: profile },
+              };
+            }
+
+            // Check cache first
+            if (profileCache[authorId]) {
+              return { ...blog, author: profileCache[authorId] };
+            }
+
+            // Fetch profile from API
+            try {
+              const profileResponse = await axios.get(
+                `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authorId}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                }
+              );
+
+              const profileData = profileResponse.data[0];
+              const author = {
+                name: `${profileData.firstName || ""} ${profileData.lastName || ""}`.trim() || profileData.username || "Unknown Author",
+                affiliation: profileData.university || profileData.company || "Unknown Affiliation",
+                avatar: profileData.profilePictureUrl || profile,
+              };
+
+              // Update cache
+              setProfileCache((prev) => ({ ...prev, [authorId]: author }));
+
+              return { ...blog, author };
+            } catch (profileError) {
+              console.error(`Error fetching profile for user ${authorId}:`, profileError);
+              return {
+                ...blog,
+                author: { name: "Unknown Author", affiliation: "Unknown Affiliation", avatar: profile },
+              };
+            }
+          })
+        );
+
+        setBlogs(updatedBlogs);
       } catch (err) {
         console.error("GET /api/blog error:", err);
         setError(err.response?.data?.message || "Failed to fetch blogs");
@@ -92,9 +143,9 @@ const Blog = () => {
       }
     };
 
-    if (userId) fetchBlogs();
+    if (userId) fetchBlogsAndProfiles();
     else setError("User ID is missing");
-  }, [userId]);
+  }, [userId, profileCache]);
 
   // Video control functions
   const handlePlayPause = (index) => {
@@ -243,6 +294,7 @@ const Blog = () => {
                             src={blog.author?.avatar || profile}
                             alt="Profile"
                             className="blog-profile-pic"
+                            onError={(e) => { e.target.src = profile; }} // Fallback on error
                           />
                         </div>
                         <div className="blog-user-info">
@@ -298,7 +350,6 @@ const Blog = () => {
           </div>
         )}
 
-        
         <div className="blog-container-footer">
           <MobileFooter />
         </div>
@@ -368,6 +419,7 @@ const Blog = () => {
                               src={blog.author?.avatar || profile}
                               alt="Profile"
                               className="desktop-blog-profile-pic"
+                              onError={(e) => { e.target.src = profile; }} // Fallback on error
                             />
                           </div>
                           <div className="desktop-blog-user-info">
@@ -422,7 +474,6 @@ const Blog = () => {
               )}
             </div>
           )}
-         
         </div>
       </div>
     </>

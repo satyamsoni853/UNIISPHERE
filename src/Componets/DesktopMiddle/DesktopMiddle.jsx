@@ -162,7 +162,7 @@ function DesktopMiddle() {
         fetchSentConnectionRequests(authData.token),
       ]);
 
-      console.log("Feed API response:", feedResponse.data);
+      // console.log("Feed API response:", feedResponse.data);
       setConnectionStatuses(sentRequests);
 
       if (feedResponse.data.userId) {

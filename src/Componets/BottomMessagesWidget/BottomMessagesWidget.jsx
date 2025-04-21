@@ -107,7 +107,7 @@ const MessagesWidget = () => {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data);
+        // console.log("Full API Response:", data);
 
         const unread = data.filter(
           (msg) => msg.status === "unread" || !msg.read
@@ -121,7 +121,7 @@ const MessagesWidget = () => {
               msg.conversationId ||
               msg.user?.id ||
               `fallback-${index}`;
-            console.log("Mapping message:", msg, "Assigned ID:", messageId);
+            // console.log("Mapping message:", msg, "Assigned ID:", messageId);
             return {
               id: messageId,
               sender: msg.user?.username || "Unknown User",

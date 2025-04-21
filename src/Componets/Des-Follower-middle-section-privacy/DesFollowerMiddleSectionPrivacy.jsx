@@ -101,7 +101,7 @@ function DesFollowerMiddleSectionPrivacy() {
         }
 
         const data = await response.json();
-        console.log("Privacy Fetched Profile Data:", data);
+        // console.log("Privacy Fetched Profile Data:", data);
         setProfileData(data[0] || defaultData);
       } catch (err) {
         console.error("Fetch Profile Error:", err);
@@ -135,7 +135,7 @@ function DesFollowerMiddleSectionPrivacy() {
       }
 
       if (senderId === receiverId) {
-        setError("You cannot send a connection request to yourself");
+        setError ("You cannot send a connection request to yourself");
         return;
       }
 
@@ -178,9 +178,8 @@ function DesFollowerMiddleSectionPrivacy() {
             `Request failed with status ${response.status}`
         );
       }
-
       setConnectionStatus("requested");
-      console.log("Connection request successful:", responseData);
+      // console.log("Connection request successful:", responseData);
     } catch (err) {
       console.error("Connection Request Error:", err);
       setError(err.message || "Failed to send connection request");
@@ -192,15 +191,28 @@ function DesFollowerMiddleSectionPrivacy() {
   // Toggle about section
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
-  // Render connect button based on status
+  // Render connect button or message based on status
   const renderConnectButton = () => {
-    console.log("Connection Status:", connectionStatus);
+    // console.log("Connection Status:", connectionStatus);
     if (connectionStatus === "requested") {
-      return <div className="connection-status-message">Request Sent!</div>;
+      return (
+        <div
+          className="connect-button-wrapper"
+          role="status"
+          aria-label="Connection request sent"
+        >
+          <span className="connection-status-message">Your request is sent</span>
+        </div>
+      );
     }
 
     return (
-      <div className="connect-button-wrapper" onClick={sendConnectionRequest}>
+      <div
+        className="connect-button-wrapper"
+        onClick={sendConnectionRequest}
+        role="button"
+        aria-label="Connect with user"
+      >
         <img src={Connect} alt="Connect" className="connect-button-img" />
       </div>
     );
@@ -282,7 +294,7 @@ function DesFollowerMiddleSectionPrivacy() {
                 </div>
 
                 <div className="Followers-middle-section-1-about-section-privacy">
-                <p className="DesFollowerMiddleSectionPrivacy-heading">About</p>
+                  <p className="DesFollowerMiddleSectionPrivacy-heading">About</p>
                   <p>
                     {displayedText}
                     {data.about?.length > maxLength && (
@@ -297,7 +309,7 @@ function DesFollowerMiddleSectionPrivacy() {
                 </div>
 
                 <div className="Followers-middle-section-1-collabs-section-privacy">
-                <p className="DesFollowerMiddleSectionPrivacy-heading">Collabs</p>
+                  <p className="DesFollowerMiddleSectionPrivacy-heading">Collabs</p>
                   <div className="Followers-middle-section-1-collabratorCard-privacy">
                     <div className="Followers-middle-section-1-collabrator-lower-left-privacy">
                       <div className="Followers-middle-section-1-collab-profile-privacy">
@@ -305,7 +317,6 @@ function DesFollowerMiddleSectionPrivacy() {
                           <img src={Personimage} alt="Collaborator" />
                         </div>
                         <div className="Followers-middle-section-1-collabratorDetails-privacy">
-                          {/* <h7>{data.collaboratorName || "N/A"}</h7> */}
                           <div className="Followers-middle-section-1-education-privacy">
                             {(data.education || defaultData.education).map(
                               (val, index) => (
@@ -342,7 +353,6 @@ function DesFollowerMiddleSectionPrivacy() {
                 </div>
 
                 <div className="Followers-middle-section-1-skills-section-privacy">
-                  
                   <p className="DesFollowerMiddleSectionPrivacy-heading">Skills</p>
                   <div className="Followers-middle-section-1-skill-list-privacy">
                     {(data.skills || defaultData.skills).map((val, index) => (
