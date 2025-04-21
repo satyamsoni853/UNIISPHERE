@@ -48,6 +48,11 @@ const Blog = () => {
       description: "As per the rumors it is said that the elections of this year is going",
       avatar: profile,
     },
+    {
+      name: "Arjun Verma",
+      description: "As per the rumors it is said that the elections of this year is going",
+      avatar: profile,
+    },
   ];
 
   // Fetch blogs and user profiles
