@@ -5,7 +5,7 @@ import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import { FaPlusCircle } from "react-icons/fa";
 
 function MessageFinalclass() {

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Background from "../Background/Background.jsx";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import backIcon from "./backsvg.svg";

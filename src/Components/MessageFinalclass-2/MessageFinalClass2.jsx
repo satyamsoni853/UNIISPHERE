@@ -10,7 +10,7 @@ import stickerIcon from "./sticker.svg";
 import microphoneIcon from "./on.svg";
 import "./MessageFinalClass2.css";
 import Background2 from "../Background/Background";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar";
 import { MdOutlineDeleteOutline } from "react-icons/md"
 const Background = () => <div className="message-background" />;
 

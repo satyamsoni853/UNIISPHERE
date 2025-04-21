@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiSave, FiX } from "react-icons/fi";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";

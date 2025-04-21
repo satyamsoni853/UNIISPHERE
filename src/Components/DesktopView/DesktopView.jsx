@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbar from '../DesktopNavbar/DesktopNavbar.jsx'
 import Decktopleftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import Decklefttop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopMiddle from "../DesktopMiddle/DesktopMiddle.jsx";
@@ -16,7 +16,7 @@ function DesktopView() {
       <Backgrund />
       {/* Navbar */}
       <div className="desktop-navbar">
-        <DesktopNavbarr />
+        <DesktopNavbar />
       </div>
 
       {/* Main View Container */}

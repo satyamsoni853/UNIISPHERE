@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import Background from "../Background/Background";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar";
 import DesktopRightsection from "../DesktopRight/DesktopRight";
 import backIcon from "./backsvg.svg";
 import "./BlogCreate.css";

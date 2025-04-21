@@ -6,7 +6,7 @@ import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import { useNavigate } from "react-router-dom";

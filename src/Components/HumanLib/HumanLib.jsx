@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import io from 'socket.io-client';
 import "./HumanLib.css";

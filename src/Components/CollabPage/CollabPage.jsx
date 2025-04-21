@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./CollabPage.css"; // We'll create this CSS file for styling
 import profilePhoto from "./profilephoto.png"; // Default profile photo
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import DesktopRightsection from "../DesktopRight/DesktopRight"; // Importing the DesktopRightsection component

@@ -3,7 +3,7 @@ import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
-import "./DesktopNavbarr.css";
+import "./DesktopNavbar.css";
 
 // Icons
 import Addblack from "./AddBlack.svg";

@@ -4,7 +4,7 @@ import "./NetworkPage.css";
 import profilePhoto from "./profilephoto.png";
 import connectsvg from "./Connection.svg";
 import DesktopRightsection from "../DesktopRight/DesktopRight";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import redXIcon from "./close.png";

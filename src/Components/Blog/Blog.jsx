@@ -18,7 +18,7 @@ import expand from "./expand.svg";
 import { IoIosArrowDown } from "react-icons/io";
 import MobileNavBarr from "../MobileNavbarr/MobileNavbarr";
 import Background from "../Background/Background";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr";
+import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar";
 import DesktopRightsection from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 
