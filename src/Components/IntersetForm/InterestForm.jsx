@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
-import "./Interset.css";
-import DesktopRight from "../DesktopRight/DesktopRight";
+import "./InterestForm.css";
+import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
-import MobileFooter from "../Mobilefooter/MobileFooter";
+import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 

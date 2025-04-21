@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For redirection
 import Background from "../Background/Background";
 import Unispherelogo from "./Unispherelogo.png";
-import "./UserSignupwithemailandpass.css"; // Optional: for styling
+import "./UserSignupWithEmailAndPassword.css"; // Optional: for styling
 
 function UserSignupwithemailandpass() {
   const [email, setEmail] = useState("");
