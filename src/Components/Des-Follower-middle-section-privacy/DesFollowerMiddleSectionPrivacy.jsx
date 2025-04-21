@@ -7,7 +7,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import Personimage from "./Person.png";
 import middleconnectimage from "./middleconnectimage.png";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftbottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
@@ -236,7 +236,7 @@ function DesFollowerMiddleSectionPrivacy() {
         <Background />
         <div className="Interest-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftbottom />
+          <DesktopLeftBottom />
         </div>
         <div className="Interest-middle-main-container">
           <div className="Followers-middle-section-1-mainParent-privacy">
