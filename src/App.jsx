@@ -6,7 +6,7 @@ import UserSignupWithEmailAndPassword from "./Components/UserSignupWithEmailAndP
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
 import View from "./Components/View/View.jsx";
 import DesFollowerMiddleSectionPrivacy from "./Components/Des-Follower-middle-section-privacy/DesFollowerMiddleSectionPrivacy.jsx";
-import InterestForm from "./Components/InterestForm/InterestForm.jsx";
+import InterestForm from './Components/IntersetForm/InterestForm.jsx'
 import CollabForm from "./Components/CollabForm/CollabForm.jsx";
 import AboutAndExperience from "./Components/AboutAndExperience/AboutAndExperience.jsx";
 import SkillForm from "./Components/SkillForm/SkillForm.jsx";
