@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FiSave, FiX } from "react-icons/fi";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import DesktopLeftbottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
@@ -124,7 +124,7 @@ function EducationEdit() {
         <Background />
         <div className="EducationEdit-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftbottom />
+          <DesktopLeftBottom />
         </div>
         <div className="EducationEdit-middle-main-container">
           <div className="middle-education-mainParent">

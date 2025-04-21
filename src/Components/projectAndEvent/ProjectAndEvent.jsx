@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./ProjectAndEvent.css";
 import profileImage from "./profilePhoto.png";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
@@ -87,7 +87,7 @@ function ProjectAndEvent() {
         <Background />
         <div className="projectandevent-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftbottom />
+          <DesktopLeftBottom />
         </div>
         <div className="projectandevent-main-container">
           <div className="projectandevent-project-card">

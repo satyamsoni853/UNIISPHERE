@@ -3,7 +3,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import "./SkillForm.css";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftbottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
@@ -175,7 +175,7 @@ function SkillForm() {
         <Background />
         <div className="Skill-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftbottom />
+          <DesktopLeftBottom />
         </div>
         <div className="Skill-middle-main-container">
           <div className="middle-skills-mainParent">
