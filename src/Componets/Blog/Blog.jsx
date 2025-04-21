@@ -73,7 +73,7 @@ const Blog = () => {
         console.log("User ID from URL:", userId); // Log the user ID from URL
         // Fetch blogs by userId
         const response = await axios.get(
-          `https://uniisphere-1.onrender.com/api/blog/${userId}`,
+          `https://uniisphere-1.onrender.com/api/allBlogs`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -83,7 +83,7 @@ const Blog = () => {
         );
 
         console.log("Get Blog API Response:", response.data); // Log the API response
-        setBlogs(response.data); // Assuming response.data is an array of blogs
+        setBlogs(response.data.data); // Updated to handle the new response structure with data property
       } catch (err) {
         console.error("GET /api/blog error:", err);
         setError(err.response?.data?.message || "Failed to fetch blogs");
@@ -231,7 +231,7 @@ const Blog = () => {
 
             {loading && <p>Loading blogs...</p>}
             {error && <p className="error-message">{error}</p>}
-            {!loading && !error && blogs.length === 0 && <p>No blogs found for this user.</p>}
+            {!loading && !error && blogs.length === 0 && <p>No blogs available.</p>}
             {!loading && !error && blogs.length > 0 && (
               <div className="blog-list">
                 {blogs.map((blog, blogIndex) => (
@@ -356,7 +356,7 @@ const Blog = () => {
             <div className="desktop-blog-content-div">
               {loading && <p>Loading blogs...</p>}
               {error && <p className="error-message">{error}</p>}
-              {!loading && !error && blogs.length === 0 && <p>No blogs found for this user.</p>}
+              {!loading && !error && blogs.length === 0 && <p>No blogs available.</p>}
               {!loading && !error && blogs.length > 0 && (
                 <div className="blog-list">
                   {blogs.map((blog, blogIndex) => (
