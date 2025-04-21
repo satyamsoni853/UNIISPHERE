@@ -10,6 +10,8 @@ import backIcon from "./backsvg.svg";
 import "./BlogCreate.css";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import MobileNavbarr from "../MobileNavbarr/MobileNavbarr";
+import profile from "./profile.jpg";
+
 
 const BlogCreate = () => {
   const navigate = useNavigate();
@@ -189,6 +191,19 @@ const BlogCreate = () => {
     setObjectUrl(null);
     setValidationErrors({});
   };
+   const blogList = [
+      {
+        name: "Arjun Verma",
+        description: "As per the rumors it is said that the elections of this year is going",
+        avatar: profile,
+      },
+      {
+        name: "Arjun Verma",
+        description: "As per the rumors it is said that the elections of this year is going",
+        avatar: profile,
+      },
+    ];
+  
 
   return (
     <>
@@ -210,6 +225,27 @@ const BlogCreate = () => {
                   <button className="desktop-blog-create-btn">+ CREATE</button>
                 </Link>
               </div>
+              <div className="desktop-blog-sidebar-blogs">
+              <div className="desktop-blog-sidebar-blogs-title">Top Blogs</div>
+              <div className="desktop-blog-sidebar-blogs-list">
+                {blogList.map((blog, index) => (
+                  <div key={index} className="desktop-blog-sidebar-blogs-item">
+                    <img
+                      src={blog.avatar}
+                      alt="Avatar"
+                      className="desktop-blog-sidebar-blogs-avatar"
+                    />
+                    <div className="desktop-blog-sidebar-blogs-text">
+                      <div className="desktop-blog-sidebar-blogs-name">{blog.name}</div>
+                      <div className="desktop-blog-sidebar-blogs-description">
+                        {blog.description}
+                        <span className="desktop-blog-more-link">...more</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
             </div>
             <div className="desktop-blog-create-content-parent">
               {showDesktopCreateBlog && (
