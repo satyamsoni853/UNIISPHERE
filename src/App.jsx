@@ -15,7 +15,7 @@ import ProfileEditSection from "./Components/ProfileEditSection/ProfileEditSecti
 import FullFlowerSectionPage from "./Components/FullFlowerSectionPage/FullFlowerSectionPage.jsx";
 import PersonalInfoUpdate from "./Components/PersonalInfoUpdate/PersonalInfoUpdate.jsx";
 import MessageFinalClass from './Components/MessageFinalClass/MessageFinalclass.jsx';
-import MessageFinalClass from './Components/MessageFinalclass-2/MessageFinalClass2.jsx'
+import MessageFinalClass2 from './Components/MessageFinalclass-2/MessageFinalClass2.jsx'
 import SelfProfile from "./Components/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Components/SelfSetting/SelfSetting.jsx";
 
