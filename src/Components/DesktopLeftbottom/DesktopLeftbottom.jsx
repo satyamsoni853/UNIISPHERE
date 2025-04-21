@@ -4,7 +4,7 @@ import image1 from "./image1.png";
 import image2 from "./image2.png";
 import image3 from "./image3.png";
 
-function DesktopLeftbottom() {
+function DesktopLeftBottom() {
   const [suggestedItems, setSuggestedItems] = useState([
     { id: 1, topic: "Physics: Sem 2", author: "R.S Aggarwal", image: image1 },
     { id: 2, topic: "The SAGA", author: "Yash Sharma", image: image2 },
@@ -37,4 +37,4 @@ function DesktopLeftbottom() {
   );
 }
 
-export default DesktopLeftbottom;
+export default DesktopLeftBottom;
