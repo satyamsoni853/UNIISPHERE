@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./AboutAndExperience.css";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
-import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
+import DesktopLeftbottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";

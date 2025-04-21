@@ -3,7 +3,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import "./SkillForm.css";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftbottom from "../DesktopLeftbottom/DesktopLeftbottom.jsx";
+import DesktopLeftbottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";

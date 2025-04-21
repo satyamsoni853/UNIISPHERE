@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./DesktopLeftbottom.css";
+import "./DesktopLeftBottom.css";
 import image1 from "./image1.png";
 import image2 from "./image2.png";
 import image3 from "./image3.png";
