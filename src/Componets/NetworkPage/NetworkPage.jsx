@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"; // Added axios import
 import "./NetworkPage.css";
 import profilePhoto from "./profilephoto.png";
 import connectsvg from "./Connection.svg";
@@ -117,50 +118,36 @@ function NetworkPage() {
       return;
     }
 
-    const LoginuserId = localStorage.getItem("LoginuserId");
-    console.log("Fetching connections for userId:", LoginuserId);
-
     try {
       if (!token) {
         throw new Error("Missing authentication token");
       }
-      if (!LoginuserId) {
-        throw new Error("Missing LoginuserId in localStorage");
-      }
 
-      const response = await fetch(
-        `https://uniisphere-1.onrender.com/api/connections?userId=${LoginuserId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      // Use the provided API to fetch all users
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/users/getAll",
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const data = await response.json();
-      console.log("Connections API response:", data);
+      console.log("Users API response:", response.data);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const mappedConnections = Array.isArray(data)
-        ? data.map((conn, index) => ({
-            id: conn.id || `conn-${index}`,
-            username: conn.username || "Unknown User",
-            profilePictureUrl: conn.profilePictureUrl || profilePhoto,
-            headline: conn.headline || "No headline",
-            connections: conn.connections || Math.floor(Math.random() * 100),
-            collaborations: conn.collaborations || Math.floor(Math.random() * 10),
+      // Map API response to connections state
+      const mappedConnections = Array.isArray(response.data)
+        ? response.data.map((user) => ({
+            id: user.id,
+            username: user.username,
+            profilePictureUrl: user.profilePictureUrl || profilePhoto,
+            headline: user.headline || "No headline",
+            connections: user.connections || Math.floor(Math.random() * 100),
+            collaborations: user.collaborations || Math.floor(Math.random() * 10),
           }))
         : [];
 
       setConnections(mappedConnections);
     } catch (err) {
-      console.error("Error fetching connections:", err);
+      console.error("Error fetching users:", err);
       setError(err.message);
+      // Fallback to dummy data on error
       const fallbackConnections = DUMMY_DATA.filter(
         (conn) => conn.status === "accepted"
       ).map((conn) => ({
@@ -386,6 +373,7 @@ function NetworkPage() {
         <div className="networkpage">
           <div className="networkpage-container">
             <div className="networkpage-left-section">
+              {/* Uncomment to enable dummy data toggle button */}
               {/* <button
                 onClick={toggleDummyData}
                 style={{
@@ -467,7 +455,7 @@ function NetworkPage() {
               ) : (
                 <div className="networkpage-grid">
                   {connectionsLoading ? (
-                    <div>Loading connections...</div>
+                    <div>Loading users...</div>
                   ) : error ? (
                     <div>Error: {error}</div>
                   ) : connections.length > 0 ? (
@@ -491,9 +479,9 @@ function NetworkPage() {
                           />
                         </div>
                         <h3 className="networkpage-name">{user.username}</h3>
-                        <p className="networkpage-education">{user.headline}</p>
+                        <p className="networkpage-education">ID: {user.id}</p>
                         <p className="networkpage-description">
-                          {user.description || "No description available"}
+                          {user.headline || "No headline"}
                         </p>
                         <div
                           className="networkpage-connect-icon"
@@ -508,7 +496,7 @@ function NetworkPage() {
                       </div>
                     ))
                   ) : (
-                    <div>No connections found</div>
+                    <div>No users found</div>
                   )}
                 </div>
               )}

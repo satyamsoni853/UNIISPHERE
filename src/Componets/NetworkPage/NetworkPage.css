@@ -1,35 +1,54 @@
-.networkpage-main-container{
+/* Main container for the network page */
+.networkpage-main-container {
   display: flex;
-  /* justify-content: center; */
-}
-.networkpage {
-  margin-top: 100px;
-  padding: 20px;
+  flex-direction: column;
   min-height: 100vh;
-  width: 74vw;
+  width: 100%;
+  align-items: center;
 }
 
+/* Network page wrapper */
+.networkpage {
+  margin-top: 120px;
+  padding: 20px;
+  min-height: calc(100vh - 80px);
+  width: 98vw; /* 98% of viewport width */
+  margin-bottom: 60px; /* Space for fixed buttons */
+}
+
+/* Container for grid and other sections */
 .networkpage-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 
+/* Grid layout for cards */
 .networkpage-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  width: 100%;
+  justify-items: center;
 }
 
+/* Individual card styling */
 .networkpage-card {
   border-radius: 10px;
-  padding: 50px;
+  padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 400px;
-  height: 300px;
+  width: 100%;
+  max-width: 300px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 auto;
 }
 
+/* Profile picture container */
 .networkpage-profile-pic-container {
   display: flex;
   justify-content: center;
@@ -37,6 +56,7 @@
   margin-bottom: 10px;
 }
 
+/* Profile picture */
 .networkpage-profile-pic {
   width: 80px;
   height: 80px;
@@ -44,77 +64,95 @@
   object-fit: cover;
 }
 
+/* Name styling */
 .networkpage-name {
   font-size: 18px;
   font-weight: 600;
-  margin: 5px 0;
   color: #333;
+  margin: 10px 0 5px;
 }
 
+/* Education/ID styling */
 .networkpage-education {
   font-size: 14px;
   color: #666;
   margin: 5px 0;
 }
 
+/* Description styling */
 .networkpage-description {
-  font-size: 12px;
-  color: #888;
+  font-size: 14px;
+  color: #555;
   margin: 5px 0;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+/* Connect icon */
 .networkpage-connect-icon {
   margin: 10px auto;
   cursor: pointer;
-  width: 170px;
-  height: 80px;
+  width: 120px;
+  height: 40px;
 }
 
 .networkpage-connect-icon img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
+/* Stats section */
 .networkpage-stats {
   display: flex;
-  justify-content: space-around;
-  font-size: 18px;
+  justify-content: center;
+  gap: 10px;
+  font-size: 12px;
   color: #666;
-
 }
-.networkpage-stats span{
-padding: 5px 10px;
-}
-
 
 .networkpage-stats span {
   background-color: #f0f0f0;
   border-radius: 12px;
-  font-size: 16px;
+  padding: 5px 10px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Buttons section (fixed at the bottom) */
 .networkpage-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  justify-content: start;
-  gap: 20px;
-  margin-top: 30px;
-  padding-bottom: 20px;
-
+  justify-content: center;
+  gap: 15px;
+  padding: 10px 0;
+  flex-wrap: wrap;
+  width: 98vw; /* Match networkpage width */
+  background-color: #f8f8f8;
+  border-top: 1px solid #e0e0e0;
+  z-index: 1000; /* Ensure buttons are above other content */
 }
 
+/* Action buttons */
 .networkpage-action-btn {
   background-color: #f5f5dc;
-  width: 260px;
   color: black;
   font-weight: 600;
-  
-height: 36px;
+  height: 36px;
   border-radius: 20px;
+  border: none;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
   font-size: 14px;
   text-transform: uppercase;
+  padding: 0 20px;
+  min-width: 180px;
 }
 
 .networkpage-action-btn:hover {
@@ -122,21 +160,26 @@ height: 36px;
   color: white;
 }
 
+/* Right section */
 .networkpage-right-section {
-  width: 350px;
+  width: 300px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   height: fit-content;
+  position: sticky;
+  top: 20px;
 }
 
+/* Right section header */
 .networkpage-right-header {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;
 }
 
+/* Close button */
 .networkpage-close-btn {
   background: none;
   border: none;
@@ -144,22 +187,25 @@ height: 36px;
   cursor: pointer;
   color: #666;
 }
+
+/* Actions for pending requests */
 .networkpage-actions {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px 0;
-  gap: 10px; /* Space between the buttons */
+  gap: 15px;
 }
-.networkpage-actions img{
+
+.networkpage-actions img {
   height: 40px;
   width: 40px;
 }
 
 .action-btn {
-  width: 40px; /* Adjust size as needed */
+  width: 40px;
   height: 40px;
-  border-radius: 50%; /* Circular buttons */
+  border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
@@ -169,150 +215,117 @@ height: 36px;
 }
 
 .action-btn-cross {
-  background-color: #ff4d4d; /* Red background for cross */
+  background-color: #ff4d4d;
 }
 
 .action-btn-check {
-  background-color: #4CAF50; /* Green background for checkmark */
+  background-color: #4caf50;
 }
 
 .action-btn:hover {
-  opacity: 0.8; /* Slight hover effect */
+  opacity: 0.8;
 }
 
 .action-icon {
-  width: 24px; /* Adjust icon size */
+  width: 24px;
   height: 24px;
 }
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
   .networkpage-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
- 
+
 @media (max-width: 992px) {
-.networkpage{
-  display:flex;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
-}
+  .networkpage {
+    padding: 15px;
+    margin-top: 60px;
+  }
   .networkpage-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .Networkpage-rightsection{
+  .networkpage-right-section {
     display: none;
   }
-  .networkpage-right-section {
-    width: 100%;
-  }
-  .networkpage-action-btn{
-    width: 220px;
+  .networkpage-action-btn {
+    min-width: 160px;
   }
 }
 
 @media (max-width: 768px) {
   .networkpage {
-    margin-top: 0px;
-    display:flex;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
-    margin-bottom: 50px;
-   
-  }
-  .networkpage-card{
-    width: 80vw;
-  }
-  .Networkpage-rightsection{
-    display: none;
+    margin-top: 0;
+    padding: 10px;
+    min-height: calc(100vh - 60px);
   }
   .networkpage-grid {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .networkpage-card {
+    max-width: 90vw;
+    height: 320px;
   }
   .networkpage-action-btn {
-   width: 25vw;
-    font-size: 2vw;
+    min-width: 120px;
+    font-size: 12px;
+  }
+  .networkpage-buttons {
+    gap: 10px;
+    padding: 8px 0;
   }
 }
 
 @media (max-width: 480px) {
-  .networkpage{
-    width: 100%;
+  .networkpage {
+    padding: 5px;
   }
-  .networkpage-grid{
-    grid-template-columns: repeat(1,1fr);
+  .networkpage-card {
+    max-width: 100%;
+    padding: 15px;
+    height: 300px;
   }
-  .networkpage-card{
-    width: 100%;
-  }
-  
   .networkpage-profile-pic {
-    height: 80px;
-    width:80px;
-    border-radius: 50%;
+    width: 60px;
+    height: 60px;
   }
   .networkpage-name {
-    font-size: 22px;
-  }
-  .networkpage-education {
     font-size: 16px;
   }
-  
-  .networkpage-description{
-    font-size: 13px;
+  .networkpage-education {
+    font-size: 12px;
   }
-  .networkpage-connect-icon{
-    width: 148px;
-  } 
-  .networkpage-stats span{
-    width: 120px;
-    height: 25px;
-    font-size: 15px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .networkpage-description {
+    font-size: 12px;
+  }
+  .networkpage-connect-icon {
+    width: 100px;
+    height: 30px;
+  }
+  .networkpage-stats span {
+    font-size: 10px;
+    padding: 4px 8px;
   }
   .networkpage-action-btn {
-    width: 120px;
+    min-width: 100px;
     font-size: 10px;
+    height: 32px;
   }
- 
-}
-
-@media screen and (width<=320px) {
- 
-  .networkpage-stats span{
-    width: 120px;
-    height: 20px;
-    font-size: 14px;
+  .networkpage-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 }
 
-.networkpage-name {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin: 10px 0;
-}
-
-.networkpage-education {
-  font-size: 14px;
-  color: #666;
-  margin: 5px 0;
-}
-
-.networkpage-description {
-  font-size: 14px;
-  color: #555;
-  margin: 5px 0;
-}
-
-.networkpage-stats {
-  display: flex;
-  gap: 10px;
-  font-size: 12px;
-  color: #777;
+@media (max-width: 320px) {
+  .networkpage-card {
+    height: 280px;
+  }
+  .networkpage-stats span {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
 }
