@@ -17,7 +17,7 @@ import NotificationBlack from "./NotificationBlackIcon.svg";
 import NotificationWhite from "./NotificationWhiteIcon.svg";
 import ProfileImage from "./ProfileImage.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
-import UserIcon from "./UserIcon.png";
+import UserIcon from "./UserIcon.svg";
 
 function DesktopNavbar() {
   // State (using camelCase for consistency)
