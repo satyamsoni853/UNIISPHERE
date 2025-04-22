@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./MobileMiddlesection.css";
-import MobileNavbarr from "../MobileNavbarr/MobileNavbarr";
+import "./MobileMiddleSection.css"; // Corrected CSS file name
+import MobileNavbar from "../MobileNavbar/MobileNavbar"; // Corrected component name
 import MobileFooter from "../Mobilefooter/MobileFooter";
-import ConnectMidlleimage from "./middleconnectimage.png";
+import ConnectMiddleImage from "./middleconnectimage.png"; // Corrected image name
 import MiddlemainImage from "./Middle-image-main.png";
 import Profileimage from "./Profile-image.png";
 import axios from "axios";
@@ -10,14 +10,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSendOutline } from "react-icons/io5";
 import Background from "../Background/Background";
-import Smallimage1 from "./small-image1.png";
-import Smallimage2 from "./small-image2.png";
-import Smallimage3 from "./small-image3.png";
-import Smallimage4 from "./small-image4.png";
-import Smallimage5 from "./small-image5.png";
-import Smallimage6 from "./small-image6.png";
-import Smallimage7 from "./small-image7.png";
-import Smallimage8 from "./small-image8.png";
+import SmallImage1 from '../Background/SmallImage1.png';
+import SmallImage2 from '../Background/SmallImage2.png';
+import SmallImage3 from '../Background/SmallImage3.png';
+import SmallImage4 from '../Background/SmallImage4.png';
+import SmallImage5 from '../Background/SmallImage5.png';
+import SmallImage6 from '../Background/SmallImage6.png';
+import SmallImage7 from '../Background/SmallImage7.png';
+import SmallImage8 from '../Background/SmallImage8.png';
 
 // Comment box data
 import profilePhoto from "./profilephoto.png";
@@ -30,22 +30,22 @@ import CommentIcon from "./Comment.svg";
 import savedIcon from "./saved.svg";
 import whatsappIcon from "./Whatsapp.svg";
 import facebookIcon from "./Facebook.svg";
-import instaIcon from "./insta.svg";
+import InstagramIcon from "./insta.svg"; // Corrected to consistent naming
 import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
 import { SearchIcon } from "lucide-react";
 
-function MobileMiddlesection() {
+function MobileMiddleSection() { // Corrected component name
   const [showComment, setShowComment] = useState(false);
   const [showShare, setShowShare] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
+  const [show出色, setShowOptions] = useState(false);
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
-  const [posts, setPosts] = useState([]); // Added missing state
-  const [error, setError] = useState(null); // Added missing state
-  const [imageLoading, setImageLoading] = useState(false); // Added missing state
-  const [commentsLoading, setCommentsLoading] = useState(false); // Added missing state
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [commentsLoading, setCommentsLoading] = useState(false);
   const optionsRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -192,14 +192,13 @@ function MobileMiddlesection() {
       return;
     }
 
-    const previousPosts = [...posts]; // Store previous state for rollback
+    const previousPosts = [...posts];
     const updatedPost = {
       ...post,
       isLiked: !post.isLiked,
       likes: post.isLiked ? post.likes - 1 : post.likes + 1,
     };
 
-    // Optimistic UI update
     setPosts((prevPosts) =>
       prevPosts.map((p, i) => (i === index ? updatedPost : p))
     );
@@ -221,7 +220,6 @@ function MobileMiddlesection() {
       console.log("Like/Unlike response:", response.data);
     } catch (error) {
       console.error("Like/Unlike error:", error.response?.data || error.message);
-      // Revert UI state if the request failed
       setPosts(previousPosts);
       setError("Failed to update like status");
     }
@@ -255,7 +253,6 @@ function MobileMiddlesection() {
       );
       console.log("Comment API response:", response.data);
 
-      // Refresh the entire feed to get updated comments and likes
       await fetchFeed();
 
       setNewComment("");
@@ -376,7 +373,7 @@ function MobileMiddlesection() {
             {/* Action Bar */}
             <div className="mobile-middle-action-bar">
               <img
-                src={ConnectMidlleimage}
+                src={ConnectMiddleImage} // Corrected variable name
                 alt="Connect"
                 className="mobile-middle-connect-image"
               />
@@ -451,7 +448,7 @@ function MobileMiddlesection() {
                     />
                     <div className="mobile-Full-comment-section-comment-content">
                       <div className="mobile-Full-comment-section-comment-user-info">
-                        <span className="mobile-Full-comment-section-comment-username">
+                        <span className="mobile-Fulli-comment-section-comment-username">
                           {comment.author || comment.username || "Anonymous"}
                         </span>
                         <span className="mobile-Full-comment-section-comment-timestamp">
@@ -529,10 +526,10 @@ function MobileMiddlesection() {
           </div>
           <div className="mobile-Full-share-section-right-section">
             <div className="mobile-Full-share-section-innerDiv">
-              <div className="mobile-Full-share-section-AvtaarAndName-collection">
+              <div className="mobile-Full-share-section-AvatarAndName-collection"> {/* Corrected class name */}
                 {persons.map((val, i) => (
                   <div
-                    className="mobile-Full-share-section-AvtaarAndName"
+                    className="mobile-Full-share-section-AvatarAndName" // Corrected class name
                     key={i}
                   >
                     <img src={val.avatar} alt={val.name} />
@@ -545,7 +542,7 @@ function MobileMiddlesection() {
                 <img src={xIcon} alt="X" />
                 <img src={whatsappIcon} alt="WhatsApp" />
                 <img src={facebookIcon} alt="Facebook" />
-                <img src={instaIcon} alt="Instagram" />
+                <img src={InstagramIcon} alt="Instagram" /> // Corrected variable name
               </div>
             </div>
 
@@ -566,4 +563,4 @@ function MobileMiddlesection() {
   );
 }
 
-export default MobileMiddlesection;
+export default MobileMiddleSection; // Corrected component name

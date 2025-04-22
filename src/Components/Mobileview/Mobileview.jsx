@@ -1,16 +1,16 @@
 import React from 'react';
 import Background from '../Background/Background';
 import MobileFooter from '../Mobilefooter/MobileFooter';
-import MobileNavbarr from '../MobileNavbarr/MobileNavbarr';
-import MobileMiddlesection from '../MobileMiddlesection/MobileMiddlesection';
+import MobileNavbar from '../MobileNavbar/MobileNavbar';
+import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection';
 import './Mobileview.css';
 
 function Mobileview() {
   return (
     <div className="mobile-view-container">
       <Background />
-      <MobileNavbarr />
-      <MobileMiddlesection />
+      <MobileNavbar />
+      <MobileMiddleSection />
       <MobileFooter />
     </div>
   );
