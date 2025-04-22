@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./CollabForm.css";
 import { IoIosSearch } from "react-icons/io";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom';
+import DesktopLeftBottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
