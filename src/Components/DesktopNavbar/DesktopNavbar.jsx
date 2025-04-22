@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
 // Icons (standardized casing to match typical file naming)
-import AddBlack from "./AddBlack.svg";
-import AddWhite from "./AddWhite.svg";
+import AddBlack from "./AddBlackIcon.svg";
+import AddWhite from "./AddWhiteIcon.svg";
 import BackIcon from "./BackIcon.svg";
 import HomeBlack from "./HomeBlack.svg";
 import HomeWhite from "./HomeWhite.svg";
