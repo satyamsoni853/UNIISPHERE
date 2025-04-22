@@ -3,9 +3,9 @@ import Background from '../Background/Background';
 import MobileFooter from '../MobileFooter/MobileFooter'; // Corrected to PascalCase
 import MobileNavbar from '../MobileNavbar/MobileNavbar';
 import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection'; // Removed .jsx
-import './MobileView.css'; // Corrected CSS file name for consistency
+import './MobileViewSection.css'; // Corrected CSS file name for consistency
 
-function MobileView() { // Corrected component name
+function MobileViewSection() { // Corrected component name
   return (
     <div className="mobile-view-container">
       <Background />
@@ -16,4 +16,4 @@ function MobileView() { // Corrected component name
   );
 }
 
-export default MobileView; // Corrected export name
+export default MobileViewSection; // Corrected export name
