@@ -1,159 +1,228 @@
-/* Navbar Container */
+/* MobileNavbar.css */
+
+/* Container for the entire navbar */
 .mobile-navbar-container {
   position: relative;
-  display: flex;
-  justify-content: center;
   width: 100%;
-  height: 60px;
+  background-color: #f8f9fa; /* Light background for contrast */
+  z-index: 1000; /* Ensure navbar stays above other content */
 }
 
-/* Navbar */
+/* Navbar layout */
 .mobile-navbar {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 500px;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 15px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  border-bottom: 5px solid grey;
-  z-index: 999;
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-/* Navbar Icons */
-.mobile-navbar-icon {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  margin-left: 15px;
+/* Logo styling */
+.mobile-navbar-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%; /* Circular logo */
 }
 
-/* Search Container */
+/* Search container */
 .mobile-navbar-search-container {
-  position: relative; /* Added to ensure dropdown positions correctly */
   flex: 1;
+  position: relative;
   margin: 0 10px;
 }
 
-/* Search Bar */
+/* Search input wrapper */
 .mobile-navbar-search {
   display: flex;
   align-items: center;
-  background: #f5f5f5; /* Merged: Chose modern background over grey border */
-  border-radius: 20px;
-  padding: 8px 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px; /* Rounded edges */
+  padding: 8px 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease;
 }
 
-/* Search Icon */
+/* Search input focus state */
+.mobile-navbar-search:focus-within {
+  border-color: #007bff; /* Highlight on focus */
+}
+
+/* Search icon */
 .mobile-navbar-search-icon {
-  font-size: 20px;
-  color: grey;
-  margin-right: 5px;
+  color: #666;
+  font-size: 18px;
+  margin-right: 8px;
 }
 
-/* Search Input */
+/* Search input field */
 .mobile-navbar-input {
-  flex: 1;
   border: none;
-  background: transparent;
-  padding: 5px;
-  font-size: 14px;
   outline: none;
+  width: 100%;
+  font-size: 14px;
+  background: transparent;
+  color: #333;
 }
 
-/* Search Results Dropdown */
+/* Placeholder styling */
+.mobile-navbar-input::placeholder {
+  color: #999;
+}
+
+/* Search results dropdown */
 .mobile-search-results {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   max-height: 300px;
   overflow-y: auto;
-  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Above other elements */
   margin-top: 5px;
 }
 
-/* Search Result Item */
+/* Search result item */
 .mobile-search-result-item {
   display: flex;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  padding: 10px 15px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.mobile-search-result-item:hover {
-  background: #f9f9f9;
+/* Hover and focus states for search result item */
+.mobile-search-result-item:hover,
+.mobile-search-result-item:focus {
+  background-color: #f1f3f5;
+  outline: none;
 }
 
-/* Search Result Avatar */
+/* Search result avatar */
 .mobile-search-result-avatar {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  margin-right: 10px;
   object-fit: cover;
+  margin-right: 10px;
 }
 
-/* Search Result Info */
+/* Search result info */
 .mobile-search-result-info {
   display: flex;
   flex-direction: column;
 }
 
-/* Search Result Name */
+/* Search result username */
 .mobile-search-result-name {
+  font-size: 14px;
   font-weight: 500;
+  color: #333;
 }
 
-/* Loading, Error, and No Results */
-.mobile-search-loading,
-.mobile-search-error,
-.mobile-search-no-results {
+/* Loading state */
+.mobile-search-loading {
   padding: 15px;
   text-align: center;
+  font-size: 14px;
   color: #666;
 }
 
+/* Error state */
 .mobile-search-error {
-  color: #ff4d4f;
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #dc3545; /* Red for errors */
 }
 
-/* Logo */
-.mobile-navbar-logo {
-  height: 30px;
-  margin-right: 10px;
+/* No results state */
+.mobile-search-no-results {
+  padding: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
 }
 
-/* Message Icon Container */
+/* Message icon container */
 .message-icon-container {
   position: relative;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 }
 
-/* Unread Badge */
+/* Message icon */
+.mobile-navbar-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* Unread badge */
 .unread-badge {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: #ff0000;
+  top: -5px;
+  right: -5px;
+  background-color: #dc3545; /* Red badge */
   color: #fff;
-  border-radius: 50%;
-  padding: 4px;
   font-size: 12px;
   font-weight: bold;
-  min-width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Accessibility: Ensure focusable elements are styled */
+[role="button"]:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mobile-navbar {
+    padding: 8px 10px;
+  }
+
+  .mobile-navbar-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mobile-navbar-input {
+    font-size: 13px;
+  }
+
+  .mobile-search-result-item {
+    padding: 8px 12px;
+  }
+
+  .mobile-search-result-name {
+    font-size: 13px;
+  }
+}
+
+/* Ensure smooth scrolling for search results */
+.mobile-search-results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mobile-search-results::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+.mobile-search-results::-webkit-scrollbar-track {
+  background-color: #f8f9fa;
 }

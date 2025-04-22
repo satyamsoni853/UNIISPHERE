@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./MobileFooter.css"; // Import CSS for styling
 
 import Addicon from "./Addicon.png";
-import Clendericon from "./Clendericon.png";
+import Calendaricon from "./Calendaricon.png"; // Fixed typo: Clendericon -> Calendaricon
 import Homeicon from "./Homeicon.png";
 import Networkicon from "./Networkicon.png";
 import Notificationicon from "./Notificationicon.png";
@@ -16,14 +16,14 @@ function MobileFooter() {
   const [showAddMore, setShowAddMore] = useState(true);
   const [showPostDetails, setShowPostDetails] = useState(false);
   const [caption, setCaption] = useState("");
-  const [location, setLocation] = useState(""); // Added location state
+  const [location, setLocation] = useState("");
   const [hideLikes, setHideLikes] = useState(false);
   const [disableComments, setDisableComments] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [mentions, setMentions] = useState([]); // Added mentions state
-  const [username, setUsername] = useState(""); // Added username state
-  const [userProfileImage, setUserProfileImage] = useState(""); // Added profile image state
+  const [mentions, setMentions] = useState([]);
+  const [username, setUsername] = useState("");
+  const [userProfileImage, setUserProfileImage] = useState("");
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ function MobileFooter() {
             (post) => post.user.id === userId
           );
           if (userPosts.length > 0) {
-            setUsername(userPosts[0].user.username || "Himanshu Choudary");
+            setUsername(userPosts[0].user.username || "Himanshu Choudhary"); // Fixed possible typo: Choudary -> Choudhary
             setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
           }
         }
@@ -137,7 +137,7 @@ function MobileFooter() {
       formData.append("userId", userId);
       formData.append("visibility", hideLikes ? "private" : "public");
       formData.append("location", location || "");
-      formData.append("tags", mentions.join(",")); // Convert mentions array to comma-separated string
+      formData.append("tags", mentions.join(","));
 
       const postResponse = await axios.post(
         "https://uniisphere-1.onrender.com/posts",
@@ -152,7 +152,7 @@ function MobileFooter() {
 
       // Reset form state
       handleCloseUpload();
-      navigate("/"); // Navigate to home after posting
+      navigate("/");
     } catch (error) {
       console.error("Error creating post:", error);
       setError(error.message || "Failed to create post. Please try again.");
@@ -174,12 +174,11 @@ function MobileFooter() {
         />
         <img
           src={Addicon}
-          alt="Add"
-          className="mobile-footer-add-icon"
+          alt="Add  className="mobile-footer-add-icon"
           onClick={() => setShowUploadSection(true)}
         />
         <img
-          src={Clendericon}
+          src={Calendaricon} // Fixed typo: Clendericon -> Calendaricon
           alt="Calendar"
           className="mobile-footer-icon"
         />
@@ -205,7 +204,7 @@ function MobileFooter() {
           </div>
           <div className="mobile-connections-item">Guidance</div>
           <div className="mobile-connections-item">NGOs</div>
-          <div className="mobile-connections-item">BLOGs</div>
+          <div className="mobile-connections-item">Blogs</div> {/* Fixed: BLOGs -> Blogs */}
         </div>
       )}
       {showUploadSection && (
@@ -276,7 +275,7 @@ function MobileFooter() {
                         src={userProfileImage || "/profile-image.png"}
                         alt="profileImage"
                       />
-                      <h3>{username || "Himanshu Choudary"}</h3>
+                      <h3>{username || "Himanshu Choudhary"}</h3> {/* Fixed possible typo: Choudary -> Choudhary */}
                     </div>
                     <h6
                       onClick={handlePostSubmit}
@@ -334,8 +333,8 @@ function MobileFooter() {
                         <div className="setting-info">
                           <h4>Hide Likes</h4>
                           <p className="setting-description">
-                            No one will be able to see the number of likes on your post. Except you
-                          </p>
+                            No one will be able to see the number of likes on your post, except you
+                          </p> {/* Changed: "Except you" -> "except you" for consistency */}
                         </div>
                         <label className="toggle-switch">
                           <input
