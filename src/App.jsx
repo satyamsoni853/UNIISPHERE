@@ -51,7 +51,7 @@ function App() {
             element={<DesFollowerMiddleSectionPrivacy />}
           />
           <Route
-            path="/profile-edit/:userId"
+            path="/ProfileEditSection/:userId"
             element={<ProfileEditSection />}
           />
           <Route
@@ -59,7 +59,7 @@ function App() {
             element={<FullFlowerSectionPage />}
           />
           <Route
-            path="/after-connecting/:userId"
+            path="/AfterConnecting/:userId"
             element={<AfterConnecting />}
           />
           <Route
@@ -82,7 +82,7 @@ function App() {
           <Route path="/settings" element={<SelfSetting />} />
           <Route path="/messages" element={<MessageFinalClass />} />
           <Route
-            path="/messages/:messageId"
+            path="/MessageFinalClass2/:messageId"
             element={<MessageFinalClass2 />}
           />
           <Route path="/network" element={<NetworkPage />} />
@@ -93,7 +93,7 @@ function App() {
           />
           <Route path="/upload/:userId" element={<UploadSection />} />
           <Route path="/add-post" element={<MobileAddPost />} />
-          <Route path="/inbox" element={<MessageMobileInbox />} />
+          <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
           <Route path="/MentorSection" element={<MentorSection />} />
           <Route path="/human-lib" element={<HumanLib />} />
         </Routes>

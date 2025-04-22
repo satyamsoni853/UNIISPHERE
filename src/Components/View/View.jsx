@@ -20,7 +20,7 @@ function View() {
 
   return (
     <div className="view-container"> {/* Added className for styling */}
-      {isMobile ? <MobileView /> : <DesktopView />}
+      {isMobile ? <MobileViewSection /> : <DesktopView />}
     </div>
   );
 }
