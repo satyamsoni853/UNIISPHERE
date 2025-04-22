@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./MobileMiddleSection.css"; // Corrected CSS file name
-import MobileNavbar from "../MobileNavbar/MobileNavbar"; // Corrected component name
+import MobileNavbar from "../MobileNavbar/MobileNavbar.jsx"; // Corrected component name
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import ConnectMiddleImage from "./middleconnectimage.png"; // Corrected image name
 import MiddlemainImage from "./Middle-image-main.png";
