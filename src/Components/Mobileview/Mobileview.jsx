@@ -2,7 +2,7 @@ import React from 'react';
 import Background from '../Background/Background';
 import MobileFooter from '../Mobilefooter/MobileFooter';
 import MobileNavbar from '../MobileNavbar/MobileNavbar';
-import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection'
+import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection.jsx'
 import './Mobileview.css';
 
 function Mobileview() {
