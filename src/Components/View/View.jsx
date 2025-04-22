@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './View.css';
 import DesktopView from '../DesktopView/DesktopView.jsx';
-import MobileViewSection from  '../MobileViewSection/MobileViewSection.jsx' // Fixed case consistency
+import MobileViewSection from '../Mobileview/Mobileview.jsx'
 
 function View() {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768); // Use callback for initial state
