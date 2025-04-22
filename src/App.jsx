@@ -63,13 +63,14 @@ function App() {
             element={<AfterConnecting />}
           />
           <Route
-            path="/personal-info/:userId"
+            path="/PersonalInfoUpdate:userId"
             element={<PersonalInfoUpdate />}
           />
           <Route path="/skills/:userId" element={<SkillForm />} />
           <Route path="/collab/:userId" element={<CollabForm />} />
           <Route path="/interests/:userId" element={<InterestForm />} />
           <Route path="/education/:userId" element={<EducationEdit />} />
+          <Route path="/uploadsection/:userId" element={<UploadSection />} />
           <Route path="/blog/:userId" element={<Blog />} />
           <Route path="/blog-create/:userId" element={<BlogCreate />} />
           <Route
@@ -91,7 +92,7 @@ function App() {
             path="/messages-widget"
             element={<BottomMessagesWidget />}
           />
-          <Route path="/upload/:userId" element={<UploadSection />} />
+         
           <Route path="/add-post" element={<MobileAddPost />} />
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
           <Route path="/MentorSection" element={<MentorSection />} />
