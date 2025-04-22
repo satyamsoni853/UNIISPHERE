@@ -13,8 +13,7 @@
 
 .desktop-navbar {
   width: 100%;
-  z-index: 10; /* Ensure navbar stays above other content */
-  /* Add specific height or other styles as needed, e.g., height: 60px; */
+  z-index: 10; 
 }
 
 .desktop-view-container {
