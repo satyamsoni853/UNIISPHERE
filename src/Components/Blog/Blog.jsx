@@ -16,9 +16,9 @@ import threeDot from "./Threedot.svg";
 import cc from "./cc.svg";
 import expand from "./expand.svg";
 import { IoIosArrowDown } from "react-icons/io";
-import MobileNavBarr from "../MobileNavbarr/MobileNavbarr";
+import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import Background from "../Background/Background";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar";
+import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
 import DesktopRightsection from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 
@@ -261,7 +261,7 @@ const Blog = () => {
     <>
       <div className="blog-container">
         <div className="blog-container-nav">
-          <MobileNavBarr />
+          <MobileNavbar />
         </div>
         <div className="blog-container-background">
           <Background />
