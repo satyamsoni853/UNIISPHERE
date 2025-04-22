@@ -8,7 +8,7 @@ import "./DesktopNavbar.css";
 // Icons (standardized casing to match typical file naming)
 import AddBlack from "./AddBlack.svg";
 import AddWhite from "./AddWhite.svg";
-import BackIcon from "./BackSvg.svg";
+import BackIcon from "./BackIcon.svg";
 import HomeBlack from "./HomeBlack.svg";
 import HomeWhite from "./HomeWhite.svg";
 import NetworkBlack from "./NetworkBlack.svg";
