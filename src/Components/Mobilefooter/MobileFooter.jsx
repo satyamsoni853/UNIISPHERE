@@ -3,11 +3,11 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./MobileFooter.css"; // Import CSS for styling
 
-import Addicon from "./Addicon.png";
-import Calendaricon from "./Calendaricon.png";
-import Homeicon from "./Homeicon.png";
-import Networkicon from "./Networkicon.png";
-import Notificationicon from "./Notificationicon.png";
+import AddIcon from "./Addicon.png";
+import CalendarIcon from "./Calendaricon.png";
+import HomeIcon from "./Homeicon.png";
+import NetworkIcon from "./Networkicon.png";
+import NotificationIcon from "./Notificationicon.png";
 
 function MobileFooter() {
   const [showNetwork, setShowNetwork] = useState(false);
@@ -46,14 +46,23 @@ function MobileFooter() {
             },
           }
         );
-        if (response.data.totalPosts && response.data.totalPosts.length > 0) {
+        // Defensive check for response data
+        if (
+          response.data?.totalPosts &&
+          Array.isArray(response.data.totalPosts) &&
+          response.data.totalPosts.length > 0
+        ) {
           const userPosts = response.data.totalPosts.filter(
-            (post) => post.user.id === userId
+            (post) => post.user?.id === userId
           );
-          if (userPosts.length > 0) {
-            setUsername(userPosts[0].user.username || "Himanshu Choudhary");
+          if (userPosts.length > 0 && userPosts[0].user) {
+            setUsername(userPosts[0].user.username || "User");
             setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
+          } else {
+            setError("No user posts found");
           }
+        } else {
+          setError("No posts available");
         }
       } catch (err) {
         console.error("Error fetching user profile:", err);
@@ -118,6 +127,12 @@ function MobileFooter() {
     });
   };
 
+  // Optional: Basic mentions handler (expand as needed)
+  const handleAddMention = () => {
+    // Placeholder for mentions functionality
+    console.log("Add mention clicked");
+  };
+
   const handlePostSubmit = async () => {
     try {
       setIsLoading(true);
@@ -165,26 +180,28 @@ function MobileFooter() {
     <div className="mobile-footer">
       <div className="mobile-footer-container">
         <Link to="/">
-          <img src={Homeicon} alt="Home" className="mobile-footer-icon" />
+          <img src={HomeIcon} alt="Home" className="mobile-footer-icon" />
         </Link>
         <img
-          src={Notificationicon}
+          src={NotificationIcon}
           alt="Notification"
           className="mobile-footer-icon"
+          aria-disabled="true"
         />
         <img
-          src={Addicon}
+          src={AddIcon}
           alt="Add"
           className="mobile-footer-add-icon"
           onClick={() => setShowUploadSection(true)}
         />
         <img
-          src={Calendaricon}
+          src={CalendarIcon}
           alt="Calendar"
           className="mobile-footer-icon"
+          aria-disabled="true"
         />
         <img
-          src={Networkicon}
+          src={NetworkIcon}
           onClick={() => setShowNetwork(!showNetwork)}
           alt="Network"
           className="mobile-footer-icon"
@@ -230,7 +247,19 @@ function MobileFooter() {
             {mediaList.length !== 0 && showAddMore && (
               <div className="after-upload">
                 <div className="navbar">
-                  <img src="/back-icon.png" alt="Back" onClick={handleCloseUpload} />
+                  <span
+                    className="back-button"
+                    onClick={handleCloseUpload}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleCloseUpload();
+                      }
+                    }}
+                  >
+                    Back
+                  </span>
                   <h6
                     onClick={() => {
                       setShowPostDetails(true);
@@ -274,9 +303,9 @@ function MobileFooter() {
                     <div className="image-and-name">
                       <img
                         src={userProfileImage || "/profile-image.png"}
-                        alt="profileImage"
+                        alt="Profile"
                       />
-                      <h3>{username || "Himanshu Choudhary"}</h3>
+                      <h3>{username || "User"}</h3>
                     </div>
                     <h6
                       onClick={handlePostSubmit}
@@ -327,14 +356,27 @@ function MobileFooter() {
                     </div>
                     <div className="mention-form-group">
                       <label className="input-label">Add Mentions</label>
-                      <div className="mention-button">+</div>
+                      <div
+                        className="mention-button"
+                        role="button"
+                        tabIndex={0}
+                        onClick={handleAddMention}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            handleAddMention();
+                          }
+                        }}
+                      >
+                        +
+                      </div>
                     </div>
                     <div className="privacy-settings">
                       <div className="setting-item">
                         <div className="setting-info">
                           <h4>Hide Likes</h4>
                           <p className="setting-description">
-                            No one will be able to see the number of likes on your post, except you
+                            No one will be able to see the number of likes on
+                            your post, except you
                           </p>
                         </div>
                         <label className="toggle-switch">
