@@ -171,15 +171,12 @@ function MobileNavbar() {
         </div>
 
         {/* Message Icon with Unread Badge */}
-        <Link to="/MessageMobileInbox" className="message-icon-container">
+        <Link to="/MessageMobileInbox">
           <img
             src={Messageicon}
             alt="Message"
-            className="mobile-navbar-icon"
+            className="mobile-navbarr-icon"
           />
-          {unreadCount > 0 && (
-            <span className="unread-badge">{unreadCount}</span>
-          )}
         </Link>
       </div>
     </div>

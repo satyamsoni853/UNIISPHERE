@@ -93,7 +93,7 @@ function App() {
           />
           <Route path="/upload/:userId" element={<UploadSection />} />
           <Route path="/add-post" element={<MobileAddPost />} />
-          <Route path="/inbox" element={<MessageMobileInbox />} />
+          <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
           <Route path="/MentorSection" element={<MentorSection />} />
           <Route path="/human-lib" element={<HumanLib />} />
         </Routes>
