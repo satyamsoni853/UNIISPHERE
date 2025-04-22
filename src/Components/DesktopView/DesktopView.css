@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.desktop-view-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+}
+
+.desktop-navbar {
+  /* width: 100%; */
+  /* z-index: 10;  */
+}
+
+.desktop-view-container {
+  display: flex;
+  width: 100%;
+  /* flex: 1; */
+  /* min-height: calc(100vh - 60px); / */
+}
+
+.desktop-view-left {
+  display: flex;
+  flex-direction: column; 
+  width: 25%; /* Adjust as needed */
+  /* min-width: 200px; */
+}
+
+.desktop-view-middle {
+  /* position: relative; */
+  width: 50%; 
+  /* min-width: 00px;  */
+}
+
+.desktop-view-right {
+  /* width: 25%;  */
+  /* min-width: 200px;  */
+}
+
+/* Ensure the left components stack properly */
+.desktop-view-left > * {
+  /* width: 100%; */
+}
+
+/* Optional: Add specific heights for left components */
+.desktop-left-top,
+.desktop-left-bottom {
+  /* flex: 1;  */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .desktop-view-container {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .desktop-view-left,
+  .desktop-view-middle,
+  .desktop-view-right {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .desktop-view-left {
+    flex-direction: row; /* Optional: Stack horizontally on smaller screens */
+  }
+}
+
