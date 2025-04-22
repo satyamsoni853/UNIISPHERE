@@ -16,7 +16,7 @@ import NetworkWhite from "./NetworkWhiteIcon.svg";
 import NotificationBlack from "./NotificationBlackIcon.svg";
 import NotificationWhite from "./NotificationWhiteIcon.svg";
 import ProfileImage from "./ProfileImage.png";
-import UnisphereLogoIcon from "./UnisphereLogoIcon.png";
+import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.png";
 
 function DesktopNavbar() {
