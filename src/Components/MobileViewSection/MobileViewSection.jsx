@@ -1,12 +1,11 @@
 import React from 'react';
-import Background from '../Background/Background';
+import Background from '../Background/Background.jsx'; // Added .jsx for consistency
+import MobileNavbar from '../MobileNavbar/MobileNavbar.jsx'; // Added .jsx for consistency
+import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection.jsx';
+import MobileFooter from '../MobileFooter.jsx'; // Corrected path assuming file is in src/Components/
+import './MobileViewSection.css';
 
-import MobileNavbar from '../MobileNavbar/MobileNavbar';
-import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection.jsx' // Removed .jsx
-import './MobileViewSection.css'; // Corrected CSS file name for consistency
-import MobileFooter from '../MobileFooter/MobileFooter.jsx';
-
-function MobileViewSection() { // Corrected component name
+function MobileViewSection() {
   return (
     <div className="mobile-view-container">
       <Background />
@@ -17,4 +16,4 @@ function MobileViewSection() { // Corrected component name
   );
 }
 
-export default MobileViewSection; // Corrected export name
+export default MobileViewSection;
