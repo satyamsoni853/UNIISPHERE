@@ -1,7 +1,7 @@
 import React from 'react';
 import Background from '../Background/Background.jsx'; // Added .jsx for consistency
 import MobileNavbar from '../MobileNavbar/MobileNavbar.jsx'; // Added .jsx for consistency
-import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection.jsx'
+import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection'
 import MobileFooter from "../MobileFooter/MobileFooter.jsx"
 import './MobileViewSection.css';
 
