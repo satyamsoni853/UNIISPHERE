@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./AboutAndExperience.css";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
-import DesktopLeftbottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
@@ -192,7 +192,7 @@ function AboutAndExperiance() {
         <Background />
         <div className="AboutAndExperiance-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftbottom />
+          <DesktopLeftBottomSection />
         </div>
         <div className="AboutAndExperiance-middle-main-container">
           <div className="middle-aboutExperience-mainParent">
