@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FiSave, FiX } from "react-icons/fi";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom';
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";

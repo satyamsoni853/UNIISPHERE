@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Background from "../Background/Background.jsx";
-import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom';
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight";

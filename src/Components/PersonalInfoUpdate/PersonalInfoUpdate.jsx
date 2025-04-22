@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./PersonalInfoUpdate.css";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom.jsx'
+import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom';
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
