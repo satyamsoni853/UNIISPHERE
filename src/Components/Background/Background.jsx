@@ -1,33 +1,33 @@
 import React from 'react';
 import './Background.css';
 
-import Smallimage1 from './small-image1.png';
-import Smallimage2 from './small-image2.png';
-import Smallimage3 from './small-image3.png';
-import Smallimage4 from './small-image4.png';
-import Smallimage5 from './small-image5.png';
-import Smallimage6 from './small-image6.png';
-import Smallimage7 from './small-image7.png';
-import Smallimage8 from './small-image8.png';
-import Smallimage9 from './small-image9.png';
-import Smallimage10 from './small-image10.png';
-import Smallimage11 from './small-image11.png';
-import Smallimage12 from './small-image12.png';
-import Smallimage13 from './small-image13.png';
-import Smallimage14 from './small-image14.png';
+import SmallImage1 from './SmallImage1.png';
+import SmallImage2 from './SmallImage2.png';
+import SmallImage3 from './SmallImage3.png';
+import SmallImage4 from './SmallImage4.png';
+import SmallImage5 from './SmallImage5.png';
+import SmallImage6 from './SmallImage6.png';
+import SmallImage7 from './SmallImage7.png';
+import SmallImage8 from './SmallImage8.png';
+import SmallImage9 from './SmallImage9.png';
+import SmallImage10 from './SmallImage10.png';
+import SmallImage11 from './SmallImage11.png';
+import SmallImage12 from './SmallImage12.png';
+import SmallImage13 from './SmallImage13.png';
+import SmallImage14 from './SmallImage14.png';
 
 const images = [
-  Smallimage1, Smallimage2, Smallimage3, Smallimage4, Smallimage5, Smallimage6,
-  Smallimage7, Smallimage8, Smallimage9, Smallimage10, Smallimage11, Smallimage12,
-  Smallimage13, Smallimage14, Smallimage1, Smallimage2, Smallimage3, Smallimage4,
-  Smallimage5, Smallimage6
-]; // 20 images
+  SmallImage1, SmallImage2, SmallImage3, SmallImage4, SmallImage5, SmallImage6,
+  SmallImage7, SmallImage8, SmallImage9, SmallImage10, SmallImage11, SmallImage12,
+  SmallImage13, SmallImage14, SmallImage1, SmallImage2, SmallImage3, SmallImage4,
+  SmallImage5, SmallImage6
+];
 
 function Background() {
   return (
     <div className="background-container">
-      {images.map((img, index) => (
-        <img key={index} src={img} alt="Small bg" className={`bg-img img-${index}`} />
+      {images.map((image, index) => (
+        <img key={index} src={image} alt="Small Image" className={`bg-img img-${index}`} />
       ))}
     </div>
   );

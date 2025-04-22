@@ -3,15 +3,15 @@
   position: fixed; 
   top: 0;
   left: 0;
-  width: 100%;
+  width: 98vw;
   height: 100%;
-  z-index: -1; /* Sends it behind other elements */
+  /* z-index: -1;  */
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   justify-content: space-evenly;
   align-items: center;
-  background-color: white; /* Ensures a white background */
-  overflow: hidden;
+  /* background-color: white;  */
+  /* overflow: hidden; */
 }
 
 .bg-img {
