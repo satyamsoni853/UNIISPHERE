@@ -1,11 +1,11 @@
 import React from 'react';
 import Background from '../Background/Background';
-import MobileFooter from '../Mobilefooter/MobileFooter';
+import MobileFooter from '../MobileFooter/MobileFooter'; // Corrected to PascalCase
 import MobileNavbar from '../MobileNavbar/MobileNavbar';
-import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection.jsx'
-import './Mobileview.css';
+import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection'; // Removed .jsx
+import './MobileView.css'; // Corrected CSS file name for consistency
 
-function Mobileview() {
+function MobileView() { // Corrected component name
   return (
     <div className="mobile-view-container">
       <Background />
@@ -16,4 +16,4 @@ function Mobileview() {
   );
 }
 
-export default Mobileview;
+export default MobileView; // Corrected export name
