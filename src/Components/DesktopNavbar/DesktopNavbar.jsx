@@ -2,12 +2,12 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { FaHome } from "react-icons/fa"; // Black (filled) home icon
-import { GoHome } from "react-icons/go"; // White (outline) home icon
+import { FaHome } from "react-icons/fa";
+import { GoHome } from "react-icons/go";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
-// Icons (standardized casing to match typical file naming)
+// Icons
 import AddBlack from "./AddBlackIcon.svg";
 import AddWhite from "./AddWhiteIcon.svg";
 import BackIcon from "./BackIcon.svg";
@@ -20,7 +20,6 @@ import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
 
 function DesktopNavbar() {
-  // State (using camelCase for consistency)
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
@@ -36,7 +35,6 @@ function DesktopNavbar() {
   const [location, setLocation] = useState("");
   const [hideLikes, setHideLikes] = useState(false);
   const [disableComments, setDisableComments] = useState(false);
-  const [mentions, setMentions] = useState([]);
   const [mediaList, setMediaList] = useState([]);
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalComments, setTotalComments] = useState(0);
@@ -48,7 +46,7 @@ function DesktopNavbar() {
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
-  // Notification state
+  // Notification state (trimmed to 3 entries)
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
@@ -70,30 +68,6 @@ function DesktopNavbar() {
       alert: true,
       color: "notification-border-red-400",
     },
-    {
-      time: "8 hrs",
-      message: "Hello brother, how are you? I'm sure that ...",
-      alert: false,
-      color: "notification-border-gray-400",
-    },
-    {
-      time: "12 hrs",
-      message: "Hello brother, how are you? I'm sure that ...",
-      alert: false,
-      color: "notification-border-gray-400",
-    },
-    {
-      time: "18 hrs",
-      message: "Hello brother, how are you? I'm sure that ...",
-      alert: false,
-      color: "notification-border-blue-400",
-    },
-    {
-      time: "2 days",
-      message: "Hello brother, how are you? I'm sure that ...",
-      alert: false,
-      color: "notification-border-gray-400",
-    },
   ]);
 
   // Fetch connections from the API
@@ -111,16 +85,13 @@ function DesktopNavbar() {
         );
         console.log("Connections API Response:", response.data);
       } catch (err) {
-        console.error(
-          "Error fetching connections:",
-          err.response ? err.response.data : err.message
-        );
+        console.error("Error fetching connections:", err.response?.data || err.message);
       }
     };
     fetchConnections();
   }, []);
 
-  // Fetch all users and print user IDs
+  // Fetch all users
   useEffect(() => {
     const fetchAllUsers = async () => {
       const authToken = localStorage.getItem("authToken");
@@ -135,14 +106,9 @@ function DesktopNavbar() {
           "https://uniisphere-1.onrender.com/users/getAll",
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
-        // Ensure response.data is an array
         const users = Array.isArray(response.data) ? response.data : [];
         setAllUsersResponse(users);
-        // Print all user IDs to console
-        console.log("All User IDs:");
-        users.forEach((user) => {
-          console.log(`User ID: ${user.id}`);
-        });
+        console.log("All User IDs:", users.map((user) => user.id));
       } catch (err) {
         console.error("Error fetching all users:", err);
         setError(err.message || "Failed to fetch users");
@@ -231,9 +197,7 @@ function DesktopNavbar() {
 
   // Debounced search
   const debouncedSearch = useCallback(
-    debounce((username) => {
-      fetchProfiles(username);
-    }, 500),
+    debounce((username) => fetchProfiles(username), 500),
     [fetchProfiles]
   );
 
@@ -248,22 +212,15 @@ function DesktopNavbar() {
     }
   };
 
-  // Handle profile click with ID comparison
+  // Handle profile click
   const handleProfileClick = (userId) => {
     localStorage.setItem("SearchUserId", userId);
-    // Check if allUsersResponse is loaded and is an array
     if (allUsersResponse && Array.isArray(allUsersResponse)) {
-      // Check if userId exists in allUsersResponse
       const idExists = allUsersResponse.some((user) => user.id === userId);
       console.log(`Checking if User ID ${userId} exists: ${idExists}`);
-      if (idExists) {
-        navigate(`/AfterConnecting/${userId}`);
-      } else {
-        navigate(`/DesFollowerMiddleSectionPrivacy`);
-      }
+      navigate(idExists ? `/AfterConnecting/${userId}` : `/DesFollowerMiddleSectionPrivacy`);
     } else {
-      // Fallback if allUsersResponse is not loaded
-      console.error("User data not loaded yet or invalid:", allUsersResponse);
+      console.error("User data not loaded:", allUsersResponse);
       navigate(`/DesFollowerMiddleSectionPrivacy`);
     }
     setShowResults(false);
@@ -285,7 +242,7 @@ function DesktopNavbar() {
   const handleSignOut = () => {
     setIsUserDropdownOpen(false);
     console.log("User signed out");
-    // Add your sign out logic here
+    // Add sign-out logic here
   };
 
   const handleEditProfile = () => {
@@ -301,9 +258,7 @@ function DesktopNavbar() {
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
     setIsUserDropdownOpen(false);
-    setActiveIcon((prev) =>
-      prev === "notifications" ? null : "notifications"
-    );
+    setActiveIcon((prev) => (prev === "notifications" ? null : "notifications"));
   };
 
   // Navigation icon handlers
@@ -375,30 +330,19 @@ function DesktopNavbar() {
       if (!authToken || !userId) {
         throw new Error("User not authenticated. Please log in.");
       }
-
       const formData = new FormData();
-      mediaList.forEach((media) => {
-        formData.append("media", media.file);
-      });
-
+      mediaList.forEach((media) => formData.append("media", media.file));
       formData.append("content", caption);
       formData.append("userId", userId);
       formData.append("visibility", hideLikes ? "private" : "public");
       formData.append("location", location || "");
       formData.append("tags", "");
-
       const postResponse = await axios.post(
         "https://uniisphere-1.onrender.com/posts",
         formData,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       );
       console.log("Post created:", postResponse.data);
-
-      // Reset form state
       setMediaList([]);
       setCaption("");
       setLocation("");
@@ -441,14 +385,14 @@ function DesktopNavbar() {
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
-          style={{ color: "white" }} // Outline icon for active state
+          style={{ color: "white" }}
         />
       ) : (
         <FaHome
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
-          style={{ color: "black" }} // Filled icon for inactive state
+          style={{ color: "black" }}
         />
       )}
       <img
@@ -458,6 +402,7 @@ function DesktopNavbar() {
         onClick={() => {
           setShowDropdown((prev) => !prev);
           setShowNotificationDropdown(false);
+          handleIconClick("network");
         }}
       />
       <img
@@ -466,15 +411,9 @@ function DesktopNavbar() {
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-
-      {/* Notification Icon with Dropdown */}
       <div className="notification-icon-container">
         <img
-          src={
-            activeIcon === "notifications"
-              ? NotificationWhite
-              : NotificationBlack
-          }
+          src={activeIcon === "notifications" ? NotificationWhite : NotificationBlack}
           alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
@@ -485,9 +424,7 @@ function DesktopNavbar() {
               {Object.keys(timeFilters).map((tab) => (
                 <button
                   key={tab}
-                  className={`notification-tab-button ${
-                    activeNotificationTab === tab ? "active" : ""
-                  }`}
+                  className={`notification-tab-button ${activeNotificationTab === tab ? "active" : ""}`}
                   onClick={() => setActiveNotificationTab(tab)}
                 >
                   {tab}
@@ -497,12 +434,9 @@ function DesktopNavbar() {
             <div className="notification-list">
               {filteredNotifications.length > 0 ? (
                 filteredNotifications.map((notif, index) => (
-                  <div
-                    key={index}
-                    className={`notification-item ${notif.color}`}
-                  >
+                  <div key={index} className={`notification-item ${notif.color}`}>
                     <img
-                      src="https://via.placeholder.com/50"
+                      src="https://via.placeholder.com/40"
                       alt="Profile"
                       className="notification-profile-pic"
                     />
@@ -511,15 +445,11 @@ function DesktopNavbar() {
                       <p className="notification-message">{notif.message}</p>
                     </div>
                     <span className="notification-time">{notif.time}</span>
-                    {notif.alert && (
-                      <span className="notification-alert">🔔</span>
-                    )}
+                    {notif.alert && <span className="notification-alert">🔔</span>}
                   </div>
                 ))
               ) : (
-                <p className="notification-empty">
-                  No notifications in this time range.
-                </p>
+                <p className="notification-empty">No notifications in this time range.</p>
               )}
             </div>
           </div>
@@ -538,24 +468,16 @@ function DesktopNavbar() {
           <div className="self-profile-card">
             <div className="self-profile-header">
               <img
-                src={
-                  localStorage.profilePicture ||
-                  "https://via.placeholder.com/50"
-                }
+                src={localStorage.profilePicture || "https://via.placeholder.com/50"}
                 alt="Profile"
                 className="self-profile-pic"
               />
               <div className="self-profile-info">
-                <h2 className="self-profile-name">
-                  {localStorage.username || "User Name"}
-                </h2>
+                <h2 className="self-profile-name">{localStorage.username || "User Name"}</h2>
                 <p className="self-profile-label">Position</p>
               </div>
             </div>
-            <button
-              className="self-profile-edit-button"
-              onClick={handleEditProfile}
-            >
+            <button className="self-profile-edit-button" onClick={handleEditProfile}>
               Edit Profile
             </button>
             <div className="self-profile-stats">
@@ -573,17 +495,11 @@ function DesktopNavbar() {
               </div>
             </div>
             <div className="self-profile-menu">
-              <div
-                className="self-profile-menu-item"
-                onClick={() => navigate("/SelfSetting")}
-              >
+              <div className="self-profile-menu-item" onClick={() => navigate("/SelfSetting")}>
                 Settings
               </div>
               <div className="self-profile-menu-item">Help</div>
-              <div
-                className="self-profile-menu-item self-profile-sign-out"
-                onClick={handleSignOut}
-              >
+              <div className="self-profile-menu-item self-profile-sign-out" onClick={handleSignOut}>
                 Sign Out
               </div>
             </div>
@@ -595,25 +511,17 @@ function DesktopNavbar() {
       {showDropdown && (
         <div className="connections-card">
           <div className="connections-item">
-            <Link to="/NetworkPage" className="connection-link">
-              Connection
-            </Link>
+            <Link to="/NetworkPage" className="connection-link">Connection</Link>
           </div>
           <div className="connections-item">Edu-vault</div>
           <div className="connections-item active">
-            <Link to="/HumanLib" className="connection-link">
-              Human Library
-            </Link>
+            <Link to="/HumanLib" className="connection-link">Human Library</Link>
           </div>
           <div className="connections-item">Guidance</div>
           <div className="connections-item">NGOs</div>
           <div className="connections-item">
             <Link
-              to={
-                localStorage.getItem("userId")
-                  ? `/blog/${localStorage.getItem("userId")}`
-                  : "/blog"
-              }
+              to={localStorage.getItem("userId") ? `/blog/${localStorage.getItem("userId")}` : "/blog"}
               className="connection-link"
             >
               Blog
@@ -636,8 +544,6 @@ function DesktopNavbar() {
           />
           <FiSearch className="desktop-search-icon" />
         </div>
-
-        {/* Search Results */}
         {showResults && (
           <div className="desktop-search-results">
             {isLoading ? (
@@ -657,12 +563,8 @@ function DesktopNavbar() {
                     className="desktop-search-result-avatar"
                   />
                   <div className="desktop-search-result-info">
-                    <span className="desktop-search-result-name">
-                      {user.username}
-                    </span>
-                    <span className="desktop-search-result-id">
-                      ID: {user.id}
-                    </span>
+                    <span className="desktop-search-result-name">{user.username}</span>
+                    <span className="desktop-search-result-id">ID: {user.id}</span>
                   </div>
                 </div>
               ))
@@ -674,11 +576,7 @@ function DesktopNavbar() {
       </div>
 
       {/* Logo */}
-      <img
-        src={UnisphereLogoIcon}
-        alt="Unisphere Logo"
-        className="desktop-logo-icon"
-      />
+      <img src={UnisphereLogoIcon} alt="Unisphere Logo" className="desktop-logo-icon" />
 
       {/* Upload Section Overlay */}
       {showUploadSection && (
@@ -692,15 +590,11 @@ function DesktopNavbar() {
             {mediaList.length === 0 && (
               <div className="upload-first-div">
                 <p className="upload-text">Drag & Drop your media here</p>
-                <button
-                  className="upload-button"
-                  onClick={() => inputRef.current.click()}
-                >
+                <button className="upload-button" onClick={() => inputRef.current.click()}>
                   Upload from computer
                 </button>
               </div>
             )}
-
             {mediaList.length !== 0 && showAddMore && (
               <div className="after-upload">
                 <div className="navbar">
@@ -718,30 +612,18 @@ function DesktopNavbar() {
                   {mediaList.map((media, index) => (
                     <div key={index} className="media-item">
                       {media.mediaType === "image" ? (
-                        <img
-                          className="imageAndVideo"
-                          src={media.previewURL}
-                          alt="Uploaded media"
-                        />
+                        <img className="imageAndVideo" src={media.previewURL} alt="Uploaded media" />
                       ) : (
-                        <video
-                          className="imageAndVideo"
-                          src={media.previewURL}
-                          controls
-                        />
+                        <video className="imageAndVideo" src={media.previewURL} controls />
                       )}
                     </div>
                   ))}
                 </div>
-                <button
-                  className="add-more-btn"
-                  onClick={() => inputRef.current.click()}
-                >
+                <button className="add-more-btn" onClick={() => inputRef.current.click()}>
                   Add More
                 </button>
               </div>
             )}
-
             {showPostDetails && (
               <div className="create-post-main-container">
                 <div className="create-post-after-upload">
@@ -784,10 +666,6 @@ function DesktopNavbar() {
                         />
                       </div>
                     </div>
-                    <div className="mention-form-group">
-                      <label className="input-label">Add Mentions</label>
-                      <div className="mention-button">+</div>
-                    </div>
                     <div className="privacy-settings">
                       <div className="setting-item">
                         <div className="setting-info">
@@ -816,9 +694,7 @@ function DesktopNavbar() {
                           <input
                             type="checkbox"
                             checked={disableComments}
-                            onChange={(e) =>
-                              setDisableComments(e.target.checked)
-                            }
+                            onChange={(e) => setDisableComments(e.target.checked)}
                           />
                           <span className="slider round"></span>
                         </label>
