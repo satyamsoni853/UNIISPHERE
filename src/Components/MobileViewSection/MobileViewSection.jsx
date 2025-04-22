@@ -1,9 +1,10 @@
 import React from 'react';
 import Background from '../Background/Background';
-import MobileFooter from '../MobileFooter/MobileFooter.jsx'
+
 import MobileNavbar from '../MobileNavbar/MobileNavbar';
 import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection'; // Removed .jsx
 import './MobileViewSection.css'; // Corrected CSS file name for consistency
+import MobileFooter from '../MobileFooter/MobileFooter';
 
 function MobileViewSection() { // Corrected component name
   return (
