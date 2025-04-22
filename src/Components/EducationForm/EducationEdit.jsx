@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiSave, FiX } from "react-icons/fi";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
@@ -119,7 +119,7 @@ function EducationEdit() {
 
   return (
     <div>
-      <DesktopNavbarr />
+      <DesktopNavbar />
       <div className="EducationEdit-main-container">
         <Background />
         <div className="EducationEdit-left-main-container">

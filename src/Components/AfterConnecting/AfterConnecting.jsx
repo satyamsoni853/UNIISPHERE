@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Background from "../Background/Background.jsx";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import DesktopRight from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import backIcon from "./backsvg.svg";
@@ -322,7 +322,7 @@ function AfterConnecting() {
 
   return (
     <div>
-      <DesktopNavbarr />
+      <DesktopNavbar />
       <div className="afterconnectinginInterest-main-container">
         <Background />
         <div className="afterconnectinginInterest-left-main-container">

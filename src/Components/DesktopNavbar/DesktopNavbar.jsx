@@ -5,22 +5,22 @@ import { FiSearch } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
-// Icons
-import Addblack from "./AddBlack.svg";
-import Addwhite from "./Addwhite.svg";
-import backicon from "./backsvg.svg";
-import Homeblack from "./homeblack.svg";
-import Homewhite from "./Homewhite.svg";
+// Icons (standardized casing to match typical file naming)
+import AddBlack from "./AddBlack.svg";
+import AddWhite from "./AddWhite.svg";
+import BackIcon from "./BackSvg.svg";
+import HomeBlack from "./HomeBlack.svg";
+import HomeWhite from "./HomeWhite.svg";
 import NetworkBlack from "./NetworkBlack.svg";
-import Networkwhite from "./NetworkWhite.svg";
-import Notificationblack from "./notificationblack.svg";
-import Notificationwhite from "./notificationwhite.svg";
-import profileImage from "./profilephoto.png";
-import Unispherelogoicon from "./Unispherelogoicon.png";
-import Usericon from "./Usericon.png";
+import NetworkWhite from "./NetworkWhite.svg";
+import NotificationBlack from "./NotificationBlack.svg";
+import NotificationWhite from "./NotificationWhite.svg";
+import ProfileImage from "./ProfileImage.png";
+import UnisphereLogoIcon from "./UnisphereLogoIcon.png";
+import UserIcon from "./UserIcon.png";
 
-function DesktopNavbarr() {
-  // State
+function DesktopNavbar() {
+  // State (using camelCase for consistency)
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
@@ -31,7 +31,7 @@ function DesktopNavbarr() {
   const [error, setError] = useState(null);
   const [showUploadSection, setShowUploadSection] = useState(false);
   const [showPostDetails, setShowPostDetails] = useState(false);
-  const [showAddmore, setShowAddMore] = useState(true);
+  const [showAddMore, setShowAddMore] = useState(true); // Fixed 'showAddmore'
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
   const [hideLikes, setHideLikes] = useState(false);
@@ -41,57 +41,56 @@ function DesktopNavbarr() {
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalComments, setTotalComments] = useState(0);
   const [posts, setPosts] = useState(0);
-  const [Username, setUsername] = useState("");
-  const [UserProfileImage, setUserProfileImage] = useState("");
+  const [username, setUsername] = useState(""); // Changed 'Username' to 'username'
+  const [userProfileImage, setUserProfileImage] = useState(""); // Changed 'UserProfileImage' to 'userProfileImage'
   const [loading, setLoading] = useState(true);
   const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] =
-    useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
     {
       time: "2 hrs",
-      message: "Hello brother how are you. I that ....",
+      message: "Hello brother, how are you? I'm doing that ...", // Fixed message clarity
       alert: true,
       color: "notification-border-blue-400",
     },
     {
       time: "3 hrs",
-      message: "Hello brother how are you. I that ....",
+      message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
       color: "notification-border-yellow-400",
     },
     {
       time: "6 hrs",
-      message: "Hello brother how are you. I that ....",
+      message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
       color: "notification-border-red-400",
     },
     {
       time: "8 hrs",
-      message: "Hello brother how are you. I am sure that ....",
+      message: "Hello brother, how are you? I'm sure that ...",
       alert: false,
       color: "notification-border-gray-400",
     },
     {
       time: "12 hrs",
-      message: "Hello brother how are you. I am sure that ....",
+      message: "Hello brother, how are you? I'm sure that ...",
       alert: false,
       color: "notification-border-gray-400",
     },
     {
       time: "18 hrs",
-      message: "Hello brother how are you. I am sure that ....",
+      message: "Hello brother, how are you? I'm sure that ...",
       alert: false,
       color: "notification-border-blue-400",
     },
     {
       time: "2 days",
-      message: "Hello brother how are you. I am sure that ....",
+      message: "Hello brother, how are you? I'm sure that ...",
       alert: false,
       color: "notification-border-gray-400",
     },
@@ -244,7 +243,7 @@ function DesktopNavbarr() {
     if (/^[a-z0-9_]*$/i.test(username)) {
       debouncedSearch(username);
     } else {
-      setError("Only letters, numbers and underscores allowed");
+      setError("Only letters, numbers, and underscores allowed");
     }
   };
 
@@ -437,13 +436,13 @@ function DesktopNavbarr() {
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
       <img
-        src={activeIcon === "home" ? Homewhite : Homeblack}
+        src={activeIcon === "home" ? HomeWhite : HomeBlack}
         alt="Home"
         className="desktop-icon"
         onClick={() => handleIconClick("home")}
       />
       <img
-        src={activeIcon === "network" ? Networkwhite : NetworkBlack}
+        src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
         alt="Network"
         className="desktop-icon"
         onClick={() => {
@@ -452,7 +451,7 @@ function DesktopNavbarr() {
         }}
       />
       <img
-        src={activeIcon === "add" ? Addwhite : Addblack}
+        src={activeIcon === "add" ? AddWhite : AddBlack}
         alt="Add"
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
@@ -463,8 +462,8 @@ function DesktopNavbarr() {
         <img
           src={
             activeIcon === "notifications"
-              ? Notificationwhite
-              : Notificationblack
+              ? NotificationWhite
+              : NotificationBlack
           }
           alt="Notifications"
           className="desktop-icon"
@@ -520,59 +519,59 @@ function DesktopNavbarr() {
       {/* User Dropdown */}
       <div className="user-icon-container">
         <img
-          src={UserProfileImage || Usericon}
+          src={userProfileImage || UserIcon}
           alt="User"
           className="desktop-user-icon"
           onClick={handleUserIconClick}
         />
         {isUserDropdownOpen && (
-          <div className="SelfProfile-card">
-            <div className="SelfProfile-header">
+          <div className="self-profile-card">
+            <div className="self-profile-header">
               <img
                 src={
                   localStorage.profilePicture ||
                   "https://via.placeholder.com/50"
                 }
                 alt="Profile"
-                className="SelfProfile-pic"
+                className="self-profile-pic"
               />
-              <div className="SelfProfile-info">
-                <h2 className="SelfProfile-name">
+              <div className="self-profile-info">
+                <h2 className="self-profile-name">
                   {localStorage.username || "User Name"}
                 </h2>
-                <p className="SelfProfile-label">Position</p>
+                <p className="self-profile-label">Position</p>
               </div>
             </div>
             <button
-              className="SelfProfile-edit-button"
+              className="self-profile-edit-button"
               onClick={handleEditProfile}
             >
               Edit Profile
             </button>
-            <div className="SelfProfile-stats">
-              <div className="SelfProfile-stat">
+            <div className="self-profile-stats">
+              <div className="self-profile-stat">
                 <span>Posts</span>
-                <span className="SelfProfile-stat-value">{posts}</span>
+                <span className="self-profile-stat-value">{posts}</span>
               </div>
-              <div className="SelfProfile-stat">
+              <div className="self-profile-stat">
                 <span>Likes</span>
-                <span className="SelfProfile-stat-value">{totalLikes}</span>
+                <span className="self-profile-stat-value">{totalLikes}</span>
               </div>
-              <div className="SelfProfile-stat">
+              <div className="self-profile-stat">
                 <span>Comments</span>
-                <span className="SelfProfile-stat-value">{totalComments}</span>
+                <span className="self-profile-stat-value">{totalComments}</span>
               </div>
             </div>
-            <div className="SelfProfile-menu">
+            <div className="self-profile-menu">
               <div
-                className="SelfProfile-menu-item"
+                className="self-profile-menu-item"
                 onClick={() => navigate("/SelfSetting")}
               >
                 Settings
               </div>
-              <div className="SelfProfile-menu-item">Help</div>
+              <div className="self-profile-menu-item">Help</div>
               <div
-                className="SelfProfile-menu-item SelfProfile-sign-out"
+                className="self-profile-menu-item self-profile-sign-out"
                 onClick={handleSignOut}
               >
                 Sign Out
@@ -618,7 +617,7 @@ function DesktopNavbarr() {
         <div className="desktop-search-input-wrapper">
           <input
             type="text"
-            placeholder="Search username"
+            placeholder="Search for users" // Improved placeholder
             className="desktop-search-bar"
             value={searchQuery}
             onChange={handleSearchChange}
@@ -643,7 +642,7 @@ function DesktopNavbarr() {
                   onClick={() => handleProfileClick(user.id)}
                 >
                   <img
-                    src={user.profilePicture || Usericon}
+                    src={user.profilePicture || UserIcon}
                     alt={user.username}
                     className="desktop-search-result-avatar"
                   />
@@ -665,7 +664,11 @@ function DesktopNavbarr() {
       </div>
 
       {/* Logo */}
-      <img src={Unispherelogoicon} alt="Logo" className="desktop-logo-icon" />
+      <img
+        src={UnisphereLogoIcon}
+        alt="Unisphere Logo"
+        className="desktop-logo-icon"
+      />
 
       {/* Upload Section Overlay */}
       {showUploadSection && (
@@ -688,10 +691,10 @@ function DesktopNavbarr() {
               </div>
             )}
 
-            {mediaList.length !== 0 && showAddmore && (
+            {mediaList.length !== 0 && showAddMore && (
               <div className="after-upload">
                 <div className="navbar">
-                  <img src={backicon} alt="Back" onClick={handleCloseUpload} />
+                  <img src={BackIcon} alt="Back" onClick={handleCloseUpload} />
                   <h6
                     onClick={() => {
                       setShowPostDetails(true);
@@ -734,8 +737,8 @@ function DesktopNavbarr() {
                 <div className="create-post-after-upload">
                   <div className="create-post-navbar">
                     <div className="image-and-name">
-                      <img src={profileImage} alt="profileImage" />
-                      <h3>{Username || "Himanshu Choudary"}</h3>
+                      <img src={ProfileImage} alt="Profile" />
+                      <h3>{username || "Himanshu Choudary"}</h3>
                     </div>
                     <h6 onClick={handlePostSubmit} disabled={isLoading}>
                       {isLoading ? "Posting..." : "Create Post"}
@@ -780,8 +783,7 @@ function DesktopNavbarr() {
                         <div className="setting-info">
                           <h4>Hide Likes</h4>
                           <p className="setting-description">
-                            No one will be able to see the number of likes on
-                            your post. Except you
+                            Only you can see the number of likes on your post.
                           </p>
                         </div>
                         <label className="toggle-switch">
@@ -797,7 +799,7 @@ function DesktopNavbarr() {
                         <div className="setting-info">
                           <h4>Turn Off Comments</h4>
                           <p className="setting-description">
-                            No one will be able to comment on this post
+                            No one will be able to comment on this post.
                           </p>
                         </div>
                         <label className="toggle-switch">
@@ -842,4 +844,4 @@ function DesktopNavbarr() {
   );
 }
 
-export default DesktopNavbarr;
+export default DesktopNavbar;

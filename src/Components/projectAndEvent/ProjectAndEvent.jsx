@@ -5,7 +5,7 @@ import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbarr/DesktopNavbarr.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 
 function ProjectAndEvent() {
   const [Collaborations, setCollaborations] = useState(true);
@@ -82,7 +82,7 @@ function ProjectAndEvent() {
 
   return (
     <div>
-      <DesktopNavbarr />
+      <DesktopNavbar />
       <div className="projectandevent-main-container-1">
         <Background />
         <div className="projectandevent-left-main-container">

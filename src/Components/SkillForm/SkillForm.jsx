@@ -6,7 +6,7 @@ import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import { useNavigate } from "react-router-dom";
@@ -170,7 +170,7 @@ function SkillForm() {
 
   return (
     <div>
-      <DesktopNavbarr/>
+      <DesktopNavbar/>
       <div className="Skill-main-container">
         <Background />
         <div className="Skill-left-main-container">

@@ -4,7 +4,7 @@ import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import axios from "axios";
@@ -187,7 +187,7 @@ function AboutAndExperiance() {
 
   return (
     <div>
-      <DesktopNavbarr />
+      <DesktopNavbar />
       <div className="AboutAndExperiance-main-container">
         <Background />
         <div className="AboutAndExperiance-left-main-container">

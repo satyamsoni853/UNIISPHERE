@@ -5,7 +5,7 @@ import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import { FaPlusCircle } from "react-icons/fa";
 
 function MessageFinalclass() {
@@ -164,7 +164,7 @@ function MessageFinalclass() {
 
   return (
     <div>
-      <DesktopNavbarr />
+      <DesktopNavbar />
       <div className="message-main-container">
         <Background />
         <div className="message-left-main-container">

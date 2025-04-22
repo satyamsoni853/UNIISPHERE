@@ -10,7 +10,7 @@ import DesktopRight from "../DesktopRight/DesktopRight";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop";
 import Background from "../Background/Background";
-import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function ProfileEditSection() {

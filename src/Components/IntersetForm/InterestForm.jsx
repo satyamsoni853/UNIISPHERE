@@ -6,7 +6,7 @@ import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import { useNavigate } from "react-router-dom";
@@ -170,7 +170,7 @@ function Interset() {
 
   return (
     <div>
-      <DesktopNavbarr/>
+      <DesktopNavbar/>
       <div className="Interest-main-container">
         <Background />
         <div className="Interest-left-main-container">

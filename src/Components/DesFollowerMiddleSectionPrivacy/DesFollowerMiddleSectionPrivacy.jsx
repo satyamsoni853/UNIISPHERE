@@ -10,7 +10,7 @@ import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import Connect from "./Connect.png";
 
@@ -231,7 +231,7 @@ function DesFollowerMiddleSectionPrivacy() {
 
   return (
     <div>
-      <DesktopNavbarr />
+      <DesktopNavbar />
       <div className="Interest-main-container">
         <Background />
         <div className="Interest-left-main-container">
