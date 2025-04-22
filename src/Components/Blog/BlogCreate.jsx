@@ -4,12 +4,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import Background from "../Background/Background";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar";
+import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
 import DesktopRightsection from "../DesktopRight/DesktopRight";
 import backIcon from "./backsvg.svg";
 import "./BlogCreate.css";
 import MobileFooter from "../Mobilefooter/MobileFooter";
-import MobileNavbarr from "../MobileNavbarr/MobileNavbarr";
+import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import profile from "./profile.jpg";
 
 
@@ -210,7 +210,7 @@ const BlogCreate = () => {
       <div className="desktop-blog-main-parent-container">
         <div className="desktop-blog-main-wrapper">
           <div className="desktop-blog-nav-fixed">
-            <DesktopNavbarr />
+            <DesktopNavbar />
           </div>
           <div className="desktop-blog-background">
             <Background />
@@ -637,7 +637,7 @@ const BlogCreate = () => {
 
       <div className="mobile-blog-create-container">
         <div className="blog-container-nav">
-          <MobileNavbarr />
+          <MobileNavbar />
         </div>
         <div className="blog-container-background">
           <Background />

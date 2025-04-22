@@ -10,14 +10,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSendOutline } from "react-icons/io5";
 import Background from "../Background/Background";
-import SmallImage1 from '../Background/SmallImage1.png';
-import SmallImage2 from '../Background/SmallImage2.png';
-import SmallImage3 from '../Background/SmallImage3.png';
-import SmallImage4 from '../Background/SmallImage4.png';
-import SmallImage5 from '../Background/SmallImage5.png';
-import SmallImage6 from '../Background/SmallImage6.png';
-import SmallImage7 from '../Background/SmallImage7.png';
-import SmallImage8 from '../Background/SmallImage8.png';
+// import SmallImage1 from '../Background/SmallImage1.png';
+// import SmallImage2 from '../Background/SmallImage2.png';
+// import SmallImage3 from '../Background/SmallImage3.png';
+// import SmallImage4 from '../Background/SmallImage4.png';
+// import SmallImage5 from '../Background/SmallImage5.png';
+// import SmallImage6 from '../Background/SmallImage6.png';
+// import SmallImage7 from '../Background/SmallImage7.png';
+// import SmallImage8 from '../Background/SmallImage8.png';
 
 // Comment box data
 import profilePhoto from "./profilephoto.png";
@@ -38,7 +38,7 @@ import { SearchIcon } from "lucide-react";
 function MobileMiddleSection() { // Corrected component name
   const [showComment, setShowComment] = useState(false);
   const [showShare, setShowShare] = useState(false);
-  const [show出色, setShowOptions] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
