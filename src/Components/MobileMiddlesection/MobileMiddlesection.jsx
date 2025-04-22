@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./MobileMiddleSection.css"; // Corrected CSS file name
-import MobileNavbar from "../MobileNavbar/MobileNavbar.jsx"; // Corrected component name
-import MobileFooter from "../MobileFooter/MobileFooter.jsx";
+// import MobileNavbar from "../MobileNavbar/MobileNavbar.jsx"; 
+// import MobileFooter from "../MobileFooter/MobileFooter.jsx";
 import ConnectMiddleImage from "./middleconnectimage.png"; // Corrected image name
 import MiddlemainImage from "./Middle-image-main.png";
-import Profileimage from "./Profile-image.png";
+import Profileimage from "./Profile-image.png"; 
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
