@@ -262,27 +262,26 @@ function DesktopMiddle() {
       return;
     }
 
+    // Store original state for rollback if needed
     const originalPost = { ...post };
-    console.log("Before update - Post state:", { isLiked: post.isLiked, likes: post.likes });
-
-    setPosts((prevPosts) =>
-      prevPosts.map((p, i) =>
-        i === index
-          ? {
-              ...p,
-              isLiked: !p.isLiked,
-              likes: p.isLiked ? p.likes - 1 : p.likes + 1,
-            }
-          : p
-      )
-    );
 
     try {
       const endpoint = post.isLiked
         ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
         : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
 
-      console.log("Calling endpoint:", endpoint, "Post ID:", post._id);
+      // Optimistically update UI
+      setPosts((prevPosts) =>
+        prevPosts.map((p, i) =>
+          i === index
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likes: p.isLiked ? p.likes - 1 : p.likes + 1,
+              }
+            : p
+        )
+      );
 
       const response = await axios.post(
         endpoint,
@@ -296,35 +295,32 @@ function DesktopMiddle() {
         }
       );
 
-      console.log("Like/Unlike response:", response.data);
+      // If unlike was successful, response will have a message
+      // If like was successful, response will have the like object
+      const isSuccessful = post.isLiked 
+        ? response.data.message === "Post unliked successfully"
+        : !!response.data;
 
-      setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index
-            ? {
-                ...p,
-                isLiked: response.data.isLiked ?? !post.isLiked,
-                likes: response.data.totalLikes ?? (post.isLiked ? post.likes - 1 : post.likes + 1),
-              }
-            : p
-        )
-      );
+      if (!isSuccessful) {
+        // Revert the optimistic update if the operation wasn't successful
+        setPosts((prevPosts) =>
+          prevPosts.map((p, i) =>
+            i === index ? originalPost : p
+          )
+        );
+        throw new Error("Operation failed");
+      }
 
-      await fetchFeed();
-      console.log("After fetchFeed - Post state:", posts[index]);
     } catch (error) {
       console.error("Like/Unlike error:", error.response?.data || error.message);
+      
+      // Revert the optimistic update
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
-          i === index
-            ? {
-                ...p,
-                isLiked: originalPost.isLiked,
-                likes: originalPost.likes,
-              }
-            : p
+          i === index ? originalPost : p
         )
       );
+      
       setError("Failed to update like status. Please try again.");
     }
   };
