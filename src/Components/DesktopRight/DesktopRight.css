@@ -1,12 +1,12 @@
 /* Right Section */
-.right-section-container {
+/* .right-section-container {
   position: fixed;
   top: 110px;
   bottom: 10px;
   width: 25vw; 
   overflow-y: auto; 
  
-}
+} */
 /* Right Section */
 .right-section-container {
   position: fixed;
@@ -14,8 +14,8 @@
   bottom: 10px;
   width: 25vw;
   overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Edge, IE */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .right-section-container::-webkit-scrollbar {
@@ -176,9 +176,3 @@
   margin-top: 0; /* Remove extra top margin */
 }
 
-/* Responsive Design */
-/* @media screen and (max-width: 768px) {
-  .rightsection {
-    display: none; 
-  }
-} */

@@ -1,29 +1,29 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import ConnectandCollbrate from "./Connect&coll.png";
-import Connectimage from "./Connect.png";
+import ConnectAndCollaborate from "./connectAndCollaborate.png";
+import ConnectImage from "./connectImage.png";
 import "./DesktopRight.css";
-import Profileimg from "./Profile.jpeg";
-import Sugestion1img from "./Sugestion1.png";
-import Sugestion2img from "./Sugestion2.png";
-import Sugestion3img from "./Sugestion3.png";
-import ConnectandCollbrateSvg from './CollabConnection.svg';
-import BottomMessageWidth from '../BottomMessagesWidget/BottomMessagesWidget';
+import ProfileImage from "./profileImage.jpeg";
+import Suggestion1Image from "./suggestion1Image.png";
+import Suggestion2Image from "./suggestion2Image.png";
+import Suggestion3Image from "./suggestion3Image.png";
+import ConnectAndCollaborateSvg from "./connectAndCollaborate.svg";
+import BottomMessagesWidget from "../BottomMessagesWidget/BottomMessagesWidget";
 
 const suggestions = [
-  { img: Sugestion1img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Sugestion2img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Sugestion1img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Sugestion2img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Sugestion3img, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion1Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion2Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion1Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion2Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
 ];
 
-function DesktopRightsection() {
-  const [connect, setConnect] = useState(0); // Renamed from connections
-  const [collaborate, setCollaborate] = useState(0); // Renamed from followers
+function DesktopRightSection() {
+  const [connect, setConnect] = useState(0);
+  const [collaborate, setCollaborate] = useState(0);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const [profileData, setProfileData] = useState(null);
@@ -48,7 +48,6 @@ function DesktopRightsection() {
 
       setUserId(authData.userId);
       const storedUserId = localStorage.getItem("userId");
-      // console.log("RightSection The stored user ID is:", storedUserId);
 
       try {
         const profileResponse = await axios.get(
@@ -59,7 +58,6 @@ function DesktopRightsection() {
             }
           }
         );
-        // console.log("RightSection Full profile response:", profileResponse.data);
         const username = profileResponse.data[0].username;
         const profilePictureUrl = profileResponse.data[0].profilePictureUrl;
         localStorage.setItem("profilePicture", profilePictureUrl);
@@ -68,14 +66,11 @@ function DesktopRightsection() {
           const userData = profileResponse.data[0];
           setProfileData(userData);
 
-          // Fetch connections1 and connections2 from _count
           const connectCount = userData._count?.connections1 || 0;
           const collaborateCount = userData._count?.connections2 || 0;
           setConnect(connectCount);
           setCollaborate(collaborateCount);
         }
-
-        // Removed separate connections API call since connections1 and connections2 are in profile response
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to load profile data");
@@ -93,14 +88,14 @@ function DesktopRightsection() {
   };
 
   const getProfilePictureUrl = () => {
-    if (!profileData) return Profileimg;
+    if (!profileData) return ProfileImage;
 
     return profileData.profilePictureUrl ||
       profileData.profileImageUrl ||
       profileData.avatarUrl ||
       profileData.photoUrl ||
       profileData.profilePicture ||
-      Profileimg;
+      ProfileImage;
   };
 
   return (
@@ -115,14 +110,14 @@ function DesktopRightsection() {
             src={getProfilePictureUrl()}
             alt="Profile"
             className="profile-image"
-            onError={(e) => { e.target.src = Profileimg }}
+            onError={(e) => { e.target.src = ProfileImage }}
           />
           <div className="profile-right">
             <div className="profile-numbers">
-              <span>{connect}</span> {/* Updated from connections */}
-              <span>{collaborate}</span> {/* Updated from followers */}
+              <span>{connect}</span>
+              <span>{collaborate}</span>
             </div>
-            <img src={ConnectandCollbrateSvg} alt="Connect & Collaborate" className="connect-collaborate-img" />
+            <img src={ConnectAndCollaborateSvg} alt="Connect & Collaborate" className="connect-collaborate-img" />
           </div>
         </div>
 
@@ -145,14 +140,14 @@ function DesktopRightsection() {
                 <p className="suggestion-name">{suggestion.name}</p>
                 <p className="suggestion-university">{suggestion.university}</p>
               </div>
-              <button><img className="connect-btn" src={Connectimage} alt="" /></button>
+              <button><img className="connect-btn" src={ConnectImage} alt="" /></button>
             </div>
           ))}
         </div>
       </div>
-      <BottomMessageWidth />
+      <BottomMessagesWidget />
     </div>
   );
 }
 
-export default DesktopRightsection;
+export default DesktopRightSection;
