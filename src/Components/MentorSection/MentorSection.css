@@ -2,9 +2,10 @@
 .mentor-desktop-main-wrapper {
   width: 100%;
   min-height: 100vh;
-
+  padding-top: 100px;
   position: relative;
 }
+
 .mentor-desktop-right-section-view {
   position: absolute;
   width: 20vw;
@@ -12,25 +13,27 @@
   right: 6%;
   bottom: 100px;
 }
+
 /* Main Container */
 .mentor-desktop-main-container {
   display: flex;
+
   flex-direction: column;
   align-items: center;
   gap: 40px;
 
   height: 100vh;
-  width: 75vw;
+  width: 70vw;
   position: relative;
 }
 
 /* Header Section */
 .mentor-desktop-header {
   display: flex;
-
+  /* background-color: blue; */
   justify-content: space-between;
   padding: 30px;
-
+  height: 50%;
   width: 100%;
   position: relative;
 }
@@ -91,7 +94,7 @@
 
 .mentor-desktop-search-icon {
   padding: 10px;
-  
+
   font-size: 1.2rem;
   border-radius: 50%;
   background-color: #fa91cd;
@@ -101,23 +104,21 @@
 /* Mentor Images */
 .mentor-desktop-right-section {
   width: 50%;
+ 
 }
 .mentor-desktop-profile-stack {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  
   flex-wrap: wrap;
   column-gap: 25px;
-  row-gap: 15px;
+  /* row-gap: 15px; */
   height: 90%;
+  /* background-color: blue; */
   align-content: space-between;
   width: 70%;
   justify-self: center;
-  padding: 10px 4px;
-}
-
-.mentor-desktop-profile-stack-image1 {
-  height: 140px;
-  width: 160px;
+  /* padding: 10px 4px; */
 }
 
 .mentor-desktop-profile-stack div:nth-child(3) {
@@ -133,10 +134,22 @@
 
 .mentor-desktop-profile-stack div:nth-child(6) {
   margin-top: 8px;
+  
 }
 
 .mentor-desktop-profile-stack-image-con {
   position: relative;
+}
+.mentor-desktop-profile-stack-image1 {
+  height: 110px;
+  width: 100px;
+}
+.mentor-desktop-profile-stack-image2 {
+  position: absolute;
+  top: 25%;
+  height: 62px;
+  width: 51px;
+  left: 20px;
 }
 .mentor-desktop-profile-stack-image3 {
   position: absolute;
@@ -146,13 +159,6 @@
   width: 90px;
 }
 
-.mentor-desktop-profile-stack-image2 {
-  position: absolute;
-  top: 20%;
-  height: 62px;
-  width: 51px;
-  left: 20px;
-}
 .mentor-desktop-profile-stack-image4 {
   position: absolute;
   top: 12%;
@@ -162,8 +168,8 @@
 }
 .mentor-desktop-profile-stack-image5 {
   position: absolute;
-top: -16px;
-  left: -12px;
+  top: -13px;
+  left: -8px;
   width: 137px;
   height: 139px;
 }
@@ -179,7 +185,11 @@ top: -16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+ min-height: 55%;
+ /* justify-content: center; */
+  padding: 10px 5px ;
+ /* background-color: crimson; */
+ overflow: hidden;
   width: 100%;
 }
 
@@ -187,7 +197,8 @@ top: -16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 80%;
+  width: 100%;
+  padding: 0 30px;
 }
 
 .mentor-desktop-recommendation-title {
@@ -205,7 +216,13 @@ top: -16px;
 .mentor-desktop-cards-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  /* grid-template-columns: repeat(3, minmax(0, 1fr)); */
   gap: 50px;
+  /* grid-auto-flow: column; Places items in a single row */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-y: hidden; /* Hides vertical scrolling */
+  width: 100%; /* Adjust as needed */
+  padding: 0 50px;
   justify-content: space-between;
   height: 375px;
   align-items: center;
@@ -225,8 +242,9 @@ top: -16px;
 }
 .mentor-desktop-arrow-and-cards {
   display: flex;
-  align-items: center;
   width: 100%;
+   align-items: center;
+  /* background-color: lightseagreen; */
 }
 .mentor-desktop-arrow {
   font-size: 50px;
@@ -1180,7 +1198,6 @@ top: -16px;
     margin-right: 10px;
   }
   .mentor-mobile-profile-stack div:nth-child(3) {
-   
     margin-top: 20px;
     margin-right: 25px;
   }
@@ -1194,13 +1211,10 @@ top: -16px;
     top: 10%;
     left: 12px;
   }
-
-
 }
-@media (min-width:706px) {
+@media (min-width: 706px) {
   .mentor-mobile-profile-stack div:nth-child(4) {
     margin-top: 20px;
     margin-left: 50px;
   }
 }
-
