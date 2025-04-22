@@ -4,7 +4,7 @@ import Background from '../Background/Background';
 import MobileNavbar from '../MobileNavbar/MobileNavbar';
 import MobileMiddleSection from '../MobileMiddleSection/MobileMiddleSection'; // Removed .jsx
 import './MobileViewSection.css'; // Corrected CSS file name for consistency
-import MobileFooter from '../MobileFooter/MobileFooter';
+import MobileFooter from '../MobileFooter/MobileFooter.jsx';
 
 function MobileViewSection() { // Corrected component name
   return (
