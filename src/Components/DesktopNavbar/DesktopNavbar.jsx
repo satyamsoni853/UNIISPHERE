@@ -270,7 +270,7 @@ function DesktopNavbar() {
         navigate("/view");
         break;
       case "network":
-        navigate("/network");
+        // navigate("/network");
         break;
       case "add":
         setShowUploadSection(true);

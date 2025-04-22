@@ -9,6 +9,7 @@ import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import redXIcon from "./close.png";
 import greenCheckIcon from "./check.png";
+import MobileNavbar from "../MobileNavbar/MobileNavbar.jsx";
 
 // DUMMY_DATA - Used for testing when API is not available
 const DUMMY_DATA = [
@@ -368,6 +369,7 @@ function NetworkPage() {
   return (
     <div className="networkpage-main-container">
       <DesktopNavbarr />
+      <MobileNavbar/>
       <div className="networkpage-wrapper">
         <Background />
         <div className="networkpage">
@@ -523,8 +525,9 @@ function NetworkPage() {
               </div>
             </div>
           </div>
-          {isMobile && <MobileFooter />}
+          
         </div>
+        
       </div>
 
       {showRightSection && (
@@ -535,6 +538,7 @@ function NetworkPage() {
           />
         </div>
       )}
+      {isMobile && <MobileFooter />}
     </div>
   );
 }

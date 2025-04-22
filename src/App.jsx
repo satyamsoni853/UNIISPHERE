@@ -42,7 +42,7 @@ function App() {
           <Route path="/home" element={<UserLogin />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/signup" element={<UserSignupWithEmailAndPassword />} />
-          <Route path="/after-otp" element={<AfterOtpSection1 />} />
+          <Route path="/AfterOtpSection1" element={<AfterOtpSection1 />} />
 
           {/* Protected Routes (require userId) */}
           <Route path="/view" element={<View />} />
@@ -86,7 +86,7 @@ function App() {
             path="/MessageFinalClass2/:messageId"
             element={<MessageFinalClass2 />}
           />
-          <Route path="/network" element={<NetworkPage />} />
+          <Route path="/NetworkPage" element={<NetworkPage />} />
           <Route path="/collabs" element={<CollabPage />} />
           <Route
             path="/messages-widget"
@@ -96,7 +96,7 @@ function App() {
           <Route path="/add-post" element={<MobileAddPost />} />
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
           <Route path="/MentorSection" element={<MentorSection />} />
-          <Route path="/human-lib" element={<HumanLib />} />
+          <Route path="/HumanLib" element={<HumanLib />} />
         </Routes>
       </div>
     </Router>

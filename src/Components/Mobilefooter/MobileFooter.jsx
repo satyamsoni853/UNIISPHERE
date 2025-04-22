@@ -179,7 +179,7 @@ function MobileFooter() {
   return (
     <div className="mobile-footer">
       <div className="mobile-footer-container">
-        <Link to="/">
+        <Link to="/View">
           <img src={HomeIcon} alt="Home" className="mobile-footer-icon" />
         </Link>
         <img
