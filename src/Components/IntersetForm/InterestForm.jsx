@@ -3,7 +3,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import "./InterestForm.css";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
-import DesktopLeftBottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
@@ -175,7 +175,7 @@ function Interset() {
         <Background />
         <div className="Interest-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftBottom />
+          <DesktopLeftBottomSection />
         </div>
         <div className="Interest-middle-main-container">
           <div className="middle-interest-mainParent">

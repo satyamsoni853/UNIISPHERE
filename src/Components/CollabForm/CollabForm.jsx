@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./CollabForm.css";
 import { IoIosSearch } from "react-icons/io";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftBottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
@@ -34,7 +34,7 @@ function CollabForm() {
         <Background />
         <div className="Collab-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftBottom />
+          <DesktopLeftBottomSection />
         </div>
         <div className="Collab-middle-main-container">
           <div className="middle-collab-container">

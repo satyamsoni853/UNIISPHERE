@@ -1,6 +1,6 @@
 import React from 'react';
 import DesktopNavbar from '../DesktopNavbar/DesktopNavbar';
-import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom';
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx';
 import DesktopLeftTop from '../DesktopLeftTop/DesktopLeftTop';
 import DesktopMiddle from '../DesktopMiddle/DesktopMiddle';
 import DesktopRight from '../DesktopRight/DesktopRight';
@@ -22,7 +22,7 @@ function DesktopView() {
         {/* Left Section - left2 above left1 */}
         <aside className="desktop-view-left">
           <DesktopLeftTop />
-          <DesktopLeftBottom />
+          <DesktopLeftBottomSection />
         </aside>
 
         {/* Middle Section */}

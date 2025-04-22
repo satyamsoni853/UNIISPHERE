@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./PersonalInfoUpdate.css";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftBottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
@@ -248,7 +248,7 @@ function PersonalInfoUpdate() {
         <Background />
         <div className="PersonalInfoUpdate-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftBottom />
+          <DesktopLeftBottomSection />
         </div>
         <div className="PersonalInfoUpdate-middle-main-container">
           <div className="PersonalInfoUpdate-profile-card">

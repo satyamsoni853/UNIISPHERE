@@ -7,7 +7,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import PersonImage from "./Person.png"; // Fallback image
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftBottom from '../DesktopLeftBottom/DesktopLeftBottom';
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop";
 import Background from "../Background/Background";
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
@@ -178,7 +178,7 @@ function ProfileEditSection() {
         <Background />
         <aside className="interest-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftBottom />
+          <DesktopLeftBottomSection />
         </aside>
         <main className="interest-middle-main-container">
           <div className="followers-middle-section-2-main-parent-public">

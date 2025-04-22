@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "./DesktopLeftBottom.css";
-import image1 from "./image1.png";
-import image2 from "./image2.png";
-import image3 from "./image3.png";
+import "./DesktopLeftBottomSection.css";
+import image1 from "./Image1.png";
+import image2 from "./Image2.png";
+import image3 from "./Image3.png";
 
-function DesktopLeftBottom() {
+function DesktopLeftBottomSection() {
   const [suggestedItems, setSuggestedItems] = useState([
     { id: 1, topic: "Physics: Sem 2", author: "R.S Aggarwal", image: image1 },
     { id: 2, topic: "The SAGA", author: "Yash Sharma", image: image2 },
@@ -37,4 +37,4 @@ function DesktopLeftBottom() {
   );
 }
 
-export default DesktopLeftBottom;
+export default DesktopLeftBottomSection;

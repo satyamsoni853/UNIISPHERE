@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./MessageFinalclass.css";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import DesktopRight from "../DesktopRight/DesktopRight";
-import DesktopLeftBottom from "../DesktopLeftBottom/DesktopLeftBottom.jsx";
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
@@ -169,7 +169,7 @@ function MessageFinalclass() {
         <Background />
         <div className="message-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftBottom />
+          <DesktopLeftBottomSection />
         </div>
         <div className="message-middle-main-container">
           <div className="message-finall-class">
