@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./MobileFooter.css"; // Import CSS for styling
 
 import Addicon from "./Addicon.png";
-import Calendaricon from "./Calendaricon.png"; // Fixed typo: Clendericon -> Calendaricon
+import Calendaricon from "./Calendaricon.png";
 import Homeicon from "./Homeicon.png";
 import Networkicon from "./Networkicon.png";
 import Notificationicon from "./Notificationicon.png";
@@ -51,7 +51,7 @@ function MobileFooter() {
             (post) => post.user.id === userId
           );
           if (userPosts.length > 0) {
-            setUsername(userPosts[0].user.username || "Himanshu Choudhary"); // Fixed possible typo: Choudary -> Choudhary
+            setUsername(userPosts[0].user.username || "Himanshu Choudhary");
             setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
           }
         }
@@ -174,11 +174,12 @@ function MobileFooter() {
         />
         <img
           src={Addicon}
-          alt="Add  className="mobile-footer-add-icon"
+          alt="Add"
+          className="mobile-footer-add-icon"
           onClick={() => setShowUploadSection(true)}
         />
         <img
-          src={Calendaricon} // Fixed typo: Clendericon -> Calendaricon
+          src={Calendaricon}
           alt="Calendar"
           className="mobile-footer-icon"
         />
@@ -204,7 +205,7 @@ function MobileFooter() {
           </div>
           <div className="mobile-connections-item">Guidance</div>
           <div className="mobile-connections-item">NGOs</div>
-          <div className="mobile-connections-item">Blogs</div> {/* Fixed: BLOGs -> Blogs */}
+          <div className="mobile-connections-item">Blogs</div>
         </div>
       )}
       {showUploadSection && (
@@ -275,7 +276,7 @@ function MobileFooter() {
                         src={userProfileImage || "/profile-image.png"}
                         alt="profileImage"
                       />
-                      <h3>{username || "Himanshu Choudhary"}</h3> {/* Fixed possible typo: Choudary -> Choudhary */}
+                      <h3>{username || "Himanshu Choudhary"}</h3>
                     </div>
                     <h6
                       onClick={handlePostSubmit}
@@ -334,7 +335,7 @@ function MobileFooter() {
                           <h4>Hide Likes</h4>
                           <p className="setting-description">
                             No one will be able to see the number of likes on your post, except you
-                          </p> {/* Changed: "Except you" -> "except you" for consistency */}
+                          </p>
                         </div>
                         <label className="toggle-switch">
                           <input
