@@ -1,12 +1,4 @@
-/* Right Section */
-/* .right-section-container {
-  position: fixed;
-  top: 110px;
-  bottom: 10px;
-  width: 25vw; 
-  overflow-y: auto; 
- 
-} */
+
 /* Right Section */
 .right-section-container {
   position: fixed;
@@ -16,6 +8,9 @@
   overflow-y: auto;
   scrollbar-width: none; 
   -ms-overflow-style: none; 
+  right: 20px;
+  bottom: 20px;
+  overflow: hidden;
 }
 
 .right-section-container::-webkit-scrollbar {

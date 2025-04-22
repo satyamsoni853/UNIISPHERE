@@ -22,6 +22,8 @@ import largesvg4 from "./large svg4.svg";
 import largesvg5 from "./large svg5.svg";
 import largesvg6 from "./large svg6.svg";
 import DesktopRightsection from "../DesktopRight/DesktopRight.jsx";
+import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx";
+import Background from "../Background/Background.jsx";
 
 const MentorSection = () => {
   const [showMentorProfile, setShowMentorProfile] = useState(false);
@@ -103,6 +105,8 @@ const MentorSection = () => {
     <>
       {/* ******************------------DESKTOP VIEW ----------------------******************** */}
       <div className="mentor-desktop-main-wrapper">
+        <Background/>
+        <DesktopNavbar/>
         {showDesktopMentorDefault && (
           <div className="mentor-desktop-main-container">
             {/* Header Section */}
