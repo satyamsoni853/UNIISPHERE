@@ -2,6 +2,8 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { FaHome } from "react-icons/fa"; // Black (filled) home icon
+import { GoHome } from "react-icons/go"; // White (outline) home icon
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
@@ -9,8 +11,6 @@ import "./DesktopNavbar.css";
 import AddBlack from "./AddBlackIcon.svg";
 import AddWhite from "./AddWhiteIcon.svg";
 import BackIcon from "./BackIcon.svg";
-import HomeBlack from "./HomeBlackIcon.svg"; //rxdcgfhv 
-import HomeWhite from "./HomeWhiteIcon.svg";
 import NetworkBlack from "./NetworkBlackIcon.svg";
 import NetworkWhite from "./NetworkWhiteIcon.svg";
 import NotificationBlack from "./NotificationBlackIcon.svg";
@@ -31,7 +31,7 @@ function DesktopNavbar() {
   const [error, setError] = useState(null);
   const [showUploadSection, setShowUploadSection] = useState(false);
   const [showPostDetails, setShowPostDetails] = useState(false);
-  const [showAddMore, setShowAddMore] = useState(true); // Fixed 'showAddmore'
+  const [showAddMore, setShowAddMore] = useState(true);
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
   const [hideLikes, setHideLikes] = useState(false);
@@ -41,8 +41,8 @@ function DesktopNavbar() {
   const [totalLikes, setTotalLikes] = useState(0);
   const [totalComments, setTotalComments] = useState(0);
   const [posts, setPosts] = useState(0);
-  const [username, setUsername] = useState(""); // Changed 'Username' to 'username'
-  const [userProfileImage, setUserProfileImage] = useState(""); // Changed 'UserProfileImage' to 'userProfileImage'
+  const [username, setUsername] = useState("");
+  const [userProfileImage, setUserProfileImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
@@ -54,7 +54,7 @@ function DesktopNavbar() {
   const [notifications, setNotifications] = useState([
     {
       time: "2 hrs",
-      message: "Hello brother, how are you? I'm doing that ...", // Fixed message clarity
+      message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
       color: "notification-border-blue-400",
     },
@@ -178,6 +178,7 @@ function DesktopNavbar() {
       setSearchResults(response.data);
     } catch (err) {
       console.error("Search error:", err);
+      setError(err.message || "Failed to fetch profiles");
     } finally {
       setIsLoading(false);
     }
@@ -224,7 +225,7 @@ function DesktopNavbar() {
       }
     } catch (err) {
       console.error("Stats fetch error:", err);
-      // setError("Failed to fetch stats");
+      setError("Failed to fetch stats");
     }
   };
 
@@ -435,12 +436,21 @@ function DesktopNavbar() {
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
-      <img
-        src={activeIcon === "home" ? HomeWhite : HomeBlack}
-        alt="Home"
-        className="desktop-icon"
-        onClick={() => handleIconClick("home")}
-      />
+      {activeIcon === "home" ? (
+        <GoHome
+          className="desktop-icon"
+          onClick={() => handleIconClick("home")}
+          title="Home"
+          style={{ color: "white" }} // Outline icon for active state
+        />
+      ) : (
+        <FaHome
+          className="desktop-icon"
+          onClick={() => handleIconClick("home")}
+          title="Home"
+          style={{ color: "black" }} // Filled icon for inactive state
+        />
+      )}
       <img
         src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
         alt="Network"
@@ -617,7 +627,7 @@ function DesktopNavbar() {
         <div className="desktop-search-input-wrapper">
           <input
             type="text"
-            placeholder="Search for users" // Improved placeholder
+            placeholder="Search for users"
             className="desktop-search-bar"
             value={searchQuery}
             onChange={handleSearchChange}
@@ -832,14 +842,6 @@ function DesktopNavbar() {
           </div>
         </div>
       )}
-
-      {/* Hidden file input */}
-      <input
-        type="file"
-        ref={inputRef}
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-      />
     </div>
   );
 }
