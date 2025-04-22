@@ -450,6 +450,11 @@
   position: relative;
   max-height: 90vh;
   overflow-y: auto;
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  overflow: hidden;
+  
 }
 
 .upload-text {

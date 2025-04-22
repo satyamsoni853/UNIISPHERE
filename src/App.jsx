@@ -40,7 +40,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<UserLogin />} />
           <Route path="/home" element={<UserLogin />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/signup" element={<UserSignupWithEmailAndPassword />} />
           <Route path="/AfterOtpSection1" element={<AfterOtpSection1 />} />
 
