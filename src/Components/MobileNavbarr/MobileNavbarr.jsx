@@ -1,26 +1,24 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Background from "../Background/Background";
-import "./MobileNavbarr.css";
+import "./MobileNavbar.css";
 import { FiSearch } from "react-icons/fi";
 import Messageicon from "./Messageicon.png";
 import Usericon from "./Usericon.png";
-import Unispherelogoicon from "./Unispherelogoicon.png";
+
 import axios from "axios";
 import debounce from "lodash/debounce";
 
-import { CiSearch } from "react-icons/ci";
-
-function MobileNavbarr() {
+function MobileNavbar() {
   // Search functionality state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [unreadCount, setUnreadCount] = useState(0); // New state for unread message count
+  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId") || "your-user-id-here"; // Replace with actual userId retrieval
+  const userId = localStorage.getItem("userId") || "your-user-id-here";
   const token = localStorage.getItem("authToken");
 
   // Fetch profiles by username
@@ -34,7 +32,7 @@ function MobileNavbarr() {
       setSearchResults(response.data);
     } catch (err) {
       console.error("Search error:", err);
-      setError("Failed to search. Please try again.");
+      // setError("Failed to search. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -102,26 +100,33 @@ function MobileNavbarr() {
     setSearchQuery("");
   };
 
+  // Handle key press for accessibility
+  const handleKeyDown = (e, userId) => {
+    if (e.key === "Enter" || e.key === " ") {
+      handleProfileClick(userId);
+    }
+  };
+
   // Initial load - fetch all profiles
   useEffect(() => {
     fetchProfiles();
   }, [fetchProfiles]);
 
   return (
-    <div className="mobile-navbarr-container">
+    <div className="mobile-navbar-container">
       <Background />
-      <div className="mobile-navbarr">
+      <div className="mobile-navbar">
         {/* Logo */}
-        <img src={Usericon} alt="Logo" className="mobile-navbarr-logo" />
+        <img src={Usericon} alt="Logo" className="mobile-navbar-logo" />
 
         {/* Search Bar with Results */}
-        <div className="mobile-navbarr-search-container">
-          <div className="mobile-navbarr-search">
-            <FiSearch className="mobile-navbarr-search-icon" />
+        <div className="mobile-navbar-search-container">
+          <div className="mobile-navbar-search">
+            <FiSearch className="mobile-navbar-search-icon" />
             <input
               type="text"
               placeholder="Search username"
-              className="mobile-navbarr-input"
+              className="mobile-navbar-input"
               value={searchQuery}
               onChange={handleSearchChange}
               onFocus={() => setShowResults(true)}
@@ -142,6 +147,9 @@ function MobileNavbarr() {
                     key={user.id}
                     className="mobile-search-result-item"
                     onClick={() => handleProfileClick(user.id)}
+                    onKeyDown={(e) => handleKeyDown(e, user.id)}
+                    role="button"
+                    tabIndex={0}
                   >
                     <img
                       src={user.profilePicture || Usericon}
@@ -167,7 +175,7 @@ function MobileNavbarr() {
           <img
             src={Messageicon}
             alt="Message"
-            className="mobile-navbarr-icon"
+            className="mobile-navbar-icon"
           />
           {unreadCount > 0 && (
             <span className="unread-badge">{unreadCount}</span>
@@ -178,4 +186,4 @@ function MobileNavbarr() {
   );
 }
 
-export default MobileNavbarr;
+export default MobileNavbar;

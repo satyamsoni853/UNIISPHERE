@@ -1,16 +1,14 @@
 /* Navbar Container */
-.mobile-navbarr-container {
+.mobile-navbar-container {
   position: relative;
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 60px; 
-  
-  
+  height: 60px;
 }
 
 /* Navbar */
-.mobile-navbarr {
+.mobile-navbar {
   position: fixed;
   top: 0;
   left: 50%;
@@ -25,76 +23,41 @@
   background-color: white;
   border-bottom: 5px solid grey;
   z-index: 999;
-  
 }
 
 /* Navbar Icons */
-.mobile-navbarr-icon {
-  width: 30px;
-  height: 30px;
+.mobile-navbar-icon {
+  width: 24px;
+  height: 24px;
   cursor: pointer;
+  margin-left: 15px;
 }
 
-/* Search Bar */
-.mobile-navbarr-search {
-  display: flex;
-  align-items: center;
-  border: 2px solid grey;
-  padding: 5px 10px;
-  border-radius: 20px;
-  flex-grow: 1;
-  max-width: 250px;
-  margin: 0 10px;
-}
-
-/* Search Icon (specific to CiSearch) */
-.mobile-navbarr-search-icon {
-  font-size: 20px; /* Matches the icon size to the input */
-  color: grey; /* Matches border color for consistency */
-  margin-right: 5px; /* Space between icon and input */
-}
-
-/* Search Input */
-.mobile-navbarr-input {
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 5px;
-  font-size: 14px;
-  flex-grow: 1;
-  width: 100%;
-}
-
-/* Small Images (Decorative) */
-.small-image {
-  position: absolute;
-  width: 50px; /* Adjust size as needed */
-  height: auto;
-  opacity: 0.7; /* Slight transparency */
-  z-index: -1; /* Keep them behind other content */
-}
-  
-
-
-
-/* Responsive Design */
 /* Search Container */
-.mobile-navbarr-search-container {
-  /* position: relative; */
+.mobile-navbar-search-container {
+  position: relative; /* Added to ensure dropdown positions correctly */
   flex: 1;
   margin: 0 10px;
 }
 
-/* Search Input */
-.mobile-navbarr-search {
+/* Search Bar */
+.mobile-navbar-search {
   display: flex;
   align-items: center;
-  background: #f5f5f5;
+  background: #f5f5f5; /* Merged: Chose modern background over grey border */
   border-radius: 20px;
   padding: 8px 15px;
 }
 
-.mobile-navbarr-input {
+/* Search Icon */
+.mobile-navbar-search-icon {
+  font-size: 20px;
+  color: grey;
+  margin-right: 5px;
+}
+
+/* Search Input */
+.mobile-navbar-input {
   flex: 1;
   border: none;
   background: transparent;
@@ -118,6 +81,7 @@
   margin-top: 5px;
 }
 
+/* Search Result Item */
 .mobile-search-result-item {
   display: flex;
   align-items: center;
@@ -130,6 +94,7 @@
   background: #f9f9f9;
 }
 
+/* Search Result Avatar */
 .mobile-search-result-avatar {
   width: 40px;
   height: 40px;
@@ -138,15 +103,18 @@
   object-fit: cover;
 }
 
+/* Search Result Info */
 .mobile-search-result-info {
   display: flex;
   flex-direction: column;
 }
 
+/* Search Result Name */
 .mobile-search-result-name {
   font-weight: 500;
 }
 
+/* Loading, Error, and No Results */
 .mobile-search-loading,
 .mobile-search-error,
 .mobile-search-no-results {
@@ -159,36 +127,24 @@
   color: #ff4d4f;
 }
 
-/* Navbar Layout */
-.mobile-navbarr {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  /* position: relative; */
-  z-index: 10;
-}
-
-.mobile-navbarr-logo {
+/* Logo */
+.mobile-navbar-logo {
   height: 30px;
   margin-right: 10px;
 }
 
-.mobile-navbarr-icon {
-  width: 24px;
-  height: 24px;
-  margin-left: 15px;
-}
-
+/* Message Icon Container */
 .message-icon-container {
   position: relative;
   display: inline-block;
 }
 
+/* Unread Badge */
 .unread-badge {
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #ff0000; /* Red for visibility */
+  background-color: #ff0000;
   color: #fff;
   border-radius: 50%;
   padding: 4px;
