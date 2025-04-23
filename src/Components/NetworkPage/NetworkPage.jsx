@@ -7,8 +7,8 @@ import DesktopRightSection from "../DesktopRight/DesktopRight.jsx"
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx"; // Fixed naming (DesktopNavbarr -> DesktopNavbar)
 import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter"; // Fixed naming (Mobilefooter -> MobileFooter)
-import redXIcon from "./Close.png";
-import greenCheckIcon from "./Check.png";
+import redXIcon from "./Close.svg";
+import greenCheckIcon from "./Check.svg";
 import MobileNavbar from "../MobileNavbar/MobileNavbar.jsx";
 
 // DUMMY_DATA - Used for testing when API is not available
