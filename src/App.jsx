@@ -62,21 +62,19 @@ function App() {
             path="/AfterConnecting/:userId"
             element={<AfterConnecting />}
           />
-          <Route
-            path="/PersonalInfoUpdate:userId"
-            element={<PersonalInfoUpdate />}
-          />
+          <Route path="/PersonalInfoUpdate/:userId" element={<PersonalInfoUpdate />} />
           <Route path="/skills/:userId" element={<SkillForm />} />
           <Route path="/collab/:userId" element={<CollabForm />} />
           <Route path="/interests/:userId" element={<InterestForm />} />
           <Route path="/education/:userId" element={<EducationEdit />} />
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
-          <Route path="/blog/:userId" element={<Blog />} />
-          <Route path="/blog-create/:userId" element={<BlogCreate />} />
           <Route
-            path="/about-experience/:userId"
+            path="/AboutAndExperiance/:userId"
             element={<AboutAndExperience />}
           />
+          <Route path="/blog/:userId" element={<Blog />} />
+          <Route path="/blog-create/:userId" element={<BlogCreate />} />
+        
 
           {/* Other Routes */}
           <Route path="/self-profile" element={<SelfProfile />} />

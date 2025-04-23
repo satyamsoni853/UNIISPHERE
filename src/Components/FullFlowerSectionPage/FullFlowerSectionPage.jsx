@@ -363,14 +363,7 @@ function FullFlowerSectionPage() {
                         <span>{data.connections}</span>
                       </div>
                     </div>
-                    <div className="Profile-full-section-message-box">
-                      <Link
-                        to={`/MessageFinalClass2/${userId}`}
-                        onClick={() => localStorage.setItem("SearchUserId", userId)}
-                      >
-                        Message
-                      </Link>
-                    </div>
+                    
                   </div>
 
                   <div className="Profile-full-section-profile-info">

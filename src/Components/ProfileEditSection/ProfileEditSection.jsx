@@ -40,11 +40,13 @@ function ProfileEditSection() {
   const hasFetched = useRef(false);
   const skillsRef = useRef(null);
   const interestsRef = useRef(null);
-const bgGradients = [ 
-  'linear-gradient(to bottom, #44A9B133, #33FF0033)',
-  'linear-gradient(to bottom, #DC4A4533, #E1C86B33)',
-  'linear-gradient(to bottom, #AC89A333, #67646433)',
-  'linear-gradient(to bottom, #44A9B133, #75757533)', ]
+  const bgGradients = [
+    "linear-gradient(to bottom, #44A9B133, #33FF0033)",
+    "linear-gradient(to bottom, #DC4A4533, #E1C86B33)",
+    "linear-gradient(to bottom, #AC89A333, #67646433)",
+    "linear-gradient(to bottom, #44A9B133, #75757533)",
+  ];
+
   // Handle window resize for mobile detection
   useEffect(() => {
     const handleResize = () => {
@@ -263,7 +265,7 @@ const bgGradients = [
       <DesktopNavbar />
       <div className="ProfileEditSection-main-container">
         <Background />
-        <div className="ProfileEditSectionll-left-main-container">
+        <div className="ProfileEditSection-left-main-container">
           <DesktopLeftTop />
           <DesktopLeftBottomSection />
         </div>
@@ -297,10 +299,10 @@ const bgGradients = [
                     </label>
                   </div>
                   <div className="Followers-middle-section-2-collabsDetails-public">
-                    <h4>Collabs</h4> <span>{collabs}</span>
+                    <p className="section-heading">Collabs</p> <span>{collabs}</span>
                   </div>
                   <div className="Followers-middle-section-2-connectionsDetails-public">
-                    <h4>Connections</h4> <span>{connections}</span>
+                    <p className="section-heading">Connections</p> <span>{connections}</span>
                   </div>
                 </div>
 
@@ -310,7 +312,10 @@ const bgGradients = [
                     <Link to={`/PersonalInfoUpdate/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
-                    <p><span>(He/Him)</span>{name}</p>
+                    <p>
+                      <span>(He/Him)</span>
+                      {name}
+                    </p>
                   </div>
                   <p className="Followers-middle-section-2-profile-info-public-title">
                     {title}
@@ -321,19 +326,22 @@ const bgGradients = [
                 </div>
 
                 <div className="Followers-middle-section-2-profile-buttons-public">
-                  <button
-                  
-                    className="Followers-middle-section-2-btn-public"
-                  >Master Union</button>
-                  <button
-                  
-                    className="Followers-middle-section-2-btn-public  "
-                  >SBM</button>
+                  <button className="Followers-middle-section-2-btn-public">
+                    Master Union
+                  </button>
+                  <button className="Followers-middle-section-2-btn-public">
+                    SBM
+                  </button>
                 </div>
 
                 {/* About Section */}
-                <div className="Followers-middle-section-2-about-section-public">
-                  <h3>About</h3>
+                <div className="section-container">
+                  <div className="Followers-middle-section-2-headingAndEdit-public">
+                    <p className="ProfileEdit_section-section-heading">About</p>
+                    <Link to={`/about/${userId}`}>
+                      <FiEdit className="Followers-middle-section-2-icon-public" />
+                    </Link>
+                  </div>
                   <p>
                     {displayedText}
                     {fullAboutText.length > maxLength && (
@@ -348,32 +356,32 @@ const bgGradients = [
                 </div>
 
                 {/* Upload Section */}
-                <div className="Followers-middle-section-2-upload-section-public">
+                <div className="section-container">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
-                    <p>Upload</p>
+                    <p className="section-heading">Upload</p>
                     <Link to={`/uploadsection/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
-                  <h6>No Upload yet.</h6>
+                  <p>No Upload yet.</p>
                 </div>
 
                 {/* Experience Section */}
-                <div className="Followers-middle-section-2-upload-section-public">
+                <div className="section-container">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
-                    <p>Experience</p>
-                    <Link to={`/AboutAndExperiance/${userId}`}>
+                    <p className="section-heading">Experience</p>
+                    <Link to={`/AboutAndExperience/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
-                  <h6>No Experience yet.</h6>
+                  <p>No Experience yet.</p>
                 </div>
 
                 {/* Skills Section */}
-                <div className="Followers-middle-section-2-skills-section-public">
-                  <div className="Followers-middle-section-2-headingAndIcons-public">
-                    <h3>Skills</h3>
-                    <Link to={`/Skill/${userId}`}>
+                <div className="section-container">
+                  <div className="Followers-middle-section-2-headingAndEdit-public">
+                    <p className="section-heading">Skills</p>
+                    <Link to={`/skills/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
@@ -391,7 +399,9 @@ const bgGradients = [
                       {skills.map((val, index) => (
                         <div
                           key={index}
-                          style={{background: bgGradients[index % bgGradients.length]}}
+                          style={{
+                            background: bgGradients[index % bgGradients.length],
+                          }}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
@@ -408,21 +418,21 @@ const bgGradients = [
                 </div>
 
                 {/* Collabs Section */}
-                <div className="Followers-middle-section-2-upload-section-public">
+                <div className="section-container">
                   <div className="Followers-middle-section-2-headingAndEdit-public">
-                    <p>Collabs</p>
-                    <Link to={`/Collab/${userId}`}>
+                    <p className="section-heading">Collabs</p>
+                    <Link to={`/collab/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
-                  <h6>No Collab yet.</h6>
+                  <p>No Collab yet.</p>
                 </div>
 
                 {/* Interests Section */}
-                <div className="Followers-middle-section-2-skills-section-public">
-                  <div className="Followers-middle-section-2-headingAndIcons-public">
-                    <h3>Interests</h3>
-                    <Link to={`/Interset/${userId}`}>
+                <div className="section-container">
+                  <div className="Followers-middle-section-2-headingAndEdit-public">
+                    <p className="section-heading">Interests</p>
+                    <Link to={`/interests/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
@@ -440,7 +450,9 @@ const bgGradients = [
                       {interests.map((val, index) => (
                         <div
                           key={index}
-                          style={{background: bgGradients[index % bgGradients.length]}}
+                          style={{
+                            background: bgGradients[index % bgGradients.length],
+                          }}
                           className="Followers-middle-section-2-skillsMiniDiv-public"
                         >
                           {val}
@@ -457,10 +469,10 @@ const bgGradients = [
                 </div>
 
                 {/* Education Section */}
-                <div className="Followers-middle-section-2-main-education-public">
-                  <div className="Followers-middle-section-2-education-headingAndEdit-public">
-                    <h3>Education</h3>
-                    <Link to={`/Collab/${userId}`}>
+                <div className="section-container">
+                  <div className="Followers-middle-section-2-headingAndEdit-public">
+                    <p className="section-heading">Education</p>
+                    <Link to={`/education/${userId}`}>
                       <FiEdit className="Followers-middle-section-2-icon-public" />
                     </Link>
                   </div>
