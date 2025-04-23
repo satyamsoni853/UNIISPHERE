@@ -699,6 +699,7 @@ function DesktopNavbar() {
                 ))}
               </div>
 
+
               {/* Content based on active tab */}
               {activeTab === "Trend" ? (
                 <div className="trend-results">
