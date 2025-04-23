@@ -564,6 +564,14 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
+  .HumanLib-container > div:not(.HumanLib-second-page-content, .HumanLib-third-page-content, .HumanLib-chat-container) {
+    margin-left: 0px;
+    text-align: start;
+  }
+  .HumanLib-description{
+    text-align: start;
+    margin-right: 80px;
+  }
   /* Hide the right section on mobile */
   .HumanLib-right-section {
     display: none;

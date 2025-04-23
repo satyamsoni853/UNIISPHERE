@@ -12,6 +12,7 @@ function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // New loading state
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -20,6 +21,8 @@ function UserLogin() {
       return;
     }
 
+    setIsLoading(true); // Start loading
+
     try {
       const response = await axios.post(
         "https://uniisphere-1.onrender.com/auth/login",
@@ -27,24 +30,19 @@ function UserLogin() {
       );
 
       if (response.status === 200) {
-        // Extract token and user ID from response
         const token = response.data.token;
         localStorage.setItem("AuthToken", token);
         console.log("Stored Auth Token:", token);
 
         const userId = response.data.user.id;
-        // Print user ID and token to the console
         console.log("User ID:", userId);
         console.log("Login User ID:", userId);
-        const LoginuserId = userId; // Replace with actual user ID
+        const LoginuserId = userId;
         localStorage.setItem("LoginuserId", LoginuserId);
         localStorage.setItem("logMessage", `Login User ID: ${LoginuserId}`);
 
-        console.log("Login User ID:", userId);
-
         console.log("Token:", token);
 
-        // Store in localStorage for persistence
         localStorage.setItem("authToken", token);
         localStorage.setItem("userId", userId);
 
@@ -64,11 +62,14 @@ function UserLogin() {
       }
     } catch (error) {
       alert(
-        `Login Failed: ${error.response?.data?.message ||
-        "An error occurred. Please try again."
+        `Login Failed: ${
+          error.response?.data?.message ||
+          "An error occurred. Please try again."
         }`
       );
       console.error("Login Error:", error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -114,7 +115,7 @@ function UserLogin() {
           <div className="Succeed-1">
             <h3>
               <span>"Connect" </span>
-              <span>"Collbrate" </span>
+              <span>"Collaborate" </span>
               <span>"Succeed"</span>
             </h3>
           </div>
@@ -131,6 +132,7 @@ function UserLogin() {
             placeholder="Enter your email or phone"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading} // Disable input during loading
           />
 
           <label htmlFor="password">Password (6+ Characters)</label>
@@ -141,6 +143,7 @@ function UserLogin() {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading} // Disable input during loading
             />
             <span
               className="eye-icon"
@@ -151,14 +154,18 @@ function UserLogin() {
           </div>
 
           <div className="remember-container">
-            <div>
-              <input type="checkbox" id="remember" />
+            <div className="mobile-forgot">
+              <p>
+                <Link to="/ForgotPassword">Forgot Password?</Link>
+              </p>
             </div>
-            <div className="remember-me">
+            <div className="Login-remember-me">
+              <input type="checkbox" id="remember" disabled={isLoading} />
               <label htmlFor="remember">Remember Me</label>
             </div>
           </div>
-          <p>
+
+          <p className="desktop-forgot">
             <Link to="/ForgotPassword">Forgot Password?</Link>
           </p>
 
@@ -169,11 +176,16 @@ function UserLogin() {
 
           <div className="button-container">
             <button
-              className="login-singup-button login-btn "
+              className="login-singup-button login-btn"
               type="button"
               onClick={handleLogin}
+              disabled={isLoading} // Disable button during loading
             >
-              Continue
+              {isLoading ? (
+                <span className="loading-spinner">Loading...</span>
+              ) : (
+                "Login"
+              )}
             </button>
           </div>
 
@@ -187,6 +199,7 @@ function UserLogin() {
             <button
               className="google-btn"
               style={{ display: "flex", alignItems: "center" }}
+              disabled={isLoading} // Disable Google button during loading
             >
               <Link
                 to="/GoogleLogin"

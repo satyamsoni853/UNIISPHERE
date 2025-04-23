@@ -176,7 +176,15 @@
   font-size: 1.4rem;
   
 }
-
+.Login-remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between checkbox and label */
+  white-space: nowrap;
+}
+.Login-remember-me input{
+  margin-top: 10px;
+}
 
 
 @media (max-width: 768px) {
@@ -229,5 +237,45 @@
 
   .google-btn {
     width: 100%;
+  }
+}
+
+
+/* Show only on mobile */
+.mobile-forgot {
+  display: none;
+}
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 768px) {
+  .mobile-forgot {
+    display: block;
+    margin-right: 50px;
+  }
+  .desktop-forgot {
+    display: none;
   }
 }
