@@ -622,14 +622,14 @@ function DesktopNavbar() {
         </div>
         {showResults && (
           <div className="desktop-search-results">
-            {/* Decorative Circles */}
+            {/* Decorative Circles
             <div className="decorative-circles">
               <div className="circle circle-1"></div>
               <div className="circle circle-2"></div>
               <div className="circle circle-3"></div>
               <div className="circle circle-4"></div>
               <div className="circle circle-5"></div>
-            </div>
+            </div> */}
 
             {/* Recent Searches Section with Search Results */}
             <div className="search-section">
@@ -647,7 +647,7 @@ function DesktopNavbar() {
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={item.avatar || item.profilePicture || UserIcon}
+                      src={ProfileImage||item.avatar || item.profilePicture || UserIcon  }
                         alt={item.name || item.username}
                         className="recent-search-avatar"
                       />
@@ -662,7 +662,7 @@ function DesktopNavbar() {
 
             {/* Suggested Users Section */}
             <div className="search-section">
-              <h4 className="search-section-title">Suggested</h4>
+              <h4 className="search-section-title">Suggested  </h4>
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
@@ -670,7 +670,7 @@ function DesktopNavbar() {
                   onClick={() => handleProfileClick(user.id)}
                 >
                   <img
-                    src={user.avatar}
+                    src={ProfileImage}
                     alt={user.name}
                     className="suggested-user-avatar"
                   />
@@ -684,7 +684,7 @@ function DesktopNavbar() {
 
             {/* Tabs for Trend/Event/News */}
             <div className="search-section">
-              <h4 className="search-section-title">
+              <h4 className="search-section-title search-section-title2">
                 What you should put your eyes & thoughts on
               </h4>
               <div className="search-tabs">
@@ -698,6 +698,7 @@ function DesktopNavbar() {
                   </button>
                 ))}
               </div>
+
 
               {/* Content based on active tab */}
               {activeTab === "Trend" ? (

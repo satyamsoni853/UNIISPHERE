@@ -457,7 +457,8 @@ const MentorSection = () => {
                 </div>
               </div>
             </div>
-            <div className="mentor-mobile-profile-stack">
+           <div className="mentor-mobile-top-right-section">
+           <div className="mentor-mobile-profile-stack">
               <img src={svg1} alt="" />
 
               <div className="mentor-mobile-profile-stack-image-con">
@@ -502,6 +503,7 @@ const MentorSection = () => {
                 />
               </div>
             </div>
+           </div>
           </div>
 
           {/* Top Mentor Section */}
