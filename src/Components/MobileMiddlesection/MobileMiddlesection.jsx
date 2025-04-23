@@ -1,8 +1,9 @@
+
 import React, { useEffect, useState, useRef } from "react";
-import "../MobileMiddlesection/MobileMiddlesection.css"; // Corrected CSS file name
-import MobileNavbar from "../MobileNavbar/MobileNavbar"; // Corrected component name
+import "../MobileMiddlesection/MobileMiddlesection.css";
+import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import MobileFooter from "../Mobilefooter/MobileFooter";
-import ConnectMiddleImage from "./middleconnectimage.png"; // Corrected image name
+import ConnectMiddleImage from "./middleconnectimage.png";
 import MiddlemainImage from "./Middle-image-main.png";
 import Profileimage from "./Profile-image.png";
 import axios from "axios";
@@ -10,35 +11,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSendOutline } from "react-icons/io5";
 import Background from "../Background/Background";
-// import SmallImage1 from '../Background/SmallImage1.png';
-// import SmallImage2 from '../Background/SmallImage2.png';
-// import SmallImage3 from '../Background/SmallImage3.png';
-// import SmallImage4 from '../Background/SmallImage4.png';
-// import SmallImage5 from '../Background/SmallImage5.png';
-// import SmallImage6 from '../Background/SmallImage6.png';
-// import SmallImage7 from '../Background/SmallImage7.png';
-// import SmallImage8 from '../Background/SmallImage8.png';
-
-// Comment box data
 import profilePhoto from "./profilephoto.png";
-import Connect from "./Connect.png";
 import ShareIcon from "./Share.svg";
 import LikeIcon from "./Like.svg";
 import CommentIcon from "./Comment.svg";
-
-// Share box data
 import savedIcon from "./saved.svg";
 import whatsappIcon from "./Whatsapp.svg";
 import facebookIcon from "./Facebook.svg";
-import InstagramIcon from "./insta.svg"; // Corrected to consistent naming
+import InstagramIcon from "./insta.svg";
 import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
 import { SearchIcon } from "lucide-react";
 
-function MobileMiddleSection() { // Corrected component name
+function MobileMiddleSection() {
   const [showComment, setShowComment] = useState(false);
   const [showShare, setShowShare] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
+  const [activeOptionsPostId, setActiveOptionsPostId] = useState(null);
   const [activeCommentPostIndex, setActiveCommentPostIndex] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [userId, setUserId] = useState(null);
@@ -46,11 +34,12 @@ function MobileMiddleSection() { // Corrected component name
   const [error, setError] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [commentsLoading, setCommentsLoading] = useState(false);
+  const [connections, setConnections] = useState([]);
+  const [connectionStatuses, setConnectionStatuses] = useState({});
   const optionsRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Static user data
   const userData = {
     profilePicture: profilePhoto,
     name: "VIJAY PRASAD",
@@ -77,7 +66,52 @@ function MobileMiddleSection() { // Corrected component name
       : null;
   };
 
-  // Fetch Feed API
+  const fetchConnections = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/api/connections",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Connections API Response:", response.data);
+      if (response.data && Array.isArray(response.data)) {
+        setConnections(response.data);
+      } else {
+        setConnections([]);
+        console.log("No connections found.");
+      }
+    } catch (err) {
+      console.error("Error fetching connections:", err.response?.data || err.message);
+      setConnections([]);
+      setError("Failed to fetch connections. Please try again.");
+    }
+  };
+
+  const fetchSentConnectionRequests = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/api/connections/sent",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Sent Connection Requests API Response:", response.data);
+      const statuses = {};
+      response.data.forEach((request) => {
+        if (request.status === "requested") {
+          statuses[request.receiverId] = "requested";
+        }
+      });
+      return statuses;
+    } catch (err) {
+      console.error("Error fetching sent connection requests:", err.response?.data || err.message);
+      return {};
+    }
+  };
+
   const fetchFeed = async () => {
     const authData = getAuthData();
     if (!authData) {
@@ -88,22 +122,24 @@ function MobileMiddleSection() { // Corrected component name
 
     setImageLoading(true);
     try {
-      const response = await axios.get(
-        "https://uniisphere-1.onrender.com/api/feed",
-        {
+      const [feedResponse, sentRequests] = await Promise.all([
+        axios.get("https://uniisphere-1.onrender.com/api/feed", {
           headers: { Authorization: `Bearer ${authData.token}` },
           timeout: 10000,
-        }
-      );
-      console.log("Feed API response:", response.data);
+        }),
+        fetchSentConnectionRequests(authData.token),
+      ]);
 
-      if (response.data.userId) {
-        setUserId(response.data.userId);
-        localStorage.setItem("userId", response.data.userId);
+      setConnectionStatuses(sentRequests);
+
+      if (feedResponse.data.userId) {
+        setUserId(feedResponse.data.userId);
+        localStorage.setItem("userId", feedResponse.data.userId);
+        await fetchConnections(authData.token);
       }
 
-      if (response.data.posts && response.data.posts.length > 0) {
-        const updatedPosts = response.data.posts.map((post) => ({
+      if (feedResponse.data.posts && feedResponse.data.posts.length > 0) {
+        const updatedPosts = feedResponse.data.posts.map((post) => ({
           ...post,
           _id: post._id || post.id,
           authorId: post.authorId || "unknown",
@@ -118,52 +154,60 @@ function MobileMiddleSection() { // Corrected component name
           caption: post.caption || post.content || "No caption available",
         }));
         setPosts(updatedPosts);
+      } else {
+        console.log("No posts found in the feed.");
       }
     } catch (error) {
       console.error("Fetch feed error:", error.response?.data || error);
       setError(
-        error.response?.data?.message ||
-        "Failed to load content. Please try again."
+        error.response?.data?.message || "Failed to load content. Please try again."
       );
     } finally {
       setImageLoading(false);
     }
   };
 
-  // Fetch Comments API
-  const fetchComments = async (postId) => {
+  const sendConnectionRequest = async (receiverId) => {
     const authData = getAuthData();
     if (!authData) {
-      setError("Please log in to view comments");
-      return [];
+      setError("Please log in to send connection requests.");
+      return;
     }
 
-    setCommentsLoading(true);
     try {
-      const response = await axios.get(
-        `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
+      const response = await axios.post(
+        `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
         {
-          headers: { Authorization: `Bearer ${authData.token}` },
+          userId: authData.userId,
+          senderName: userData.name || "Anonymous",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
           timeout: 10000,
         }
       );
-      console.log("Fetch Comments API response:", response.data);
-      return response.data.comments || [];
+      console.log("Connection request response:", response.data);
+      setConnectionStatuses((prev) => ({
+        ...prev,
+        [receiverId]: "requested",
+      }));
+      setError(null);
     } catch (error) {
-      console.error("Fetch comments error:", error.response?.data || error);
+      console.error("Connection request error:", error.response?.data || error.message);
       setError(
-        error.response?.data?.message || "Failed to fetch comments. Please try again."
+        error.response?.data?.message || "Failed to send connection request."
       );
-      return [];
-    } finally {
-      setCommentsLoading(false);
     }
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
-        setShowOptions(false);
+        setActiveOptionsPostId(null);
+        console.log("Closed options menu by clicking outside.");
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -175,10 +219,12 @@ function MobileMiddleSection() { // Corrected component name
   useEffect(() => {
     if (location.state?.userToken) {
       localStorage.setItem("authToken", location.state.userToken);
+      console.log("User token stored.");
     }
     if (location.state?.userId) {
       localStorage.setItem("userId", location.state.userId);
       setUserId(location.state.userId);
+      console.log("User ID stored:", location.state.userId);
     }
 
     fetchFeed();
@@ -191,6 +237,8 @@ function MobileMiddleSection() { // Corrected component name
       setError("Please log in to like posts");
       return;
     }
+
+    console.log(`Attempting to ${post.isLiked ? "unlike" : "like"} post ID: ${post._id}`);
 
     const previousPosts = [...posts];
     const updatedPost = {
@@ -226,7 +274,10 @@ function MobileMiddleSection() { // Corrected component name
   };
 
   const handleCommentSubmit = async (index) => {
-    if (!newComment.trim()) return;
+    if (!newComment.trim()) {
+      console.log("Cannot submit an empty comment.");
+      return;
+    }
 
     const post = posts[index];
     const authData = getAuthData();
@@ -234,6 +285,8 @@ function MobileMiddleSection() { // Corrected component name
       setError("Please log in to comment");
       return;
     }
+
+    console.log(`Submitting comment on post ID: ${post._id}`);
 
     try {
       const response = await axios.post(
@@ -267,6 +320,7 @@ function MobileMiddleSection() { // Corrected component name
   };
 
   const handleCommentClick = async (index) => {
+    console.log(`Opening comments for post index: ${index}`);
     setActiveCommentPostIndex(index);
     setShowComment(true);
     setNewComment("");
@@ -280,7 +334,37 @@ function MobileMiddleSection() { // Corrected component name
     );
   };
 
+  const fetchComments = async (postId) => {
+    const authData = getAuthData();
+    if (!authData) {
+      setError("Please log in to view comments");
+      return [];
+    }
+
+    setCommentsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://uniisphere-1.onrender.com/posts/${postId}/comments`,
+        {
+          headers: { Authorization: `Bearer ${authData.token}` },
+          timeout: 10000,
+        }
+      );
+      console.log("Fetch Comments API response:", response.data);
+      return response.data.comments || [];
+    } catch (error) {
+      console.error("Fetch comments error:", error.response?.data || error);
+      setError(
+        error.response?.data?.message || "Failed to fetch comments. Please try again."
+      );
+      return [];
+    } finally {
+      setCommentsLoading(false);
+    }
+  };
+
   const handleCloseCommentModal = () => {
+    console.log("Closing comment modal.");
     setActiveCommentPostIndex(null);
     setShowComment(false);
     setError(null);
@@ -288,10 +372,24 @@ function MobileMiddleSection() { // Corrected component name
 
   const handleProfileClick = (userId) => {
     if (userId) {
+      console.log(`Navigating to profile: ${userId}`);
       navigate(`/FullFlowerSectionPage/${userId}`);
     } else {
-      console.log("Error: userId is missing!");
+      console.log("Error: Profile user ID is missing!");
     }
+  };
+
+  const handleOptionClick = (option, postId) => {
+    console.log(`Selected option: ${option} for post ID: ${postId}`);
+    setActiveOptionsPostId(null);
+  };
+
+  const handleSharePersonClick = (name) => {
+    console.log(`Sharing with person: ${name}`);
+  };
+
+  const handleSharePlatformClick = (platform) => {
+    console.log(`Sharing to platform: ${platform}`);
   };
 
   return (
@@ -301,132 +399,181 @@ function MobileMiddleSection() { // Corrected component name
       {imageLoading ? (
         <p>Loading posts...</p>
       ) : posts.length > 0 ? (
-        posts.map((post, index) => (
-          <div key={post._id || index} className="mobile-post-container">
-            {/* Profile Header */}
-            <div className="mobile-middle-profile-header">
-              <div className="mobile-image-and-name-holder">
-                <div
-                  onClick={() => handleProfileClick(post.authorId || userId)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <img
-                    src={Profileimage}
-                    alt="Profile"
-                    className="mobile-middle-profile-pic"
-                  />
-                </div>
-                <div className="mobile-middle-profile-info">
-                  <div className="mobile-middle-profile-top">
-                    <span className="mobile-middle-profile-name">
-                      {post.authorName}
-                    </span>
-                    <span className="mobile-middle-post-time">18h</span>
+        posts.map((post, index) => {
+          const authData = getAuthData();
+          const isSelf = authData && post.authorId === authData.userId;
+          const isConnected = connections.some((conn) => conn.id === post.authorId);
+          const isRequestSent = connectionStatuses[post.authorId] === "requested";
+
+          return (
+            <div key={post._id || index} className="mobile-post-container">
+              <div className="mobile-middle-profile-header">
+                <div className="mobile-image-and-name-holder">
+                  <div
+                    onClick={() => handleProfileClick(post.authorId || userId)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      src={Profileimage}
+                      alt="Profile"
+                      className="mobile-middle-profile-pic"
+                    />
                   </div>
-                  <p className="mobile-middle-profile-details">
-                    {post.authorDetails}
-                  </p>
+                  <div className="mobile-middle-profile-info">
+                    <div className="mobile-middle-profile-top">
+                      <span className="mobile-middle-profile-name">
+                        {post.authorName}
+                      </span>
+                      <span className="mobile-middle-post-time">18h</span>
+                    </div>
+                    <p className="mobile-middle-profile-details">
+                      {post.authorDetails}
+                    </p>
+                  </div>
+                  <div className="mobile-middle-connect-container">
+                    {isSelf ? (
+                      <div className="mobile-connection-status-message">
+                        You cannot send a connection request to yourself.
+                      </div>
+                    ) : isConnected ? (
+                      <div className="mobile-connection-status-message">
+                        Connection already exists.
+                      </div>
+                    ) : isRequestSent ? (
+                      <div className="mobile-connection-status-message">
+                        Request Sent!
+                      </div>
+                    ) : (
+                      <img
+                        src={ConnectMiddleImage}
+                        alt="Connect"
+                        className="mobile-middle-connect-image"
+                        onClick={() => sendConnectionRequest(post.authorId)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="mobile-middle-options-container" ref={optionsRef}>
+                  <BsThreeDotsVertical
+                    className="mobile-middle-options-icon"
+                    onClick={() => {
+                      console.log(`Toggling options for post ID: ${post._id}`);
+                      setActiveOptionsPostId(
+                        activeOptionsPostId === post._id ? null : post._id
+                      );
+                    }}
+                  />
+                  {activeOptionsPostId === post._id && (
+                    <div className="mobile-middle-options-dropdown">
+                      <button
+                        className="mobile-middle-options-item"
+                        onClick={() => handleOptionClick("Interest", post._id)}
+                      >
+                        <span>Interest</span> <hr />
+                      </button>
+                      <button
+                        className="mobile-middle-options-item"
+                        onClick={() => handleOptionClick("Not Interested", post._id)}
+                      >
+                        <span>Not Interested</span> <hr />
+                      </button>
+                      <button
+                        className="mobile-middle-options-item"
+                        onClick={() => handleOptionClick("Block", post._id)}
+                      >
+                        <span>Block</span> <hr />
+                      </button>
+                      <button
+                        className="mobile-middle-options-item"
+                        onClick={() => handleOptionClick("Report", post._id)}
+                      >
+                        <span>Report</span> <hr />
+                      </button>
+                      <button
+                        className="mobile-middle-options-item"
+                        onClick={() => handleOptionClick("Message", post._id)}
+                      >
+                        <span>Message</span> <hr />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="mobile-middle-options-container" ref={optionsRef}>
-                <BsThreeDotsVertical
-                  className="mobile-middle-options-icon"
-                  onClick={() => setShowOptions(!showOptions)}
+
+              <div className="mobile-middle-main-image">
+                <img
+                  src={post.mediaUrl}
+                  alt={`Post ${index + 1}`}
+                  className="mobile-middle-content-image"
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/300";
+                    console.log(`Failed to load image for post ID: ${post._id}`);
+                  }}
                 />
-                {showOptions && (
-                  <div className="mobile-middle-options-dropdown">
-                    <button className="mobile-middle-options-item">
-                      <span>Interest</span> <hr />
-                    </button>
-                    <button className="mobile-middle-options-item">
-                      <span>Not Interested</span> <hr />
-                    </button>
-                    <button className="mobile-middle-options-item">
-                      <span>Block</span>
-                      <hr />
-                    </button>
-                    <button className="mobile-middle-options-item">
-                      <span>Report</span>
-                      <hr />
-                    </button>
-                    <button className="mobile-middle-options-item">
-                      <span>Message</span>
-                      <hr />
-                    </button>
+              </div>
+
+              <div className="mobile-middle-action-bar">
+                <div className="mobile-middle-action-icons">
+                  <div
+                    className="mobile-middle-icon-container"
+                    onClick={() => handleLike(index)}
+                  >
+                    <span className="mobile-middle-icon-count">{post.likes}</span>
+                    <img
+                      src={LikeIcon}
+                      className={`mobile-middle-icon ${post.isLiked ? "liked" : ""}`}
+                      alt="Like"
+                    />
                   </div>
-                )}
-              </div>
-            </div>
-
-            {/* Main Image */}
-            <div className="mobile-middle-main-image">
-              <img
-                src={post.mediaUrl}
-                alt={`Post ${index + 1}`}
-                className="mobile-middle-content-image"
-                onError={(e) =>
-                  (e.target.src = "https://via.placeholder.com/300")
-                }
-              />
-            </div>
-
-            {/* Action Bar */}
-            <div className="mobile-middle-action-bar">
-              <img
-                src={ConnectMiddleImage} // Corrected variable name
-                alt="Connect"
-                className="mobile-middle-connect-image"
-              />
-              <div className="mobile-middle-action-icons">
-                <div
-                  className="mobile-middle-icon-container"
-                  onClick={() => handleLike(index)}
-                >
-                  <span className="mobile-middle-icon-count">{post.likes}</span>
-                  <img
-                    src={LikeIcon}
-                    className={`mobile-middle-icon ${post.isLiked ? "liked" : ""
-                      }`}
-                    alt="Like"
-                  />
-                </div>
-                <div
-                  className="mobile-middle-icon-container"
-                  onClick={() => handleCommentClick(index)}
-                >
-                  <span className="mobile-middle-icon-count">
-                    {post.comments.length}
-                  </span>
-                  <img src={CommentIcon} alt="Comment" className="mobile-middle-icon" />
-                </div>
-                <div
-                  onClick={() => setShowShare(true)}
-                  className="mobile-middle-icon-container"
-                >
-                  <img
-                    src={ShareIcon}
-                    className="mobile-middle-icon mobile-middle-icon-share"
-                    alt="Share"
-                  />
+                  <div
+                    className="mobile-middle-icon-container"
+                    onClick={() => handleCommentClick(index)}
+                  >
+                    <span className="mobile-middle-icon-count">
+                      {post.comments.length}
+                    </span>
+                    <img
+                      src={CommentIcon}
+                      alt="Comment"
+                      className="mobile-middle-icon"
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      console.log("Opening share modal.");
+                      setShowShare(true);
+                    }}
+                    className="mobile-middle-icon-container"
+                  >
+                    <img
+                      src={ShareIcon}
+                      className="mobile-middle-icon mobile-middle-icon-share"
+                      alt="Share"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Post Text */}
-            <div className="mobile-middle-post-text">
-              <span className="mobile-middle-post-author">
-                {post.authorName}
-              </span>{" "}
-              {post.caption}
-              <span className="mobile-middle-see-more">...more</span>
+              <div className="mobile-middle-post-text">
+                <span className="mobile-middle-post-author">
+                  {post.authorName}
+                </span>{" "}
+                {post.caption}
+                <span
+                  className="mobile-middle-see-more"
+                  onClick={() => console.log(`Clicked 'See more' for post ID: ${post._id}`)}
+                >
+                  ...more
+                </span>
+              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       ) : (
         <p>No posts available</p>
       )}
 
-      {/* Comment Modal */}
       {showComment && activeCommentPostIndex !== null && (
         <div className="mobile-Full-comment-section-main-container">
           <div className="mobile-Full-comment-section-right-section">
@@ -458,7 +605,10 @@ function MobileMiddleSection() { // Corrected component name
                         {comment.content || comment.text}
                       </div>
                       <div className="mobile-Full-comment-section-comment-actions">
-                        <span className="mobile-Full-comment-section-reply-link">
+                        <span
+                          className="mobile-Full-comment-section-reply-link"
+                          onClick={() => console.log(`Replying to comment: ${comment.content}`)}
+                        >
                           REPLY
                         </span>
                       </div>
@@ -469,6 +619,7 @@ function MobileMiddleSection() { // Corrected component name
                       src={LikeIcon}
                       alt="Like"
                       className="mobile-Full-comment-section-like-button"
+                      onClick={() => console.log(`Liking comment: ${comment.content}`)}
                     />
                     <span>{comment.likes || 0}</span>
                   </div>
@@ -511,13 +662,15 @@ function MobileMiddleSection() { // Corrected component name
         </div>
       )}
 
-      {/* Share Modal */}
       {showShare && (
         <div className="mobile-Full-share-section-main-container">
           <div className="mobile-Full-share-section-heading-and-cross">
             <h1 className="mobile-Full-share-section-heading">Share</h1>
             <button
-              onClick={() => setShowShare(false)}
+              onClick={() => {
+                console.log("Closing share modal.");
+                setShowShare(false);
+              }}
               className="mobile-Full-share-section-cross-button"
             >
               ×
@@ -525,11 +678,13 @@ function MobileMiddleSection() { // Corrected component name
           </div>
           <div className="mobile-Full-share-section-right-section">
             <div className="mobile-Full-share-section-innerDiv">
-              <div className="mobile-Full-share-section-AvatarAndName-collection"> {/* Corrected class name */}
+              <div className="mobile-Full-share-section-AvatarAndName-collection">
                 {persons.map((val, i) => (
                   <div
-                    className="mobile-Full-share-section-AvatarAndName" // Corrected class name
+                    className="mobile-Full-share-section-AvatarAndName"
                     key={i}
+                    onClick={() => handleSharePersonClick(val.name)}
+                    style={{ cursor: "pointer" }}
                   >
                     <img src={val.avatar} alt={val.name} />
                     <h1>{val.name}</h1>
@@ -537,11 +692,36 @@ function MobileMiddleSection() { // Corrected component name
                 ))}
               </div>
               <div className="mobile-Full-share-section-AllIcons">
-                <img src={linkIcon} alt="Link" />
-                <img src={xIcon} alt="X" />
-                <img src={whatsappIcon} alt="WhatsApp" />
-                <img src={facebookIcon} alt="Facebook" />
-                <img src={InstagramIcon} alt="Instagram" /> // Corrected variable name
+                <img
+                  src={linkIcon}
+                  alt="Link"
+                  onClick={() => handleSharePlatformClick("Link")}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={xIcon}
+                  alt="X"
+                  onClick={() => handleSharePlatformClick("X")}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={whatsappIcon}
+                  alt="WhatsApp"
+                  onClick={() => handleSharePlatformClick("WhatsApp")}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={facebookIcon}
+                  alt="Facebook"
+                  onClick={() => handleSharePlatformClick("Facebook")}
+                  style={{ cursor: "pointer" }}
+                />
+                <img
+                  src={InstagramIcon}
+                  alt="Instagram"
+                  onClick={() => handleSharePlatformClick("Instagram")}
+                  style={{ cursor: "pointer" }}
+                />
               </div>
             </div>
 
@@ -550,10 +730,19 @@ function MobileMiddleSection() { // Corrected component name
                 <input
                   type="text"
                   placeholder="Write a share to VIJAY PRASAD"
+                  onChange={(e) => console.log(`Typing in share input: ${e.target.value}`)}
                 />
-                <SearchIcon className="mobile-Full-share-search-icon" />
+                <SearchIcon
+                  className="mobile-Full-share-search-icon"
+                  onClick={() => console.log("Clicked search icon in share modal.")}
+                />
               </div>
-              <img src={savedIcon} alt="Saved" />
+              <img
+                src={savedIcon}
+                alt="Saved"
+                onClick={() => console.log("Clicked saved icon in share modal.")}
+                style={{ cursor: "pointer" }}
+              />
             </div>
           </div>
         </div>
@@ -562,4 +751,4 @@ function MobileMiddleSection() { // Corrected component name
   );
 }
 
-export default MobileMiddleSection; // Corrected component name
+export default MobileMiddleSection;

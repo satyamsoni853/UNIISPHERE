@@ -179,7 +179,7 @@ function MobileFooter() {
   return (
     <div className="mobile-footer">
       <div className="mobile-footer-container">
-        <Link to="/">
+        <Link to="/View">
           <img src={HomeIcon} alt="Home" className="mobile-footer-icon" />
         </Link>
         <img
@@ -258,12 +258,17 @@ function MobileFooter() {
                       }
                     }}
                   >
-                    Back
+                    {/* Back */}
                   </span>
                   <h6
                     onClick={() => {
                       setShowPostDetails(true);
                       setShowAddMore(false);
+                    }}
+                    style={{
+                      marginRight: "50px", // uniform margin on all sides
+                      cursor: "pointer",
+                      fontSize: "22px",
                     }}
                   >
                     Continue
@@ -399,7 +404,9 @@ function MobileFooter() {
                           <input
                             type="checkbox"
                             checked={disableComments}
-                            onChange={(e) => setDisableComments(e.target.checked)}
+                            onChange={(e) =>
+                              setDisableComments(e.target.checked)
+                            }
                           />
                           <span className="slider round"></span>
                         </label>

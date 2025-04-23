@@ -188,7 +188,11 @@
   outline: 2px solid #007bff;
   outline-offset: 2px;
 }
-
+@media (min-width: 768px) {
+  .mobile-navbar  {
+    display: none;
+  }
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .mobile-navbar {

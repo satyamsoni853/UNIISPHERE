@@ -5,7 +5,8 @@ import { IoSendOutline } from "react-icons/io5";
 import { FcLike } from "react-icons/fc";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
-
+import MobileNavbar from "../MobileNavbar/MobileNavbar";
+import MobileFooter from "../Mobilefooter/MobileFooter";
 // Replace these imports with your actual images/paths
 import Commenticonsvg from "./Commenticon.svg";
 import LikeIcon from "./Like.svg";
@@ -523,6 +524,7 @@ function DesktopMiddle() {
 
   return (
     <div className="middle-container">
+      
       <div className="middle-middle-card">
         {error && <div className="error-message">{error}</div>}
 
@@ -1056,6 +1058,7 @@ function DesktopMiddle() {
           </div>
         </div>
       )}
+      
     </div>
   );
 }

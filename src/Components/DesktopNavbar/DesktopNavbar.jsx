@@ -44,9 +44,10 @@ function DesktopNavbar() {
   const [loading, setLoading] = useState(true);
   const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
+  const searchContainerRef = useRef(null); // Ref for the search container
   const navigate = useNavigate();
 
-  // Notification state (trimmed to 3 entries)
+  // Notification state
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
@@ -69,6 +70,64 @@ function DesktopNavbar() {
       color: "notification-border-red-400",
     },
   ]);
+
+  // Search-related state
+  const [activeTab, setActiveTab] = useState("Trend");
+  const [recentSearches] = useState([
+    { id: 1, name: "Roshan", avatar: "https://via.placeholder.com/40" },
+    { id: 2, name: "John", avatar: "https://via.placeholder.com/40" },
+    { id: 3, name: "Anju", avatar: "https://via.placeholder.com/40" },
+    { id: 4, name: "Updesh", avatar: "https://via.placeholder.com/40" },
+    { id: 5, name: "Anup", avatar: "https://via.placeholder.com/40" },
+    { id: 6, name: "Uday", avatar: "https://via.placeholder.com/40" },
+  ]);
+  const [suggestedUsers] = useState([
+    { id: 7, name: "Rahul", university: "UPES", avatar: "https://via.placeholder.com/40" },
+    { id: 8, name: "Satyam", university: "IITM", avatar: "https://via.placeholder.com/40" },
+    { id: 9, name: "Jack", university: "Delhi University", avatar: "https://via.placeholder.com/40" },
+  ]);
+  const [trends] = useState([
+    {
+      id: 1,
+      title: "New Youth, New Power",
+      description: "eufblueeblejdfrbr, irwe. hpleufblueeblejdfrbr ygbh hbd yfgqieufbluejd. L",
+      image: "https://via.placeholder.com/60x40",
+      category: "E-Books",
+    },
+  ]);
+  const [events] = useState([]);
+  const [news] = useState([]);
+
+  // Click outside handler to close the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Handle keydown events (e.g., Esc to close)
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   // Fetch connections from the API
   useEffect(() => {
@@ -270,7 +329,7 @@ function DesktopNavbar() {
         navigate("/view");
         break;
       case "network":
-        navigate("/network");
+        // navigate("/network");
         break;
       case "add":
         setShowUploadSection(true);
@@ -360,7 +419,7 @@ function DesktopNavbar() {
   };
 
   const handleCloseUpload = () => {
-    setShowUploadSection(false);
+    kérsetShowUploadSection(false);
     setShowPostDetails(false);
     setShowAddMore(true);
     setMediaList([]);
@@ -376,6 +435,24 @@ function DesktopNavbar() {
       mediaList.forEach((media) => URL.revokeObjectURL(media.previewURL));
     };
   }, [mediaList]);
+
+  // Filter recent searches based on search query
+  const filteredRecentSearches = searchQuery
+    ? recentSearches.filter((search) =>
+        search.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : recentSearches;
+
+  // Combine filtered recent searches with search results
+  const combinedRecentResults = searchQuery
+    ? [
+        ...filteredRecentSearches,
+        ...searchResults.filter(
+          (user) =>
+            !filteredRecentSearches.some((search) => search.id === user.id)
+        ),
+      ]
+    : recentSearches;
 
   return (
     <div className="desktop-navbar-1">
@@ -530,47 +607,158 @@ function DesktopNavbar() {
         </div>
       )}
 
-      {/* Search Bar */}
-      <div className="desktop-search-container">
+      {/* Search Bar with Updated Interface */}
+      <div className="desktop-search-container" ref={searchContainerRef}>
         <div className="desktop-search-input-wrapper">
           <input
             type="text"
-            placeholder="Search for users"
+            placeholder="Search for users, trends, events, news..."
             className="desktop-search-bar"
             value={searchQuery}
             onChange={handleSearchChange}
             onFocus={() => setShowResults(true)}
-            onBlur={() => setTimeout(() => setShowResults(false), 200)}
           />
           <FiSearch className="desktop-search-icon" />
         </div>
         {showResults && (
           <div className="desktop-search-results">
-            {isLoading ? (
-              <div className="desktop-search-loading">Searching...</div>
-            ) : error ? (
-              <div className="desktop-search-error">{error}</div>
-            ) : searchResults.length > 0 ? (
-              searchResults.map((user) => (
+            {/* Decorative Circles */}
+            <div className="decorative-circles">
+              <div className="circle circle-1"></div>
+              <div className="circle circle-2"></div>
+              <div className="circle circle-3"></div>
+              <div className="circle circle-4"></div>
+              <div className="circle circle-5"></div>
+            </div>
+
+            {/* Recent Searches Section with Search Results */}
+            <div className="search-section">
+              <h4 className="search-section-title">Recent</h4>
+              <div className="recent-search-list">
+                {isLoading ? (
+                  <div className="desktop-search-loading">Searching...</div>
+                ) : error ? (
+                  <div className="desktop-search-error">{error}</div>
+                ) : combinedRecentResults.length > 0 ? (
+                  combinedRecentResults.map((item) => (
+                    <div
+                      key={item.id}
+                      className="recent-search-item"
+                      onClick={() => handleProfileClick(item.id)}
+                    >
+                      <img
+                        src={item.avatar || item.profilePicture || UserIcon}
+                        alt={item.name || item.username}
+                        className="recent-search-avatar"
+                      />
+                      <span className="recent-search-name">{item.name || item.username}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="desktop-search-no-results">No users found</div>
+                )}
+              </div>
+            </div>
+
+            {/* Suggested Users Section */}
+            <div className="search-section">
+              <h4 className="search-section-title">Suggested</h4>
+              {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="desktop-search-result-item"
+                  className="suggested-user-item"
                   onClick={() => handleProfileClick(user.id)}
                 >
                   <img
-                    src={user.profilePicture || UserIcon}
-                    alt={user.username}
-                    className="desktop-search-result-avatar"
+                    src={user.avatar}
+                    alt={user.name}
+                    className="suggested-user-avatar"
                   />
-                  <div className="desktop-search-result-info">
-                    <span className="desktop-search-result-name">{user.username}</span>
-                    <span className="desktop-search-result-id">ID: {user.id}</span>
+                  <div className="suggested-user-info">
+                    <span className="suggested-user-name">{user.name}</span>
+                    <p className="suggested-user-university">{user.university}</p>
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="desktop-search-no-results">No users found</div>
-            )}
+              ))}
+            </div>
+
+            {/* Tabs for Trend/Event/News */}
+            <div className="search-section">
+              <h4 className="search-section-title">
+                What you should put your eyes & thoughts on
+              </h4>
+              <div className="search-tabs">
+                {["Trend", "Event", "News"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`search-tab-button ${activeTab === tab ? "active" : ""}`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+
+              {/* Content based on active tab */}
+              {activeTab === "Trend" ? (
+                <div className="trend-results">
+                  {trends.map((trend) => (
+                    <div key={trend.id} className="trend-item">
+                      <img
+                        src={trend.image}
+                        alt={trend.title}
+                        className="trend-image"
+                      />
+                      <div className="trend-info">
+                        <p className="trend-title">{trend.title}</p>
+                        <p className="trend-description">{trend.description}</p>
+                        <p className="trend-category">{trend.category}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : activeTab === "Event" ? (
+                <div className="event-results">
+                  {events.length > 0 ? (
+                    events.map((event) => (
+                      <div key={event.id} className="event-item">
+                        <img
+                          src={event.image || "https://via.placeholder.com/60x40"}
+                          alt={event.title}
+                          className="event-image"
+                        />
+                        <div className="event-info">
+                          <p className="event-title">{event.title}</p>
+                          <p className="event-description">{event.description}</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-results">No events found</p>
+                  )}
+                </div>
+              ) : (
+                <div className="news-results">
+                  {news.length > 0 ? (
+                    news.map((item) => (
+                      <div key={item.id} className="news-item">
+                        <img
+                          src={item.image || "https://via.placeholder.com/60x40"}
+                          alt={item.title}
+                          className="news-image"
+                        />
+                        <div className="news-info">
+                          <p className="news-title">{item.title}</p>
+                          <p className="news-description">{item.description}</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-results">No news found</p>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

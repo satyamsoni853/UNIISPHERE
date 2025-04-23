@@ -363,7 +363,7 @@ const Blog = () => {
       {/* Desktop Section */}
       <div className="desktop-blog-main-wrapper">
         <div className="desktop-blog-nav-fixed">
-          <DesktopNavbarr />
+          <DesktopNavbar />
         </div>
         <div className="desktop-blog-background">
           <Background />
