@@ -19,7 +19,6 @@ import MessageFinalClass2 from './Components/MessageFinalclass-2/MessageFinalCla
 import SelfProfile from "./Components/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Components/SelfSetting/SelfSetting.jsx";
 
-import NetworkPage from "./Components/NetworkPage/NetworkPage.jsx";
 import CollabPage from "./Components/CollabPage/CollabPage.jsx";
 import BottomMessagesWidget from "./Components/BottomMessagesWidget/BottomMessagesWidget.jsx";
 import UploadSection from "./Components/UploadSection/UploadSection.jsx";
@@ -31,6 +30,7 @@ import EducationEdit from "./Components/EducationForm/EducationEdit.jsx";
 import Blog from "./Components/Blog/Blog.jsx";
 import MessageMobileInbox from "./Components/MessageMobileInbox/MessageMobileInbox.jsx";
 import BlogCreate from "./Components/Blog/BlogCreate.jsx";
+import NetworkPageSection from './Components/NetworkPageSection/NetworkPageSection.jsx'
 
 function App() {
   return (
@@ -84,7 +84,7 @@ function App() {
             path="/MessageFinalClass2/:messageId"
             element={<MessageFinalClass2 />}
           />
-          <Route path="/NetworkPage" element={<NetworkPage />} />
+          <Route path="/NetworkPage" element={<NetworkPageSection />} />
           <Route path="/collabs" element={<CollabPage />} />
           <Route
             path="/messages-widget"
