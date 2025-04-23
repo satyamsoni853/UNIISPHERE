@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./NetworkPage.css";
-import ProfilePhoto from "./ProfilePhoto.png";
+import ProfilePhoto from "./ProfilePhoto.svg";
 import ConnectSvg from "./Connection.svg"; // Fixed variable name (connectsvg -> connectSvg)
 import DesktopRightSection from "../DesktopRight/DesktopRight.jsx"
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx"; // Fixed naming (DesktopNavbarr -> DesktopNavbar)
