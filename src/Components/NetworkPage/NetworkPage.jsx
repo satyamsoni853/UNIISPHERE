@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Added axios import
+import axios from "axios";
 import "./NetworkPage.css";
-import profilePhoto from "./profilephoto.png";
-import connectsvg from "./Connection.svg";
-import DesktopRightsection from "../DesktopRight/DesktopRight";
-import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
+import ProfilePhoto from "./ProfilePhoto.png";
+import ConnectSvg from "./Connection.svg"; // Fixed variable name (connectsvg -> connectSvg)
+import DesktopRightSection from "../DesktopRight/DesktopRight.jsx"
+import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx"; // Fixed naming (DesktopNavbarr -> DesktopNavbar)
 import Background from "../Background/Background.jsx";
-import MobileFooter from "../Mobilefooter/MobileFooter";
-import redXIcon from "./close.png";
-import greenCheckIcon from "./check.png";
+import MobileFooter from "../Mobilefooter/MobileFooter"; // Fixed naming (Mobilefooter -> MobileFooter)
+import redXIcon from "./Close.png";
+import greenCheckIcon from "./Check.png";
 import MobileNavbar from "../MobileNavbar/MobileNavbar.jsx";
 
 // DUMMY_DATA - Used for testing when API is not available
@@ -109,7 +109,7 @@ function NetworkPage() {
       ).map((conn) => ({
         id: conn.user1.id,
         username: conn.user1.username,
-        profilePictureUrl: conn.user1.profilePictureUrl || profilePhoto,
+        profilePictureUrl: conn.user1.profilePictureUrl || ProfilePhoto,
         headline: conn.user1.headline || "No headline",
         connections: Math.floor(Math.random() * 100),
         collaborations: Math.floor(Math.random() * 10),
@@ -124,7 +124,6 @@ function NetworkPage() {
         throw new Error("Missing authentication token");
       }
 
-      // Use the provided API to fetch all users
       const response = await axios.get(
         "https://uniisphere-1.onrender.com/users/getAll",
         { headers: { Authorization: `Bearer ${token}` } }
@@ -132,12 +131,11 @@ function NetworkPage() {
 
       console.log("Users API response:", response.data);
 
-      // Map API response to connections state
       const mappedConnections = Array.isArray(response.data)
         ? response.data.map((user) => ({
             id: user.id,
             username: user.username,
-            profilePictureUrl: user.profilePictureUrl || profilePhoto,
+            profilePictureUrl: user.profilePictureUrl || ProfilePhoto,
             headline: user.headline || "No headline",
             connections: user.connections || Math.floor(Math.random() * 100),
             collaborations: user.collaborations || Math.floor(Math.random() * 10),
@@ -148,13 +146,12 @@ function NetworkPage() {
     } catch (err) {
       console.error("Error fetching users:", err);
       setError(err.message);
-      // Fallback to dummy data on error
       const fallbackConnections = DUMMY_DATA.filter(
         (conn) => conn.status === "accepted"
       ).map((conn) => ({
         id: conn.user1.id,
         username: conn.user1.username,
-        profilePictureUrl: conn.user1.profilePictureUrl || profilePhoto,
+        profilePictureUrl: conn.user1.profilePictureUrl || ProfilePhoto,
         headline: conn.user1.headline || "No headline",
         connections: Math.floor(Math.random() * 100),
         collaborations: Math.floor(Math.random() * 10),
@@ -177,15 +174,15 @@ function NetworkPage() {
       return;
     }
 
-    const LoginuserId = localStorage.getItem("LoginuserId");
-    console.log("Connection login userId:", LoginuserId);
+    const loginUserId = localStorage.getItem("LoginuserId"); // Fixed variable name (LoginuserId -> loginUserId)
+    console.log("Connection login userId:", loginUserId);
 
     try {
       if (!token) {
         throw new Error("Missing authentication token");
       }
-      if (!LoginuserId) {
-        throw new Error("Missing LoginuserId in localStorage");
+      if (!loginUserId) {
+        throw new Error("Missing loginUserId in localStorage");
       }
 
       const response = await fetch(
@@ -196,7 +193,7 @@ function NetworkPage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ userId: LoginuserId }),
+          body: JSON.stringify({ userId: loginUserId }),
         }
       );
 
@@ -230,9 +227,9 @@ function NetworkPage() {
   const handleAcceptRequest = async (connectionId) => {
     if (!token) return;
 
-    const LoginuserId = localStorage.getItem("LoginuserId");
-    if (!LoginuserId) {
-      console.error("LoginuserId not found in localStorage");
+    const loginUserId = localStorage.getItem("LoginuserId"); // Fixed variable name
+    if (!loginUserId) {
+      console.error("loginUserId not found in localStorage");
       return;
     }
 
@@ -252,7 +249,7 @@ function NetworkPage() {
           {
             id: acceptedRequest.user1.id,
             username: acceptedRequest.user1.username,
-            profilePictureUrl: acceptedRequest.user1.profilePictureUrl || profilePhoto,
+            profilePictureUrl: acceptedRequest.user1.profilePictureUrl || ProfilePhoto,
             headline: acceptedRequest.user1.headline || "No headline",
             connections: Math.floor(Math.random() * 100),
             collaborations: Math.floor(Math.random() * 10),
@@ -272,7 +269,7 @@ function NetworkPage() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            userId: LoginuserId,
+            userId: loginUserId,
           }),
         }
       );
@@ -368,8 +365,8 @@ function NetworkPage() {
 
   return (
     <div className="networkpage-main-container">
-      <DesktopNavbarr />
-      <MobileNavbar/>
+      <DesktopNavbar />
+      <MobileNavbar />
       <div className="networkpage-wrapper">
         <Background />
         <div className="networkpage">
@@ -418,7 +415,7 @@ function NetworkPage() {
                             alt={`${request.user1?.username}'s profile`}
                             className="networkpage-profile-pic"
                             onError={(e) => {
-                              e.target.src = profilePhoto;
+                              e.target.src = ProfilePhoto;
                             }}
                           />
                         </div>
@@ -476,7 +473,7 @@ function NetworkPage() {
                             alt={`${user.username}'s profile`}
                             className="networkpage-profile-pic"
                             onError={(e) => {
-                              e.target.src = profilePhoto;
+                              e.target.src = ProfilePhoto;
                             }}
                           />
                         </div>
@@ -489,7 +486,7 @@ function NetworkPage() {
                           className="networkpage-connect-icon"
                           onClick={handleConnectClick}
                         >
-                          <img src={connectsvg} alt="Connect" />
+                          <img src={ConnectSvg} alt="Connect" />
                         </div>
                         <div className="networkpage-stats">
                           <span>{user.connections} connect</span>
@@ -525,15 +522,13 @@ function NetworkPage() {
               </div>
             </div>
           </div>
-          
         </div>
-        
       </div>
 
       {showRightSection && (
-        <div className="Networkpage-rightsection">
-          <DesktopRightsection
-            className="Networkpage-rightsection-1"
+        <div className="networkpage-rightsection">
+          <DesktopRightSection
+            className="networkpage-rightsection-1"
             onClose={handleCloseRightSection}
           />
         </div>
