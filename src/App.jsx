@@ -55,7 +55,7 @@ function App() {
             element={<ProfileEditSection />}
           />
           <Route
-            path="/follower-section/:userId"
+            path="/follower-section"
             element={<FullFlowerSectionPage />}
           />
           <Route

@@ -1,1021 +1,582 @@
 /* Main Container */
-.FullFlowerSectionPage-main-container {
+.FullFlower-Interest-main-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 /* Left Container */
-.FullFlowerSectionPage-left-main-container {
+.FullFlower-Interest-left-main-container {
   width: 30%;
   display: flex;
   flex-direction: column;
 }
 
 /* Middle Container */
-.FullFlowerSectionPage-middle-main-container {
-  /* width: 50%; */
+.FullFlower-Interest-middle-main-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 60px; /* Space for MobileFooter */
 }
 
 /* Right Container */
-.FullFlowerSectionPage-right-main-container {
-  /* width: 30%; */
+.FullFlower-Interest-right-main-container {
+  width: 30%;
   display: flex;
   justify-content: flex-end;
 }
 
-.Profile-full-section-mainParent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
- 
-}
-
-.Profile-full-section-container {
-  width: 35vw;
-  margin-top: 90px;
-  margin-left: 90px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  border-radius: 10px;
-  /* border: 2px solid black; */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-/* adding the new css for the back-button */
- 
-.Profile-full-section-whole-profile-section {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: flex-end;
-  /* padding: 10px; */
-  border-radius: 5px;
-}
-
- 
-.Profile-full-section-profile-header {
-  width: 100%;
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  gap: 50px;
-  align-items: center;
-  padding: 5px;
-  font-size: 20px;
-  position: relative;
-}
-
-.Profile-full-section-top-nav-section {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  padding: 2px 10px;
-  align-items: center;
-  display: none;
-}
-
-.Profile-full-section-top-nav-section input{
-  width: 70%;
-  height: 25px;
-  background-color: #F2F1F1;
+/* Profile Section Container */
+.FullFlower-Profile-full-section-container {
+  width: 30vw; /* Fixed width for desktop */
   border-radius: 15px;
+  margin-top: 90px; /* Space for navbar */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+/* Generic Section Container */
+.FullFlower-section-container {
+  margin-bottom: 20px; /* Space between sections */
+  padding: 15px; /* Uniform padding */
+  background: white; /* Consistent background */
+  border-radius: 8px; /* Subtle rounding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  border-top: 10px solid grey; /* 10px grey border top only */
+  text-align: left; /* Consistent left alignment */
+}
+
+/* Generic Section Heading */
+.FullFlower-section-heading {
+  font-size: 22px; 
+  font-weight: 500;
+  margin: 0 0 10px 0;
+  display: inline-block;
   
 }
- 
+.FullFlower-section-Main-heading{
+  font-size: 50px;
+}
 
- 
-
-.Profile-full-section-search {
-  position: relative;
+/* Top Navigation Section */
+.FullFlower-Profile-full-section-top-nav-section {
   display: flex;
   align-items: center;
-  width: 92%;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.Profile-full-section-search input {
-  width: 100%;
-  padding: 10px 40px 10px 15px;
-  border: none;
-  outline: none;
-  border-radius: 50px;
-  font-size: 16px;
-}
-
-.Profile-full-section-search-icon {
-  position: absolute;
-  right: 15px;
-  color: gray;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.Profile-full-section-parent-collabs-connection {
-  display: flex;
-  justify-content: space-around;
-  width: 70%;
-  position: relative;
-}
-
-.Profile-full-section-parent-collabs-connection .Profile-full-section-connectionsDetails,
-.Profile-full-section-parent-collabs-connection .Profile-full-section-collabsDetails {
-  display: flex;
-  flex-direction: column-reverse;
-}
-
-.Profile-full-section-connectionsDetails,
-.Profile-full-section-collabsDetails {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.Profile-full-section-collabsDetails h4,
-.Profile-full-section-connectionsDetails h4 {
-  font-size: 20px;
-  font-weight: 100;
-  color: #666;
-}
-
-.Profile-full-section-collabsDetails span,
-.Profile-full-section-connectionsDetails span {
-  font-size: 25px;
-  font-weight: 900;
-  color: #333;
-}
-
-.Profile-full-section-profile-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  line-height: 0.5;
-  position: relative;
-}
-.Profile-full-section-message-box{
-  position:absolute;
-  width: 133px;
-  height: 25px;
-  font-size: 15px;
-  display: flex;
-  bottom: -25px;
-  left: 25px;
-  border-radius: 25px;
-  background-color: #d7d7d7;
-  box-shadow: 0 2px 5px   rgba(0, 0, 0, 0.5);
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.Profile-full-section-profile-info p:first-child {
-  font-size: 23px;
-  font-weight: 500;
-  color: #222;
-}
-
-.Profile-full-section-name span{
+.FullFlower-Profile-full-section-top-nav-section input {
+  flex: 1;
+  padding: 8px;
   font-size: 14px;
-  color: #7C7B7B;
-  font-weight: 400;
-  display: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: none; /* Hidden by default */
 }
 
-.Profile-full-section-imageContainer {
-  height: 75px;
-  width: 75px;
-  border-radius: 50%;
+.FullFlower-back-button {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+/* Profile Header */
+.FullFlower-Profile-full-section-profile-header {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 90%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  font-size: 18px;
+  margin: 10px;
+}
+
+.FullFlower-Profile-full-section-imageContainer {
   position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
 
-.Profile-full-section-profile-pic {
-  height: 100%;
+.FullFlower-Profile-full-section-profile-pic {
   width: 100%;
-  border-radius: 50%;
+  height: 100%;
   object-fit: cover;
 }
 
-.Profile-full-section-profile-buttons {
+.FullFlower-Profile-full-section-parent-collabs-connection {
   display: flex;
-  width: 100%;
   gap: 20px;
-  justify-content: flex-end;
-  padding: 2px 8px;
 }
 
-.Profile-full-section-btn {
-  background: linear-gradient(to bottom, #ffe9ed, white);
+.FullFlower-Profile-full-section-collabsDetails,
+.FullFlower-Profile-full-section-connectionsDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Profile Info */
+.FullFlower-Profile-full-section-profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Left alignment */
+  line-height: 1;
+  margin: 10px;
+}
+
+.FullFlower-Profile-full-section-name {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.FullFlower-Profile-full-section-name span {
+  font-size: 15px;
+  font-weight: 400;
+  color: #9e9b9b;
+}
+
+.FullFlower-Profile-full-section-profile-info p:nth-child(2) {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.FullFlower-Profile-full-section-profile-info p:nth-child(3) {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Profile Buttons */
+.FullFlower-Profile-full-section-profile-buttons {
+  display: flex;
+  justify-content: flex-end; /* Right alignment on desktop/tablet */
+  gap: 10px;
+  margin: 10px;
+}
+
+.FullFlower-Profile-full-section-btn {
   color: black;
   border: 1px solid black;
   padding: 8px 12px;
-  width: 140px;
-  font-size: 17px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.Profile-full-section-btn:hover {
-  background: linear-gradient(to bottom, #ffd1d9, #f5f5f5);
-  transform: translateY(-1px);
-}
-
-.Profile-full-section-about-headingAndFull {
-  display: flex;
-  justify-content: space-between;
-}
-
-.Profile-full-section-about-headingAndFull h3 {
-  font-size: 20px;
-  color: #333;
-}
-
-.Profile-full-section-goal-section {
-  padding: 5px 7px;
-  border-radius: 5px;
-}
-
-.Profile-full-section-goal-button {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  color: rgb(144, 143, 143);
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.Profile-full-section-about-section {
-  padding: 5px 7px;
-  border-radius: 5px;
-}
-
-.Profile-full-section-about-button {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  color: rgb(144, 143, 143);
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.Profile-full-section-main-analytics-parent {
-
-  border-radius: 5px;
-  padding: 7px;
-}
-
-.Profile-full-section-anlaytic-main-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.Profile-full-section-anlaytic-main-section h3 {
-  font-size: 20px;
-  color: #333;
-}
-
-.Profile-full-section-analytics-container {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  align-items: center;
-}
-
-.Profile-full-section-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 10px solid skyblue;
-  border-bottom-color: transparent;
-  animation: spin 2s linear infinite;
-}
-
-.Profile-full-section-experience-slider-box {
-  border-radius: 10px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.Profile-full-section-upload-slider-box {
-  border-radius: 10px;
-  height: 325px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.Profile-full-section-Back {
-  font-size: 30px;
-}
-
-.Profile-full-section-Forward {
-  font-size: 30px;
-}
-
-.Profile-full-section-down-experience-slider-con {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.Profile-full-section-down-upload-slider-con {
-  padding: 10px;
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-}
-
-.Profile-full-section-slide-track {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  transition: transform 0.3s ease;
-}
-
-.Profile-full-section-each-slide-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 1px solid #eee;
-}
-
-.Profile-full-section-each-slide {
-  flex: 0 0 32%;
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-}
-
-.Profile-full-section-each-slide p {
-  font-size: 12px;
-  color: #666;
-  margin-top: 5px;
-}
-
-.Profile-full-section-left-btn,
-.Profile-full-section-right-btn {
-  cursor: pointer;
-  color: #666;
-  transition: color 0.3s ease;
-  font-size: 30px;
-}
-
-.Profile-full-section-left-btn:hover,
-.Profile-full-section-right-btn:hover {
-  color: #333;
-}
-
-.Profile-full-section-experince-inner-div {
-  text-align: center;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  
-  border-radius: 5px;
-  height: 191px;
-  width: 171px;
-  border: 1px solid #eee;
-}
-
-.Profile-full-section-experince-innerdiv-heading{
-  display: flex;
-  flex-direction: column;
-  height: 25%;
-  width: 100%;
-}
-
-.Profile-full-section-experince-inner-div h3 {
-  font-size: 12px;
-  color: #333;
-}
-
-.Profile-full-section-experince-inner-div h5 {
-  font-size: 10px;
-  color: rgb(144, 143, 143);
-}
-
-.Profile-full-section-experince-inner-div p {
-  font-size: 15px;
-  text-align: center;
-  color: #666;
-}
-
-.Profile-full-section-main-wrapper-section {
-  border-radius: 10px;
-  padding: 2px;
-}
-
-.Profile-full-section-suggested-tags {
-  display: flex;
-  padding: 7px;
-  gap: 10px;
-  justify-items: center;
-  align-items: center;
-  width: 100%;
-  overflow: hidden;
-}
-
-.Profile-full-section-heading-and-logos {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 5px;
-  align-items: center;
-}
-
-.Profile-full-section-heading-and-logos h3 {
-  font-size: 25px;
-  color: #333;
-}
-
-.Profile-full-section-content-and-arrow {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.Profile-full-section-logos {
-  display: flex;
-  gap: 15px;
-  padding: 15px;
-}
-
-.Profile-full-section-logos img {
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.Profile-full-section-tag {
-  text-align: center;
-  border-radius: 5px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 10px;
-  flex: 0 0 23%;
-  height: 50px;
-  box-sizing: border-box;
-  border: 1px solid #eee;
-}
-
-
-
-.Profile-full-section-main-collabs-section {
-  display: flex;
-  /* background-color: #fff; */
-  border-radius: 10px;
-  flex-direction: column;
-  height: 250px;
-}
-
-.Profile-full-section-main-collabs-section h3 {
-  text-align: start;
-}
-
-.Profile-full-section-collabratorCard {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-
-.Profile-full-section-collab-image {
-  height: 70px;
-  width: 70px;
-}
-
-.Profile-collab-full-section-right {
-  width: 220px;
-  object-fit: cover;
-}
-
-.Profile-full-section-collab-image img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-}
-
-.Profile-full-section-collabratorDetails {
-  flex-direction: column;
-  display: flex;
-  width: 100px;
-}
-
-.Profile-full-section-collabratorDetails h4 {
-  font-size: 15px;
-  font-weight: 500;
-  text-align: start;
-  color: #333;
-}
-
-.Profile-full-section-collabratorDetails .Profile-full-section-education {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  line-height: 0.5;
-}
-
-.Profile-full-section-education p {
-  line-height: 0.5;
-}
-
-.Profile-full-section-collabratorDetails p {
-  line-height: 0.5;
-}
-
-.Profile-full-section-education p {
-  line-height: 0.5;
-}
-
-.Profile-full-section-sunCollabrators-name {
-  line-height: 0.5;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: start;
-}
-
-.Profile-full-section-sunCollabrators-name p {
-  line-height: 0.5;
-}
-
-.Profile-full-section-collabratorDetails .Profile-full-section-subCollabrators {
-  display: flex;
-  align-items: center;
-  padding: 3px 0;
-  width: 100px;
-  height: 15px;
-  font-size: 10px;
-  color: #514f4fea;
-}
-
-.Profile-full-section-sunCollabrators-name {
-  display: flex;
-  height: 100%;
-}
-
-.Profile-full-section-collabratorDetails .Profile-full-section-subCollabrators h6 {
-  font-size: 7px;
-  text-justify: center;
-  font-weight: 100;
-  color: #828282ea;
-}
-
-.Profile-full-section-para {
-  text-align: start;
-  font-size: 14px;
-  color: #666;
-}
-
-.Profile-full-section-second-div-arrowAndContent {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.Profile-full-section-innerDiv-onlyContent {
-  height: 150px;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  width: 100%;
-}
-
-.Profile-full-section-right {
-  width: 30%;
-  padding: 15px 2px;
-  display: flex;
-  justify-content: end;
-}
-
-.Profile-full-section-right img {
-  height: 100%;
-  width: 100%;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.Profile-full-section-left {
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-}
-
-.Profile-full-section-main-education {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 10px;
-  align-items: center;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.Profile-full-section-upper-education {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  width: 100%;
-}
-
-.Profile-full-section-education-headingAndFull {
-  display: flex;
-  justify-content: space-between;
-}
-
-.Profile-full-section-education-headingAndFull h3 {
-  font-size: 20px;
-  color: #333;
-}
-
-.Profile-full-section-buttons-section {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  width: 100%;
-  padding: 10px;
-}
-
-.btn {
-  padding: 12px 20px;
+  max-width: 190px;
   font-size: 16px;
-  font-weight: bold;
-  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  text-align: center;
+  background: transparent;
 }
 
-.btn-left {
-  background-color: #ff5733;
-  color: white;
+.FullFlower-Profile-full-section-profile-buttons button:nth-child(1) {
+  background: linear-gradient(to bottom, #04e6ff1a, #ffd9001a);
 }
 
-.btn-middle {
-  background-color: #3498db;
-  color: white;
+.FullFlower-Profile-full-section-profile-buttons button:nth-child(2) {
+  background: linear-gradient(to bottom, #4304ff1a, #ff00001a);
 }
 
-.btn-right {
-  background-color: #2ecc71;
-  color: white;
+
+
+
+.FullFlower-Profile-full-section-goal-button {
+  border: none;
+  background-color: transparent;
+  color: rgb(144, 143, 143);
+  font-size: 14px;
+  cursor: pointer;
 }
 
-.btn:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+/* Analytics Section */
+.FullFlower-Profile-full-section-analytics-container {
+  display: flex;
+  justify-content: flex-start; /* Left alignment */
+  gap: 10px;
+  margin: 10px;
 }
 
-.Profile-full-section-public-logo {
-  height: 30px;
-  width: 200px;
-  object-fit: contain;
-  margin-bottom: 50px;
+.FullFlower-Profile-full-section-circle {
+  width: 50px;
+  height: 50px;
+  background: #ccc;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite; /* Circle animation */
 }
-.Mobile-Navbar-Collab{
-  display: none;
-}
-@keyframes spin {
+
+@keyframes pulse {
   0% {
-    transform: rotate(0deg);
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
   }
   100% {
-    transform: rotate(360deg);
+    transform: scale(1);
+    opacity: 0.7;
   }
 }
 
-.Profile-full-section-heading {
-  font-size: 2rem;
-  font-weight: 550;
+/* Upload Slider */
+.FullFlower-Profile-full-section-down-upload-slider-con {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 1200px) {
-  .FullFlowerSectionPage-left-main-container,
-  .FullFlowerSectionPage-right-main-container {
-    width: 25%;
+.FullFlower-Profile-full-section-slide-track {
+  display: flex;
+  gap: 80px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.FullFlower-Profile-full-section-each-slide {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.FullFlower-Profile-full-section-slide-img {
+  width: 120px; /* Larger images */
+  /* height: 120px; */
+    object-fit: cover;
+  border-radius: 5px;
+}
+
+.FullFlower-Profile-full-section-each-slide p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+/* Experience Slider */
+.FullFlower-Profile-full-section-down-experience-slider-con {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
+}
+
+.FullFlower-Profile-full-section-slide-track.FullFlower-experience-track {
+  display: flex;
+  gap: 45px; /* Increased gap for Experience */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.FullFlower-Profile-full-section-experince-inner-div {
+  flex-shrink: 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: 150px;
+}
+
+.FullFlower-Profile-full-section-experince-innerdiv-heading h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.FullFlower-Profile-full-section-experince-innerdiv-heading h5 {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 5px 0;
+}
+
+.FullFlower-Profile-full-section-experince-inner-div p {
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+/* Skills and Interests */
+.FullFlower-Profile-full-section-content-and-arrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
+}
+
+.FullFlower-Profile-full-section-suggested-tags {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.FullFlower-Profile-full-section-tag {
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* Scroll Buttons */
+.FullFlower-Profile-full-section-Back,
+.FullFlower-Profile-full-section-Forward,
+.FullFlower-Profile-full-section-left-btn,
+.FullFlower-Profile-full-section-right-btn {
+  background: grey; /* Grey background */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.FullFlower-Profile-full-section-Back:hover,
+.FullFlower-Profile-full-section-Forward:hover,
+.FullFlower-Profile-full-section-left-btn:hover,
+.FullFlower-Profile-full-section-right-btn:hover {
+  background-color: #555; /* Darker grey on hover */
+}
+
+.FullFlower-Profile-full-section-Back.disabled,
+.FullFlower-Profile-full-section-Forward.disabled,
+.FullFlower-Profile-full-section-left-btn.disabled,
+.FullFlower-Profile-full-section-right-btn.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Education Buttons */
+.FullFlower-Profile-full-section-buttons-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Left alignment */
+  gap: 10px;
+  margin: 10px;
+}
+
+.FullFlower-Profile-full-section-buttons-section button {
+  flex: 1 1 calc(50% - 10px);
+  padding: 10px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  text-align: center;
+}
+
+.FullFlower-Profile-full-section-buttons-section button:hover {
+  opacity: 0.8;
+}
+
+.FullFlower-btn-left {
+  background: linear-gradient(to top, #ff7e5f, #feb47b);
+}
+
+.FullFlower-btn-middle {
+  background: linear-gradient(to top, #ff6a00, #fdfdfd);
+}
+
+.FullFlower-btn-right {
+  background: linear-gradient(to top, #4facfe, #f2f8f8);
+}
+
+.FullFlower-Profile-full-section-public-logo {
+  width: 100%;
+  max-width: 200px;
+  margin: 10px;
+}
+.FullFlower-section-Main-heading{
+  font-size: 35px;
+  font-weight: 600;
+}
+
+/* Tablet (≤1023px) */
+@media (max-width: 1023px) {
+  .FullFlower-Interest-main-container {
+    flex-wrap: wrap;
+    height: auto;
   }
 
-  .FullFlowerSectionPage-middle-main-container {
+  .FullFlower-Interest-left-main-container,
+  .FullFlower-Interest-right-main-container {
     width: 50%;
   }
 
-  .Profile-full-section-container {
-    width: 40vw;
-    margin-left: 60px;
-  }
-  .Profile-full-section-heading-and-logos h3{
-  margin-top: 30px;
-  font-size: 2rem;
-  font-weight: 600;
-}  
- 
-}
-
-@media (max-width: 900px) {
-  .Mobile-Navbar-Collab{
-    display: block;
-  }
-  .Mobile-Navbar-Collab {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Adjust spacing between elements */
-  }
- 
-  
-  .Mobile-Navbar-Collab input {
-    flex: 1; /* Allows input to take available space */
-    padding: 5px;
-    border: 2px solid grey;
-    border-radius: 5px;
-    border-radius: 20px;
-  }
-  .Collab-IoArrowBackCircleOutline{
-    font-size: 40px;
-  }
-  
-  .Mobile-Navbar-Collab img {
-    width: 120px; /* Adjust size as needed */
-    height: 120px;
-  }
-  .FullFlowerSectionPage-main-container {
-    flex-wrap: wrap;
-    height: auto; /* Allow height to adjust */
-    padding: 15px;
-  }
-
-  .FullFlowerSectionPage-left-main-container,
-  .FullFlowerSectionPage-right-main-container {
+  .FullFlower-Interest-middle-main-container {
     width: 100%;
+    order: 3;
+    margin-top: 20px;
   }
 
-  .FullFlowerSectionPage-middle-main-container {
-    width: 100%;
+  .FullFlower-Profile-full-section-container {
+    width: 100%; /* Full width for tablet */
+    max-width: 600px; /* Prevent overly wide content */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
   }
 
-  .Profile-full-section-container {
-    width: 70%;
-    margin: 40px auto 0; /* Center horizontally */
-    padding: 15px;
+  .FullFlower-Profile-full-section-imageContainer {
+    width: 80px;
+    height: 80px;
   }
- 
-  .Profile-full-section-heading-and-logos h3{
-    margin-top: 30px;
-    font-size: 2rem;
-    font-weight: 600;
+
+
+
+  .FullFlower-Profile-full-section-slide-img {
+    width: 100px; /* Smaller images on tablet */
+    height: 100px;
+  }
+
+  .FullFlower-section-heading {
+    font-size: 20px; /* Slightly smaller on tablet */
   }
 }
 
-
-@media (max-width: 740px) {
-  .Profile-full-section-mainParent {
-    width: 420px;
-  }
-  .Profile-full-section-message-box{
+/* Mobile (≤767px) */
+@media (max-width: 767px) {
+  .FullFlower-Interest-left-main-container,
+  .FullFlower-Interest-right-main-container {
     display: none;
   }
-  .Profile-full-section-heading-and-logos h3{
-    margin-top: 30px;
-    font-size: 2rem;
-    font-weight: 600;
-  }
-  .Profile-full-section-tag{
 
-    font-size: 15px;
-    padding: 0px 0px;
-  }
-  .FullFlowerSectionPage-main-container {
+  .FullFlower-Interest-main-container {
     flex-direction: column;
     padding: 10px;
-    height: auto; /* Allow height to adjust */
+    height: auto;
   }
 
-  .FullFlowerSectionPage-left-main-container,
-  .FullFlowerSectionPage-right-main-container {
-    display: none; /* Hide side sections on mobile */
-  }
-
-  .FullFlowerSectionPage-middle-main-container {
+  .FullFlower-Interest-middle-main-container {
     width: 100%;
+    padding: 10px 0;
+    margin-bottom: 50px;
   }
 
-  .Profile-full-section-container {
-    width: 90%;
-    margin: 20px auto 0; 
+  .FullFlower-Profile-full-section-container {
+    width: 100%; /* Full width for mobile */
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: none;
     padding: 10px;
+    border-radius: 8px;
   }
 
-  .Profile-full-section-profile-header {
-    flex-direction: row-reverse;
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  .FullFlower-Profile-full-section-top-nav-section input {
+    display: block; /* Show input bar on mobile */
   }
 
-  .Profile-full-section-whole-profile-section {
-    align-items: center;
+  
+
+  .FullFlower-Profile-full-section-imageContainer {
+    width: 70px;
+    height: 70px;
   }
 
-  .Profile-full-section-profile-info {
-    align-items: center;
-    line-height: 1.2;
-    
+  .FullFlower-Profile-full-section-name {
+    font-size: 20px;
   }
+
+ 
  
 
-  .Profile-full-section-parent-collabs-connection {
-    width: 100%;
-    justify-content:space-evenly;
-   
-  }
-
-  .Profile-full-section-btn {
-    width: 100%;
-    max-width: 140px;
-  }
-  .Profile-full-section-parent-collabs-connection {
-    display: flex;
-    justify-content: space-around;
-    width: 70%;
-   
-  }
-  .Profile-full-section-profile-info{
-    display: flex;
-    align-items: flex-end;
-    gap: 0;
-    justify-content: center;
-    line-height: 0.5;
-    padding: 5px 2px;
-    width: 100%;
-  
-  }
-
-}
-
-@media (max-width: 480px) {
-  .Profile-full-section-container {
-    width: 95%;
-    margin: 15px auto 0;
+  .FullFlower-Profile-full-section-btn {
+    font-size: 14px;
     padding: 8px;
   }
 
-  .Profile-full-section-message-box{
-    display: none;
+  .FullFlower-Profile-full-section-slide-img {
+    width: 80px; /* Smaller images on mobile */
+    height: 80px;
   }
 
-  .Profile-full-section-top-nav-section{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    
-  }
-  .Profile-full-section-profile-header {
-   justify-content: end;
+  .FullFlower-Profile-full-section-experince-inner-div {
+    width: 120px;
   }
 
-  .Profile-full-section-parent-collabs-connection {
-    display: flex;
-    justify-content: space-around;
-    width: 70%;
-   
+  .FullFlower-Profile-full-section-suggested-tags {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    gap: 10px;
+    overflow-x: auto;
   }
 
-  .Profile-full-section-profile-info{
-    display: flex;
-    align-items: flex-end;
-    gap: 0;
-    justify-content: center;
-    line-height: 0.5;
-    padding: 5px 2px;
-    width: 100%;
-  
-  }
- 
-  .Profile-full-section-name{
-    font-size: 22px;
-    
-  }
- 
-  .Profile-full-section-imageContainer {
-    height: 106px;
-    width: 104px;
-   
+  .FullFlower-Profile-full-section-tag {
+    font-size: 13px;
+    padding: 6px 10px;
   }
 
-  .Profile-full-section-search input {
-    padding: 8px 35px 8px 12px;
+  .FullFlower-Profile-full-section-buttons-section {
+    width: 80vw;
   }
 
- 
-  .Profile-full-section-profile-buttons {
- display: flex;
- align-items: center;
-
-  }
-.Profile-full-section-collabsDetails h4,.Profile-full-section-connectionsDetails h4{
-  font-size: 14px;
-  font-weight: 400;
-}
-.Profile-full-section-collabsDetails span,.Profile-full-section-connectionsDetails span{
-  font-size: 22px;
-  font-weight: 500;
-}
-  .Profile-full-section-experience-slider-box,
-  .Profile-full-section-upload-slider-box {
-    height: auto; /* Adjust height dynamically */
-  }
-
-  .Profile-full-section-each-slide {
-    flex: 0 0 45%; /* Show fewer slides */
-  }
-  .Profile-full-section-name span{
-    display: inline;
-  }
-}
-
-@media (max-width: 320px) {
-
-  .Profile-full-section-mainParent{
-    margin-left: 30vw;
-  }
-  
-  .Profile-full-section-container {
-    width: 100%;
-    margin: 10px auto 0;
-    padding: 5px;
-  }
-  .Profile-full-section-slide-track{
- 
-    width: 100vw;
-    overflow-x: hidden;
-  }
-  .Profile-full-section-top-nav-section  {
-   
-    display: flex;
-   }
-
-  .Profile-full-section-imageContainer {
-    height: 50px;
-    width: 50px;
-  }
-  .Profile-full-section-name span{
-    display: inline;
-  }
-
-  .Profile-full-section-btn {
-  width: 50%;
-height: 40px;
-  }
-
-  .Profile-full-section-search input {
-    padding: 6px 30px 6px 10px;
+  .FullFlower-Profile-full-section-buttons-section button {
+    max-width: 200px;
     font-size: 14px;
+    padding: 8px;
   }
 
-  .Profile-full-section-search-icon {
-    font-size: 16px;
-    right: 10px;
+  .FullFlower-section-heading {
+    font-size: 18px; /* Smaller on mobile */
   }
+}
 
-  .Profile-full-section-each-slide {
-    flex: 0 0 100%; /* Full width slides */
-  }
-
-  .Profile-full-section-tag {
+/* Small Mobile (≤319px) */
+@media (max-width: 319px) {
+  .FullFlower-Profile-full-section-name {
     font-size: 18px;
-    padding: 10px;
-    height: 40px;
   }
 
-  .Profile-full-section-collab-image {
-    height: 50px;
-    width: 50px;
+  .FullFlower-Profile-full-section-imageContainer {
+    width: 60px;
+    height: 60px;
+  }
+
+  .FullFlower-Profile-full-section-btn {
+    font-size: 13px;
+  }
+
+  .FullFlower-Profile-full-section-slide-img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .FullFlower-Profile-full-section-experince-inner-div {
+    width: 100px;
+  }
+
+  .FullFlower-Profile-full-section-tag {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  .FullFlower-section-heading {
+    font-size: 16px; /* Smallest on tiny screens */
+  }
+}
+
+/* Hide Back Icon on Desktop and Tablet (≥768px) */
+@media (min-width: 768px) {
+  .FullFlower-Profile-full-section-top-nav-section img.FullFlower-back-button {
+    display: none;
   }
 }

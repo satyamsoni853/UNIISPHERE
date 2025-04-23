@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Background from "../Background/Background.jsx";
-import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
+import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx';
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
+import DesktopNavbar from '../DesktopNavbar/DesktopNavbar.jsx';
 import DesktopRight from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import backIcon from "./backsvg.svg";
@@ -37,8 +37,7 @@ function FullFlowerSectionPage() {
     {
       title: "Internship at Tech Corp",
       subtitle: "Internship",
-      description:
-        "Assisted in developing a mobile app during a summer internship.",
+      description: "Assisted in developing a mobile app during a summer internship.",
     },
     {
       title: "Open Source Contribution",
@@ -56,6 +55,8 @@ function FullFlowerSectionPage() {
     profilePic: Profile,
     collabs: 10,
     connections: 50,
+    connections1: [],
+    connections2: [],
     name: "Kartikey Pandey",
     title: "Software Developer",
     address: "Dehradun, Uttarakhand",
@@ -75,10 +76,6 @@ function FullFlowerSectionPage() {
     ],
     interests: ["JAVA", "Painting", "Sketching", "Driving"],
     education: ["Upes dehradun", "btech"],
-    collaboratorName: "Jane Smith",
-    subCollaborators: ["Alice", "Bob", "Charlie"],
-    paragraph:
-      "Founder who worked for months to think and plan all the essential stuffs to make the idea and dream to be a on ground working.",
     experiences: dummyExperiences,
     email: "pandkartikey0@gmail.com",
     username: "kartikeyme",
@@ -298,16 +295,16 @@ function FullFlowerSectionPage() {
   return (
     <div>
       <DesktopNavbar />
-      <div className="Interest-main-container">
+      <div className="FullFlower-Interest-main-container">
         <Background />
-        <div className="Interest-left-main-container">
+        <div className="FullFlower-Interest-left-main-container">
           <DesktopLeftTop />
           <DesktopLeftBottomSection />
         </div>
-        <div className="Interest-middle-main-container">
+        <div className="FullFlower-Interest-middle-main-container">
           <div>
-            <div className="Profile-full-section-mainParent">
-              <div className="Profile-full-section-container">
+            <div className="FullFlower-Profile-full-section-mainParent">
+              <div className="FullFlower-Profile-full-section-container">
                 {error && (
                   <div
                     style={{
@@ -328,64 +325,63 @@ function FullFlowerSectionPage() {
                       background: "#f0f0f0",
                     }}
                   >
-                    <h3>API Response:</h3>
+                    <p className="FullFlower-section-heading">API Response</p>
                     <pre style={{ whiteSpace: "pre-wrap" }}>
                       {JSON.stringify(apiResponse, null, 2)}
                     </pre>
                   </div>
                 )}
 
-                <div className="Profile-full-section-whole-profile-section">
-                  <div className="Profile-full-section-top-nav-section">
+                <div className="FullFlower-section-container">
+                  <div className="FullFlower-Profile-full-section-top-nav-section">
                     <img
                       src={backIcon}
-                      className="back-button"
+                      className="FullFlower-back-button"
                       alt="Back"
                       onClick={handleBackClick}
                     />
                     <input type="text" placeholder="Message" />
                   </div>
-                  <div className="Profile-full-section-profile-header">
-                    <div className="Profile-full-section-imageContainer">
+                  <div className="FullFlower-Profile-full-section-profile-header">
+                    <div className="FullFlower-Profile-full-section-imageContainer">
                       <img
                         src={data.profilePic}
                         alt="Profile"
-                        className="Profile-full-section-profile-pic"
+                        className="FullFlower-Profile-full-section-profile-pic"
                       />
                     </div>
-                    <div className="Profile-full-section-parent-collabs-connection">
-                      <div className="Profile-full-section-collabsDetails">
-                        <h4>Collabs</h4>
+                    <div className="FullFlower-Profile-full-section-parent-collabs-connection">
+                      <div className="FullFlower-Profile-full-section-collabsDetails">
+                        <p className="FullFlower-section-heading">Collabs</p>
                         <span>{data.collabs}</span>
                       </div>
-                      <div className="Profile-full-section-connectionsDetails">
-                        <h4>Connections</h4>
+                      <div className="FullFlower-Profile-full-section-connectionsDetails">
+                        <p className="FullFlower-section-heading">Connections</p>
                         <span>{data.connections}</span>
                       </div>
                     </div>
-                    
                   </div>
 
-                  <div className="Profile-full-section-profile-info">
-                    <p className="Profile-full-section-name">
+                  <div className="FullFlower-Profile-full-section-profile-info">
+                    <p className="FullFlower-Profile-full-section-name">
                       <span>(He/him)</span> {data.name}
                     </p>
                     <p>{data.title}</p>
                     <p>{data.address}</p>
                   </div>
 
-                  <div className="Profile-full-section-profile-buttons">
-                    <button className="Profile-full-section-btn">
+                  <div className="FullFlower-Profile-full-section-profile-buttons">
+                    <button className="FullFlower-Profile-full-section-btn">
                       SBM
                     </button>
-                    <button className="Profile-full-section-btn">
+                    <button className="FullFlower-Profile-full-section-btn">
                       Master Union
                     </button>
                   </div>
                 </div>
 
-                <div className="Profile-full-section-goal-section">
-                  <p className="Profile-full-section-heading">About</p>
+                <div className="FullFlower-section-container">
+                  <p className="FullFlower-section-Main-heading">About</p>
                   <p>
                     {data.about === "Nothing to say as of now" ? (
                       <span style={{ fontStyle: "italic", color: "#666" }}>
@@ -397,7 +393,7 @@ function FullFlowerSectionPage() {
                     {data.about !== "Nothing to say as of now" &&
                       data.fullAboutText?.length > maxLength && (
                         <button
-                          className="Profile-full-section-goal-button"
+                          className="FullFlower-Profile-full-section-goal-button"
                           onClick={toggleExpand}
                         >
                           {isExpanded ? "See Less" : "See More"}
@@ -406,47 +402,45 @@ function FullFlowerSectionPage() {
                   </p>
                 </div>
 
-                <div className="Profile-full-section-main-analytics-parent">
-                  <div className="Profile-full-section-anlaytic-main-section">
-                    <p className="Profile-full-section-heading">Analytics</p>
-                    <div className="Profile-full-section-analytics-container">
-                      <div className="Profile-full-section-circle"></div>
-                      <div className="Profile-full-section-circle"></div>
-                      <div className="Profile-full-section-circle"></div>
-                      <div className="Profile-full-section-circle"></div>
-                    </div>
+                <div className="FullFlower-section-container">
+                <p className="FullFlower-section-Main-heading">Analytic</p>
+                  <div className="FullFlower-Profile-full-section-analytics-container">
+                    <div className="FullFlower-Profile-full-section-circle"></div>
+                    <div className="FullFlower-Profile-full-section-circle"></div>
+                    <div className="FullFlower-Profile-full-section-circle"></div>
+                    <div className="FullFlower-Profile-full-section-circle"></div>
                   </div>
                 </div>
 
-                <div className="Profile-full-section-upload-slider-box">
-                  <p className="Profile-full-section-heading">Upload</p>
-                  <div className="Profile-full-section-down-upload-slider-con">
+                <div className="FullFlower-section-container">
+                <p className="FullFlower-section-Main-heading">Upload</p>
+                  <div className="FullFlower-Profile-full-section-down-upload-slider-con">
                     <IoIosArrowBack
-                      className={`Profile-full-section-Back ${
+                      className={`FullFlower-Profile-full-section-Back ${
                         currentImageIndex === 0 ? "disabled" : ""
                       }`}
                       onClick={prevImageSlide}
                       disabled={currentImageIndex === 0}
                     />
-                    <div className="Profile-full-section-slide-track">
+                    <div className="FullFlower-Profile-full-section-slide-track">
                       {images
                         .slice(currentImageIndex, currentImageIndex + 3)
                         .map((image, index) => (
                           <div
                             key={index}
-                            className="Profile-full-section-each-slide"
+                            className="FullFlower-Profile-full-section-each-slide"
                           >
                             <img
                               src={image}
                               alt="Slide"
-                              className="Profile-full-section-slide-img"
+                              className="FullFlower-Profile-full-section-slide-img"
                             />
                             <p>Project showcase</p>
                           </div>
                         ))}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-Forward ${
+                      className={`FullFlower-Profile-full-section-Forward ${
                         currentImageIndex >= images.length - 3 ? "disabled" : ""
                       }`}
                       onClick={nextImageSlide}
@@ -455,17 +449,17 @@ function FullFlowerSectionPage() {
                   </div>
                 </div>
 
-                <div className="Profile-full-section-experience-slider-box">
-                  <p className="Profile-full-section-heading">Experience</p>
-                  <div className="Profile-full-section-down-experience-slider-con">
+                <div className="FullFlower-section-container">
+                <p className="FullFlower-section-Main-heading">Experience</p>
+                  <div className="FullFlower-Profile-full-section-down-experience-slider-con">
                     <IoIosArrowBack
-                      className={`Profile-full-section-Back ${
+                      className={`FullFlower-Profile-full-section-Back ${
                         currentExpIndex === 0 ? "disabled" : ""
                       }`}
                       onClick={prevExpSlide}
                       disabled={currentExpIndex === 0}
                     />
-                    <div className="Profile-full-section-slide-track">
+                    <div className="FullFlower-Profile-full-section-slide-track FullFlower-experience-track">
                       {data.experiences.length > 0 ? (
                         data.experiences
                           .slice(currentExpIndex, currentExpIndex + 3)
@@ -475,9 +469,9 @@ function FullFlowerSectionPage() {
                                 backgroundColor: color[index % color.length],
                               }}
                               key={index}
-                              className="Profile-full-section-experince-inner-div"
+                              className="FullFlower-Profile-full-section-experince-inner-div"
                             >
-                              <div className="Profile-full-section-experince-innerdiv-heading">
+                              <div className="FullFlower-Profile-full-section-experince-innerdiv-heading">
                                 <h3>{exp.title || "Untitled"}</h3>
                                 <h5>{exp.subtitle || "No subtitle"}</h5>
                               </div>
@@ -491,7 +485,7 @@ function FullFlowerSectionPage() {
                       )}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-Forward ${
+                      className={`FullFlower-Profile-full-section-Forward ${
                         currentExpIndex >= data.experiences.length - 3
                           ? "disabled"
                           : ""
@@ -502,20 +496,17 @@ function FullFlowerSectionPage() {
                   </div>
                 </div>
 
-                <div className="Profile-full-section-main-wrapper-section">
-                  <div className="Profile-full-section-heading-and-logos">
-                    <p className="Profile-full-section-heading">Skills</p>
-                    <div className="Profile-full-section-logos"></div>
-                  </div>
-                  <div className="Profile-full-section-content-and-arrow">
+                <div className="FullFlower-section-container">
+                <p className="FullFlower-section-Main-heading">Skills</p>
+                  <div className="FullFlower-Profile-full-section-content-and-arrow">
                     <IoIosArrowBack
-                      className={`Profile-full-section-left-btn ${
+                      className={`FullFlower-Profile-full-section-left-btn ${
                         currentSkillIndex === 0 ? "disabled" : ""
                       }`}
                       onClick={prevSkillSlide}
                       disabled={currentSkillIndex === 0}
                     />
-                    <div className="Profile-full-section-suggested-tags">
+                    <div className="FullFlower-Profile-full-section-suggested-tags">
                       {data.skills.length > 0 ? (
                         data.skills
                           .slice(currentSkillIndex, currentSkillIndex + 4)
@@ -525,7 +516,7 @@ function FullFlowerSectionPage() {
                               style={{
                                 backgroundColor: color[index % color.length],
                               }}
-                              className="Profile-full-section-tag"
+                              className="FullFlower-Profile-full-section-tag"
                             >
                               {skill || "Unnamed skill"}
                             </div>
@@ -535,7 +526,7 @@ function FullFlowerSectionPage() {
                       )}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-right-btn ${
+                      className={`FullFlower-Profile-full-section-right-btn ${
                         currentSkillIndex >= data.skills.length - 4
                           ? "disabled"
                           : ""
@@ -546,20 +537,17 @@ function FullFlowerSectionPage() {
                   </div>
                 </div>
 
-                <div className="Profile-full-section-main-wrapper-section">
-                  <div className="Profile-full-section-heading-and-logos">
-                    <h3>Interests</h3>
-                    <div className="Profile-full-section-logos"></div>
-                  </div>
-                  <div className="Profile-full-section-content-and-arrow">
+                <div className="FullFlower-section-container">
+                <p className="FullFlower-section-Main-heading">Interests</p>
+                  <div className="FullFlower-Profile-full-section-content-and-arrow">
                     <IoIosArrowBack
-                      className={`Profile-full-section-left-btn ${
+                      className={`FullFlower-Profile-full-section-left-btn ${
                         currentInterestIndex === 0 ? "disabled" : ""
                       }`}
                       onClick={prevInterestSlide}
                       disabled={currentInterestIndex === 0}
                     />
-                    <div className="Profile-full-section-suggested-tags">
+                    <div className="FullFlower-Profile-full-section-suggested-tags">
                       {data.interests.length > 0 ? (
                         data.interests
                           .slice(currentInterestIndex, currentInterestIndex + 4)
@@ -569,7 +557,7 @@ function FullFlowerSectionPage() {
                               style={{
                                 backgroundColor: color[index % color.length],
                               }}
-                              className="Profile-full-section-tag"
+                              className="FullFlower-Profile-full-section-tag"
                             >
                               {interest || "Unnamed interest"}
                             </div>
@@ -579,36 +567,30 @@ function FullFlowerSectionPage() {
                       )}
                     </div>
                     <IoIosArrowForward
-                      className={`Profile-full-section-right-btn ${
+                      className={`FullFlower-Profile-full-section-right-btn ${
                         currentInterestIndex >= data.interests.length - 4
                           ? "disabled"
                           : ""
                       }`}
                       onClick={nextInterestSlide}
-                      disabled={
-                        currentInterestIndex >= data.interests.length - 4
-                      }
+                      disabled={currentInterestIndex >= data.interests.length - 4}
                     />
                   </div>
                 </div>
 
-                <div className="Profile-full-section-main-education">
-                  <div className="Profile-full-section-upper-education">
-                    <div className="Profile-full-section-education-headingAndFull">
-                      <p className="Profile-full-section-heading">
-                        Education Details
-                      </p>
-                    </div>
-                    <div className="Profile-full-section-buttons-section">
+                <div className="FullFlower-section-container">
+                <p className="FullFlower-section-Main-heading">Education Details</p>
+                  <div className="FullFlower-Profile-full-section-upper-education">
+                    <div className="FullFlower-Profile-full-section-buttons-section">
                       {data.education.map((edu, index) => (
                         <button
                           key={index}
-                          className={`btn ${
+                          className={`FullFlower-btn ${
                             index === 0
-                              ? "btn-left"
+                              ? "FullFlower-btn-left"
                               : index === data.education.length - 1
-                              ? "btn-right"
-                              : "btn-middle"
+                              ? "FullFlower-btn-right"
+                              : "FullFlower-btn-middle"
                           }`}
                         >
                           {edu}
@@ -616,18 +598,18 @@ function FullFlowerSectionPage() {
                       ))}
                     </div>
                   </div>
-                  <img
-                    className="Profile-full-section-public-logo"
+                  {/* <img
+                    className="FullFlower-Profile-full-section-public-logo"
                     src={Profileandview}
                     alt=""
-                  />
+                  /> */}
                   {isMobile && <MobileFooter />}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="Interest-right-main-container">
+        <div className="FullFlower-Interest-right-main-container">
           <DesktopRight />
         </div>
       </div>
