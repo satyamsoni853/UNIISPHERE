@@ -18,7 +18,6 @@ import MessageFinalClass from './Components/MessageFinalClass/MessageFinalclass.
 import MessageFinalClass2 from './Components/MessageFinalclass-2/MessageFinalClass2.jsx'
 import SelfProfile from "./Components/Self-Profile/SelfProfile.jsx";
 import SelfSetting from "./Components/SelfSetting/SelfSetting.jsx";
-
 import CollabPage from "./Components/CollabPage/CollabPage.jsx";
 import BottomMessagesWidget from "./Components/BottomMessagesWidget/BottomMessagesWidget.jsx";
 import UploadSection from "./Components/UploadSection/UploadSection.jsx";
