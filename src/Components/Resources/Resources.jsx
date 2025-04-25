@@ -6,6 +6,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoChevronBack } from "react-icons/io5";
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
 import Background from "../Background/Background";
+import { IoReorderThreeOutline } from "react-icons/io5";
 
 // Resources Component
 function Resources() {
@@ -277,7 +278,9 @@ function Resources() {
 
         {/* Exploration Section */}
         <div className="exploration-section">
+          
           <h2 className="section-title-Exploration">Exploration</h2>
+         
           <div className="timer-container">
             <div>
               <p className="Reading-Time">Reading Time</p>
@@ -400,7 +403,7 @@ function Resources() {
             {totalGoal - booksCompleted} remaining for the Goal
           </p>
           <h3 className="remaining-label">Books Completed</h3>
-          <div className="progress-indicator">
+          <div className="resource-progress-indicator">
             {Array.from({ length: totalGoal }, (_, index) => (
               <div
                 key={index}
