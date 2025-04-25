@@ -11,7 +11,8 @@ function DesktopLeftBottomSection() {
     { id: 3, topic: "Maths: Sem 5", author: "Oswal Production", image: image3 },
   ]);
   return (
-    <div className="leftsectionbottom-1">
+   <div className="Leftsectionbottom-main-container" >
+     <div className="leftsectionbottom-1">
       <h3 className="leftsectionbottom-1-heading">Suggested</h3>
 
       {/* Events  */}
@@ -34,6 +35,7 @@ function DesktopLeftBottomSection() {
 
       <p className="leftsectionbottom-1-button">See All</p>
     </div>
+   </div>
   );
 }
 

@@ -102,7 +102,11 @@ function DesktopMiddle() {
       if (response.data && Array.isArray(response.data)) {
         console.log("All Connections:");
         response.data.forEach((conn, index) => {
-          console.log(`Connection ${index + 1}: ID = ${conn.id}, Name = ${conn.username || "Unknown"}`);
+          console.log(
+            `Connection ${index + 1}: ID = ${conn.id}, Name = ${
+              conn.username || "Unknown"
+            }`
+          );
         });
         setConnections(response.data);
       } else {
@@ -184,7 +188,9 @@ function DesktopMiddle() {
           caption: post.content,
           createdAt: post.createdAt,
           likes: post.totalLikes || 0,
-          isLiked: post.Likes?.some((like) => like.userId === authData.userId) || false,
+          isLiked:
+            post.Likes?.some((like) => like.userId === authData.userId) ||
+            false,
           comments: post.Comments || [],
           totalComments: post.totalComments || 0,
           totalShares: post.totalShares || 0,
@@ -248,7 +254,10 @@ function DesktopMiddle() {
       }));
       setError(null);
     } catch (error) {
-      console.error("Connection request error:", error.response?.data || error.message);
+      console.error(
+        "Connection request error:",
+        error.response?.data || error.message
+      );
       setError(
         error.response?.data?.message || "Failed to send connection request."
       );
@@ -298,30 +307,28 @@ function DesktopMiddle() {
 
       // If unlike was successful, response will have a message
       // If like was successful, response will have the like object
-      const isSuccessful = post.isLiked 
+      const isSuccessful = post.isLiked
         ? response.data.message === "Post unliked successfully"
         : !!response.data;
 
       if (!isSuccessful) {
         // Revert the optimistic update if the operation wasn't successful
         setPosts((prevPosts) =>
-          prevPosts.map((p, i) =>
-            i === index ? originalPost : p
-          )
+          prevPosts.map((p, i) => (i === index ? originalPost : p))
         );
         throw new Error("Operation failed");
       }
-
     } catch (error) {
-      console.error("Like/Unlike error:", error.response?.data || error.message);
-      
+      console.error(
+        "Like/Unlike error:",
+        error.response?.data || error.message
+      );
+
       // Revert the optimistic update
       setPosts((prevPosts) =>
-        prevPosts.map((p, i) =>
-          i === index ? originalPost : p
-        )
+        prevPosts.map((p, i) => (i === index ? originalPost : p))
       );
-      
+
       setError("Failed to update like status. Please try again.");
     }
   };
@@ -440,12 +447,15 @@ function DesktopMiddle() {
   const handleCopyLink = () => {
     const post = posts[activeSharePostIndex];
     const postUrl = `${window.location.origin}/post/${post._id}`;
-    navigator.clipboard.writeText(postUrl).then(() => {
-      alert("Link copied to clipboard!");
-    }).catch((err) => {
-      console.error("Failed to copy link:", err);
-      setShareError("Failed to copy link.");
-    });
+    navigator.clipboard
+      .writeText(postUrl)
+      .then(() => {
+        alert("Link copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy link:", err);
+        setShareError("Failed to copy link.");
+      });
   };
 
   const handleShareToWhatsApp = () => {
@@ -459,7 +469,9 @@ function DesktopMiddle() {
     const post = posts[activeSharePostIndex];
     const postUrl = `${window.location.origin}/post/${post._id}`;
     window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`,
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        postUrl
+      )}`,
       "_blank"
     );
   };
@@ -502,7 +514,8 @@ function DesktopMiddle() {
     } catch (error) {
       console.error("Save post error:", error.response?.data || error);
       setShareError(
-        error.response?.data?.message || "Failed to save post. Please try again."
+        error.response?.data?.message ||
+          "Failed to save post. Please try again."
       );
     }
   };
@@ -516,15 +529,17 @@ function DesktopMiddle() {
   };
 
   // Toggle options dropdown for a specific post
+
   const handleOptionsClick = (index, isSelf) => {
     if (isSelf) {
-      setActiveOptionsPostIndex(activeOptionsPostIndex === index ? null : index);
+      setActiveOptionsPostIndex(
+        activeOptionsPostIndex === index ? null : index
+      );
     }
   };
 
   return (
     <div className="middle-container">
-      
       <div className="middle-middle-card">
         {error && <div className="error-message">{error}</div>}
 
@@ -534,8 +549,11 @@ function DesktopMiddle() {
           posts.map((post, index) => {
             const authData = getAuthData();
             const isSelf = authData && post.authorId === authData.userId;
-            const isConnected = connections.some((conn) => conn.id === post.authorId);
-            const isRequestSent = connectionStatuses[post.authorId] === "requested";
+            const isConnected = connections.some(
+              (conn) => conn.id === post.authorId
+            );
+            const isRequestSent =
+              connectionStatuses[post.authorId] === "requested";
 
             return (
               <div key={post._id || index} className="post-container">
@@ -566,12 +584,14 @@ function DesktopMiddle() {
                   </div>
                   <div className="middle-options-container" ref={optionsRef}>
                     <BsThreeDotsVertical
-                      className="middle-options-icon"
+                      className="middle-options-icon-Threedot"
                       onClick={() => handleOptionsClick(index, isSelf)}
                     />
                     {activeOptionsPostIndex === index && isSelf && (
                       <div className="middle-options-dropdown">
-                        <button className="middle-options-item">Interest</button>
+                        <button className="middle-options-item">
+                          Interest
+                        </button>
                         <button className="middle-options-item">
                           Not Interest
                         </button>
@@ -608,7 +628,9 @@ function DesktopMiddle() {
                         onClick={() => handleCommentClick(index)}
                         style={{ cursor: "pointer" }}
                         onError={(e) => {
-                          console.error(`Failed to load image: ${post.mediaUrl}`);
+                          console.error(
+                            `Failed to load image: ${post.mediaUrl}`
+                          );
                           e.target.src = Profileimage;
                         }}
                       />
@@ -634,7 +656,9 @@ function DesktopMiddle() {
                       Connection already exists.
                     </div>
                   ) : isRequestSent ? (
-                    <div className="connection-status-message">Request Sent!</div>
+                    <div className="connection-status-message">
+                      Request Sent!
+                    </div>
                   ) : (
                     <img
                       src={ConnectMidlleimage}
@@ -645,6 +669,26 @@ function DesktopMiddle() {
                     />
                   )}
                   <div className="middle-action-icons">
+                    <div
+                      onClick={() => handleShareClick(index)}
+                      className="middle-icon-container"
+                    >
+                      <img
+                        src={ShareIcon}
+                        className="middle-icon-share"
+                        alt="Share"
+                      />
+                    </div>
+                    <div
+                      className="middle-icon-container"
+                      onClick={() => handleCommentClick(index)}
+                    >
+                      <span className="middle-icon-count">
+                        {post.comments.length}
+                      </span>
+                      <img src={Commenticonsvg} alt="Comment" />
+                    </div>
+
                     <div
                       className="middle-icon-container"
                       onClick={() => handleLike(index)}
@@ -660,29 +704,12 @@ function DesktopMiddle() {
                         />
                       )}
                     </div>
-                    <div
-                      className="middle-icon-container"
-                      onClick={() => handleCommentClick(index)}
-                    >
-                      <span className="middle-icon-count">
-                        {post.comments.length}
-                      </span>
-                      <img src={Commenticonsvg} alt="Comment" />
-                    </div>
-                    <div
-                      onClick={() => handleShareClick(index)}
-                      className="middle-icon-container"
-                    >
-                      <span className="middle-icon-count">{post.totalShares}</span>
-                      <img src={ShareIcon} className="middle-icon-share" alt="Share" />
-                    </div>
                   </div>
                 </div>
 
                 <div className="middle-post-text">
                   <span className="middle-post-author">
                     {post.authorName || "Unknown Author"}
-                    
                   </span>{" "}
                   {post.caption || post.content || "No caption available"}
                   <span className="middle-see-more">...more</span>
@@ -736,38 +763,50 @@ function DesktopMiddle() {
                 />
                 {showCommentOptions && (
                   <div className="comment-threedot-options-dropdown">
-                    <button className="comment-threedot-options-item">Interest</button>
+                    <button className="comment-threedot-options-item">
+                      Interest
+                    </button>
                     <button className="comment-threedot-options-item">
                       Not Interest
                     </button>
-                    <button className="comment-threedot-options-item">Block</button>
-                    <button className="comment-threedot-options-item">Report</button>
-                    <button className="comment-threedot-options-item">Message</button>
+                    <button className="comment-threedot-options-item">
+                      Block
+                    </button>
+                    <button className="comment-threedot-options-item">
+                      Report
+                    </button>
+                    <button className="comment-threedot-options-item">
+                      Message
+                    </button>
                   </div>
                 )}
               </div>
               <div className="Full-comment-section-desktop-photo-container">
                 {posts[activeCommentPostIndex]?.mediaUrl ? (
                   Array.isArray(posts[activeCommentPostIndex].mediaUrl) ? (
-                    posts[activeCommentPostIndex].mediaUrl.map((url, imgIndex) => (
-                      <img
-                        key={imgIndex}
-                        src={url}
-                        alt={`Post Image ${imgIndex + 1}`}
-                        className="Full-comment-section-desktop-post-photo"
-                        onError={(e) => {
-                          console.error(`Failed to load image: ${url}`);
-                          e.target.src = Profileimage;
-                        }}
-                      />
-                    ))
+                    posts[activeCommentPostIndex].mediaUrl.map(
+                      (url, imgIndex) => (
+                        <img
+                          key={imgIndex}
+                          src={url}
+                          alt={`Post Image ${imgIndex + 1}`}
+                          className="Full-comment-section-desktop-post-photo"
+                          onError={(e) => {
+                            console.error(`Failed to load image: ${url}`);
+                            e.target.src = Profileimage;
+                          }}
+                        />
+                      )
+                    )
                   ) : (
                     <img
                       src={posts[activeCommentPostIndex].mediaUrl}
                       alt="Post Image"
                       className="Full-comment-section-desktop-post-photo"
                       onError={(e) => {
-                        console.error(`Failed to load image: ${posts[activeCommentPostIndex].mediaUrl}`);
+                        console.error(
+                          `Failed to load image: ${posts[activeCommentPostIndex].mediaUrl}`
+                        );
                         e.target.src = Profileimage;
                       }}
                     />
@@ -800,7 +839,9 @@ function DesktopMiddle() {
                       >
                         <div className="Full-comment-section-desktop-comment">
                           <img
-                            src={comment.user?.profilePictureUrl || Profileimage}
+                            src={
+                              comment.user?.profilePictureUrl || Profileimage
+                            }
                             alt="Profile"
                             className="Full-comment-section-desktop-comment-profile-picture"
                             onError={(e) => {
@@ -845,7 +886,14 @@ function DesktopMiddle() {
                   </div>
                 )}
               </div>
-              <div className="Full-comment-section-desktop-comment-input-and-image">
+              <div className="Full-comment-section-desktop-comment-input-and-image"  style={{
+                    position: "absolute",
+                    bottom: "0",
+                    left: "0",
+                    width: "100%",
+                    padding: "10px",
+                    boxSizing: "border-box",
+                  }}>
                 <img
                   src={userProfile?.profilePicture || Profileimage}
                   className="Full-comment-section-desktop-commentPerson-image"
@@ -860,14 +908,16 @@ function DesktopMiddle() {
                     e.key === "Enter" &&
                     handleCommentSubmit(activeCommentPostIndex)
                   }
+                 
                 />
+
                 <IoSendOutline
                   className="comment-send-icon"
                   onClick={() => handleCommentSubmit(activeCommentPostIndex)}
                   style={{
                     cursor: "pointer",
                     marginLeft: "10px",
-                    fontSize: "20px",
+                    fontSize: "40px",
                   }}
                 />
               </div>
@@ -941,7 +991,9 @@ function DesktopMiddle() {
                     alt="Post Image"
                     className="Full-share-section-desktop-post-photo"
                     onError={(e) => {
-                      console.error(`Failed to load image: ${posts[activeSharePostIndex].mediaUrl}`);
+                      console.error(
+                        `Failed to load image: ${posts[activeSharePostIndex].mediaUrl}`
+                      );
                       e.target.src = Profileimage;
                     }}
                   />
@@ -958,7 +1010,9 @@ function DesktopMiddle() {
 
           <div className="Full-share-section-desktop-right-section">
             <h1 className="Full-share-section-desktop-heading">Share</h1>
-            {shareError && <div className="share-error-message">{shareError}</div>}
+            {shareError && (
+              <div className="share-error-message">{shareError}</div>
+            )}
             <div className="Full-share-section-desktop-innerDiv">
               <div className="Full-share-section-desktop-AvtaarAndName-collection">
                 {connections.length > 0 ? (
@@ -967,15 +1021,27 @@ function DesktopMiddle() {
                       key={connection.id}
                       className="Full-share-section-desktop-contact"
                       onClick={() => {
-                        setShareMessage(`@${connection.username} ${shareMessage}`);
+                        setShareMessage(
+                          `@${connection.username} ${shareMessage}`
+                        );
                       }}
-                      style={{ cursor: "pointer", display: "flex", alignItems: "center", marginBottom: "10px" }}
+                      style={{
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "10px",
+                      }}
                     >
                       <img
                         src={connection.profilePictureUrl || Profileimage}
                         alt={connection.username}
                         className="Full-share-section-desktop-contact-image"
-                        style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "10px" }}
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          marginRight: "10px",
+                        }}
                         onError={(e) => {
                           e.target.src = Profileimage;
                         }}
@@ -1034,7 +1100,9 @@ function DesktopMiddle() {
               />
               <input
                 type="text"
-                placeholder={`Write a share to ${posts[activeSharePostIndex]?.authorName || "someone"}`}
+                placeholder={`Write a share to ${
+                  posts[activeSharePostIndex]?.authorName || "someone"
+                }`}
                 value={shareMessage}
                 onChange={(e) => setShareMessage(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleShareSubmit()}
@@ -1045,7 +1113,7 @@ function DesktopMiddle() {
                 style={{
                   cursor: "pointer",
                   marginLeft: "10px",
-                  fontSize: "20px",
+                  fontSize: "50px",
                 }}
               />
             </div>
@@ -1058,7 +1126,6 @@ function DesktopMiddle() {
           </div>
         </div>
       )}
-      
     </div>
   );
 }

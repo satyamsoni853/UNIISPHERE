@@ -127,7 +127,7 @@ function DesktopRightSection() {
           <p className="profile-location">{profileData?.location || "Location not specified"}</p>
           <p className="profile-bio">
             {profileData?.About || "Bio not available"}
-            <span className="see-more"> see more</span>
+            <span className="see-more"> .....see more</span>
           </p>
         </div>
 

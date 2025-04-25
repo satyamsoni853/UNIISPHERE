@@ -379,15 +379,6 @@ function AfterConnecting() {
                       />
                     </div>
                     <div className="afterconnectinginProfile-full-section-parent-collabs-connection">
-                      <div className="afterconnectinginProfile-full-section-collabsDetails">
-                        <h4>Collabs</h4>
-                        <span>{data.collabs}</span>
-                      </div>
-                      <div className="afterconnectinginProfile-full-section-connectionsDetails">
-                        <h4>Connections</h4>
-                        <span>{data.connections}</span>
-                      </div>
-                    </div>
                     <div className="afterconnectinginProfile-full-section-message-box">
                       <Link
                         to={`/MessageFinalClass2/${userId}`}
@@ -396,6 +387,17 @@ function AfterConnecting() {
                         Message
                       </Link>
                     </div>
+                      <div className="afterconnectinginProfile-full-section-collabsDetails">
+                        <h4>Collabs</h4>
+                        <span>{data.collabs}</span>
+                      </div>
+                      <div className="afterconnectinginProfile-full-section-connectionsDetails">
+                        <h4>Connections</h4>
+                        <span>{data.connections}</span>
+                      </div>
+                      
+                    </div>
+                    
                   </div>
 
                   <div className="afterconnectinginProfile-full-section-profile-info">

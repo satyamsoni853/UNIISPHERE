@@ -30,7 +30,6 @@
   justify-content: flex-end;
 }
 
-
 /* Main Container */
 .afterconnectinginFullFlowerSectionPage-main-container {
   display: flex;
@@ -42,7 +41,7 @@
 }
 
 /* Left Container */
-.afterconnectinginInterest-left-main-container{
+.afterconnectinginInterest-left-main-container {
   width: 30%;
   display: flex;
   flex-direction: column;
@@ -117,7 +116,7 @@
 .afterconnectinginProfile-full-section-top-nav-section input {
   width: 70%;
   height: 25px;
-  background-color: #F2F1F1;
+  background-color: #f2f1f1;
   border-radius: 15px;
 }
 
@@ -153,8 +152,10 @@
   /* position: relative; */
 }
 
-.afterconnectinginProfile-full-section-parent-collabs-connection .afterconnectinginProfile-full-section-connectionsDetails,
-.afterconnectinginProfile-full-section-parent-collabs-connection .afterconnectinginProfile-full-section-collabsDetails {
+.afterconnectinginProfile-full-section-parent-collabs-connection
+  .afterconnectinginProfile-full-section-connectionsDetails,
+.afterconnectinginProfile-full-section-parent-collabs-connection
+  .afterconnectinginProfile-full-section-collabsDetails {
   display: flex;
   flex-direction: column-reverse;
 }
@@ -190,32 +191,32 @@
 
 .afterconnectinginProfile-full-section-message-box {
   margin-top: 150px;
+  position: absolute;
+  left: 10px;
+  
   width: 133px;
   height: 25px;
   font-size: 20px;
   color: black;
   padding: 20px;
-  text-decoration: none;  /* Remove underline */
+  text-decoration: none; /* Remove underline */
   list-style: none;
   display: flex;
-  bottom: -25px;
-  left: 15px; /* this places it at the left end with 15px spacing */
+
   border-radius: 25px;
   background-color: #d7d7d7;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;  /* Smooth transition for hover effect */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .afterconnectinginProfile-full-section-message-box:hover {
-  background-color: #a3a3a3;  /* Darker background on hover */
-  color: #fff;  /* Change text color */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);  /* Stronger shadow on hover */
+  background-color: #a3a3a3; /* Darker background on hover */
+  color: #fff; /* Change text color */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* Stronger shadow on hover */
 }
-
-
 
 .afterconnectinginProfile-full-section-profile-info p:first-child {
   font-size: 23px;
@@ -225,7 +226,7 @@
 
 .afterconnectinginProfile-full-section-name span {
   font-size: 14px;
-  color: #7C7B7B;
+  color: #7c7b7b;
   font-weight: 400;
   display: none;
 }
@@ -571,7 +572,8 @@
   color: #333;
 }
 
-.afterconnectinginProfile-full-section-collabratorDetails .afterconnectinginProfile-full-section-education {
+.afterconnectinginProfile-full-section-collabratorDetails
+  .afterconnectinginProfile-full-section-education {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -603,7 +605,8 @@
   line-height: 0.5;
 }
 
-.afterconnectinginProfile-full-section-collabratorDetails .afterconnectinginProfile-full-section-subCollabrators {
+.afterconnectinginProfile-full-section-collabratorDetails
+  .afterconnectinginProfile-full-section-subCollabrators {
   display: flex;
   align-items: center;
   padding: 3px 0;
@@ -618,7 +621,9 @@
   height: 100%;
 }
 
-.afterconnectinginProfile-full-section-collabratorDetails .afterconnectinginProfile-full-section-subCollabrators h6 {
+.afterconnectinginProfile-full-section-collabratorDetails
+  .afterconnectinginProfile-full-section-subCollabrators
+  h6 {
   font-size: 7px;
   text-justify: center;
   font-weight: 100;
@@ -655,7 +660,7 @@
 .afterconnectinginProfile-full-section-right img {
   width: 100%;
   height: 200%;
-  
+
   border-radius: 10px;
   object-fit: contain;
 }
@@ -1043,49 +1048,48 @@
     width: 50px;
   }
 }
-.afterconnectinginProfile-full-section-goal-section{
+.afterconnectinginProfile-full-section-goal-section {
   border-top: 10px solid #f9f6f6;
   border-bottom: 10px solid #f9f6f6;
-  
+
   padding: 20px;
- 
 }
-.afterconnectinginProfile-full-section-upload-slider-box{
+.afterconnectinginProfile-full-section-upload-slider-box {
   border-bottom: 10px solid #f9f6f6;
   padding: 20px;
   overflow: hidden;
   height: auto;
   width: auto;
 }
-.afterconnectinginProfile-full-section-experience-slider-box{
+.afterconnectinginProfile-full-section-experience-slider-box {
   border-bottom: 10px solid #f9f6f6;
   padding: 20px;
   overflow: hidden;
   height: auto;
   width: auto;
 }
-.afterconnectinginProfile-full-section-main-wrapper-section{
+.afterconnectinginProfile-full-section-main-wrapper-section {
   border-bottom: 10px solid #f9f6f6;
   padding: 20px;
   overflow: hidden;
   height: auto;
   width: auto;
 }
-.afterconnectinginProfile-full-section-main-collabs-section{
+.afterconnectinginProfile-full-section-main-collabs-section {
   border-bottom: 10px solid #f9f6f6;
   padding: 20px;
   overflow: hidden;
   height: auto;
   width: auto;
 }
-.afterconnectinginProfile-full-section-main-education{
+.afterconnectinginProfile-full-section-main-education {
   border-bottom: 10px solid #f9f6f6;
   padding: 20px;
   overflow: hidden;
   height: auto;
   width: auto;
 }
-.afterconnectinginProfile-full-section-whole-profile-section{
+.afterconnectinginProfile-full-section-whole-profile-section {
   border-top: 10px solid #f9f6f6;
   padding: 20px;
   overflow: hidden;
