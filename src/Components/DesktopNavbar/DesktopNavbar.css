@@ -14,8 +14,8 @@
 }
  
 .desktop-icon {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   margin: 0 10px;
   cursor: pointer;
 }
@@ -311,6 +311,7 @@
 .notification-dropdown {
   position: absolute;
   top: 150%;
+  right: -10px;
   width: 600px;
   max-height: 500px;
   overflow-y: auto;

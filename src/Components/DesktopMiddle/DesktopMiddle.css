@@ -187,7 +187,9 @@
   align-items: center;
   gap: 0.3125rem;
   cursor: pointer;
+  margin-right: 10px;
 }
+
 
 .middle-icon {
   width: 1.5rem;
