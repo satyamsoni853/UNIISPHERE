@@ -14,12 +14,9 @@
   position: relative;
   padding: 1.25rem;
   border-radius: 10px;
-  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8); */
-  /* background: linear-gradient(to bottom, #d6d3d633, #889a8b33); */
   width: 40vw;
   min-width: 300px;
   max-width: 600px;
-  /* margin-left: 80px; */
   margin-top: 110px;
   box-sizing: border-box;
   display: flex; /* Ensure flex layout for proper spacing */
@@ -30,13 +27,12 @@
 /* Post Container */
 .post-container {
   background: linear-gradient(to top, #f4f4f4, #f3e4e4);
-
   border-radius: 10px; /* Rounded corners for the box */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
   padding: 15px; /* Inner spacing for content */
   border: 1px solid #e0e0e0; /* Light border for definition */
-  width: 32vw;
-  height: 65vh;
+  width: 100%; /* Take full width of the parent container */
+  min-height: 65vh; /* Ensure a minimum height for smaller screens */
   overflow: hidden;
 }
 
@@ -904,16 +900,20 @@
 /* Responsive Adjustments */
 @media (max-width: 1200px) {
   .middle-middle-card {
-    width: 45vw;
-    min-width: 280px;
+    width: 50vw;
+    min-width: 300px;
+  }
+
+  .post-container {
+    min-height: 55vh; /* Slightly reduce min-height for smaller screens */
   }
 
   .middle-main-image {
-    min-height: 10rem;
+    min-height: 12.5rem;
   }
 
   .middle-content-image {
-    min-height: 10rem;
+    min-height: 12.5rem;
   }
 }
 
@@ -924,8 +924,14 @@
 
   .middle-middle-card {
     width: 80vw;
+    min-width: 300px;
     max-width: 90%;
     padding: 0.9375rem;
+    margin-top: 80px;
+  }
+
+  .post-container {
+    min-height: 50vh; /* Further reduce min-height for smaller screens */
   }
 
   .middle-profile-pic {
@@ -946,11 +952,11 @@
   }
 
   .middle-main-image {
-    min-height: 9.375rem;
+    min-height: 12.5rem;
   }
 
   .middle-content-image {
-    min-height: 9.375rem;
+    min-height: 12.5rem;
   }
 
   .middle-connect-image {
@@ -980,12 +986,17 @@
 
 @media (max-width: 740px) {
   .middle-container {
-    margin-top: 80px;
+    margin-top: 60px;
   }
 
   .middle-middle-card {
     width: 90vw;
+    min-width: 300px;
     padding: 0.625rem;
+  }
+
+  .post-container {
+    min-height: 45vh; /* Adjust for smaller screens */
   }
 
   .middle-profile-pic {
@@ -1007,11 +1018,11 @@
   }
 
   .middle-main-image {
-    min-height: 8.75rem;
+    min-height: 12.5rem;
   }
 
   .middle-content-image {
-    min-height: 8.75rem;
+    min-height: 12.5rem;
   }
 
   .middle-connect-image {
@@ -1058,13 +1069,18 @@
 
 @media (max-width: 480px) {
   .middle-container {
-    margin-top: 60px;
+    margin-top: 50px;
     padding: 0.3125rem;
   }
 
   .middle-middle-card {
     width: 95vw;
+    min-width: 300px;
     padding: 0.5rem;
+  }
+
+  .post-container {
+    min-height: 40vh; /* Further adjust for very small screens */
   }
 
   .middle-profile-header {
@@ -1091,11 +1107,11 @@
   }
 
   .middle-main-image {
-    min-height: 7.5rem;
+    min-height: 12.5rem;
   }
 
   .middle-content-image {
-    min-height: 7.5rem;
+    min-height: 12.5rem;
   }
 
   .middle-action-bar {
@@ -1180,7 +1196,12 @@
 
   .middle-middle-card {
     width: 100%;
+    min-width: 300px;
     padding: 0.3125rem;
+  }
+
+  .post-container {
+    min-height: 35vh; /* Adjust for the smallest screens */
   }
 
   .middle-profile-pic {
@@ -1201,11 +1222,11 @@
   }
 
   .middle-main-image {
-    min-height: 6.25rem;
+    min-height: 12.5rem;
   }
 
   .middle-content-image {
-    min-height: 6.25rem;
+    min-height: 12.5rem;
   }
 
   .middle-connect-image {
