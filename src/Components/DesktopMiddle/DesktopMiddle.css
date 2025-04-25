@@ -14,10 +14,13 @@
   position: relative;
   padding: 1.25rem;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+
+  background: linear-gradient(to bottom, #d6d3d633, #889a8b33);
   width: 40vw;
   min-width: 300px;
   max-width: 600px;
+  margin-left: 80px;
   margin-top: 110px;
   box-sizing: border-box;
 }
@@ -50,15 +53,54 @@
   display: inline-block;
 }
 
-.middle-options-icon {
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: black;
-  padding: 0.3125rem;
-  border-radius: 50%;
-  transition: background-color 0.2s;
+.middle-options-icon-Threedot{
+  font-size: 2rem;
+}
+.middle-options-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 150px;
+  padding: 5px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
+.middle-options-item {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  position: relative;
+}
+
+/* Add vertical separator between options (except the last one) */
+.middle-options-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.middle-options-item:hover {
+  background-color: #f5f5f5;
+}
 .middle-options-icon:hover {
   background-color: #f0f0f0;
 }
@@ -115,6 +157,7 @@
   min-height: 12.5rem;
   object-fit: cover;
   border-radius: 8px;
+  border-radius: 20px;
 }
 
 /* Action Bar */
@@ -302,7 +345,7 @@
   max-width: 75rem;
   height: 80%;
   position: fixed;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -553,11 +596,11 @@
 
 .Full-comment-section-desktop-cross-button {
   position: absolute;
-  top: 0;
+  top: 20px;
   right: 1rem;
   font-size: 1.8rem;
   padding: 0 0.75rem;
-  background-color: red;
+  background-color: grey;
   border-radius: 50%;
 }
 
@@ -567,14 +610,14 @@
   max-width: 75rem;
   height: 80%;
   position: fixed;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: row;
   padding: 0.625rem;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 99;
   overflow: hidden;
@@ -761,8 +804,7 @@
 }
 
 .Full-share-section-desktop-sharePerson-image {
-  height: 2.5rem;
-  width: 2.5rem;
+   height: 80%;
   border-radius: 50%;
 }
 
@@ -786,10 +828,10 @@
 
 .Full-share-section-desktop-cross-button {
   position: absolute;
-  top: 0;
+  top: 20px;
   right: 1rem;
   font-size: 2.3rem;
-  background-color: red;
+  background-color: grey;
   border-radius: 50%;
   padding: 0 0.9375rem;
 }
@@ -810,8 +852,10 @@
 
 /* For single image posts */
 .middle-main-image:has(> img:only-child) .middle-content-image,
-.Full-comment-section-desktop-photo-container:has(> img:only-child) .Full-comment-section-desktop-post-photo,
-.Full-share-section-desktop-photo-container:has(> img:only-child) .Full-share-section-desktop-post-photo {
+.Full-comment-section-desktop-photo-container:has(> img:only-child)
+  .Full-comment-section-desktop-post-photo,
+.Full-share-section-desktop-photo-container:has(> img:only-child)
+  .Full-share-section-desktop-post-photo {
   max-width: 100%;
   height: auto;
   max-height: 37.5rem;
@@ -898,6 +942,7 @@
   .Full-comment-section-desktop-main-container,
   .Full-share-section-desktop-main-container {
     width: 95%;
+    
     flex-direction: column;
     height: auto;
   }
