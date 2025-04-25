@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { FaHome } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
+import { IoHomeOutline } from "react-icons/io5";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./DesktopNavbar.css";
 
@@ -557,7 +558,7 @@ function DesktopNavbar() {
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
       {activeIcon === "home" ? (
-        <GoHome
+        <IoHomeOutline
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
