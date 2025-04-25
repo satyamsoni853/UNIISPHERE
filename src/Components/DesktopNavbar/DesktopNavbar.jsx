@@ -16,8 +16,10 @@ import NetworkWhite from "./NetworkWhiteIcon.svg";
 import NotificationBlack from "./NotificationBlackIcon.svg";
 import NotificationWhite from "./NotificationWhiteIcon.svg";
 import ProfileImage from "./ProfileImage.png";
+import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
+import { IoIosArrowForward } from "react-icons/io";
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -48,7 +50,8 @@ function DesktopNavbar() {
   const navigate = useNavigate();
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] =
+    useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
     {
@@ -70,6 +73,7 @@ function DesktopNavbar() {
       color: "notification-border-red-400",
     },
   ]);
+  const buttonscolor = ["#DB3E3933", "#DDC058", "#A17A97"];
 
   // Search-related state
   const [activeTab, setActiveTab] = useState("Trend");
@@ -82,15 +86,31 @@ function DesktopNavbar() {
     { id: 6, name: "Uday", avatar: "https://via.placeholder.com/40" },
   ]);
   const [suggestedUsers] = useState([
-    { id: 7, name: "Rahul", university: "UPES", avatar: "https://via.placeholder.com/40" },
-    { id: 8, name: "Satyam", university: "IITM", avatar: "https://via.placeholder.com/40" },
-    { id: 9, name: "Jack", university: "Delhi University", avatar: "https://via.placeholder.com/40" },
+    {
+      id: 7,
+      name: "Rahul",
+      university: "UPES",
+      avatar: "https://via.placeholder.com/40",
+    },
+    {
+      id: 8,
+      name: "Satyam",
+      university: "IITM",
+      avatar: "https://via.placeholder.com/40",
+    },
+    {
+      id: 9,
+      name: "Jack",
+      university: "Delhi University",
+      avatar: "https://via.placeholder.com/40",
+    },
   ]);
   const [trends] = useState([
     {
       id: 1,
       title: "New Youth, New Power",
-      description: "eufblueeblejdfrbr, irwe. hpleufblueeblejdfrbr ygbh hbd yfgqieufbluejd. L",
+      description:
+        "eufblueeblejdfrbr, irwe. hpleufblueeblejdfrbr ygbh hbd yfgqieufbluejd. L",
       image: "https://via.placeholder.com/60x40",
       category: "E-Books",
     },
@@ -144,7 +164,10 @@ function DesktopNavbar() {
         );
         console.log("Connections API Response:", response.data);
       } catch (err) {
-        console.error("Error fetching connections:", err.response?.data || err.message);
+        console.error(
+          "Error fetching connections:",
+          err.response?.data || err.message
+        );
       }
     };
     fetchConnections();
@@ -167,7 +190,10 @@ function DesktopNavbar() {
         );
         const users = Array.isArray(response.data) ? response.data : [];
         setAllUsersResponse(users);
-        console.log("All User IDs:", users.map((user) => user.id));
+        console.log(
+          "All User IDs:",
+          users.map((user) => user.id)
+        );
       } catch (err) {
         console.error("Error fetching all users:", err);
         setError(err.message || "Failed to fetch users");
@@ -277,7 +303,11 @@ function DesktopNavbar() {
     if (allUsersResponse && Array.isArray(allUsersResponse)) {
       const idExists = allUsersResponse.some((user) => user.id === userId);
       console.log(`Checking if User ID ${userId} exists: ${idExists}`);
-      navigate(idExists ? `/AfterConnecting/${userId}` : `/DesFollowerMiddleSectionPrivacy`);
+      navigate(
+        idExists
+          ? `/AfterConnecting/${userId}`
+          : `/DesFollowerMiddleSectionPrivacy`
+      );
     } else {
       console.error("User data not loaded:", allUsersResponse);
       navigate(`/DesFollowerMiddleSectionPrivacy`);
@@ -317,7 +347,9 @@ function DesktopNavbar() {
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
     setIsUserDropdownOpen(false);
-    setActiveIcon((prev) => (prev === "notifications" ? null : "notifications"));
+    setActiveIcon((prev) =>
+      prev === "notifications" ? null : "notifications"
+    );
   };
 
   // Navigation icon handlers
@@ -490,7 +522,11 @@ function DesktopNavbar() {
       />
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "notifications" ? NotificationWhite : NotificationBlack}
+          src={
+            activeIcon === "notifications"
+              ? NotificationWhite
+              : NotificationBlack
+          }
           alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
@@ -501,7 +537,9 @@ function DesktopNavbar() {
               {Object.keys(timeFilters).map((tab) => (
                 <button
                   key={tab}
-                  className={`notification-tab-button ${activeNotificationTab === tab ? "active" : ""}`}
+                  className={`notification-tab-button ${
+                    activeNotificationTab === tab ? "active" : ""
+                  }`}
                   onClick={() => setActiveNotificationTab(tab)}
                 >
                   {tab}
@@ -511,7 +549,10 @@ function DesktopNavbar() {
             <div className="notification-list">
               {filteredNotifications.length > 0 ? (
                 filteredNotifications.map((notif, index) => (
-                  <div key={index} className={`notification-item ${notif.color}`}>
+                  <div
+                    key={index}
+                    className={`notification-item ${notif.color}`}
+                  >
                     <img
                       src="https://via.placeholder.com/40"
                       alt="Profile"
@@ -522,11 +563,15 @@ function DesktopNavbar() {
                       <p className="notification-message">{notif.message}</p>
                     </div>
                     <span className="notification-time">{notif.time}</span>
-                    {notif.alert && <span className="notification-alert">🔔</span>}
+                    {notif.alert && (
+                      <span className="notification-alert">🔔</span>
+                    )}
                   </div>
                 ))
               ) : (
-                <p className="notification-empty">No notifications in this time range.</p>
+                <p className="notification-empty">
+                  No notifications in this time range.
+                </p>
               )}
             </div>
           </div>
@@ -545,16 +590,24 @@ function DesktopNavbar() {
           <div className="self-profile-card">
             <div className="self-profile-header">
               <img
-                src={localStorage.profilePicture || "https://via.placeholder.com/50"}
+                src={
+                  localStorage.profilePicture ||
+                  "https://via.placeholder.com/50"
+                }
                 alt="Profile"
                 className="self-profile-pic"
               />
               <div className="self-profile-info">
-                <h2 className="self-profile-name">{localStorage.username || "User Name"}</h2>
+                <h2 className="self-profile-name">
+                  {localStorage.username || "User Name"}
+                </h2>
                 <p className="self-profile-label">Position</p>
               </div>
             </div>
-            <button className="self-profile-edit-button" onClick={handleEditProfile}>
+            <button
+              className="self-profile-edit-button"
+              onClick={handleEditProfile}
+            >
               Edit Profile
             </button>
             <div className="self-profile-stats">
@@ -572,11 +625,17 @@ function DesktopNavbar() {
               </div>
             </div>
             <div className="self-profile-menu">
-              <div className="self-profile-menu-item" onClick={() => navigate("/SelfSetting")}>
+              <div
+                className="self-profile-menu-item"
+                onClick={() => navigate("/SelfSetting")}
+              >
                 Settings
               </div>
               <div className="self-profile-menu-item">Help</div>
-              <div className="self-profile-menu-item self-profile-sign-out" onClick={handleSignOut}>
+              <div
+                className="self-profile-menu-item self-profile-sign-out"
+                onClick={handleSignOut}
+              >
                 Sign Out
               </div>
             </div>
@@ -588,17 +647,25 @@ function DesktopNavbar() {
       {showDropdown && (
         <div className="connections-card">
           <div className="connections-item">
-            <Link to="/NetworkPage" className="connection-link">Connection</Link>
+            <Link to="/NetworkPage" className="connection-link">
+              Connection
+            </Link>
           </div>
           <div className="connections-item">Edu-vault</div>
           <div className="connections-item active">
-            <Link to="/HumanLib" className="connection-link">Human Library</Link>
+            <Link to="/HumanLib" className="connection-link">
+              Human Library
+            </Link>
           </div>
           <div className="connections-item">Guidance</div>
           <div className="connections-item">NGOs</div>
           <div className="connections-item">
             <Link
-              to={localStorage.getItem("userId") ? `/blog/${localStorage.getItem("userId")}` : "/blog"}
+              to={
+                localStorage.getItem("userId")
+                  ? `/blog/${localStorage.getItem("userId")}`
+                  : "/blog"
+              }
               className="connection-link"
             >
               Blog
@@ -640,29 +707,41 @@ function DesktopNavbar() {
                 ) : error ? (
                   <div className="desktop-search-error">{error}</div>
                 ) : combinedRecentResults.length > 0 ? (
-                  combinedRecentResults.map((item) => (
-                    <div
-                      key={item.id}
-                      className="recent-search-item"
-                      onClick={() => handleProfileClick(item.id)}
-                    >
-                      <img
-                      src={ProfileImage||item.avatar || item.profilePicture || UserIcon  }
-                        alt={item.name || item.username}
-                        className="recent-search-avatar"
-                      />
-                      <span className="recent-search-name">{item.name || item.username}</span>
-                    </div>
-                  ))
+                  <div className="desktop-search-recents-list">
+                    {combinedRecentResults.map((item) => (
+                      <div
+                        key={item.id}
+                        className="recent-search-item"
+                        onClick={() => handleProfileClick(item.id)}
+                      >
+                        <img
+                          src={
+                            ProfileImage ||
+                            item.avatar ||
+                            item.profilePicture ||
+                            UserIcon
+                          }
+                          alt={item.name || item.username}
+                          className="recent-search-avatar"
+                        />
+                        <span className="recent-search-name">
+                          {item.name || item.username}
+                        </span>
+                      </div>
+                    ))}
+                    <IoIosArrowForward className="desktop-recent-search-arrow"/>
+                  </div>
                 ) : (
-                  <div className="desktop-search-no-results">No users found</div>
+                  <div className="desktop-search-no-results">
+                    No users found
+                  </div>
                 )}
               </div>
             </div>
 
             {/* Suggested Users Section */}
             <div className="search-section">
-              <h4 className="search-section-title">Suggested  </h4>
+              <h4 className="search-section-title">Suggested </h4>
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
@@ -676,7 +755,9 @@ function DesktopNavbar() {
                   />
                   <div className="suggested-user-info">
                     <span className="suggested-user-name">{user.name}</span>
-                    <p className="suggested-user-university">{user.university}</p>
+                    <p className="suggested-user-university">
+                      {user.university}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -688,17 +769,22 @@ function DesktopNavbar() {
                 What you should put your eyes & thoughts on
               </h4>
               <div className="search-tabs">
-                {["Trend", "Event", "News"].map((tab) => (
+                {["Trend", "Event", "News"].map((tab, index) => (
                   <button
+                    style={{
+                      backgroundColor:
+                        buttonscolor[index % buttonscolor.length],
+                    }}
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`search-tab-button ${activeTab === tab ? "active" : ""}`}
+                    className={`search-tab-button ${
+                      activeTab === tab ? "active" : ""
+                    }`}
                   >
                     {tab}
                   </button>
                 ))}
               </div>
-
 
               {/* Content based on active tab */}
               {activeTab === "Trend" ? (
@@ -706,14 +792,13 @@ function DesktopNavbar() {
                   {trends.map((trend) => (
                     <div key={trend.id} className="trend-item">
                       <img
-                        src={trend.image}
+                        src={Trendimage}
                         alt={trend.title}
                         className="trend-image"
                       />
                       <div className="trend-info">
                         <p className="trend-title">{trend.title}</p>
                         <p className="trend-description">{trend.description}</p>
-                        <p className="trend-category">{trend.category}</p>
                       </div>
                     </div>
                   ))}
@@ -724,13 +809,15 @@ function DesktopNavbar() {
                     events.map((event) => (
                       <div key={event.id} className="event-item">
                         <img
-                          src={event.image || "https://via.placeholder.com/60x40"}
+                          src={event.image || Trendimage}
                           alt={event.title}
                           className="event-image"
                         />
                         <div className="event-info">
                           <p className="event-title">{event.title}</p>
-                          <p className="event-description">{event.description}</p>
+                          <p className="event-description">
+                            {event.description}
+                          </p>
                         </div>
                       </div>
                     ))
@@ -744,7 +831,7 @@ function DesktopNavbar() {
                     news.map((item) => (
                       <div key={item.id} className="news-item">
                         <img
-                          src={item.image || "https://via.placeholder.com/60x40"}
+                          src={item.image || Trendimage}
                           alt={item.title}
                           className="news-image"
                         />
@@ -765,7 +852,11 @@ function DesktopNavbar() {
       </div>
 
       {/* Logo */}
-      <img src={UnisphereLogoIcon} alt="Unisphere Logo" className="desktop-logo-icon" />
+      <img
+        src={UnisphereLogoIcon}
+        alt="Unisphere Logo"
+        className="desktop-logo-icon"
+      />
 
       {/* Upload Section Overlay */}
       {showUploadSection && (
@@ -779,7 +870,10 @@ function DesktopNavbar() {
             {mediaList.length === 0 && (
               <div className="upload-first-div">
                 <p className="upload-text">Drag & Drop your media here</p>
-                <button className="upload-button" onClick={() => inputRef.current.click()}>
+                <button
+                  className="upload-button"
+                  onClick={() => inputRef.current.click()}
+                >
                   Upload from computer
                 </button>
               </div>
@@ -801,14 +895,25 @@ function DesktopNavbar() {
                   {mediaList.map((media, index) => (
                     <div key={index} className="media-item">
                       {media.mediaType === "image" ? (
-                        <img className="imageAndVideo" src={media.previewURL} alt="Uploaded media" />
+                        <img
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          alt="Uploaded media"
+                        />
                       ) : (
-                        <video className="imageAndVideo" src={media.previewURL} controls />
+                        <video
+                          className="imageAndVideo"
+                          src={media.previewURL}
+                          controls
+                        />
                       )}
                     </div>
                   ))}
                 </div>
-                <button className="add-more-btn" onClick={() => inputRef.current.click()}>
+                <button
+                  className="add-more-btn"
+                  onClick={() => inputRef.current.click()}
+                >
                   Add More
                 </button>
               </div>
@@ -883,7 +988,9 @@ function DesktopNavbar() {
                           <input
                             type="checkbox"
                             checked={disableComments}
-                            onChange={(e) => setDisableComments(e.target.checked)}
+                            onChange={(e) =>
+                              setDisableComments(e.target.checked)
+                            }
                           />
                           <span className="slider round"></span>
                         </label>
