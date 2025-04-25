@@ -1,3 +1,4 @@
+// Imports
 import React, { useState } from "react";
 import "./Resources.css";
 import ForYou from "./ForYou.jpg";
@@ -6,7 +7,9 @@ import { IoChevronBack } from "react-icons/io5";
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
 import Background from "../Background/Background";
 
+// Resources Component
 function Resources() {
+  // Data Arrays
   const books = [
     { title: "The Dark Deception", author: "Student eBooks" },
     { title: "A Time to Mourn and a Time to Dance", author: "Jennifer Ohman" },
@@ -85,10 +88,12 @@ function Resources() {
     { label: "Poetry" },
   ];
 
+  // State
   const [positions, setPositions] = useState([0, 1, 2, 3, 4, 5, 6]);
   const [startIndex, setStartIndex] = useState(0);
   const [notesStartIndex, setNotesStartIndex] = useState(0);
 
+  // Event Handlers
   const handleBookClick = (clickedIndex) => {
     if (
       clickedIndex !== 0 &&
@@ -100,7 +105,6 @@ function Resources() {
         .slice(shift)
         .concat(positions.slice(0, shift));
       setPositions(newPositions);
-      console.log("New positions:", newPositions); // Debugging to verify alignment
     }
   };
 
@@ -132,23 +136,30 @@ function Resources() {
     });
   };
 
+  // Data Slicing for Display
   const visibleBooks = explorationBooks.slice(startIndex, startIndex + 4);
   const visibleNotes = notesItems.slice(notesStartIndex, notesStartIndex + 4);
 
   const booksCompleted = 3;
   const totalGoal = 3;
 
+  // Render
   return (
     <div>
+      {/* Background and Navigation */}
       <Background />
       <DesktopNavbar />
+
+      {/* Main Content */}
       <div className="Main-container">
+        {/* Resources Header Section */}
         <div className="resources-container">
           <h1 className="resources-title">RESOURCES</h1>
           <p className="resources-subtitle">
             Get all the resources you will need
           </p>
 
+          {/* Books Section */}
           <div className="books-circle-container">
             {books.map((book, index) => (
               <div
@@ -165,6 +176,7 @@ function Resources() {
           </div>
         </div>
 
+        {/* Search Bar */}
         <div className="resource-search-container">
           <input
             type="text"
@@ -172,21 +184,31 @@ function Resources() {
             className="resource-search-input"
           />
           <div className="resource-user-reading">
-            <div className="resource-user-avatar"></div>
-            <div className="resource-user-avatar"></div>
-            <div className="resource-user-avatar"></div>
-            <div className="resource-user-avatar"></div>
+            <div className="resource-user-avatar">
+              <img src={ForYou} alt="User avatar 1" className="avatar-image" />
+            </div>
+            <div className="resource-user-avatar">
+              <img src={ForYou} alt="User avatar 2" className="avatar-image" />
+            </div>
+            <div className="resource-user-avatar">
+              <img src={ForYou} alt="User avatar 3" className="avatar-image" />
+            </div>
+            <div className="resource-user-avatar">
+              <img src={ForYou} alt="User avatar 4" className="avatar-image" />
+            </div>
             <span className="resource-user-reading">Reading</span>
           </div>
         </div>
 
+        {/* Search Options */}
         <div className="Resource-search-options">
-          <button className="Resource-option-button">Recent</button>
-          <button className="Resource-option-button">2025</button>
-          <button className="Resource-option-button">Recent</button>
-          <button className="Resource-option-button">Saved</button>
+          <button className="Resource-option-button option-button-1">Recent</button>
+          <button className="Resource-option-button option-button-2">2025</button>
+          <button className="Resource-option-button option-button-3">Recent</button>
+          <button className="Resource-option-button option-button-4">Saved</button>
         </div>
 
+        {/* For You Section */}
         <div className="for-you-section">
           <h2 className="For-You-section-title">For You</h2>
           <div className="for-you-content">
@@ -253,6 +275,7 @@ function Resources() {
           </div>
         </div>
 
+        {/* Exploration Section */}
         <div className="exploration-section">
           <h2 className="section-title-Exploration">Exploration</h2>
           <div className="timer-container">
@@ -295,6 +318,7 @@ function Resources() {
           </div>
         </div>
 
+        {/* Notes Section */}
         <div className="notes-section">
           <h2 className="section-title-notes">Notes</h2>
           <div className="notes-content">
@@ -326,7 +350,8 @@ function Resources() {
           </div>
         </div>
 
-        <div className="trends-section-запятая">
+        {/* Trends Section */}
+        <div className="trends-section">
           <h2 className="section-title-Trends">Trends</h2>
           <div className="trends-content">
             {trendsItems.map((trend, index) => (
@@ -348,19 +373,20 @@ function Resources() {
           </div>
         </div>
 
+        {/* Categories Section */}
         <div className="categories-section">
           <h2 className="section-title-Categories">Categories</h2>
           <div className="categories-content">
             {categoriesItems.map((category, index) => (
               <div className="Categories-item-section">
                 <div key={index} className="category-card">
-                 <div className="category-image-outer" >
-                 <img
-                    src={ForYou}
-                    alt={category.label}
-                    className="category-image"
-                  />
-                 </div>
+                  <div className="category-image-outer">
+                    <img
+                      src={ForYou}
+                      alt={category.label}
+                      className="category-image"
+                    />
+                  </div>
                   <p className="category-label">{category.label}</p>
                 </div>
               </div>
@@ -368,6 +394,7 @@ function Resources() {
           </div>
         </div>
 
+        {/* Books Completed Section */}
         <div className="remaining-section">
           <p className="remaining-subheading">
             {totalGoal - booksCompleted} remaining for the Goal
