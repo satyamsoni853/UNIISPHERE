@@ -30,6 +30,7 @@ import Blog from "./Components/Blog/Blog.jsx";
 import MessageMobileInbox from "./Components/MessageMobileInbox/MessageMobileInbox.jsx";
 import BlogCreate from "./Components/Blog/BlogCreate.jsx";
 import NetworkPageSection from './Components/NetworkPageSection/NetworkPageSection.jsx'
+import Resources from "./Components/Resources/Resources.jsx";
 
 function App() {
   return (
@@ -94,6 +95,7 @@ function App() {
           <Route path="/MessageMobileInbox" element={<MessageMobileInbox />} />
           <Route path="/MentorSection" element={<MentorSection />} />
           <Route path="/HumanLib" element={<HumanLib />} />
+          <Route path="/Resources" element={<Resources />} />
         </Routes>
       </div>
     </Router>

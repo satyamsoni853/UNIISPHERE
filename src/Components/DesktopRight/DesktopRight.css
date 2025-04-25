@@ -3,13 +3,16 @@
   position: fixed;
   top: 110px;
   right: 20px;
-  height: 70vh;
+  height: 80vh;
   width: 25vw;
-  max-width: 400px;
+  max-width: 500px;
+  border-radius: 30px;
   min-width: 250px;
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-color: white;
 }
 
 .right-section-container::-webkit-scrollbar {
@@ -20,11 +23,14 @@
 .rightsection {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(to bottom, #f4d6cc33, #e5be9e33);
+
+  background: linear-gradient(to bottom, #f926f233, #12411833);
+
   padding: 1rem;
   border-radius: 10px;
   width: 100%;
   height: auto;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -82,12 +88,13 @@
 }
 
 .profile-bio {
-  font-size: 0.75rem;
+  font-size: 1.2rem;
+
   color: #666;
 }
 
 .see-more {
-  color: blue;
+  color: grey;
   cursor: pointer;
   font-size: 0.9rem;
 }
@@ -100,8 +107,9 @@
 
 /* Suggested Title */
 .suggested-title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  margin: 10px;
+  font-weight: 400;
 }
 
 /* Suggestion Card */
@@ -109,7 +117,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.3rem;
+  padding: 1.2rem;
   border-radius: 8px;
 }
 

@@ -1,4 +1,8 @@
 /* Container */
+.Leftsectionbottom-main-container{
+  background-color:white;
+  
+}
 .leftsectionbottom-1 {
   background: linear-gradient(
     to bottom,
@@ -6,7 +10,7 @@
     rgba(207, 232, 239, 0.2) /* #CFE8EF with 20% opacity */
   );
   padding: 0.625rem;
-  border-radius: 10px;
+  border-radius: 25px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid grey;
   width: 100%;
