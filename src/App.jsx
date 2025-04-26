@@ -31,7 +31,9 @@ import MessageMobileInbox from "./Components/MessageMobileInbox/MessageMobileInb
 import BlogCreate from "./Components/Blog/BlogCreate.jsx";
 import NetworkPageSection from './Components/NetworkPageSection/NetworkPageSection.jsx'
 import Resources from "./Components/Resources/Resources.jsx";
-
+import Books from "./Components/Resources/Books.jsx";
+import EventNews from './Components/Resources/EventNews.jsx'
+ import EventDesc from "./Components/Resources/EventDescription.jsx";
 function App() {
   return (
     <Router>
@@ -96,6 +98,11 @@ function App() {
           <Route path="/MentorSection" element={<MentorSection />} />
           <Route path="/HumanLib" element={<HumanLib />} />
           <Route path="/Resources" element={<Resources />} />
+          <Route path="/books" element={<Books/>} />
+          <Route path="/EventNews" element={<EventNews/>} />
+          <Route path="/EventDescription" element={<EventDesc/>} />
+          
+
         </Routes>
       </div>
     </Router>
