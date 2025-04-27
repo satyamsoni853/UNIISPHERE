@@ -21,6 +21,7 @@ import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
 import ClenderBlack from './ClenderBlackIcon.svg';
 import ClenderWhite from './ClenderWhiteIcon.svg';
+import Background from "../Background/Background";
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -691,7 +692,9 @@ function DesktopNavbar() {
 
       {/* Search Bar with Updated Interface */}
       <div className="desktop-search-container" ref={searchContainerRef}>
+       
         <div className="desktop-search-input-wrapper">
+          
           <input
             type="text"
             placeholder="Search for users, trends, events, news..."
@@ -704,8 +707,10 @@ function DesktopNavbar() {
         </div>
         {showResults && (
           <div className="desktop-search-results">
+             <Background/>
             {/* Recent Searches Section with Search Results */}
             <div className="search-section">
+              
               <h4 className="search-section-title">Recent</h4>
               <div className="recent-search-list">
                 {isLoading ? (
