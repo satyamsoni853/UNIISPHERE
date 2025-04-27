@@ -1,12 +1,10 @@
-
 import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { FaHome } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
-import { IoHomeOutline } from "react-icons/io5";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
 // Icons
@@ -18,10 +16,10 @@ import NetworkWhite from "./NetworkWhiteIcon.svg";
 import NotificationBlack from "./NotificationBlackIcon.svg";
 import NotificationWhite from "./NotificationWhiteIcon.svg";
 import ProfileImage from "./ProfileImage.png";
+import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
-import ClenderBlack from './ClenderBlackIcon.svg';
-import ClenderWhite from './ClenderWhiteIcon.svg';
+import { IoIosArrowForward } from "react-icons/io";
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -36,7 +34,7 @@ function DesktopNavbar() {
   const [showPostDetails, setShowPostDetails] = useState(false);
   const [showAddMore, setShowAddMore] = useState(true);
   const [caption, setCaption] = useState("");
-  const [postLocation, setPostLocation] = useState(""); // Renamed to avoid conflict
+  const [location, setLocation] = useState("");
   const [hideLikes, setHideLikes] = useState(false);
   const [disableComments, setDisableComments] = useState(false);
   const [mediaList, setMediaList] = useState([]);
@@ -49,12 +47,11 @@ function DesktopNavbar() {
   const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
   const searchContainerRef = useRef(null);
-  const uploadContainerRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation(); // From useLocation
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] =
+    useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
     {
@@ -76,6 +73,7 @@ function DesktopNavbar() {
       color: "notification-border-red-400",
     },
   ]);
+  const buttonscolor = ["#DB3E3933", "#DDC058", "#A17A97"];
 
   // Search-related state
   const [activeTab, setActiveTab] = useState("Trend");
@@ -120,48 +118,14 @@ function DesktopNavbar() {
   const [events] = useState([]);
   const [news] = useState([]);
 
-  // Set active icon based on current path
-  useEffect(() => {
-    const path = location.pathname;
-    if (path === "/view") {
-      setActiveIcon("home");
-      setShowDropdown(false);
-      setShowNotificationDropdown(false);
-      setShowUploadSection(false);
-    } else if (
-      path.startsWith("/NetworkPage") ||
-      path.startsWith("/HumanLib") ||
-      path.startsWith("/blog")
-    ) {
-      setActiveIcon("network");
-      setShowDropdown(true);
-      setShowNotificationDropdown(false);
-      setShowUploadSection(false);
-    } else {
-      setActiveIcon(null);
-      setShowDropdown(false);
-      setShowNotificationDropdown(false);
-      setShowUploadSection(false);
-    }
-  }, [location.pathname]);
-
-  // Click outside handler for search and upload section
+  // Click outside handler to close the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close search results
       if (
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target)
       ) {
         setShowResults(false);
-      }
-      // Close upload section
-      if (
-        showUploadSection &&
-        uploadContainerRef.current &&
-        !uploadContainerRef.current.contains(event.target)
-      ) {
-        handleCloseUpload();
       }
     };
 
@@ -169,16 +133,13 @@ function DesktopNavbar() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showUploadSection]);
+  }, []);
 
   // Handle keydown events (e.g., Esc to close)
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         setShowResults(false);
-        if (showUploadSection) {
-          handleCloseUpload();
-        }
       }
     };
 
@@ -186,14 +147,15 @@ function DesktopNavbar() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [showUploadSection]);
+  }, []);
 
   // Fetch connections from the API
   useEffect(() => {
     const fetchConnections = async () => {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
-        console.error("Authentication token not found");
+        setError("Please log in to continue");
+        navigate("/login");
         return;
       }
       try {
@@ -207,17 +169,19 @@ function DesktopNavbar() {
           "Error fetching connections:",
           err.response?.data || err.message
         );
+        setError(err.response?.data?.message || "Failed to fetch connections");
       }
     };
     fetchConnections();
-  }, []);
+  }, [navigate, setError]);
 
   // Fetch all users
   useEffect(() => {
     const fetchAllUsers = async () => {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
-        setError("Authentication token not found");
+        setError("Please log in to continue");
+        navigate("/login");
         setLoading(false);
         return;
       }
@@ -235,14 +199,14 @@ function DesktopNavbar() {
         );
       } catch (err) {
         console.error("Error fetching all users:", err);
-        setError(err.message || "Failed to fetch users");
+        setError(err.response?.data?.message || "Failed to fetch users");
         setAllUsersResponse([]);
       } finally {
         setLoading(false);
       }
     };
     fetchAllUsers();
-  }, []);
+  }, [navigate, setError]);
 
   // Time filters for notifications
   const timeFilters = {
@@ -263,12 +227,13 @@ function DesktopNavbar() {
     setError(null);
     try {
       const response = await axios.get(
-        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${username}`
+        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
       );
-      setSearchResults(response.data);
+      setSearchResults(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error("Search error:", err);
-      setError(err.message || "Failed to fetch profiles");
+      setError(err.response?.data?.message || "Failed to fetch profiles");
+      setSearchResults([]);
     } finally {
       setIsLoading(false);
     }
@@ -279,7 +244,8 @@ function DesktopNavbar() {
     const authToken = localStorage.getItem("authToken");
     const userId = localStorage.getItem("userId");
     if (!authToken || !userId) {
-      setError("Authentication required");
+      setError("Please log in to continue");
+      navigate("/login");
       return;
     }
     try {
@@ -293,7 +259,7 @@ function DesktopNavbar() {
         }
       );
       console.log("Profile Stats response:", response.data);
-      if (response.data.totalPosts && response.data.totalPosts.length > 0) {
+      if (response.data.totalPosts && Array.isArray(response.data.totalPosts)) {
         const userPosts = response.data.totalPosts.filter(
           (post) => post.user.id === userId
         );
@@ -312,10 +278,13 @@ function DesktopNavbar() {
         setTotalLikes(totalLikesCount);
         setTotalComments(totalCommentsCount);
         setPosts(userPosts.length);
+      } else {
+        console.error("Unexpected API response structure:", response.data);
+        setError("Failed to load stats");
       }
     } catch (err) {
       console.error("Stats fetch error:", err);
-      setError("Failed to fetch stats");
+      setError(err.response?.data?.message || "Failed to fetch stats");
     }
   };
 
@@ -345,11 +314,11 @@ function DesktopNavbar() {
       navigate(
         idExists
           ? `/AfterConnecting/${userId}`
-          : `/DesFollowerMiddleSectionPrivacy`
+          : "/DesFollowerMiddleSectionPrivacy"
       );
     } else {
       console.error("User data not loaded:", allUsersResponse);
-      navigate(`/DesFollowerMiddleSectionPrivacy`);
+      navigate("/DesFollowerMiddleSectionPrivacy");
     }
     setShowResults(false);
     setSearchQuery("");
@@ -365,8 +334,6 @@ function DesktopNavbar() {
   const handleUserIconClick = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
     setShowNotificationDropdown(false);
-    setShowDropdown(false);
-    setActiveIcon(null);
   };
 
   const handleSignOut = () => {
@@ -388,52 +355,27 @@ function DesktopNavbar() {
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
     setIsUserDropdownOpen(false);
-    setShowDropdown(false);
     setActiveIcon((prev) =>
       prev === "notifications" ? null : "notifications"
     );
   };
 
-  // Handle clender icon click (placeholder)
-  const handleClenderClick = () => {
-    setIsUserDropdownOpen(false);
-    setShowDropdown(false);
-    setShowNotificationDropdown(false);
-    setActiveIcon((prev) => (prev === "clender" ? null : "clender"));
-    // Add clender functionality here, e.g., navigate("/calendar") or open a calendar modal
-  };
-
   // Navigation icon handlers
   const handleIconClick = (iconName) => {
-    setActiveIcon((prev) => (prev === iconName ? null : iconName));
-    setIsUserDropdownOpen(false);
-
+    setActiveIcon(activeIcon === iconName ? null : iconName);
+    setShowNotificationDropdown(false);
     switch (iconName) {
       case "home":
         navigate("/view");
-        setShowDropdown(false);
-        setShowNotificationDropdown(false);
-        setShowUploadSection(false);
         break;
       case "network":
-        setShowDropdown((prev) => !prev);
-        setShowNotificationDropdown(false);
-        setShowUploadSection(false);
-        // Optionally navigate to a default network page
-        // navigate("/NetworkPage");
+        // navigate("/network");
         break;
       case "add":
-        setShowUploadSection((prev) => !prev);
-        setShowDropdown(false);
-        setShowNotificationDropdown(false);
+        setShowUploadSection(true);
         break;
       case "notifications":
         handleNotificationClick();
-        setShowUploadSection(false);
-        break;
-      case "clender":
-        handleClenderClick();
-        setShowUploadSection(false);
         break;
       default:
         break;
@@ -485,14 +427,14 @@ function DesktopNavbar() {
       const authToken = localStorage.getItem("authToken");
       const userId = localStorage.getItem("userId");
       if (!authToken || !userId) {
-        throw new Error("User not authenticated. Please log in.");
+        throw new Error("Please log in to continue");
       }
       const formData = new FormData();
       mediaList.forEach((media) => formData.append("media", media.file));
       formData.append("content", caption);
       formData.append("userId", userId);
       formData.append("visibility", hideLikes ? "private" : "public");
-      formData.append("location", postLocation || "");
+      formData.append("location", location || "");
       formData.append("tags", "");
       const postResponse = await axios.post(
         "https://uniisphere-1.onrender.com/posts",
@@ -502,13 +444,12 @@ function DesktopNavbar() {
       console.log("Post created:", postResponse.data);
       setMediaList([]);
       setCaption("");
-      setPostLocation("");
+      setLocation("");
       setHideLikes(false);
       setDisableComments(false);
       setShowPostDetails(false);
       setShowAddMore(true);
       setShowUploadSection(false);
-      setActiveIcon(null);
     } catch (error) {
       console.error("Error creating post:", error);
       setError(error.message || "Failed to create post. Please try again.");
@@ -523,11 +464,10 @@ function DesktopNavbar() {
     setShowAddMore(true);
     setMediaList([]);
     setCaption("");
-    setPostLocation("");
+    setLocation("");
     setHideLikes(false);
     setDisableComments(false);
     setError(null);
-    setActiveIcon(null);
   };
 
   useEffect(() => {
@@ -558,7 +498,7 @@ function DesktopNavbar() {
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
       {activeIcon === "home" ? (
-        <IoHomeOutline
+        <GoHome
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
@@ -572,34 +512,32 @@ function DesktopNavbar() {
           style={{ color: "black" }}
         />
       )}
-
       <img
-        src={activeIcon === "notifications" || showNotificationDropdown ? NotificationWhite : NotificationBlack}
-        alt="Notifications"
+        src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
+        alt="Network"
         className="desktop-icon"
-        onClick={() => handleIconClick("notifications")}
+        onClick={() => {
+          setShowDropdown((prev) => !prev);
+          setShowNotificationDropdown(false);
+          handleIconClick("network");
+        }}
       />
-
       <img
-        src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
-        alt="Clender"
-        className="desktop-icon"
-        onClick={() => handleIconClick("clender")}
-      />
-
-      <img
-        src={activeIcon === "add" || showUploadSection ? AddWhite : AddBlack}
+        src={activeIcon === "add" ? AddWhite : AddBlack}
         alt="Add"
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "network" || showDropdown ? NetworkWhite : NetworkBlack}
-          alt="Network"
+          src={
+            activeIcon === "notifications"
+              ? NotificationWhite
+              : NotificationBlack
+          }
+          alt="Notifications"
           className="desktop-icon"
-          onClick={() => handleIconClick("network")}
+          onClick={handleNotificationClick}
         />
         {showNotificationDropdown && (
           <div className="notification-dropdown">
@@ -759,6 +697,7 @@ function DesktopNavbar() {
         </div>
         {showResults && (
           <div className="desktop-search-results">
+            {/* Recent Searches Section with Search Results */}
             <div className="search-section">
               <h4 className="search-section-title">Recent</h4>
               <div className="recent-search-list">
@@ -767,27 +706,30 @@ function DesktopNavbar() {
                 ) : error ? (
                   <div className="desktop-search-error">{error}</div>
                 ) : combinedRecentResults.length > 0 ? (
-                  combinedRecentResults.map((item) => (
-                    <div
-                      key={item.id}
-                      className="recent-search-item"
-                      onClick={() => handleProfileClick(item.id)}
-                    >
-                      <img
-                        src={
-                          ProfileImage ||
-                          item.avatar ||
-                          item.profilePicture ||
-                          UserIcon
-                        }
-                        alt={item.name || item.username}
-                        className="recent-search-avatar"
-                      />
-                      <span className="recent-search-name">
-                        {item.name || item.username}
-                      </span>
-                    </div>
-                  ))
+                  <div className="desktop-search-recents-list">
+                    {combinedRecentResults.map((item) => (
+                      <div
+                        key={item.id}
+                        className="recent-search-item"
+                        onClick={() => handleProfileClick(item.id)}
+                      >
+                        <img
+                          src={
+                            ProfileImage ||
+                            item.avatar ||
+                            item.profilePicture ||
+                            UserIcon
+                          }
+                          alt={item.name || item.username}
+                          className="recent-search-avatar"
+                        />
+                        <span className="recent-search-name">
+                          {item.name || item.username}
+                        </span>
+                      </div>
+                    ))}
+                    <IoIosArrowForward className="desktop-recent-search-arrow"/>
+                  </div>
                 ) : (
                   <div className="desktop-search-no-results">
                     No users found
@@ -796,8 +738,9 @@ function DesktopNavbar() {
               </div>
             </div>
 
+            {/* Suggested Users Section */}
             <div className="search-section">
-              <h4 className="search-section-title">Suggested</h4>
+              <h4 className="search-section-title">Suggested </h4>
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
@@ -819,13 +762,18 @@ function DesktopNavbar() {
               ))}
             </div>
 
+            {/* Tabs for Trend/Event/News */}
             <div className="search-section">
               <h4 className="search-section-title search-section-title2">
                 What you should put your eyes & thoughts on
               </h4>
               <div className="search-tabs">
-                {["Trend", "Event", "News"].map((tab) => (
+                {["Trend", "Event", "News"].map((tab, index) => (
                   <button
+                    style={{
+                      backgroundColor:
+                        buttonscolor[index % buttonscolor.length],
+                    }}
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`search-tab-button ${
@@ -837,19 +785,19 @@ function DesktopNavbar() {
                 ))}
               </div>
 
+              {/* Content based on active tab */}
               {activeTab === "Trend" ? (
                 <div className="trend-results">
                   {trends.map((trend) => (
                     <div key={trend.id} className="trend-item">
                       <img
-                        src={trend.image}
+                        src={Trendimage}
                         alt={trend.title}
                         className="trend-image"
                       />
                       <div className="trend-info">
                         <p className="trend-title">{trend.title}</p>
                         <p className="trend-description">{trend.description}</p>
-                        <p className="trend-category">{trend.category}</p>
                       </div>
                     </div>
                   ))}
@@ -860,9 +808,7 @@ function DesktopNavbar() {
                     events.map((event) => (
                       <div key={event.id} className="event-item">
                         <img
-                          src={
-                            event.image || "https://via.placeholder.com/60x40"
-                          }
+                          src={event.image || Trendimage}
                           alt={event.title}
                           className="event-image"
                         />
@@ -884,9 +830,7 @@ function DesktopNavbar() {
                     news.map((item) => (
                       <div key={item.id} className="news-item">
                         <img
-                          src={
-                            item.image || "https://via.placeholder.com/60x40"
-                          }
+                          src={item.image || Trendimage}
                           alt={item.title}
                           className="news-image"
                         />
@@ -915,10 +859,9 @@ function DesktopNavbar() {
 
       {/* Upload Section Overlay */}
       {showUploadSection && (
-        <div className="upload-overlay">
+        <div className="upload-overlay" onClick={handleCloseUpload}>
           <div
             className="upload-container"
-            ref={uploadContainerRef}
             onClick={(e) => e.stopPropagation()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
@@ -1044,7 +987,9 @@ function DesktopNavbar() {
                           <input
                             type="checkbox"
                             checked={disableComments}
-                            onChange={(e) => setDisableComments(e.target.checked)}
+                            onChange={(e) =>
+                              setDisableComments(e.target.checked)
+                            }
                           />
                           <span className="slider round"></span>
                         </label>

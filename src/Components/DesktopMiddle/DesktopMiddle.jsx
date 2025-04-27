@@ -30,18 +30,16 @@ function DesktopMiddle() {
   const [shareError, setShareError] = useState(null);
   const [activeOptionsPostIndex, setActiveOptionsPostIndex] = useState(null);
   const [connectionStatuses, setConnectionStatuses] = useState({});
+  const [seeMore, setSeeMore] = useState({});
   const optionsRef = useRef(null);
-  const commentModalRef = useRef(null); // Ref for comment modal
-  const shareModalRef = useRef(null); // Ref for share modal
+  const commentModalRef = useRef(null);
+  const shareModalRef = useRef(null);
 
-  // Handle clicks outside modals
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close options dropdown
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
         setActiveOptionsPostIndex(null);
       }
-      // Close comment modal
       if (
         showComment &&
         commentModalRef.current &&
@@ -49,7 +47,6 @@ function DesktopMiddle() {
       ) {
         handleCloseCommentModal();
       }
-      // Close share modal
       if (
         showShare &&
         shareModalRef.current &&
@@ -547,6 +544,21 @@ function DesktopMiddle() {
     }
   };
 
+  const toggleSeeMore = (index) => {
+    setSeeMore((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  const renderCaption = (caption, index) => {
+    const maxLength = 100;
+    if (!caption || caption.length <= maxLength || seeMore[index]) {
+      return caption || "No caption available";
+    }
+    return `${caption.substring(0, maxLength)}...`;
+  };
+
   return (
     <div className="middle-container">
       <div className="middle-middle-card">
@@ -658,7 +670,7 @@ function DesktopMiddle() {
                 <div className="middle-action-bar">
                   {isSelf ? (
                     <div className="connection-status-message">
-                       Cannot Send a Connection  to Yourself.
+                      Cannot Send a Connection to Yourself.
                     </div>
                   ) : isConnected ? (
                     <div className="connection-status-message">
@@ -704,12 +716,14 @@ function DesktopMiddle() {
                     >
                       <span className="middle-icon-count">{post.likes}</span>
                       {post.isLiked ? (
-                        <FcLike className="middle-icon liked" />
+                      <FcLike className="middle-icon liked"  />
+
                       ) : (
                         <img
                           src={LikeIcon}
-                          className="middle-icon"
+                          className="middle-icon Liked "
                           alt="Like"
+                          
                         />
                       )}
                     </div>
@@ -717,11 +731,22 @@ function DesktopMiddle() {
                 </div>
 
                 <div className="middle-post-text">
-                  <span className="middle-post-author">
-                    {post.authorName || "Unknown Author"}
-                  </span>{" "}
-                  {post.caption || post.content || "No caption available"}
-                  <span className="middle-see-more">...more</span>
+                  <div className="middle-post-text-content">
+                    <span className="middle-post-author">
+                      {post.authorName || "Unknown Author"}
+                    </span>
+                    <span className="middle-post-caption">
+                      {renderCaption(post.caption, index)}
+                    </span>
+                  </div>
+                  {post.caption && post.caption.length > 100 && (
+                    <span
+                      className="middle-see-more"
+                      onClick={() => toggleSeeMore(index)}
+                    >
+                      {seeMore[index] ? "See Less" : "See More"}
+                    </span>
+                  )}
                 </div>
               </div>
             );
@@ -735,7 +760,7 @@ function DesktopMiddle() {
         <div className="Comment-box-container">
           <div
             className="Full-comment-section-desktop-main-container"
-            ref={commentModalRef} // Attach ref to comment modal
+            ref={commentModalRef}
           >
             <div className="Full-comment-section-desktop-left-section">
               <div className="Full-comment-section-desktop-user-profile-header">

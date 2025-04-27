@@ -330,7 +330,7 @@ function Resources() {
             </button>
             {visibleNotes.map((note, index) => (
               <div className="notes-item-section">
-                <div key={index}>
+                <div key={index} className="notes-item-container" >
                   <div className="notes-item">
                     <img
                       src={ForYou}

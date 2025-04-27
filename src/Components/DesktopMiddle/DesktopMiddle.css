@@ -12,27 +12,27 @@
 /* Middle Card */
 .middle-middle-card {
   position: relative;
-  padding: 1.25rem;
   border-radius: 10px;
   width: 40vw;
   min-width: 300px;
   max-width: 600px;
+  margin-left: 100px;
   margin-top: 110px;
   box-sizing: border-box;
-  display: flex; /* Ensure flex layout for proper spacing */
-  flex-direction: column; /* Stack posts vertically */
-  gap: 20px; /* Add gap between posts as a fallback */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* Post Container */
 .post-container {
-  background: linear-gradient(to top, #f4f4f4, #f3e4e4);
-  border-radius: 10px; /* Rounded corners for the box */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-  padding: 15px; /* Inner spacing for content */
-  border: 1px solid #e0e0e0; /* Light border for definition */
-  width: 100%; /* Take full width of the parent container */
-  min-height: 65vh; /* Ensure a minimum height for smaller screens */
+  background: linear-gradient(to top, #edf5e8, #ede9ea);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  width: 100%;
+  min-height: 40vh; /* Reduced to allow shrinking for smaller images */
   overflow: hidden;
 }
 
@@ -54,9 +54,28 @@
   flex-grow: 1;
 }
 
+.middle-profile-top {
+  margin-top: 10px;
+}
+
 .middle-profile-name {
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: 550;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+}
+
+.middle-profile-details {
+  text-transform: capitalize;
+  font-size: 0.8rem;
+}
+
+.middle-post-text-content {
+  text-transform: capitalize;
+  margin-left: 20px;
+}
+
+.middle-post-caption {
+  margin-left: 10px;
 }
 
 .middle-options-container {
@@ -66,6 +85,7 @@
 
 .middle-options-icon-Threedot {
   font-size: 2rem;
+  cursor: pointer;
 }
 
 .middle-options-dropdown {
@@ -113,40 +133,6 @@
   background-color: #f5f5f5;
 }
 
-.middle-options-icon:hover {
-  background-color: #f0f0f0;
-}
-
-.middle-options-dropdown {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-  width: 11.25rem;
-  overflow: hidden;
-}
-
-.middle-options-item {
-  width: 100%;
-  padding: 0.625rem 0.9375rem;
-  text-align: left;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  color: #333;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-}
-
-.middle-options-item:hover {
-  background-color: #f5f5f5;
-}
-
 .middle-post-time {
   margin-left: 0.625rem;
   font-size: 0.75rem;
@@ -160,16 +146,20 @@
   grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
   gap: 0.625rem;
   padding: 0.625rem 0;
-  min-height: 12.5rem;
+  min-height: 200px; /* Smaller min-height for small images */
+  height: auto; /* Adjust to image height */
 }
 
 .middle-content-image {
   width: 100%;
-  height: 100%;
-  min-height: 12.5rem;
-  object-fit: cover;
-  border-radius: 8px;
-  border-radius: 20px;
+  height: auto; /* Allow height to adjust based on image */
+  max-height: 600px; /* Prevent excessively tall images */
+  object-fit: contain; /* Show entire image without cropping */
+  border-radius: 10px; /* Consistent border radius */
+}
+
+.middle-content-image.small-image {
+  max-height: 300px; /* Smaller max-height for small images */
 }
 
 /* Action Bar */
@@ -203,8 +193,8 @@
 }
 
 .middle-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 3rem;
   transition: color 0.3s, transform 0.3s;
 }
 
@@ -220,13 +210,13 @@
 
 .middle-icon.liked {
   color: red;
+  font-size: 3rem;
 }
 
 /* Post Text */
 .middle-post-text {
   font-size: 0.875rem;
   padding-top: 0.625rem;
-  border-bottom: 5px solid grey;
   width: 100%;
   margin: 1.25rem 0;
 }
@@ -457,15 +447,20 @@
   grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
   gap: 0.625rem;
   padding: 0.625rem;
-  min-height: 12.5rem;
+  min-height: 200px; /* Smaller min-height for small images */
+  height: auto; /* Adjust to image height */
 }
 
 .Full-comment-section-desktop-post-photo {
   width: 100%;
-  height: 100%;
-  min-height: 12.5rem;
-  object-fit: cover;
-  border-radius: 8px;
+  height: auto; /* Allow height to adjust based on image */
+  max-height: 600px; /* Prevent excessively tall images */
+  object-fit: contain; /* Show entire image without cropping */
+  border-radius: 10px; /* Consistent border radius */
+}
+
+.Full-comment-section-desktop-post-photo.small-image {
+  max-height: 300px; /* Smaller max-height for small images */
 }
 
 .Full-comment-section-desktop-right-section {
@@ -662,7 +657,6 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  object-fit: cover;
 }
 
 .Full-share-section-desktop-user-info {
@@ -699,15 +693,20 @@
   grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
   gap: 0.625rem;
   padding: 0.625rem;
-  min-height: 12.5rem;
+  min-height: 200px; /* Smaller min-height for small images */
+  height: auto; /* Adjust to image height */
 }
 
 .Full-share-section-desktop-post-photo {
   width: 100%;
-  height: 100%;
-  min-height: 12.5rem;
-  object-fit: cover;
-  border-radius: 8px;
+  height: auto; /* Allow height to adjust based on image */
+  max-height: 600px; /* Prevent excessively tall images */
+  object-fit: contain; /* Show entire image without cropping */
+  border-radius: 10px; /* Consistent border radius */
+}
+
+.Full-share-section-desktop-post-photo.small-image {
+  max-height: 300px; /* Smaller max-height for small images */
 }
 
 .Full-share-section-action-buttons-desktop {
@@ -869,12 +868,19 @@
   .Full-comment-section-desktop-post-photo,
 .Full-share-section-desktop-photo-container:has(> img:only-child)
   .Full-share-section-desktop-post-photo {
-  max-width: 100%;
-  height: 35rem;
-  max-height: 37.5rem;
   width: 100%;
-  border-radius: 20px;
+  height: auto; /* Allow height to adjust */
+  max-height: 800px; /* Increased max-height for single long images */
+  border-radius: 10px;
   object-fit: contain;
+}
+
+.middle-main-image:has(> img:only-child) .middle-content-image.small-image,
+.Full-comment-section-desktop-photo-container:has(> img:only-child)
+  .Full-comment-section-desktop-post-photo.small-image,
+.Full-share-section-desktop-photo-container:has(> img:only-child)
+  .Full-share-section-desktop-post-photo.small-image {
+  max-height: 400px; /* Smaller max-height for single small images */
 }
 
 /* For two images */
@@ -884,11 +890,49 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
+.middle-main-image:has(> img:nth-child(2)) .middle-content-image,
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(2))
+  .Full-comment-section-desktop-post-photo,
+.Full-share-section-desktop-photo-container:has(> img:nth-child(2))
+  .Full-share-section-desktop-post-photo {
+  height: auto; /* Allow height to adjust */
+  max-height: 600px; /* Slightly lower max-height for two images */
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.middle-main-image:has(> img:nth-child(2)) .middle-content-image.small-image,
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(2))
+  .Full-comment-section-desktop-post-photo.small-image,
+.Full-share-section-desktop-photo-container:has(> img:nth-child(2))
+  .Full-share-section-desktop-post-photo.small-image {
+  max-height: 300px; /* Smaller max-height for two small images */
+}
+
 /* For three or more images */
 .middle-main-image:has(> img:nth-child(3)),
 .Full-comment-section-desktop-photo-container:has(> img:nth-child(3)),
 .Full-share-section-desktop-photo-container:has(> img:nth-child(3)) {
   grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+}
+
+.middle-main-image:has(> img:nth-child(3)) .middle-content-image,
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(3))
+  .Full-comment-section-desktop-post-photo,
+.Full-share-section-desktop-photo-container:has(> img:nth-child(3))
+  .Full-share-section-desktop-post-photo {
+  height: auto; /* Allow height to adjust */
+  max-height: 400px; /* Smaller max-height for multiple images */
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.middle-main-image:has(> img:nth-child(3)) .middle-content-image.small-image,
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(3))
+  .Full-comment-section-desktop-post-photo.small-image,
+.Full-share-section-desktop-photo-container:has(> img:nth-child(3))
+  .Full-share-section-desktop-post-photo.small-image {
+  max-height: 250px; /* Smaller max-height for multiple small images */
 }
 
 .connection-status-message {
@@ -905,15 +949,47 @@
   }
 
   .post-container {
-    min-height: 55vh; /* Slightly reduce min-height for smaller screens */
+    min-height: 35vh;
   }
 
   .middle-main-image {
-    min-height: 12.5rem;
+    min-height: 180px;
+  }
+
+  .Full-comment-section-desktop-photo-container,
+  .Full-share-section-desktop-photo-container {
+    min-height: 180px;
   }
 
   .middle-content-image {
-    min-height: 12.5rem;
+    max-height: 500px;
+  }
+
+  .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-post-photo {
+    max-height: 500px;
+  }
+
+  .middle-content-image.small-image,
+  .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-post-photo.small-image {
+    max-height: 250px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo {
+    max-height: 700px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo.small-image {
+    max-height: 350px;
   }
 }
 
@@ -931,7 +1007,7 @@
   }
 
   .post-container {
-    min-height: 50vh; /* Further reduce min-height for smaller screens */
+    min-height: 30vh;
   }
 
   .middle-profile-pic {
@@ -952,15 +1028,43 @@
   }
 
   .middle-main-image {
-    min-height: 12.5rem;
+    min-height: 160px;
+  }
+
+  .Full-comment-section-desktop-photo-container,
+  .Full-share-section-desktop-photo-container {
+    min-height: 160px;
   }
 
   .middle-content-image {
-    min-height: 12.5rem;
+    max-height: 400px;
   }
 
-  .middle-connect-image {
-    width: 6.25rem;
+  .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-post-photo {
+    max-height: 400px;
+  }
+
+  .middle-content-image.small-image,
+  .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-post-photo.small-image {
+    max-height: 200px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo {
+    max-height: 600px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo.small-image {
+    max-height: 300px;
   }
 
   .Full-comment-section-desktop-main-container,
@@ -996,7 +1100,7 @@
   }
 
   .post-container {
-    min-height: 45vh; /* Adjust for smaller screens */
+    min-height: 25vh;
   }
 
   .middle-profile-pic {
@@ -1018,11 +1122,43 @@
   }
 
   .middle-main-image {
-    min-height: 12.5rem;
+    min-height: 140px;
+  }
+
+  .Full-comment-section-desktop-photo-container,
+  .Full-share-section-desktop-photo-container {
+    min-height: 140px;
   }
 
   .middle-content-image {
-    min-height: 12.5rem;
+    max-height: 350px;
+  }
+
+  .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-post-photo {
+    max-height: 350px;
+  }
+
+  .middle-content-image.small-image,
+  .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-post-photo.small-image {
+    max-height: 180px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo {
+    max-height: 500px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo.small-image {
+    max-height: 250px;
   }
 
   .middle-connect-image {
@@ -1080,7 +1216,7 @@
   }
 
   .post-container {
-    min-height: 40vh; /* Further adjust for very small screens */
+    min-height: 20vh;
   }
 
   .middle-profile-header {
@@ -1107,11 +1243,43 @@
   }
 
   .middle-main-image {
-    min-height: 12.5rem;
+    min-height: 120px;
+  }
+
+  .Full-comment-section-desktop-photo-container,
+  .Full-share-section-desktop-photo-container {
+    min-height: 120px;
   }
 
   .middle-content-image {
-    min-height: 12.5rem;
+    max-height: 300px;
+  }
+
+  .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-post-photo {
+    max-height: 300px;
+  }
+
+  .middle-content-image.small-image,
+  .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-post-photo.small-image {
+    max-height: 150px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo {
+    max-height: 400px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo.small-image {
+    max-height: 200px;
   }
 
   .middle-action-bar {
@@ -1201,7 +1369,7 @@
   }
 
   .post-container {
-    min-height: 35vh; /* Adjust for the smallest screens */
+    min-height: 15vh;
   }
 
   .middle-profile-pic {
@@ -1222,11 +1390,43 @@
   }
 
   .middle-main-image {
-    min-height: 12.5rem;
+    min-height: 100px;
+  }
+
+  .Full-comment-section-desktop-photo-container,
+  .Full-share-section-desktop-photo-container {
+    min-height: 100px;
   }
 
   .middle-content-image {
-    min-height: 12.5rem;
+    max-height: 250px;
+  }
+
+  .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-post-photo {
+    max-height: 250px;
+  }
+
+  .middle-content-image.small-image,
+  .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-post-photo.small-image {
+    max-height: 120px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo {
+    max-height: 350px;
+  }
+
+  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
+  .Full-comment-section-desktop-photo-container:has(> img:only-child)
+    .Full-comment-section-desktop-post-photo.small-image,
+  .Full-share-section-desktop-photo-container:has(> img:only-child)
+    .Full-share-section-desktop-post-photo.small-image {
+    max-height: 180px;
   }
 
   .middle-connect-image {
