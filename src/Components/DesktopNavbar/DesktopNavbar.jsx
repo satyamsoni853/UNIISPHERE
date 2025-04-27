@@ -2,8 +2,6 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { FaHome } from "react-icons/fa";
-import { GoHome } from "react-icons/go";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
@@ -22,7 +20,8 @@ import UserIcon from "./UserIcon.svg";
 import ClenderBlack from './ClenderBlackIcon.svg';
 import ClenderWhite from './ClenderWhiteIcon.svg';
 import Background from "../Background/Background";
-// import HomeBlack from './'
+import HomeBlack from './HomeBlackIcon.svg';
+import HomeWhite from './HomeWhiteIcon.svg';
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -510,21 +509,13 @@ function DesktopNavbar() {
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
-      {activeIcon === "home" ? (
-        <GoHome
-          className="desktop-icon"
-          onClick={() => handleIconClick("home")}
-          title="Home"
-          style={{ color: "white" }}
-        />
-      ) : (
-        <FaHome
-          className="desktop-icon"
-          onClick={() => handleIconClick("home")}
-          title="Home"
-          style={{ color: "black" }}
-        />
-      )}
+      <img
+        src={activeIcon === "home" ? HomeWhite : HomeBlack}
+        alt="Home"
+        className="desktop-icon"
+        onClick={() => handleIconClick("home")}
+        title="Home"
+      />
       <img
         src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
         alt="Network"
@@ -543,8 +534,8 @@ function DesktopNavbar() {
       />
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "network" || showDropdown ? NetworkWhite : NetworkBlack}
-          alt="Network"
+          src={activeIcon === "notifications" ? NotificationWhite : NotificationBlack}
+          alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
         />
@@ -594,6 +585,13 @@ function DesktopNavbar() {
           </div>
         )}
       </div>
+      <img
+        src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
+        alt="Calendar"
+        className="desktop-icon"
+        onClick={handleClenderClick}
+        title="Calendar"
+      />
 
       {/* User Dropdown */}
       <div className="user-icon-container">
@@ -693,9 +691,7 @@ function DesktopNavbar() {
 
       {/* Search Bar with Updated Interface */}
       <div className="desktop-search-container" ref={searchContainerRef}>
-       
         <div className="desktop-search-input-wrapper">
-          
           <input
             type="text"
             placeholder="Search for users, trends, events, news..."
@@ -708,10 +704,9 @@ function DesktopNavbar() {
         </div>
         {showResults && (
           <div className="desktop-search-results">
-             <Background/>
+            <Background />
             {/* Recent Searches Section with Search Results */}
             <div className="search-section">
-              
               <h4 className="search-section-title">Recent</h4>
               <div className="recent-search-list">
                 {isLoading ? (
