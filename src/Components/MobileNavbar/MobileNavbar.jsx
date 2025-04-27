@@ -1,13 +1,20 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback ,useRef} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Background from "../Background/Background";
 import "./MobileNavbar.css";
 import { FiSearch } from "react-icons/fi";
 import Messageicon from "./Messageicon.png";
 import Usericon from "./Usericon.png";
-
 import axios from "axios";
 import debounce from "lodash/debounce";
+
+
+// Icons
+
+import ProfileImage from "./ProfileImage.png";
+import Trendimage from "./trend.png";
+import { IoIosArrowForward } from "react-icons/io";
+
 
 function MobileNavbar() {
   // Search functionality state
@@ -20,6 +27,74 @@ function MobileNavbar() {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId") || "your-user-id-here";
   const token = localStorage.getItem("authToken");
+
+
+
+    const searchContainerRef = useRef(null); // Ref for the search container
+  
+
+// dummy dta
+
+const buttonscolor = ["#DB3E3933", "#DDC058", "#A17A97"];
+
+  // Search-related state
+  const [activeTab, setActiveTab] = useState("Trend");
+  const [recentSearches] = useState([
+    { id: 1, name: "Roshan", avatar: "https://via.placeholder.com/40" },
+    { id: 2, name: "John", avatar: "https://via.placeholder.com/40" },
+    { id: 3, name: "Anju", avatar: "https://via.placeholder.com/40" },
+    { id: 4, name: "Updesh", avatar: "https://via.placeholder.com/40" },
+    { id: 5, name: "Anup", avatar: "https://via.placeholder.com/40" },
+    { id: 6, name: "Uday", avatar: "https://via.placeholder.com/40" },
+  ]);
+  const [suggestedUsers] = useState([
+    {
+      id: 7,
+      name: "Rahul",
+      university: "UPES",
+      avatar: "https://via.placeholder.com/40",
+    },
+    {
+      id: 8,
+      name: "Satyam",
+      university: "IITM",
+      avatar: "https://via.placeholder.com/40",
+    },
+    {
+      id: 9,
+      name: "Jack",
+      university: "Delhi University",
+      avatar: "https://via.placeholder.com/40",
+    },
+  ]);
+  const [trends] = useState([
+    {
+      id: 1,
+      title: "New Youth, New Power",
+      description:
+        "eufblueeblejdfrbr, irwe. hpleufblueeblejdfrbr ygbh hbd yfgqieufbluejd. L",
+      image: "https://via.placeholder.com/60x40",
+      category: "E-Books",
+    },
+  ]);
+  const [events] = useState([]);
+  const [news] = useState([]);
+
+  // Combine filtered recent searches with search results
+  const combinedRecentResults = searchQuery
+    ? [
+        ...filteredRecentSearches,
+        ...searchResults.filter(
+          (user) =>
+            !filteredRecentSearches.some((search) => search.id === user.id)
+        ),
+      ]
+    : recentSearches;
+
+
+
+
+
 
   // Fetch profiles by username
   const fetchProfiles = useCallback(async (username = "") => {
@@ -134,40 +209,167 @@ function MobileNavbar() {
             />
           </div>
 
-          {/* Search Results Dropdown */}
-          {showResults && (
-            <div className="mobile-search-results">
-              {isLoading ? (
-                <div className="mobile-search-loading">Searching...</div>
-              ) : error ? (
-                <div className="mobile-search-error">{error}</div>
-              ) : searchResults.length > 0 ? (
-                searchResults.map((user) => (
-                  <div
-                    key={user.id}
-                    className="mobile-search-result-item"
-                    onClick={() => handleProfileClick(user.id)}
-                    onKeyDown={(e) => handleKeyDown(e, user.id)}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <img
-                      src={user.profilePicture || Usericon}
-                      alt={user.username}
-                      className="mobile-search-result-avatar"
-                    />
-                    <div className="mobile-search-result-info">
-                      <span className="mobile-search-result-name">
-                        {user.username}
-                      </span>
-                    </div>
+             {/* Search Bar with Updated Interface */}
+      <div className="mobile-search-container" >
+         
+        {showResults && (
+          <div className="mobile-search-results">
+           
+            {/* Recent Searches Section with Search Results */}
+            <div className="mobile-search-section">
+              <h4 className="mobile-search-section-title">Recent</h4>
+              <div className="mobile-recent-search-list">
+                {isLoading ? (
+                  <div className="mobile-search-loading">Searching...</div>
+                ) : error ? (
+                  <div className="mobile-search-error">{error}</div>
+                ) : combinedRecentResults.length > 0 ? (
+                  <div className="mobile-search-recents-list">
+                    {combinedRecentResults.map((item) => (
+                      <div
+                        key={item.id}
+                        className="mobile-recent-search-item"
+                        onClick={() => handleProfileClick(item.id)}
+                      >
+                        <img
+                          src={
+                            ProfileImage ||
+                            item.avatar ||
+                            item.profilePicture ||
+                            UserIcon
+                          }
+                          alt={item.name || item.username}
+                          className="mobile-recent-search-avatar"
+                        />
+                        <span className="mobile-recent-search-name">
+                          {item.name || item.username}
+                        </span>
+                      </div>
+                    ))}
+                    <IoIosArrowForward className="mobile-mobile-recent-search-arrow"/>
                   </div>
-                ))
+                ) : (
+                  <div className="mobile-mobile-search-no-results">
+                    No users found
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Suggested Users Section */}
+            <div className="mobile-search-section">
+              <h4 className="mobile-search-section-title">Suggested </h4>
+              {suggestedUsers.map((user) => (
+                <div
+                  key={user.id}
+                  className="mobile-suggested-user-item"
+                  onClick={() => handleProfileClick(user.id)}
+                >
+                  <img
+                    src={ProfileImage}
+                    alt={user.name}
+                    className="mobile-suggested-user-avatar"
+                  />
+                  <div className="mobile-suggested-user-info">
+                    <span className="mobile-suggested-user-name">{user.name}</span>
+                    <p className="mobile-suggested-user-university">
+                      {user.university}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Tabs for Trend/Event/News */}
+            <div className="mobile-search-section">
+             <div className="mobile-search-title-wrapper">
+             <h4 className="mobile-search-section-title2">
+                What you should put your eyes & thoughts on
+              </h4>
+             </div>
+              <div className="mobile-search-tabs">
+                {["Trend", "Event", "News"].map((tab, index) => (
+                  <button
+                    style={{
+                      backgroundColor:
+                        buttonscolor[index % buttonscolor.length],
+                    }}
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`mobile-search-tab-button ${
+                      activeTab === tab ? "active" : ""
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+
+              {/* Content based on active tab */}
+              {activeTab === "Trend" ? (
+                <div className="mobile-trend-results">
+                  {trends.map((trend) => (
+                    <div key={trend.id} className="mobile-trend-item">
+                      <img
+                        src={Trendimage}
+                        alt={trend.title}
+                        className="mobile-trend-image"
+                      />
+                      <div className="mobile-trend-info">
+                        <p className="mobile-trend-title">{trend.title}</p>
+                        <p className="mobile-trend-description">{trend.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : activeTab === "Event" ? (
+                <div className="mobile-event-results">
+                  {events.length > 0 ? (
+                    events.map((event) => (
+                      <div key={event.id} className="mobile-event-item">
+                        <img
+                          src={event.image || Trendimage}
+                          alt={event.title}
+                          className="mobile-event-image"
+                        />
+                        <div className="mobile-event-info">
+                          <p className="mobile-event-title">{event.title}</p>
+                          <p className="mobile-event-description">
+                            {event.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="mobile-no-results">No events found</p>
+                  )}
+                </div>
               ) : (
-                <div className="mobile-search-no-results">No users found</div>
+                <div className="mobile-news-results">
+                  {news.length > 0 ? (
+                    news.map((item) => (
+                      <div key={item.id} className="mobile-news-item">
+                        <img
+                          src={item.image || Trendimage}
+                          alt={item.title}
+                          className="mobile-news-image"
+                        />
+                        <div className="mobile-news-info">
+                          <p className="mobile-news-title">{item.title}</p>
+                          <p className="mobile-news-description">{item.description}</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="mobile-no-results">No news found</p>
+                  )}
+                </div>
               )}
             </div>
-          )}
+          </div>
+        )}
+      </div>
+
         </div>
 
         {/* Message Icon with Unread Badge */}

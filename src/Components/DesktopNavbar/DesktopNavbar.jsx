@@ -19,7 +19,8 @@ import ProfileImage from "./ProfileImage.png";
 import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
-import { IoIosArrowForward } from "react-icons/io";
+import ClenderBlack from './ClenderBlackIcon.svg';
+import ClenderWhite from './ClenderWhiteIcon.svg';
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -355,9 +356,19 @@ function DesktopNavbar() {
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
     setIsUserDropdownOpen(false);
+    setShowDropdown(false);
     setActiveIcon((prev) =>
       prev === "notifications" ? null : "notifications"
     );
+  };
+
+  // Handle clender icon click (placeholder)
+  const handleClenderClick = () => {
+    setIsUserDropdownOpen(false);
+    setShowDropdown(false);
+    setShowNotificationDropdown(false);
+    setActiveIcon((prev) => (prev === "clender" ? null : "clender"));
+    // Add clender functionality here, e.g., navigate("/calendar") or open a calendar modal
   };
 
   // Navigation icon handlers
@@ -530,12 +541,8 @@ function DesktopNavbar() {
       />
       <div className="notification-icon-container">
         <img
-          src={
-            activeIcon === "notifications"
-              ? NotificationWhite
-              : NotificationBlack
-          }
-          alt="Notifications"
+          src={activeIcon === "network" || showDropdown ? NetworkWhite : NetworkBlack}
+          alt="Network"
           className="desktop-icon"
           onClick={handleNotificationClick}
         />
@@ -706,30 +713,27 @@ function DesktopNavbar() {
                 ) : error ? (
                   <div className="desktop-search-error">{error}</div>
                 ) : combinedRecentResults.length > 0 ? (
-                  <div className="desktop-search-recents-list">
-                    {combinedRecentResults.map((item) => (
-                      <div
-                        key={item.id}
-                        className="recent-search-item"
-                        onClick={() => handleProfileClick(item.id)}
-                      >
-                        <img
-                          src={
-                            ProfileImage ||
-                            item.avatar ||
-                            item.profilePicture ||
-                            UserIcon
-                          }
-                          alt={item.name || item.username}
-                          className="recent-search-avatar"
-                        />
-                        <span className="recent-search-name">
-                          {item.name || item.username}
-                        </span>
-                      </div>
-                    ))}
-                    <IoIosArrowForward className="desktop-recent-search-arrow"/>
-                  </div>
+                  combinedRecentResults.map((item) => (
+                    <div
+                      key={item.id}
+                      className="recent-search-item"
+                      onClick={() => handleProfileClick(item.id)}
+                    >
+                      <img
+                        src={
+                          ProfileImage ||
+                          item.avatar ||
+                          item.profilePicture ||
+                          UserIcon
+                        }
+                        alt={item.name || item.username}
+                        className="recent-search-avatar"
+                      />
+                      <span className="recent-search-name">
+                        {item.name || item.username}
+                      </span>
+                    </div>
+                  ))
                 ) : (
                   <div className="desktop-search-no-results">
                     No users found
@@ -740,7 +744,7 @@ function DesktopNavbar() {
 
             {/* Suggested Users Section */}
             <div className="search-section">
-              <h4 className="search-section-title">Suggested </h4>
+              <h4 className="search-section-title">Suggested</h4>
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
@@ -785,7 +789,6 @@ function DesktopNavbar() {
                 ))}
               </div>
 
-              {/* Content based on active tab */}
               {activeTab === "Trend" ? (
                 <div className="trend-results">
                   {trends.map((trend) => (
@@ -808,7 +811,9 @@ function DesktopNavbar() {
                     events.map((event) => (
                       <div key={event.id} className="event-item">
                         <img
-                          src={event.image || Trendimage}
+                          src={
+                            event.image || "https://via.placeholder.com/60x40"
+                          }
                           alt={event.title}
                           className="event-image"
                         />
@@ -830,7 +835,9 @@ function DesktopNavbar() {
                     news.map((item) => (
                       <div key={item.id} className="news-item">
                         <img
-                          src={item.image || Trendimage}
+                          src={
+                            item.image || "https://via.placeholder.com/60x40"
+                          }
                           alt={item.title}
                           className="news-image"
                         />
