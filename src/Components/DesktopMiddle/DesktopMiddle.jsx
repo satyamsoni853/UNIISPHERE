@@ -7,15 +7,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./DesktopMiddle.css";
 import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import MobileFooter from "../Mobilefooter/MobileFooter";
-// Replace these imports with your actual images/paths
 import Commenticonsvg from "./Commenticon.svg";
 import LikeIcon from "./Like.svg";
 import ConnectMidlleimage from "./middleconnectimage.png";
 import Profileimage from "./Profile-image.png";
 import ShareIcon from "./Share.svg";
 import Threedot from "./Threedot.svg";
-
-// Share box icons
 import facebookIcon from "./Facebook.svg";
 import instaIcon from "./insta.svg";
 import linkIcon from "./Link.svg";
@@ -31,19 +28,40 @@ function DesktopMiddle() {
   const [activeSharePostIndex, setActiveSharePostIndex] = useState(null);
   const [connections, setConnections] = useState([]);
   const [shareError, setShareError] = useState(null);
-  const [activeOptionsPostIndex, setActiveOptionsPostIndex] = useState(null); // Track which post's options are shown
+  const [activeOptionsPostIndex, setActiveOptionsPostIndex] = useState(null);
   const [connectionStatuses, setConnectionStatuses] = useState({});
   const optionsRef = useRef(null);
+  const commentModalRef = useRef(null); // Ref for comment modal
+  const shareModalRef = useRef(null); // Ref for share modal
 
+  // Handle clicks outside modals
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Close options dropdown
       if (optionsRef.current && !optionsRef.current.contains(event.target)) {
-        setActiveOptionsPostIndex(null); // Close dropdown
+        setActiveOptionsPostIndex(null);
+      }
+      // Close comment modal
+      if (
+        showComment &&
+        commentModalRef.current &&
+        !commentModalRef.current.contains(event.target)
+      ) {
+        handleCloseCommentModal();
+      }
+      // Close share modal
+      if (
+        showShare &&
+        shareModalRef.current &&
+        !shareModalRef.current.contains(event.target)
+      ) {
+        handleCloseShareModal();
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [showComment, showShare]);
 
   const [posts, setPosts] = useState([]);
   const [imageLoading, setImageLoading] = useState(true);
@@ -167,7 +185,6 @@ function DesktopMiddle() {
         fetchSentConnectionRequests(authData.token),
       ]);
 
-      // console.log("Feed API response:", feedResponse.data);
       setConnectionStatuses(sentRequests);
 
       if (feedResponse.data.userId) {
@@ -272,7 +289,6 @@ function DesktopMiddle() {
       return;
     }
 
-    // Store original state for rollback if needed
     const originalPost = { ...post };
 
     try {
@@ -280,7 +296,6 @@ function DesktopMiddle() {
         ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
         : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
 
-      // Optimistically update UI
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
           i === index
@@ -305,14 +320,11 @@ function DesktopMiddle() {
         }
       );
 
-      // If unlike was successful, response will have a message
-      // If like was successful, response will have the like object
       const isSuccessful = post.isLiked
         ? response.data.message === "Post unliked successfully"
         : !!response.data;
 
       if (!isSuccessful) {
-        // Revert the optimistic update if the operation wasn't successful
         setPosts((prevPosts) =>
           prevPosts.map((p, i) => (i === index ? originalPost : p))
         );
@@ -324,7 +336,6 @@ function DesktopMiddle() {
         error.response?.data || error.message
       );
 
-      // Revert the optimistic update
       setPosts((prevPosts) =>
         prevPosts.map((p, i) => (i === index ? originalPost : p))
       );
@@ -528,8 +539,6 @@ function DesktopMiddle() {
     }
   };
 
-  // Toggle options dropdown for a specific post
-
   const handleOptionsClick = (index, isSelf) => {
     if (isSelf) {
       setActiveOptionsPostIndex(
@@ -649,7 +658,7 @@ function DesktopMiddle() {
                 <div className="middle-action-bar">
                   {isSelf ? (
                     <div className="connection-status-message">
-                      You cannot send a connection request to yourself.
+                       Cannot Send a Connection  to Yourself.
                     </div>
                   ) : isConnected ? (
                     <div className="connection-status-message">
@@ -724,7 +733,10 @@ function DesktopMiddle() {
 
       {showComment && activeCommentPostIndex !== null && (
         <div className="Comment-box-container">
-          <div className="Full-comment-section-desktop-main-container">
+          <div
+            className="Full-comment-section-desktop-main-container"
+            ref={commentModalRef} // Attach ref to comment modal
+          >
             <div className="Full-comment-section-desktop-left-section">
               <div className="Full-comment-section-desktop-user-profile-header">
                 <div className="Full-comment-section-profile-image-and-heading">
@@ -886,14 +898,17 @@ function DesktopMiddle() {
                   </div>
                 )}
               </div>
-              <div className="Full-comment-section-desktop-comment-input-and-image"  style={{
-                    position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: "100%",
-                    padding: "10px",
-                    boxSizing: "border-box",
-                  }}>
+              <div
+                className="Full-comment-section-desktop-comment-input-and-image"
+                style={{
+                  position: "absolute",
+                  bottom: "0",
+                  left: "0",
+                  width: "100%",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                }}
+              >
                 <img
                   src={userProfile?.profilePicture || Profileimage}
                   className="Full-comment-section-desktop-commentPerson-image"
@@ -908,9 +923,7 @@ function DesktopMiddle() {
                     e.key === "Enter" &&
                     handleCommentSubmit(activeCommentPostIndex)
                   }
-                 
                 />
-
                 <IoSendOutline
                   className="comment-send-icon"
                   onClick={() => handleCommentSubmit(activeCommentPostIndex)}
@@ -933,7 +946,7 @@ function DesktopMiddle() {
       )}
 
       {showShare && activeSharePostIndex !== null && (
-        <div className="Full-share-section-desktop-main-container">
+        <div className="Full-share-section-desktop-main-container" ref={shareModalRef}>
           <div className="Full-share-section-desktop-left-section">
             <div className="Full-share-section-desktop-user-profile-header">
               <div className="Full-share-section-desktop-top-image-and-names">

@@ -1,10 +1,12 @@
+
 import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { FaHome } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
-import { Link, useNavigate } from "react-router-dom";
+import { IoHomeOutline } from "react-icons/io5";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./DesktopNavbar.css";
 
 // Icons
@@ -19,7 +21,11 @@ import ProfileImage from "./ProfileImage.png";
 import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
+ 
 import { IoIosArrowForward } from "react-icons/io";
+ 
+import ClenderBlack from './ClenderBlackIcon.svg';
+ 
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -34,7 +40,7 @@ function DesktopNavbar() {
   const [showPostDetails, setShowPostDetails] = useState(false);
   const [showAddMore, setShowAddMore] = useState(true);
   const [caption, setCaption] = useState("");
-  const [location, setLocation] = useState("");
+  const [postLocation, setPostLocation] = useState(""); // Renamed to avoid conflict
   const [hideLikes, setHideLikes] = useState(false);
   const [disableComments, setDisableComments] = useState(false);
   const [mediaList, setMediaList] = useState([]);
@@ -46,8 +52,10 @@ function DesktopNavbar() {
   const [loading, setLoading] = useState(true);
   const [allUsersResponse, setAllUsersResponse] = useState(null);
   const inputRef = useRef(null);
-  const searchContainerRef = useRef(null); // Ref for the search container
+  const searchContainerRef = useRef(null);
+  const uploadContainerRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation(); // From useLocation
 
   // Notification state
   const [showNotificationDropdown, setShowNotificationDropdown] =
@@ -118,14 +126,48 @@ function DesktopNavbar() {
   const [events] = useState([]);
   const [news] = useState([]);
 
-  // Click outside handler to close the dropdown
+  // Set active icon based on current path
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === "/view") {
+      setActiveIcon("home");
+      setShowDropdown(false);
+      setShowNotificationDropdown(false);
+      setShowUploadSection(false);
+    } else if (
+      path.startsWith("/NetworkPage") ||
+      path.startsWith("/HumanLib") ||
+      path.startsWith("/blog")
+    ) {
+      setActiveIcon("network");
+      setShowDropdown(true);
+      setShowNotificationDropdown(false);
+      setShowUploadSection(false);
+    } else {
+      setActiveIcon(null);
+      setShowDropdown(false);
+      setShowNotificationDropdown(false);
+      setShowUploadSection(false);
+    }
+  }, [location.pathname]);
+
+  // Click outside handler for search and upload section
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Close search results
       if (
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target)
       ) {
         setShowResults(false);
+      }
+      // Close upload section
+      if (
+        showUploadSection &&
+        uploadContainerRef.current &&
+        !uploadContainerRef.current.contains(event.target)
+      ) {
+        handleCloseUpload();
       }
     };
 
@@ -133,13 +175,16 @@ function DesktopNavbar() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [showUploadSection]);
 
   // Handle keydown events (e.g., Esc to close)
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         setShowResults(false);
+        if (showUploadSection) {
+          handleCloseUpload();
+        }
       }
     };
 
@@ -147,7 +192,7 @@ function DesktopNavbar() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [showUploadSection]);
 
   // Fetch connections from the API
   useEffect(() => {
@@ -326,6 +371,8 @@ function DesktopNavbar() {
   const handleUserIconClick = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
     setShowNotificationDropdown(false);
+    setShowDropdown(false);
+    setActiveIcon(null);
   };
 
   const handleSignOut = () => {
@@ -347,27 +394,58 @@ function DesktopNavbar() {
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
     setIsUserDropdownOpen(false);
+ 
+    setActiveIcon((prev) =>
+      prev === "notifications" ? null : "notifications"
+    );
+ 
+    setShowDropdown(false);
     setActiveIcon((prev) =>
       prev === "notifications" ? null : "notifications"
     );
   };
 
+  // Handle clender icon click (placeholder)
+  const handleClenderClick = () => {
+    setIsUserDropdownOpen(false);
+    setShowDropdown(false);
+    setShowNotificationDropdown(false);
+    setActiveIcon((prev) => (prev === "clender" ? null : "clender"));
+    // Add clender functionality here, e.g., navigate("/calendar") or open a calendar modal
+ 
+  };
+
   // Navigation icon handlers
   const handleIconClick = (iconName) => {
-    setActiveIcon(activeIcon === iconName ? null : iconName);
-    setShowNotificationDropdown(false);
+    setActiveIcon((prev) => (prev === iconName ? null : iconName));
+    setIsUserDropdownOpen(false);
+
     switch (iconName) {
       case "home":
         navigate("/view");
+        setShowDropdown(false);
+        setShowNotificationDropdown(false);
+        setShowUploadSection(false);
         break;
       case "network":
-        // navigate("/network");
+        setShowDropdown((prev) => !prev);
+        setShowNotificationDropdown(false);
+        setShowUploadSection(false);
+        // Optionally navigate to a default network page
+        // navigate("/NetworkPage");
         break;
       case "add":
-        setShowUploadSection(true);
+        setShowUploadSection((prev) => !prev);
+        setShowDropdown(false);
+        setShowNotificationDropdown(false);
         break;
       case "notifications":
         handleNotificationClick();
+        setShowUploadSection(false);
+        break;
+      case "clender":
+        handleClenderClick();
+        setShowUploadSection(false);
         break;
       default:
         break;
@@ -426,7 +504,7 @@ function DesktopNavbar() {
       formData.append("content", caption);
       formData.append("userId", userId);
       formData.append("visibility", hideLikes ? "private" : "public");
-      formData.append("location", location || "");
+      formData.append("location", postLocation || "");
       formData.append("tags", "");
       const postResponse = await axios.post(
         "https://uniisphere-1.onrender.com/posts",
@@ -436,12 +514,13 @@ function DesktopNavbar() {
       console.log("Post created:", postResponse.data);
       setMediaList([]);
       setCaption("");
-      setLocation("");
+      setPostLocation("");
       setHideLikes(false);
       setDisableComments(false);
       setShowPostDetails(false);
       setShowAddMore(true);
       setShowUploadSection(false);
+      setActiveIcon(null);
     } catch (error) {
       console.error("Error creating post:", error);
       setError(error.message || "Failed to create post. Please try again.");
@@ -451,15 +530,16 @@ function DesktopNavbar() {
   };
 
   const handleCloseUpload = () => {
-    kérsetShowUploadSection(false);
+    setShowUploadSection(false);
     setShowPostDetails(false);
     setShowAddMore(true);
     setMediaList([]);
     setCaption("");
-    setLocation("");
+    setPostLocation("");
     setHideLikes(false);
     setDisableComments(false);
     setError(null);
+    setActiveIcon(null);
   };
 
   useEffect(() => {
@@ -490,7 +570,7 @@ function DesktopNavbar() {
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
       {activeIcon === "home" ? (
-        <GoHome
+        <IoHomeOutline
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
@@ -504,32 +584,40 @@ function DesktopNavbar() {
           style={{ color: "black" }}
         />
       )}
+
       <img
-        src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
-        alt="Network"
+        src={activeIcon === "notifications" || showNotificationDropdown ? NotificationWhite : NotificationBlack}
+        alt="Notifications"
         className="desktop-icon"
-        onClick={() => {
-          setShowDropdown((prev) => !prev);
-          setShowNotificationDropdown(false);
-          handleIconClick("network");
-        }}
+        onClick={() => handleIconClick("notifications")}
       />
+
       <img
-        src={activeIcon === "add" ? AddWhite : AddBlack}
+        src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
+        alt="Clender"
+        className="desktop-icon"
+        onClick={() => handleIconClick("clender")}
+      />
+
+      <img
+        src={activeIcon === "add" || showUploadSection ? AddWhite : AddBlack}
         alt="Add"
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
+
       <div className="notification-icon-container">
         <img
+ 
           src={
             activeIcon === "notifications"
               ? NotificationWhite
               : NotificationBlack
           }
           alt="Notifications"
+ 
           className="desktop-icon"
-          onClick={handleNotificationClick}
+          onClick={() => handleIconClick("network")}
         />
         {showNotificationDropdown && (
           <div className="notification-dropdown">
@@ -689,16 +777,6 @@ function DesktopNavbar() {
         </div>
         {showResults && (
           <div className="desktop-search-results">
-            {/* Decorative Circles
-            <div className="decorative-circles">
-              <div className="circle circle-1"></div>
-              <div className="circle circle-2"></div>
-              <div className="circle circle-3"></div>
-              <div className="circle circle-4"></div>
-              <div className="circle circle-5"></div>
-            </div> */}
-
-            {/* Recent Searches Section with Search Results */}
             <div className="search-section">
               <h4 className="search-section-title">Recent</h4>
               <div className="recent-search-list">
@@ -707,6 +785,7 @@ function DesktopNavbar() {
                 ) : error ? (
                   <div className="desktop-search-error">{error}</div>
                 ) : combinedRecentResults.length > 0 ? (
+ 
                   <div className="desktop-search-recents-list">
                     {combinedRecentResults.map((item) => (
                       <div
@@ -731,6 +810,29 @@ function DesktopNavbar() {
                     ))}
                     <IoIosArrowForward className="desktop-recent-search-arrow"/>
                   </div>
+ 
+                 { combinedRecentResults.map((item) => (
+                    <div
+                      key={item.id}
+                      className="recent-search-item"
+                      onClick={() => handleProfileClick(item.id)}
+                    >
+                      <img
+                        src={
+                          ProfileImage ||
+                          item.avatar ||
+                          item.profilePicture ||
+                          UserIcon
+                        }
+                        alt={item.name || item.username}
+                        className="recent-search-avatar"
+                      />
+                      <span className="recent-search-name">
+                        {item.name || item.username}
+                      </span>
+                    </div>
+                  ))
+ 
                 ) : (
                   <div className="desktop-search-no-results">
                     No users found
@@ -739,9 +841,12 @@ function DesktopNavbar() {
               </div>
             </div>
 
-            {/* Suggested Users Section */}
             <div className="search-section">
+ 
               <h4 className="search-section-title">Suggested </h4>
+ 
+              <h4 className="search-section-title">Suggested</h4>
+> 
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
@@ -763,7 +868,6 @@ function DesktopNavbar() {
               ))}
             </div>
 
-            {/* Tabs for Trend/Event/News */}
             <div className="search-section">
               <h4 className="search-section-title search-section-title2">
                 What you should put your eyes & thoughts on
@@ -786,7 +890,7 @@ function DesktopNavbar() {
                 ))}
               </div>
 
-              {/* Content based on active tab */}
+ 
               {activeTab === "Trend" ? (
                 <div className="trend-results">
                   {trends.map((trend) => (
@@ -809,7 +913,11 @@ function DesktopNavbar() {
                     events.map((event) => (
                       <div key={event.id} className="event-item">
                         <img
-                          src={event.image || Trendimage}
+ 
+                          src={
+                            event.image || "https://via.placeholder.com/60x40"
+                          }
+
                           alt={event.title}
                           className="event-image"
                         />
@@ -831,7 +939,9 @@ function DesktopNavbar() {
                     news.map((item) => (
                       <div key={item.id} className="news-item">
                         <img
+ 
                           src={item.image || Trendimage}
+ 
                           alt={item.title}
                           className="news-image"
                         />
@@ -860,9 +970,10 @@ function DesktopNavbar() {
 
       {/* Upload Section Overlay */}
       {showUploadSection && (
-        <div className="upload-overlay" onClick={handleCloseUpload}>
+        <div className="upload-overlay">
           <div
             className="upload-container"
+            ref={uploadContainerRef}
             onClick={(e) => e.stopPropagation()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
