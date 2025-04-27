@@ -17,8 +17,8 @@ import ProfileImage from "./ProfileImage.png";
 import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
-import ClenderBlack from "./ClenderBlackIcon.svg";
-import ClenderWhite from "./ClenderWhiteIcon.svg";
+import ClenderBlack from './ClenderBlackIcon.svg';
+import ClenderWhite from './ClenderWhiteIcon.svg';
 import Background from "../Background/Background";
 import HomeBlack from './HomeBlackIcon.svg';
 import HomeWhite from './HomeWhiteIcon.svg';
@@ -229,9 +229,7 @@ function DesktopNavbar() {
     setError(null);
     try {
       const response = await axios.get(
-        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(
-          username
-        )}`
+        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
       );
       setSearchResults(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
@@ -508,8 +506,6 @@ function DesktopNavbar() {
       ]
     : recentSearches;
 
-  console.log("Combined Recent Results:", combinedRecentResults);
-
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
@@ -538,8 +534,8 @@ function DesktopNavbar() {
       />
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "network" || showDropdown ? NetworkWhite : NetworkBlack}
-          alt="Network"
+          src={activeIcon === "notifications" ? NotificationWhite : NotificationBlack}
+          alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
         />
@@ -725,11 +721,18 @@ function DesktopNavbar() {
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={item.avatar}
-                        alt={item.name}
+                        src={
+                          ProfileImage ||
+                          item.avatar ||
+                          item.profilePicture ||
+                          UserIcon
+                        }
+                        alt={item.name || item.username}
                         className="recent-search-avatar"
                       />
-                      <span className="recent-search-name">{item.name}</span>
+                      <span className="recent-search-name">
+                        {item.name || item.username}
+                      </span>
                     </div>
                   ))
                 ) : (
