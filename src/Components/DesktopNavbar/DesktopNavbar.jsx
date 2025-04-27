@@ -19,8 +19,8 @@ import ProfileImage from "./ProfileImage.png";
 import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
-import ClenderBlack from './ClenderBlackIcon.svg';
-import ClenderWhite from './ClenderWhiteIcon.svg';
+import ClenderBlack from "./ClenderBlackIcon.svg";
+import ClenderWhite from "./ClenderWhiteIcon.svg";
 import Background from "../Background/Background";
 
 function DesktopNavbar() {
@@ -229,7 +229,9 @@ function DesktopNavbar() {
     setError(null);
     try {
       const response = await axios.get(
-        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
+        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(
+          username
+        )}`
       );
       setSearchResults(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
@@ -506,6 +508,8 @@ function DesktopNavbar() {
       ]
     : recentSearches;
 
+  console.log("Combined Recent Results:", combinedRecentResults);
+
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
@@ -542,7 +546,11 @@ function DesktopNavbar() {
       />
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "network" || showDropdown ? NetworkWhite : NetworkBlack}
+          src={
+            activeIcon === "network" || showDropdown
+              ? NetworkWhite
+              : NetworkBlack
+          }
           alt="Network"
           className="desktop-icon"
           onClick={handleNotificationClick}
@@ -692,9 +700,7 @@ function DesktopNavbar() {
 
       {/* Search Bar with Updated Interface */}
       <div className="desktop-search-container" ref={searchContainerRef}>
-       
         <div className="desktop-search-input-wrapper">
-          
           <input
             type="text"
             placeholder="Search for users, trends, events, news..."
@@ -707,10 +713,9 @@ function DesktopNavbar() {
         </div>
         {showResults && (
           <div className="desktop-search-results">
-             <Background/>
+            <Background />
             {/* Recent Searches Section with Search Results */}
             <div className="search-section">
-              
               <h4 className="search-section-title">Recent</h4>
               <div className="recent-search-list">
                 {isLoading ? (
@@ -725,18 +730,11 @@ function DesktopNavbar() {
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={
-                          ProfileImage ||
-                          item.avatar ||
-                          item.profilePicture ||
-                          UserIcon
-                        }
-                        alt={item.name || item.username}
+                        src={item.avatar}
+                        alt={item.name}
                         className="recent-search-avatar"
                       />
-                      <span className="recent-search-name">
-                        {item.name || item.username}
-                      </span>
+                      <span className="recent-search-name">{item.name}</span>
                     </div>
                   ))
                 ) : (
