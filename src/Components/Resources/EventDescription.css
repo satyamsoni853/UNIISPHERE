@@ -77,6 +77,9 @@
     display: none;
   }
    
+
+}
+@media (max-width:1080px){
   .event-description-similar-card-list{
     width: 120%;
     gap: 15px;
