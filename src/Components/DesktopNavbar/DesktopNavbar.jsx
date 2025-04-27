@@ -22,6 +22,7 @@ import UserIcon from "./UserIcon.svg";
 import ClenderBlack from './ClenderBlackIcon.svg';
 import ClenderWhite from './ClenderWhiteIcon.svg';
 import Background from "../Background/Background";
+// import HomeBlack from './'
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);

@@ -7,6 +7,10 @@ import {
   IoArrowBackCircleOutline,
   IoChevronBack,
 } from "react-icons/io5";
+import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
+import MobileFooter from "../Mobilefooter/MobileFooter";
+import MobileNavbar from "../MobileNavbar/MobileNavbar";
+import Background from "../Background/Background";
 const Books = () => {
   const explorationBooks = [
     { title: "E-Books", author: "George Keeley", price: 890, rent: 200 },
@@ -141,6 +145,8 @@ const Books = () => {
   };
   return (
     <>
+    <DesktopNavbar/>
+    <Background/>
       <div className="main-books-main-wrapper">
         <h1 className="main-books-main-title">
           All you need at one place to be successful in your Student Life.
