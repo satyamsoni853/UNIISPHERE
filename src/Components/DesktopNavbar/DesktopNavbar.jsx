@@ -18,10 +18,14 @@ import NetworkWhite from "./NetworkWhiteIcon.svg";
 import NotificationBlack from "./NotificationBlackIcon.svg";
 import NotificationWhite from "./NotificationWhiteIcon.svg";
 import ProfileImage from "./ProfileImage.png";
+import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
+ 
+import { IoIosArrowForward } from "react-icons/io";
+ 
 import ClenderBlack from './ClenderBlackIcon.svg';
-import ClenderWhite from './ClenderWhiteIcon.svg';
+ 
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -54,7 +58,8 @@ function DesktopNavbar() {
   const location = useLocation(); // From useLocation
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] =
+    useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
     {
@@ -76,6 +81,7 @@ function DesktopNavbar() {
       color: "notification-border-red-400",
     },
   ]);
+  const buttonscolor = ["#DB3E3933", "#DDC058", "#A17A97"];
 
   // Search-related state
   const [activeTab, setActiveTab] = useState("Trend");
@@ -388,6 +394,11 @@ function DesktopNavbar() {
   const handleNotificationClick = () => {
     setShowNotificationDropdown(!showNotificationDropdown);
     setIsUserDropdownOpen(false);
+ 
+    setActiveIcon((prev) =>
+      prev === "notifications" ? null : "notifications"
+    );
+ 
     setShowDropdown(false);
     setActiveIcon((prev) =>
       prev === "notifications" ? null : "notifications"
@@ -401,6 +412,7 @@ function DesktopNavbar() {
     setShowNotificationDropdown(false);
     setActiveIcon((prev) => (prev === "clender" ? null : "clender"));
     // Add clender functionality here, e.g., navigate("/calendar") or open a calendar modal
+ 
   };
 
   // Navigation icon handlers
@@ -596,8 +608,14 @@ function DesktopNavbar() {
 
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "network" || showDropdown ? NetworkWhite : NetworkBlack}
-          alt="Network"
+ 
+          src={
+            activeIcon === "notifications"
+              ? NotificationWhite
+              : NotificationBlack
+          }
+          alt="Notifications"
+ 
           className="desktop-icon"
           onClick={() => handleIconClick("network")}
         />
@@ -767,7 +785,33 @@ function DesktopNavbar() {
                 ) : error ? (
                   <div className="desktop-search-error">{error}</div>
                 ) : combinedRecentResults.length > 0 ? (
-                  combinedRecentResults.map((item) => (
+ 
+                  <div className="desktop-search-recents-list">
+                    {combinedRecentResults.map((item) => (
+                      <div
+                        key={item.id}
+                        className="recent-search-item"
+                        onClick={() => handleProfileClick(item.id)}
+                      >
+                        <img
+                          src={
+                            ProfileImage ||
+                            item.avatar ||
+                            item.profilePicture ||
+                            UserIcon
+                          }
+                          alt={item.name || item.username}
+                          className="recent-search-avatar"
+                        />
+                        <span className="recent-search-name">
+                          {item.name || item.username}
+                        </span>
+                      </div>
+                    ))}
+                    <IoIosArrowForward className="desktop-recent-search-arrow"/>
+                  </div>
+ 
+                 { combinedRecentResults.map((item) => (
                     <div
                       key={item.id}
                       className="recent-search-item"
@@ -788,6 +832,7 @@ function DesktopNavbar() {
                       </span>
                     </div>
                   ))
+ 
                 ) : (
                   <div className="desktop-search-no-results">
                     No users found
@@ -797,7 +842,11 @@ function DesktopNavbar() {
             </div>
 
             <div className="search-section">
+ 
+              <h4 className="search-section-title">Suggested </h4>
+ 
               <h4 className="search-section-title">Suggested</h4>
+> 
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
@@ -824,8 +873,12 @@ function DesktopNavbar() {
                 What you should put your eyes & thoughts on
               </h4>
               <div className="search-tabs">
-                {["Trend", "Event", "News"].map((tab) => (
+                {["Trend", "Event", "News"].map((tab, index) => (
                   <button
+                    style={{
+                      backgroundColor:
+                        buttonscolor[index % buttonscolor.length],
+                    }}
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`search-tab-button ${
@@ -837,19 +890,19 @@ function DesktopNavbar() {
                 ))}
               </div>
 
+ 
               {activeTab === "Trend" ? (
                 <div className="trend-results">
                   {trends.map((trend) => (
                     <div key={trend.id} className="trend-item">
                       <img
-                        src={trend.image}
+                        src={Trendimage}
                         alt={trend.title}
                         className="trend-image"
                       />
                       <div className="trend-info">
                         <p className="trend-title">{trend.title}</p>
                         <p className="trend-description">{trend.description}</p>
-                        <p className="trend-category">{trend.category}</p>
                       </div>
                     </div>
                   ))}
@@ -860,9 +913,11 @@ function DesktopNavbar() {
                     events.map((event) => (
                       <div key={event.id} className="event-item">
                         <img
+ 
                           src={
                             event.image || "https://via.placeholder.com/60x40"
                           }
+
                           alt={event.title}
                           className="event-image"
                         />
@@ -884,9 +939,9 @@ function DesktopNavbar() {
                     news.map((item) => (
                       <div key={item.id} className="news-item">
                         <img
-                          src={
-                            item.image || "https://via.placeholder.com/60x40"
-                          }
+ 
+                          src={item.image || Trendimage}
+ 
                           alt={item.title}
                           className="news-image"
                         />
@@ -1044,7 +1099,9 @@ function DesktopNavbar() {
                           <input
                             type="checkbox"
                             checked={disableComments}
-                            onChange={(e) => setDisableComments(e.target.checked)}
+                            onChange={(e) =>
+                              setDisableComments(e.target.checked)
+                            }
                           />
                           <span className="slider round"></span>
                         </label>
