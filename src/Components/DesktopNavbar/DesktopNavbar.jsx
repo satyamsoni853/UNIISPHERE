@@ -2,6 +2,7 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { IoHome, IoHomeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
@@ -20,8 +21,6 @@ import UserIcon from "./UserIcon.svg";
 import ClenderBlack from './ClenderBlackIcon.svg';
 import ClenderWhite from './ClenderWhiteIcon.svg';
 import Background from "../Background/Background";
-import HomeBlack from './HomeBlackIcon.svg';
-import HomeWhite from './HomeWhiteIcon.svg';
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -52,8 +51,7 @@ function DesktopNavbar() {
   const navigate = useNavigate();
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] =
-    useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
     {
@@ -509,13 +507,19 @@ function DesktopNavbar() {
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
-      <img
-        src={activeIcon === "home" ? HomeWhite : HomeBlack}
-        alt="Home"
-        className="desktop-icon"
-        onClick={() => handleIconClick("home")}
-        title="Home"
-      />
+      {activeIcon === "home" ? (
+        <IoHomeOutline
+          className="desktop-icon"
+          onClick={() => handleIconClick("home")}
+          title="Home"
+        />
+      ) : (
+        <IoHome 
+          className="desktop-icon"
+          onClick={() => handleIconClick("home")}
+          title="Home"
+        />
+      )}
       <img
         src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
         alt="Network"
@@ -586,7 +590,7 @@ function DesktopNavbar() {
         )}
       </div>
       <img
-        src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
+        src  src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
         alt="Calendar"
         className="desktop-icon"
         onClick={handleClenderClick}
