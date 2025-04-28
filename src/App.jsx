@@ -75,7 +75,7 @@ function App() {
             element={<AboutAndExperience />}
           />
           <Route path="/blog/:userId" element={<Blog />} />
-          <Route path="/blog-create/:userId" element={<BlogCreate />} />
+          <Route path="/blogcreate/:userId" element={<BlogCreate />} />
         
 
           {/* Other Routes */}

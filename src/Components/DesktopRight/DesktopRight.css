@@ -19,12 +19,19 @@
   display: none; /* Chrome, Safari */
 }
 
+
+/* Rectangle 74 */
+
+
+
+
 /* Right Section Content */
 .rightsection {
   display: flex;
   flex-direction: column;
 
-  background: linear-gradient(to bottom, #ea7ee633, #12411833);
+  background: linear-gradient(180deg, rgba(255, 213, 255, 0.2) 0%, rgba(206, 255, 26, 0.1) 100%);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25), -4px -4px 4px rgba(0, 0, 0, 0.25), -4px 4px 4px rgba(0, 0, 0, 0.25), 4px -4px 4px rgba(0, 0, 0, 0.25);
 
   padding: 1rem;
   border-radius: 10px;

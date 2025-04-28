@@ -26,22 +26,34 @@
 
 /* Post Container */
 .post-container {
-  background: linear-gradient(to top, #edf5e8, #ede9ea);
+  background: linear-gradient(180deg, rgba(233, 99, 99, 0.05) 0%, rgba(157, 221, 221, 0.05) 100%);
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 15px;
   border: 1px solid #e0e0e0;
-  width: 100%;
-  min-height: 40vh; /* Reduced to allow shrinking for smaller images */
-  overflow: hidden;
+  padding: 15px;
+  width: 646px; /* Increased container width */
+  height: 901px; /* Increased container height */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow for container */
 }
 
 /* Profile Header */
 .middle-profile-header {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  justify-content: space-between; /* Space elements between left and right ends */
   padding-bottom: 0.625rem;
+  width: 100%; /* Ensure it spans the full container width */
+}
+
+/* Group for left-side elements (profile picture and info) */
+.middle-profile-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem; /* Maintain gap between profile picture and info */
 }
 
 .middle-profile-pic {
@@ -141,33 +153,91 @@
 
 /* Main Image */
 .middle-main-image {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
-  gap: 0.625rem;
+  width: 607px; /* Increased image width */
+  height: 672px; /* Increased image height */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.625rem 0;
-  min-height: 200px; /* Smaller min-height for small images */
-  height: auto; /* Adjust to image height */
 }
 
-.middle-content-image {
+/* Single Image */
+.middle-main-image:has(> img:only-child) .middle-content-image {
+  width: 607px; /* Increased image width */
+  height: 672px; /* Increased image height */
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+/* Multiple Images (Grid Layout like Shared Image) */
+.middle-main-image:has(> img:nth-child(2)) {
+  display: grid;
+  grid-template-areas:
+    "main right-top"
+    "main right-bottom";
+  grid-template-columns: 2fr 1fr; /* Large image takes 2/3, right grid takes 1/3 */
+  grid-template-rows: 1fr 1fr; /* Two rows for right grid */
+  gap: 10px;
+  width: 607px;
+  height: 672px;
+}
+
+/* First image (large, on the left) */
+.middle-main-image:has(> img:nth-child(2)) .middle-content-image:nth-child(1) {
+  grid-area: main;
   width: 100%;
-  height: auto; /* Allow height to adjust based on image */
-  max-height: 600px; /* Prevent excessively tall images */
-  object-fit: contain; /* Show entire image without cropping */
-  border-radius: 10px; /* Consistent border radius */
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
 }
 
-.middle-content-image.small-image {
-  max-height: 300px; /* Smaller max-height for small images */
+/* Right grid images */
+.middle-main-image:has(> img:nth-child(2)) .middle-content-image:not(:nth-child(1)) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+/* Position images in the right 2x2 grid */
+.middle-main-image .middle-content-image:nth-child(2) {
+  grid-area: right-top;
+}
+
+.middle-main-image .middle-content-image:nth-child(3) {
+  grid-area: right-bottom;
+}
+
+.middle-main-image .middle-content-image:nth-child(4) {
+  grid-area: right-top;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.middle-main-image .middle-content-image:nth-child(5) {
+  grid-area: right-bottom;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Hide excess images beyond 5 */
+.middle-main-image .middle-content-image:nth-child(n+6) {
+  display: none;
 }
 
 /* Action Bar */
 .middle-action-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* Connect image/status on left, icons on right */
   padding: 0.625rem 0;
+  width: 100%; /* Ensure full width */
 }
 
 .middle-connect-image {
@@ -215,10 +285,8 @@
 
 /* Post Text */
 .middle-post-text {
-  font-size: 0.875rem;
-  padding-top: 0.625rem;
+  font-size: 1rem;
   width: 100%;
-  margin: 1.25rem 0;
 }
 
 .middle-post-author {
@@ -228,6 +296,58 @@
 .middle-see-more {
   color: blue;
   cursor: pointer;
+}
+
+/* Image Modal */
+.image-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.image-modal {
+  position: relative;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-modal-content {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+  background-color: grey;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.image-modal-close:hover {
+  color: #333;
 }
 
 /* Comment Modal */
@@ -442,25 +562,81 @@
 }
 
 .Full-comment-section-desktop-photo-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
-  gap: 0.625rem;
+  width: 100%; /* Use full width of the parent */
+  height: 100%; /* Use full height of the parent */
+  max-height: 672px; /* Maintain max height */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.625rem;
-  min-height: 200px; /* Smaller min-height for small images */
-  height: auto; /* Adjust to image height */
+  overflow: hidden; /* Ensure overflow is hidden */
 }
 
-.Full-comment-section-desktop-post-photo {
+.Full-comment-section-desktop-photo-container:has(> img:only-child) .Full-comment-section-desktop-post-photo {
+  width: 100%; /* Use full width */
+  height: 100%; /* Use full height */
+  max-width: 607px; /* Limit max width */
+  max-height: 672px; /* Limit max height */
+  border-radius: 10px;
+  object-fit: contain; /* Ensure image is not distorted */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(2)) {
+  display: grid;
+  grid-template-areas:
+    "main right-top"
+    "main right-bottom";
+  grid-template-columns: 2fr 1fr; /* Large image takes 2/3, right grid takes 1/3 */
+  grid-template-rows: 1fr 1fr; /* Two rows for right grid */
+  gap: 10px;
   width: 100%;
-  height: auto; /* Allow height to adjust based on image */
-  max-height: 600px; /* Prevent excessively tall images */
-  object-fit: contain; /* Show entire image without cropping */
-  border-radius: 10px; /* Consistent border radius */
+  height: 100%;
+  max-height: 672px;
 }
 
-.Full-comment-section-desktop-post-photo.small-image {
-  max-height: 300px; /* Smaller max-height for small images */
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(2)) .Full-comment-section-desktop-post-photo:nth-child(1) {
+  grid-area: main;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensure image is not distorted */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+.Full-comment-section-desktop-photo-container:has(> img:nth-child(2)) .Full-comment-section-desktop-post-photo:not(:nth-child(1)) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensure image is not distorted */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+.Full-comment-section-desktop-photo-container .Full-comment-section-desktop-post-photo:nth-child(2) {
+  grid-area: right-top;
+}
+
+.Full-comment-section-desktop-photo-container .Full-comment-section-desktop-post-photo:nth-child(3) {
+  grid-area: right-bottom;
+}
+
+.Full-comment-section-desktop-photo-container .Full-comment-section-desktop-post-photo:nth-child(4) {
+  grid-area: right-top;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Full-comment-section-desktop-photo-container .Full-comment-section-desktop-post-photo:nth-child(5) {
+  grid-area: right-bottom;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Full-comment-section-desktop-photo-container .Full-comment-section-desktop-post-photo:nth-child(n+6) {
+  display: none;
 }
 
 .Full-comment-section-desktop-right-section {
@@ -644,7 +820,6 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.9375rem;
 }
 
 .Full-share-section-desktop-top-image-and-names {
@@ -688,25 +863,81 @@
 }
 
 .Full-share-section-desktop-photo-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
-  gap: 0.625rem;
+  width: 100%; /* Use full width of the parent */
+  height: 100%; /* Use full height of the parent */
+  max-height: 672px; /* Maintain max height */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.625rem;
-  min-height: 200px; /* Smaller min-height for small images */
-  height: auto; /* Adjust to image height */
+  overflow: hidden; /* Ensure overflow is hidden */
 }
 
-.Full-share-section-desktop-post-photo {
+.Full-share-section-desktop-photo-container:has(> img:only-child) .Full-share-section-desktop-post-photo {
+  width: 100%; /* Use full width */
+  height: 100%; /* Use full height */
+  max-width: 607px; /* Limit max width */
+  max-height: 672px; /* Limit max height */
+  border-radius: 10px;
+  object-fit: contain; /* Ensure image is not distorted */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+.Full-share-section-desktop-photo-container:has(> img:nth-child(2)) {
+  display: grid;
+  grid-template-areas:
+    "main right-top"
+    "main right-bottom";
+  grid-template-columns: 2fr 1fr; /* Large image takes 2/3, right grid takes 1/3 */
+  grid-template-rows: 1fr 1fr; /* Two rows for right grid */
+  gap: 10px;
   width: 100%;
-  height: auto; /* Allow height to adjust based on image */
-  max-height: 600px; /* Prevent excessively tall images */
-  object-fit: contain; /* Show entire image without cropping */
-  border-radius: 10px; /* Consistent border radius */
+  height: 100%;
+  max-height: 672px;
 }
 
-.Full-share-section-desktop-post-photo.small-image {
-  max-height: 300px; /* Smaller max-height for small images */
+.Full-share-section-desktop-photo-container:has(> img:nth-child(2)) .Full-share-section-desktop-post-photo:nth-child(1) {
+  grid-area: main;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensure image is not distorted */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+.Full-share-section-desktop-photo-container:has(> img:nth-child(2)) .Full-share-section-desktop-post-photo:not(:nth-child(1)) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensure image is not distorted */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* White box shadow */
+}
+
+.Full-share-section-desktop-photo-container .Full-share-section-desktop-post-photo:nth-child(2) {
+  grid-area: right-top;
+}
+
+.Full-share-section-desktop-photo-container .Full-share-section-desktop-post-photo:nth-child(3) {
+  grid-area: right-bottom;
+}
+
+.Full-share-section-desktop-photo-container .Full-share-section-desktop-post-photo:nth-child(4) {
+  grid-area: right-top;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Full-share-section-desktop-photo-container .Full-share-section-desktop-post-photo:nth-child(5) {
+  grid-area: right-bottom;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Full-share-section-desktop-photo-container .Full-share-section-desktop-post-photo:nth-child(n+6) {
+  display: none;
 }
 
 .Full-share-section-action-buttons-desktop {
@@ -862,79 +1093,6 @@
   background-color: #0056b3;
 }
 
-/* For single image posts */
-.middle-main-image:has(> img:only-child) .middle-content-image,
-.Full-comment-section-desktop-photo-container:has(> img:only-child)
-  .Full-comment-section-desktop-post-photo,
-.Full-share-section-desktop-photo-container:has(> img:only-child)
-  .Full-share-section-desktop-post-photo {
-  width: 100%;
-  height: auto; /* Allow height to adjust */
-  max-height: 800px; /* Increased max-height for single long images */
-  border-radius: 10px;
-  object-fit: contain;
-}
-
-.middle-main-image:has(> img:only-child) .middle-content-image.small-image,
-.Full-comment-section-desktop-photo-container:has(> img:only-child)
-  .Full-comment-section-desktop-post-photo.small-image,
-.Full-share-section-desktop-photo-container:has(> img:only-child)
-  .Full-share-section-desktop-post-photo.small-image {
-  max-height: 400px; /* Smaller max-height for single small images */
-}
-
-/* For two images */
-.middle-main-image:has(> img:nth-child(2)),
-.Full-comment-section-desktop-photo-container:has(> img:nth-child(2)),
-.Full-share-section-desktop-photo-container:has(> img:nth-child(2)) {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.middle-main-image:has(> img:nth-child(2)) .middle-content-image,
-.Full-comment-section-desktop-photo-container:has(> img:nth-child(2))
-  .Full-comment-section-desktop-post-photo,
-.Full-share-section-desktop-photo-container:has(> img:nth-child(2))
-  .Full-share-section-desktop-post-photo {
-  height: auto; /* Allow height to adjust */
-  max-height: 600px; /* Slightly lower max-height for two images */
-  border-radius: 10px;
-  object-fit: contain;
-}
-
-.middle-main-image:has(> img:nth-child(2)) .middle-content-image.small-image,
-.Full-comment-section-desktop-photo-container:has(> img:nth-child(2))
-  .Full-comment-section-desktop-post-photo.small-image,
-.Full-share-section-desktop-photo-container:has(> img:nth-child(2))
-  .Full-share-section-desktop-post-photo.small-image {
-  max-height: 300px; /* Smaller max-height for two small images */
-}
-
-/* For three or more images */
-.middle-main-image:has(> img:nth-child(3)),
-.Full-comment-section-desktop-photo-container:has(> img:nth-child(3)),
-.Full-share-section-desktop-photo-container:has(> img:nth-child(3)) {
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
-}
-
-.middle-main-image:has(> img:nth-child(3)) .middle-content-image,
-.Full-comment-section-desktop-photo-container:has(> img:nth-child(3))
-  .Full-comment-section-desktop-post-photo,
-.Full-share-section-desktop-photo-container:has(> img:nth-child(3))
-  .Full-share-section-desktop-post-photo {
-  height: auto; /* Allow height to adjust */
-  max-height: 400px; /* Smaller max-height for multiple images */
-  border-radius: 10px;
-  object-fit: contain;
-}
-
-.middle-main-image:has(> img:nth-child(3)) .middle-content-image.small-image,
-.Full-comment-section-desktop-photo-container:has(> img:nth-child(3))
-  .Full-comment-section-desktop-post-photo.small-image,
-.Full-share-section-desktop-photo-container:has(> img:nth-child(3))
-  .Full-share-section-desktop-post-photo.small-image {
-  max-height: 250px; /* Smaller max-height for multiple small images */
-}
-
 .connection-status-message {
   color: #007bff;
   font-weight: bold;
@@ -949,47 +1107,20 @@
   }
 
   .post-container {
-    min-height: 35vh;
+    width: 646px; /* Maintain increased width */
+    height: 901px; /* Maintain increased height */
   }
 
-  .middle-main-image {
-    min-height: 180px;
-  }
-
+  .middle-main-image,
+  .middle-content-image,
   .Full-comment-section-desktop-photo-container,
-  .Full-share-section-desktop-photo-container {
-    min-height: 180px;
-  }
-
-  .middle-content-image {
-    max-height: 500px;
-  }
-
   .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-photo-container,
   .Full-share-section-desktop-post-photo {
-    max-height: 500px;
-  }
-
-  .middle-content-image.small-image,
-  .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-post-photo.small-image {
-    max-height: 250px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo {
-    max-height: 700px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo.small-image {
-    max-height: 350px;
+    width: 100%; /* Adjust to container width */
+    height: auto; /* Allow height to adjust */
+    max-height: 672px; /* Maintain increased max height */
+    object-fit: contain; /* Prevent distortion */
   }
 }
 
@@ -1004,67 +1135,34 @@
     max-width: 90%;
     padding: 0.9375rem;
     margin-top: 80px;
+    margin-left: 0;
   }
 
   .post-container {
-    min-height: 30vh;
+    width: 100%; /* Adjust to fit screen */
+    height: auto; /* Allow height to adjust */
+    padding: 10px;
   }
 
-  .middle-profile-pic {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-  .middle-profile-name {
-    font-size: 0.875rem;
-  }
-
-  .middle-post-time {
-    font-size: 0.6875rem;
-  }
-
-  .middle-options-icon {
-    font-size: 1.25rem;
-  }
-
-  .middle-main-image {
-    min-height: 160px;
-  }
-
+  .middle-main-image,
+  .middle-content-image,
   .Full-comment-section-desktop-photo-container,
-  .Full-share-section-desktop-photo-container {
-    min-height: 160px;
-  }
-
-  .middle-content-image {
-    max-height: 400px;
-  }
-
   .Full-comment-section-desktop-post-photo,
+  .Full-share-section-desktop-photo-container,
   .Full-share-section-desktop-post-photo {
-    max-height: 400px;
+    width: 100%; /* Adjust to container width */
+    height: auto; /* Allow height to adjust */
+    max-height: 672px; /* Maintain increased max height */
+    object-fit: contain; /* Prevent distortion */
   }
 
-  .middle-content-image.small-image,
-  .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-post-photo.small-image {
-    max-height: 200px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo {
-    max-height: 600px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo.small-image {
-    max-height: 300px;
+  .middle-main-image:has(> img:nth-child(2)) {
+    grid-template-columns: 1fr; /* Stack images vertically on smaller screens */
+    grid-template-areas:
+      "main"
+      "right-top"
+      "right-bottom";
+    gap: 5px;
   }
 
   .Full-comment-section-desktop-main-container,
@@ -1086,6 +1184,16 @@
     border-top: 2px solid #9d9c9c;
     padding: 1.25rem;
   }
+
+  .Full-comment-section-desktop-photo-container:has(> img:nth-child(2)),
+  .Full-share-section-desktop-photo-container:has(> img:nth-child(2)) {
+    grid-template-columns: 1fr; /* Stack images vertically on smaller screens */
+    grid-template-areas:
+      "main"
+      "right-top"
+      "right-bottom";
+    gap: 5px;
+  }
 }
 
 @media (max-width: 740px) {
@@ -1097,10 +1205,6 @@
     width: 90vw;
     min-width: 300px;
     padding: 0.625rem;
-  }
-
-  .post-container {
-    min-height: 25vh;
   }
 
   .middle-profile-pic {
@@ -1121,46 +1225,6 @@
     font-size: 1.125rem;
   }
 
-  .middle-main-image {
-    min-height: 140px;
-  }
-
-  .Full-comment-section-desktop-photo-container,
-  .Full-share-section-desktop-photo-container {
-    min-height: 140px;
-  }
-
-  .middle-content-image {
-    max-height: 350px;
-  }
-
-  .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-post-photo {
-    max-height: 350px;
-  }
-
-  .middle-content-image.small-image,
-  .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-post-photo.small-image {
-    max-height: 180px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo {
-    max-height: 500px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo.small-image {
-    max-height: 250px;
-  }
-
   .middle-connect-image {
     width: 5rem;
   }
@@ -1178,29 +1242,6 @@
     font-size: 0.8125rem;
     margin: 0.9375rem 0;
   }
-
-  .middle-comment-modal {
-    max-width: 90%;
-    padding: 0.625rem;
-  }
-
-  .middle-comment-modal-header h3 {
-    font-size: 1rem;
-  }
-
-  .middle-comment-modal-close {
-    font-size: 1.25rem;
-  }
-
-  .middle-comment-input {
-    min-height: 2.1875rem;
-    font-size: 0.8125rem;
-  }
-
-  .middle-comment-submit {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.8125rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1213,256 +1254,5 @@
     width: 95vw;
     min-width: 300px;
     padding: 0.5rem;
-  }
-
-  .post-container {
-    min-height: 20vh;
-  }
-
-  .middle-profile-header {
-    gap: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .middle-profile-pic {
-    width: 2rem;
-    height: 2rem;
-  }
-
-  .middle-profile-name {
-    font-size: 0.75rem;
-  }
-
-  .middle-post-time {
-    font-size: 0.5625rem;
-    margin-left: 0.375rem;
-  }
-
-  .middle-options-icon {
-    font-size: 1rem;
-  }
-
-  .middle-main-image {
-    min-height: 120px;
-  }
-
-  .Full-comment-section-desktop-photo-container,
-  .Full-share-section-desktop-photo-container {
-    min-height: 120px;
-  }
-
-  .middle-content-image {
-    max-height: 300px;
-  }
-
-  .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-post-photo {
-    max-height: 300px;
-  }
-
-  .middle-content-image.small-image,
-  .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-post-photo.small-image {
-    max-height: 150px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo {
-    max-height: 400px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo.small-image {
-    max-height: 200px;
-  }
-
-  .middle-action-bar {
-    padding: 0.5rem 0;
-  }
-
-  .middle-connect-image {
-    width: 3.75rem;
-  }
-
-  .middle-action-icons {
-    gap: 0.5rem;
-  }
-
-  .middle-icon {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .middle-icon-count {
-    font-size: 0.6875rem;
-  }
-
-  .middle-post-text {
-    font-size: 0.75rem;
-    margin: 0.625rem 0;
-  }
-
-  .middle-comment-modal {
-    max-width: 95%;
-    padding: 0.625rem;
-  }
-
-  .middle-comment-input {
-    min-height: 1.875rem;
-    font-size: 0.75rem;
-  }
-
-  .middle-comment-submit {
-    padding: 0.3125rem 0.625rem;
-    font-size: 0.75rem;
-  }
-
-  .middle-comment {
-    font-size: 0.75rem;
-  }
-
-  .Full-comment-section-desktop-profile-picture,
-  .Full-share-section-desktop-profile-picture {
-    width: 1.875rem;
-    height: 1.875rem;
-  }
-
-  .Full-comment-section-desktop-user-name,
-  .Full-share-section-desktop-user-name {
-    font-size: 0.875rem;
-  }
-
-  .Full-comment-section-desktop-user-details,
-  .Full-share-section-desktop-user-details {
-    font-size: 0.75rem;
-  }
-
-  .Full-comment-section-desktop-heading,
-  .Full-share-section-desktop-heading {
-    font-size: 1.25rem;
-  }
-
-  .Full-comment-section-desktop-comment-username {
-    font-size: 0.875rem;
-  }
-
-  .Full-comment-section-desktop-comment-text {
-    font-size: 0.875rem;
-  }
-}
-
-@media (max-width: 320px) {
-  .middle-container {
-    margin-top: 40px;
-  }
-
-  .middle-middle-card {
-    width: 100%;
-    min-width: 300px;
-    padding: 0.3125rem;
-  }
-
-  .post-container {
-    min-height: 15vh;
-  }
-
-  .middle-profile-pic {
-    width: 1.875rem;
-    height: 1.875rem;
-  }
-
-  .middle-profile-name {
-    font-size: 0.6875rem;
-  }
-
-  .middle-post-time {
-    font-size: 0.5rem;
-  }
-
-  .middle-options-icon {
-    font-size: 0.875rem;
-  }
-
-  .middle-main-image {
-    min-height: 100px;
-  }
-
-  .Full-comment-section-desktop-photo-container,
-  .Full-share-section-desktop-photo-container {
-    min-height: 100px;
-  }
-
-  .middle-content-image {
-    max-height: 250px;
-  }
-
-  .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-post-photo {
-    max-height: 250px;
-  }
-
-  .middle-content-image.small-image,
-  .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-post-photo.small-image {
-    max-height: 120px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo {
-    max-height: 350px;
-  }
-
-  .middle-main-image:has(> img:only-child) .middle-content-image.small-image,
-  .Full-comment-section-desktop-photo-container:has(> img:only-child)
-    .Full-comment-section-desktop-post-photo.small-image,
-  .Full-share-section-desktop-photo-container:has(> img:only-child)
-    .Full-share-section-desktop-post-photo.small-image {
-    max-height: 180px;
-  }
-
-  .middle-connect-image {
-    width: 3.125rem;
-  }
-
-  .middle-icon {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
-
-  .middle-icon-count {
-    font-size: 0.625rem;
-  }
-
-  .middle-post-text {
-    font-size: 0.6875rem;
-    margin: 0.5rem 0;
-  }
-
-  .middle-comment-modal {
-    max-width: 100%;
-    padding: 0.5rem;
-  }
-
-  .middle-comment-input {
-    min-height: 1.75rem;
-    font-size: 0.6875rem;
-  }
-
-  .middle-comment-submit {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.6875rem;
-  }
-
-  .middle-comment {
-    font-size: 0.6875rem;
   }
 }

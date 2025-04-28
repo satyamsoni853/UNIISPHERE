@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"; // Ensure axios is installed: `npm install axios`
 import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSendOutline } from "react-icons/io5";
@@ -24,6 +24,8 @@ function DesktopMiddle() {
   const [showComment, setShowComment] = useState(false);
   const [showCommentOptions, setShowCommentOptions] = useState(false);
   const [showShare, setShowshare] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false); // Added for image modal
+  const [selectedImage, setSelectedImage] = useState(null); // Added for image modal
   const [shareMessage, setShareMessage] = useState("");
   const [activeSharePostIndex, setActiveSharePostIndex] = useState(null);
   const [connections, setConnections] = useState([]);
@@ -34,6 +36,7 @@ function DesktopMiddle() {
   const optionsRef = useRef(null);
   const commentModalRef = useRef(null);
   const shareModalRef = useRef(null);
+  const imageModalRef = useRef(null); // Added for image modal
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -54,11 +57,19 @@ function DesktopMiddle() {
       ) {
         handleCloseShareModal();
       }
+      if (
+        showImageModal &&
+        imageModalRef.current &&
+        !imageModalRef.current.contains(event.target)
+      ) {
+        setShowImageModal(false);
+        setSelectedImage(null);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showComment, showShare]);
+  }, [showComment, showShare, showImageModal]);
 
   const [posts, setPosts] = useState([]);
   const [imageLoading, setImageLoading] = useState(true);
@@ -488,7 +499,7 @@ function DesktopMiddle() {
     const post = posts[activeSharePostIndex];
     const postUrl = `${window.location.origin}/post/${post._id}`;
     const message = encodeURIComponent(`${shareMessage} ${postUrl}`);
-    window.open(`https://twitter.com/intent/tweet?text=${message}`, "_blank");
+    window.open (`https://twitter.com/intent/tweet?text=${message}`, "_blank");
   };
 
   const handleShareToInstagram = () => {
@@ -633,7 +644,11 @@ function DesktopMiddle() {
                           src={url}
                           alt={`Post ${index + 1} - Image ${imgIndex + 1}`}
                           className="middle-content-image"
-                          onClick={() => handleCommentClick(index)}
+                          onClick={() => {
+                            setSelectedImage(url);
+                            setShowImageModal(true);
+                          }} // Single click to open image modal
+                          onDoubleClick={() => handleLike(index)} // Double click to like/unlike
                           style={{ cursor: "pointer" }}
                           onError={(e) => {
                             console.error(`Failed to load image: ${url}`);
@@ -646,7 +661,11 @@ function DesktopMiddle() {
                         src={post.mediaUrl}
                         alt={`Post ${index + 1}`}
                         className="middle-content-image"
-                        onClick={() => handleCommentClick(index)}
+                        onClick={() => {
+                          setSelectedImage(post.mediaUrl);
+                          setShowImageModal(true);
+                        }} // Single click to open image modal
+                        onDoubleClick={() => handleLike(index)} // Double click to like/unlike
                         style={{ cursor: "pointer" }}
                         onError={(e) => {
                           console.error(
@@ -661,7 +680,11 @@ function DesktopMiddle() {
                       src={Profileimage}
                       alt="Default Post"
                       className="middle-content-image"
-                      onClick={() => handleCommentClick(index)}
+                      onClick={() => {
+                        setSelectedImage(Profileimage);
+                        setShowImageModal(true);
+                      }} // Single click to open image modal
+                      onDoubleClick={() => handleLike(index)} // Double click to like/unlike
                       style={{ cursor: "pointer" }}
                     />
                   )}
@@ -716,14 +739,12 @@ function DesktopMiddle() {
                     >
                       <span className="middle-icon-count">{post.likes}</span>
                       {post.isLiked ? (
-                      <FcLike className="middle-icon liked"  />
-
+                        <FcLike className="middle-icon liked" />
                       ) : (
                         <img
                           src={LikeIcon}
-                          className="middle-icon Liked "
+                          className="middle-icon Liked"
                           alt="Like"
-                          
                         />
                       )}
                     </div>
@@ -1161,6 +1182,24 @@ function DesktopMiddle() {
             >
               ×
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Image Modal */}
+      {showImageModal && selectedImage && (
+        <div className="image-modal-overlay">
+          <div className="image-modal" ref={imageModalRef}>
+            <button
+              className="image-modal-close"
+              onClick={() => {
+                setShowImageModal(false);
+                setSelectedImage(null);
+              }}
+            >
+              ×
+            </button>
+            <img src={selectedImage} alt="Selected" className="image-modal-content" />
           </div>
         </div>
       )}
