@@ -23,7 +23,7 @@
 
 
 /* Manually setting different positions for 20 images */
-.img-0 { top: 5%; left: 0%; }
+.img-0 { top: 15%; left: 10%; }
 .img-1 { top: 40%; left: 0%; }
 .img-2 { top: 35%; left: 30%; }
 .img-3 { top: 20%; left: 20%; }
@@ -42,7 +42,7 @@
 .img-16 { top: 85%; left: 60%; }
 .img-17 { top: 90%; left: 90%; }
 .img-18 { top: 95%; left: 10%; }
-.img-19 { top: 50%; left: 50%; } 
+.img-19 { top: 80%; left: 20%; } 
 
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
   .img-0,.img-6,.img-2,.img-3,img-4,.img-10,.img-11, .img-12, .img-13, .img-14, 

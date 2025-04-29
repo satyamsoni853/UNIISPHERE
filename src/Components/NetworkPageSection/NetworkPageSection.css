@@ -24,20 +24,39 @@
   width: 100%;
 }
 
+/* Content wrapper */
+.networkpage-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Left section (Connections/Requests) */
+.networkpage-left-section {
+  width: 100%;
+}
+
 /* Grid layout for cards */
 .networkpage-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  width: 70%;
+}
+
+/* Connection row (for Catch Up mode) */
+.connection-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
   width: 100%;
-  justify-items: center;
 }
 
 /* Individual card styling */
 .networkpage-card {
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   text-align: center;
   width: 100%;
   max-width: 300px;
@@ -46,6 +65,34 @@
   flex-direction: column;
   justify-content: space-between;
   margin: 0 auto;
+}
+
+/* Catch Up container */
+.catchup-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  
+  
+  justify-content: center;
+}
+
+.catchup-heading {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px;
+}
+
+.catchup-text {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
 }
 
 /* Profile picture container */
@@ -91,7 +138,7 @@
 
 /* Connect icon */
 .networkpage-connect-icon {
-  margin: 10px auto;
+  /* margin: 10px auto; */
   cursor: pointer;
   width: 120px;
   height: 40px;
@@ -131,20 +178,19 @@
   display: flex;
   justify-content: center;
   gap: 15px;
-  padding: 10px 0;
+  padding: 20px 0;
   flex-wrap: wrap;
   width: 98vw; /* Match networkpage width */
   background-color: #f8f8f8;
   border-top: 1px solid #e0e0e0;
-  z-index: 1000; /* Ensure buttons are above other content */
 }
 
 /* Action buttons */
 .networkpage-action-btn {
-  background-color: #f5f5dc;
+  /* background-color: #f5f5dc; */
   color: black;
   font-weight: 600;
-  height: 36px;
+  height: 46px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
@@ -154,38 +200,19 @@
   padding: 0 20px;
   min-width: 180px;
 }
+.CATCHUP-Btn{
 
+  background-color: #e5a85e;
+}
+.REQUEST-Btn{
+  background-color: #75d293;
+}
+.NEW-CONNECTION-Btn{
+  background-color: #f5f5dc;
+}
 .networkpage-action-btn:hover {
   background-color: #007bff;
   color: white;
-}
-
-/* Right section */
-.networkpage-right-section {
-  width: 300px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  height: fit-content;
-  position: sticky;
-  top: 20px;
-}
-
-/* Right section header */
-.networkpage-right-header {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-/* Close button */
-.networkpage-close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
 }
 
 /* Actions for pending requests */
@@ -199,7 +226,7 @@
 
 .networkpage-actions img {
   height: 40px;
-  width: 40px;
+  width: 140px;
 }
 
 .action-btn {
@@ -231,9 +258,24 @@
   height: 24px;
 }
 
+/* Mobile Catch Up section */
+.networkpage-mobile-catchup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
-  .networkpage-grid {
+  .connection-row {
+    flex-direction: column;
+  }
+  .catchup-container {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .networkpage-grid:not(.catchup-mode) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -243,11 +285,11 @@
     padding: 15px;
     margin-top: 60px;
   }
-  .networkpage-grid {
+  .networkpage-grid:not(.catchup-mode) {
     grid-template-columns: repeat(2, 1fr);
   }
-  .networkpage-right-section {
-    display: none;
+  .networkpage-card {
+    max-width: 90vw;
   }
   .networkpage-action-btn {
     min-width: 160px;
@@ -259,15 +301,16 @@
     margin-top: 0;
     padding: 10px;
     min-height: calc(100vh - 60px);
-    
   }
-  .networkpage-grid {
+  .networkpage-grid:not(.catchup-mode) {
     grid-template-columns: 1fr;
-    gap: 15px;
   }
   .networkpage-card {
     max-width: 90vw;
     height: 320px;
+  }
+  .catchup-container.mobile {
+    max-width: 90vw;
   }
   .networkpage-action-btn {
     min-width: 120px;
@@ -330,4 +373,10 @@
     font-size: 9px;
     padding: 3px 6px;
   }
+}
+
+/* Specific styles for Catch Up mode */
+.networkpage-grid.catchup-mode {
+  display: flex;
+  flex-direction: column;
 }

@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import "./Books.css";
 import ForYou from "./ForYou.jpg";
 import { IoIosArrowForward } from "react-icons/io";
-import {
-  IoArrowBackCircle,
-  IoArrowBackCircleOutline,
-  IoChevronBack,
-} from "react-icons/io5";
+import { IoArrowBackCircleOutline, IoChevronBack } from "react-icons/io5";
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import Background from "../Background/Background";
+
 const Books = () => {
   const explorationBooks = [
     { title: "E-Books", author: "George Keeley", price: 890, rent: 200 },
@@ -48,6 +45,7 @@ const Books = () => {
     { title: "Study Notes 3", price: 480, rent: 100 },
     { title: "Study Notes 4", price: 590, rent: 100 },
   ];
+
   const universityItems = [
     { title: "Name of Note", price: 590, rent: 100 },
     { title: "Name of Note", price: 450, rent: 80 },
@@ -58,6 +56,7 @@ const Books = () => {
     { title: "Study Notes 3", price: 480, rent: 100 },
     { title: "Study Notes 4", price: 590, rent: 100 },
   ];
+
   const lifeLessonItems = [
     { title: "Name of Note", price: 590, rent: 100 },
     { title: "Name of Note", price: 450, rent: 80 },
@@ -70,13 +69,12 @@ const Books = () => {
   ];
 
   // State
-  const [positions, setPositions] = useState([0, 1, 2, 3, 4, 5, 6]);
   const [startIndex, setStartIndex] = useState(0);
   const [notesStartIndex, setNotesStartIndex] = useState(0);
   const [universityStartIndex, setUniversityStartIndex] = useState(0);
   const [lifeLessonStartIndex, setLifeLessonStartIndex] = useState(0);
 
-  // / Data Slicing for Display
+  // Data Slicing for Display
   const visibleBooks = explorationBooks.slice(startIndex, startIndex + 4);
   const visibleNotes = notesItems.slice(notesStartIndex, notesStartIndex + 4);
   const visibleUniversity = universityItems.slice(
@@ -140,13 +138,15 @@ const Books = () => {
   const handleLifeLessonPrev = () => {
     setLifeLessonStartIndex((prevIndex) => {
       const newIndex = prevIndex - 4;
+    
       return newIndex < 0 ? Math.max(0, lifeLessonItems.length - 4) : newIndex;
     });
   };
+
   return (
     <>
-    <DesktopNavbar/>
-    <Background/>
+      <DesktopNavbar />
+      <Background />
       <div className="main-books-main-wrapper">
         <h1 className="main-books-main-title">
           All you need at one place to be successful in your Student Life.
@@ -246,10 +246,10 @@ const Books = () => {
           </div>
         </div>
 
-        {/*Prefered by top Universities */}
+        {/* Preferred by top Universities */}
         <div className="main-books-university-section">
           <h2 className="main-books-section-title-university">
-            Prefered by top Universities
+            Preferred by top Universities
           </h2>
           <div className="main-books-university-content">
             <button
@@ -329,211 +329,158 @@ const Books = () => {
         </div>
       </div>
       {/* Mobile View */}
-
       <div className="mobile-section-view-parent">
-      <div className="mobile-main-books-main-wrapper">
-       <div className="mobile-main-books-parent">
-       <div className="mobile-books-main-heading">
-          <IoArrowBackCircleOutline className="mobile-books-backIcon" />
-          <h1 className="mobile-main-books-main-title">
-            All you need at one place to be successful in your Student Life.
-          </h1>
-        </div>
-        {/* Search Bar */}
-        <div className="mobile-main-books-search-container">
-          <input
-            type="text"
-            placeholder="Search"
-            className="mobile-main-books-search-input"
-          />
-
-          {/* Search Options */}
-          <div className="mobile-main-books-search-options">
-            <button className="mobile-main-books-option-button main-books-option-button-1">
-              S1
-            </button>
-            <button className="mobile-main-books-option-button main-books-option-button-2">
-              S2
-            </button>
-            <button className="mobile-main-books-option-button main-books-option-button-3">
-              S3
-            </button>
-            <button className="mobile-main-books-option-button main-books-option-button-4">
-              S4
-            </button>
-            <button className="mobile-main-books-option-button main-books-option-button-5">
-              S5
-            </button>
-            <button className="mobile-main-books-option-button main-books-option-button-6">
-              S6
-            </button>
-          </div>
-        </div>
-
-        {/* Ebooks Section */}
-        <div className="mobile-eBooks-section">
-          <h2 className="mobile-main-books-section-title-notes">Ebooks</h2>
-          <div className="mobile-eBooks-content">
-            <button
-              className="mobile-nav-arrow left-arrow"
-              onClick={handlePrev}
-            >
-              <IoChevronBack />
-            </button>
-            <div className="mobile-eBooks-items-list">
-              
-            {visibleBooks.map((book, index) => (
-              <div key={index}>
-                <div className="mobile-eBooks-item">
-                  <img
-                    src={ForYou}
-                    alt={book.title}
-                    className="mobile-eBooks-image"
-                  />
-                </div>
-                <div className="mobile-eBooks-details">
-                  <h3 className="mobile-eBooks-title">
-                    {book.title}
-                  </h3>
-                  <p className="mobile-eBooks-price">
-                    Price-{book.price} Rent-{book.rent}
-                  </p>
-                </div>
-              </div>
-            ))}
+        <div className="mobile-main-books-main-wrapper">
+          <div className="mobile-main-books-parent">
+            <div className="mobile-books-main-heading">
+              <IoArrowBackCircleOutline className="mobile-books-backIcon" />
+              <h1 className="mobile-main-books-main-title">
+                All you need at one place to be successful in your Student Life.
+              </h1>
             </div>
-            <button
-              className="mobile-main-books-nav-arrow main-books-right-arrow"
-              onClick={handleNext}
-            >
-              <IoIosArrowForward />
-            </button>
-          </div>
-        </div>
+            {/* Search Bar */}
+            <div className="mobile-main-books-search-container">
+              <input
+                type="text"
+                placeholder="Search"
+                className="mobile-main-books-search-input"
+              />
+              {/* Search Options */}
+              <div className="mobile-main-books-search-options">
+                <button className="mobile-main-books-option-button main-books-option-button-1">
+                  S1
+                </button>
+                <button className="mobile-main-books-option-button main-books-option-button-2">
+                  S2
+                </button>
+                <button className="mobile-main-books-option-button main-books-option-button-3">
+                  S3
+                </button>
+                <button className="mobile-main-books-option-button main-books-option-button-4">
+                  S4
+                </button>
+                <button className="mobile-main-books-option-button main-books-option-button-5">
+                  S5
+                </button>
+                <button className="mobile-main-books-option-button main-books-option-button-6">
+                  S6
+                </button>
+              </div>
+            </div>
 
-        {/* Notes Section */}
-        <div className="mobile-main-books-notes-section">
-          <h2 className="mobile-main-books-section-title-notes">Notes</h2>
-          <div className="mobile-main-books-notes-content">
-            <button
-              className="mobile-nav-arrow left-arrow"
-              onClick={handleNotesPrev}
-            >
-              <IoChevronBack />
-            </button>
-            {visibleNotes.map((note, index) => (
-              <div key={index}>
-                <div className="mobile-main-books-notes-item">
-                  <img
-                    src={ForYou}
-                    alt={note.title}
-                    className="mobile-main-books-notes-image"
-                  />
-                </div>
-                <div className="mobile-main-books-notes-details">
-                  <h3 className="mobile-main-books-notes-title">
-                    {note.title}
-                  </h3>
-                  <p className="mobile-main-books-notes-price">
-                    Price-{note.price} Rent-{note.rent}
-                  </p>
+            {/* Ebooks Section */}
+            <div className="mobile-eBooks-section">
+              <h2 className="mobile-main-books-section-title-notes">Ebooks</h2>
+              <div className="mobile-eBooks-content">
+                <div className="mobile-eBooks-items-list">
+                  {visibleBooks.map((book, index) => (
+                    <div key={index}>
+                      <div className="mobile-eBooks-item">
+                        <img
+                          src={ForYou}
+                          alt={book.title}
+                          className="mobile-eBooks-image"
+                        />
+                      </div>
+                      <div className="mobile-eBooks-details">
+                        <h3 className="mobile-eBooks-title">{book.title}</h3>
+                        <p className="mobile-eBooks-price">
+                          Price-{book.price} Rent-{book.rent}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-            <button
-              className="mobile-main-books-nav-arrow main-books-right-arrow"
-              onClick={handleNotesNext}
-            >
-              <IoIosArrowForward />
-            </button>
-          </div>
-        </div>
+            </div>
 
-        {/*Prefered by top Universities */}
-        <div className="mobile-main-books-university-section">
-          <h2 className="mobile-main-books-section-title-university">
-            Prefered by top Universities
-          </h2>
-          <div className="mobile-main-books-university-content">
-            <button
-              className="mobile-nav-arrow left-arrow"
-              onClick={handleUniversityPrev}
-            >
-              <IoChevronBack />
-            </button>
-            {visibleUniversity.map((note, index) => (
-              <div className="mobile-main-books-university-item-section">
-                <div key={index}>
-                  <div className="mobile-main-books-university-item">
-                    <img
-                      src={ForYou}
-                      alt={note.title}
-                      className="mobile-main-books-university-image"
-                    />
+            {/* Notes Section */}
+            <div className="mobile-main-books-notes-section">
+              <h2 className="mobile-main-books-section-title-notes">Notes</h2>
+              <div className="mobile-main-books-notes-content">
+                {visibleNotes.map((note, index) => (
+                  <div key={index}>
+                    <div className="mobile-main-books-notes-item">
+                      <img
+                        src={ForYou}
+                        alt={note.title}
+                        className="mobile-main-books-notes-image"
+                      />
+                    </div>
+                    <div className="mobile-main-books-notes-details">
+                      <h3 className="mobile-main-books-notes-title">
+                        {note.title}
+                      </h3>
+                      <p className="mobile-main-books-notes-price">
+                        Price-{note.price} Rent-{note.rent}
+                      </p>
+                    </div>
                   </div>
-                  <div className="mobile-main-books-university-details">
-                    <h3 className="mobile-main-books-university-title">
-                      {note.title}
-                    </h3>
-                    <p className="mobile-main-books-university-price">
-                      Price-{note.price} Rent-{note.rent}
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
-            <button
-              className="mobile-main-books-nav-arrow main-books-right-arrow"
-              onClick={handleUniversityNext}
-            >
-              <IoIosArrowForward />
-            </button>
-          </div>
-        </div>
+            </div>
 
-        {/* LIFE LESSON */}
-        <div className="mobile-main-books-lifeLesson-section">
-          <h2 className="mobile-main-books-section-title-lifeLesson">
-            Life Lesson
-          </h2>
-          <div className="mobile-main-books-lifeLesson-content">
-            <button
-              className="mobile-nav-arrow left-arrow"
-              onClick={handleLifeLessonPrev}
-            >
-              <IoChevronBack />
-            </button>
-            {visibleLifeLesson.map((university, index) => (
-              <div className="mobile-main-books-lifeLesson-item-section">
-                <div key={index}>
-                  <div className="mobile-main-books-lifeLesson-item">
-                    <img
-                      src={ForYou}
-                      alt={university.title}
-                      className="mobile-main-books-lifeLesson-image"
-                    />
+            {/* Preferred by top Universities */}
+            <div className="mobile-main-books-university-section">
+              <h2 className="mobile-main-books-section-title-university">
+                Preferred by top Universities
+              </h2>
+              <div className="mobile-main-books-university-content">
+                {visibleUniversity.map((note, index) => (
+                  <div className="mobile-main-books-university-item-section">
+                    <div key={index}>
+                      <div className="mobile-main-books-university-item">
+                        <img
+                          src={ForYou}
+                          alt={note.title}
+                          className="mobile-main-books-university-image"
+                        />
+                      </div>
+                      <div className="mobile-main-books-university-details">
+                        <h3 className="mobile-main-books-university-title">
+                          {note.title}
+                        </h3>
+                        <p className="mobile-main-books-university-price">
+                          Price-{note.price} Rent-{note.rent}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mobile-main-books-lifeLesson-details">
-                    <h3 className="mobile-main-books-lifeLesson-title">
-                      {university.title}
-                    </h3>
-                    <p className="mobile-main-books-lifeLesson-price">
-                      Price-{university.price} Rent-{university.rent}
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
-            <button
-              className="mobile-main-books-nav-arrow main-books-right-arrow"
-              onClick={handleLifeLessonNext}
-            >
-              <IoIosArrowForward />
-            </button>
+            </div>
+
+            {/* LIFE LESSON */}
+            <div className="mobile-main-books-lifeLesson-section">
+              <h2 className="mobile-main-books-section-title-lifeLesson">
+                Life Lesson
+              </h2>
+              <div className="mobile-main-books-lifeLesson-content">
+                {visibleLifeLesson.map((university, index) => (
+                  <div className="mobile-main-books-lifeLesson-item-section">
+                    <div key={index}>
+                      <div className="mobile-main-books-lifeLesson-item">
+                        <img
+                          src={ForYou}
+                          alt={university.title}
+                          className="mobile-main-books-lifeLesson-image"
+                        />
+                      </div>
+                      <div className="mobile-main-books-lifeLesson-details">
+                        <h3 className="mobile-main-books-lifeLesson-title">
+                          {university.title}
+                        </h3>
+                        <p className="mobile-main-books-lifeLesson-price">
+                          Price-{university.price} Rent-{university.rent}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-       </div>
-      </div>
       </div>
     </>
   );

@@ -4,7 +4,11 @@
   
 }
 .leftsectionbottom-1 {
-  background: linear-gradient(to top, #CFFFCF, #eff1ef);
+
+
+  background: linear-gradient(180deg, rgba(207, 232, 239, 0.2) 0%, rgba(201, 228, 202, 0.5) 100%);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25), -4px -4px 4px rgba(0, 0, 0, 0.25), -4px 4px 4px rgba(0, 0, 0, 0.25), 4px -4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 
   padding: 0.625rem;
   border-radius: 25px;

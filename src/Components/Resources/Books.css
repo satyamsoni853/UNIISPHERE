@@ -1,23 +1,23 @@
 /* Main wrapper and title styles */
 .main-books-main-wrapper {
-  
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .main-books-main-title {
   margin-top: 110px;
   font-size: 40px;
   font-weight: 600;
-  width: 60%;
-  padding-left: 60px;
+  width: 80%;
+  padding-left: 40px;
   text-align: start;
 }
 
 .main-books-search-container {
-  
   display: flex;
   align-self: center;
   align-items: center;
@@ -97,7 +97,9 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto; /* Enables horizontal scrolling within the section */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .eBooks-item {
@@ -108,6 +110,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 0 0 auto;
 }
 
 .eBooks-image {
@@ -143,11 +146,9 @@
   background-color: transparent;
   border: none;
   font-size: 2.5rem;
- 
   color: #1f2937;
   cursor: pointer;
   padding: 0 0.5rem;
- 
 }
 
 .main-books-nav-arrow:hover {
@@ -186,7 +187,9 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto; /* Enables horizontal scrolling within the section */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .main-books-notes-item {
@@ -257,7 +260,9 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto; /* Enables horizontal scrolling within the section */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .main-books-university-item {
@@ -328,7 +333,9 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto; /* Enables horizontal scrolling within the section */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .main-books-lifeLesson-item {
@@ -366,30 +373,47 @@
   font-size: 1rem;
   color: #4b5563;
 }
-.eBooks-content ,
-.main-books-notes-content ,
-.main-books-university-content,
-.main-books-lifeLesson-content ::-webkit-scrollbar{
-  
+
+/* Custom Scrollbar for Desktop Sections */
+.eBooks-content::-webkit-scrollbar,
+.main-books-notes-content::-webkit-scrollbar,
+.main-books-university-content::-webkit-scrollbar,
+.main-books-lifeLesson-content::-webkit-scrollbar {
+  height: 8px;
+}
+
+.eBooks-content::-webkit-scrollbar-thumb,
+.main-books-notes-content::-webkit-scrollbar-thumb,
+.main-books-university-content::-webkit-scrollbar-thumb,
+.main-books-lifeLesson-content::-webkit-scrollbar-thumb {
+  background-color: #a1a1aa;
+  border-radius: 4px;
+}
+
+.eBooks-content::-webkit-scrollbar-track,
+.main-books-notes-content::-webkit-scrollbar-track,
+.main-books-university-content::-webkit-scrollbar-track,
+.main-books-lifeLesson-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
 /* Responsive Adjustments for Larger Screens */
 
 /* Media query for screens up to 1440px */
 @media (max-width: 1440px) {
-  .main-books-main-wrapper{
+  .main-books-main-wrapper {
     margin-left: 20px;
   }
   .main-books-main-title {
-    font-size: 50px; /* Slightly reduced font size */
-    padding-left: 50px; /* Adjusted for visibility */
+    font-size: 36px;
+    padding-left: 30px;
   }
   .eBooks-item {
-    width: 230px; /* Slightly smaller items */
+    width: 230px;
     height: 420px;
   }
   .eBooks-image {
-    height: 370px; /* Proportional adjustment */
+    height: 370px;
   }
   .main-books-notes-item,
   .main-books-university-item,
@@ -405,36 +429,32 @@
   .main-books-notes-content,
   .main-books-university-content,
   .main-books-lifeLesson-content {
-    gap: 3rem; /* Reduced gap */
+    gap: 3rem;
   }
   .main-books-nav-arrow {
-    margin-left: 40px;
-  
+    margin-left: 30px;
   }
 }
 
 /* Media query for screens up to 1024px */
 @media (max-width: 1024px) {
   .main-books-main-title {
-    font-size: 45px;
-    padding-left: 30px;
+    font-size: 32px;
+    padding-left: 20px;
     width: 100%;
-    
   }
   .main-books-search-input {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    width: 60%;
+    padding: 0.4rem;
+  }
+  .main-books-search-options {
+    width: 35%;
   }
   .main-books-option-button {
     width: 50px;
     height: 50px;
-    font-size: 20px;
-  }
-  .main-books-search-input{
-    width: 58%;
-    padding: 5px 10px;
-  }
-  .main-books-search-options{
-    width: 40%;
+    font-size: 24px;
   }
   .eBooks-item {
     width: 200px;
@@ -461,7 +481,6 @@
   }
   .main-books-nav-arrow {
     font-size: 2rem;
-    
   }
   .eBooks-title,
   .main-books-notes-title,
@@ -472,25 +491,28 @@
   .main-books-section-title-notes,
   .main-books-section-title-university,
   .main-books-section-title-lifeLesson {
-    font-size: 35px;
-    margin-left: 30px;
+    font-size: 32px;
+    margin-left: 20px;
   }
 }
 
 /* Media query for screens up to 860px */
 @media (max-width: 860px) {
   .main-books-main-title {
-    font-size: 40px;
-    width: 100%;
-    padding-left: 25px;
+    font-size: 28px;
+    padding-left: 15px;
   }
   .main-books-search-input {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    width: 55%;
+  }
+  .main-books-search-options {
+    width: 40%;
   }
   .main-books-option-button {
     width: 45px;
     height: 45px;
-    font-size: 22px;
+    font-size: 20px;
   }
   .eBooks-item {
     width: 180px;
@@ -517,7 +539,6 @@
   }
   .main-books-nav-arrow {
     font-size: 1.8rem;
-  
   }
   .eBooks-title,
   .main-books-notes-title,
@@ -528,101 +549,25 @@
   .main-books-section-title-notes,
   .main-books-section-title-university,
   .main-books-section-title-lifeLesson {
-    font-size: 32px;
-    margin-left: 25px;
+    font-size: 28px;
+    margin-left: 15px;
   }
 }
 
-/* Media query for screens up to 768px (Mobile) - UNCHANGED */
-@media (max-width: 768px) {
-  .main-books-main-title {
-    font-size: 35px;
-    padding-left: 20px;
-    width: 100%;
-  }
-  .main-books-search-container {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    background-color: blue;
-
-  }
-  .main-books-search-input {
-    width: 50%;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    border: 3px solid #d1d5db;
-  }
-  .main-books-search-options {
-    width: 50%;
-    justify-content: center;
-  }
-  .main-books-option-button {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-  }
-  .eBooks-item {
-    width: 150px;
-    height: 280px;
-  }
-  .eBooks-image {
-    height: 240px;
-  }
-  .main-books-notes-item,
-  .main-books-university-item,
-  .main-books-lifeLesson-item {
-    width: 150px;
-  }
-  .main-books-notes-image,
-  .main-books-university-image,
-  .main-books-lifeLesson-image {
-    height: 210px;
-  }
-  .eBooks-content,
-  .main-books-notes-content,
-  .main-books-university-content,
-  .main-books-lifeLesson-content {
-    gap: 1rem;
-  }
-  .main-books-nav-arrow {
-    font-size: 1.5rem;
-    
-  }
-  .eBooks-title,
-  .main-books-notes-title,
-  .main-books-university-title,
-  .main-books-lifeLesson-title {
-    font-size: 1rem;
-  }
-  .main-books-section-title-notes,
-  .main-books-section-title-university,
-  .main-books-section-title-lifeLesson {
-    font-size: 30px;
-    margin-left: 20px;
-  }
-}
+/* Media query for screens up to 768px (Tablet/Mobile Transition) */
 @media (max-width: 768px) {
   .main-books-main-wrapper {
     display: none;
   }
 }
-@media (min-width:769px){
-  .mobile-section-view-parent{
+
+@media (min-width: 769px) {
+  .mobile-section-view-parent {
     display: none;
   }
 }
 
-
-
-
-
-
-
-
 /* MOBILE VIEW OF THE SECTION */
-
 .mobile-main-books-main-wrapper {
   width: 100%;
   height: 100%;
@@ -630,23 +575,28 @@
   margin: auto;
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
+  padding: 0 15px;
+  box-sizing: border-box;
 }
+
 .mobile-main-books-main-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   width: 100%;
-  line-height: 1;
-  padding-left: 0px;
+  line-height: 1.2;
+  padding-left: 0;
   text-align: start;
 }
+
 .mobile-books-main-heading {
   display: flex;
   align-items: center;
   gap: 5px;
+  margin-bottom: 1rem;
 }
+
 .mobile-books-backIcon {
-  font-size: 50px;
+  font-size: 40px;
   margin-bottom: 3px;
   color: #1f2937;
   cursor: pointer;
@@ -657,7 +607,7 @@
   align-self: center;
   align-items: center;
   width: 100%;
-  max-width: 90%;
+  max-width: 100%;
   justify-content: space-between;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
@@ -665,10 +615,10 @@
 
 .mobile-main-books-search-input {
   width: 50%;
-  padding: 0.2rem;
-  font-size: 1rem;
+  padding: 0.3rem;
+  font-size: 0.9rem;
   border-radius: 9999px;
-  border: 5px solid #d1d5db;
+  border: 3px solid #d1d5db;
   outline: none;
 }
 
@@ -679,15 +629,14 @@
 .mobile-main-books-search-options {
   display: flex;
   justify-content: flex-start;
-  gap: 0.2rem;
-  align-items: start;
-  /* margin-bottom: 2.5rem; */
+  gap: 0.5rem;
+  align-items: center;
   width: 48%;
 }
 
 .mobile-main-books-option-button {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -699,27 +648,12 @@
   font-weight: 500;
 }
 
-.mobile-main-books-option-button-1 {
-  background-color: #db3e39;
-}
-
-.mobile-main-books-option-button-2 {
-  background-color: #ddc058;
-}
-
-.mobile-main-books-option-button-3 {
-  background-color: #2b9da7;
-}
-
-.mobile-main-books-option-button-4 {
-  background-color: #a17a97;
-}
-.mobile-main-books-option-button-5 {
-  background-color: #80898e;
-}
-.mobile-main-books-option-button-6 {
-  background-color: #ea756a;
-}
+.mobile-main-books-option-button-1 { background-color: #db3e39; }
+.mobile-main-books-option-button-2 { background-color: #ddc058; }
+.mobile-main-books-option-button-3 { background-color: #2b9da7; }
+.mobile-main-books-option-button-4 { background-color: #a17a97; }
+.mobile-main-books-option-button-5 { background-color: #80898e; }
+.mobile-main-books-option-button-6 { background-color: #ea756a; }
 
 .mobile-main-books-option-button:hover {
   opacity: 0.9;
@@ -731,162 +665,253 @@
   outline: none;
 }
 
+/* Mobile eBooks Section */
 .mobile-eBooks-content {
   display: flex;
   width: 100%;
-  gap: 0;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
-.mobile-eBooks-items-list{
+
+.mobile-eBooks-items-list {
   display: flex;
   width: 100%;
   align-items: center;
-  
+  gap: 10px;
+  padding: 0 10px;
 }
+
 .mobile-eBooks-item {
-  width: 91px;
+  width: 100px;
   border-radius: 5px;
   margin: 0 5px;
   text-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 0 0 auto;
 }
+
 .mobile-eBooks-image {
   width: 100%;
-  height: 113px;
+  height: 120px;
   border-radius: 5px;
-
   object-fit: cover;
 }
+
 .mobile-eBooks-details {
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
 }
+
 .mobile-eBooks-title {
   font-size: 12px;
   font-weight: 600;
 }
+
 .mobile-eBooks-price {
   font-size: 10px;
   font-weight: 600;
 }
 
-/* notes section */
-
+/* Mobile Notes Section */
 .mobile-main-books-notes-content {
   display: flex;
   width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 10px;
+  padding: 0 10px;
 }
 
 .mobile-main-books-notes-item {
-  width: 70px;
+  width: 100px;
   border-radius: 5px;
   margin: 0 5px;
   text-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 0 0 auto;
 }
+
 .mobile-main-books-notes-image {
   width: 100%;
-  height: 113px;
+  height: 120px;
   border-radius: 5px;
   object-fit: cover;
 }
+
 .mobile-main-books-notes-details {
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
 }
+
 .mobile-main-books-notes-title {
   font-size: 12px;
   font-weight: 600;
 }
+
 .mobile-main-books-notes-price {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  line-height: 1;
 }
 
-/* Prefered by the University */
-
+/* Mobile University Section */
 .mobile-main-books-university-content {
   display: flex;
   width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 10px;
+  padding: 0 10px;
 }
 
 .mobile-main-books-university-item {
-  width: 70px;
+  width: 100px;
   border-radius: 5px;
   margin: 0 5px;
   text-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 0 0 auto;
 }
+
 .mobile-main-books-university-image {
   width: 100%;
-  height: 113px;
+  height: 120px;
   border-radius: 5px;
   object-fit: cover;
 }
+
 .mobile-main-books-university-details {
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
 }
+
 .mobile-main-books-university-title {
   font-size: 12px;
   font-weight: 600;
 }
+
 .mobile-main-books-university-price {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
 }
 
-/* Life Lesson */
-
+/* Mobile Life Lesson Section */
 .mobile-main-books-lifeLesson-content {
   display: flex;
   width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 10px;
+  padding: 0 10px;
 }
 
 .mobile-main-books-lifeLesson-item {
-  width: 70px;
+  width: 100px;
   border-radius: 5px;
   margin: 0 5px;
   text-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 0 0 auto;
 }
+
 .mobile-main-books-lifeLesson-image {
   width: 100%;
-  height: 113px;
+  height: 120px;
   border-radius: 5px;
   object-fit: cover;
 }
+
 .mobile-main-books-lifeLesson-details {
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
 }
+
 .mobile-main-books-lifeLesson-title {
   font-size: 12px;
   font-weight: 600;
 }
+
 .mobile-main-books-lifeLesson-price {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
 }
- 
 
-@media (max-width: 320px) {
-  .mobile-eBooks-item {
-    width: 70px;
-    border-radius: 5px;
-    margin: 0 5px;
-    text-align: start;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Custom Scrollbar for Mobile Sections */
+.mobile-eBooks-content::-webkit-scrollbar,
+.mobile-main-books-notes-content::-webkit-scrollbar,
+.mobile-main-books-university-content::-webkit-scrollbar,
+.mobile-main-books-lifeLesson-content::-webkit-scrollbar {
+  height: 6px;
+}
+
+.mobile-eBooks-content::-webkit-scrollbar-thumb,
+.mobile-main-books-notes-content::-webkit-scrollbar-thumb,
+.mobile-main-books-university-content::-webkit-scrollbar-thumb,
+.mobile-main-books-lifeLesson-content::-webkit-scrollbar-thumb {
+  background-color: #a1a1aa;
+  border-radius: 4px;
+}
+
+.mobile-eBooks-content::-webkit-scrollbar-track,
+.mobile-main-books-notes-content::-webkit-scrollbar-track,
+.mobile-main-books-university-content::-webkit-scrollbar-track,
+.mobile-main-books-lifeLesson-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Media Queries for Smaller Mobile Devices */
+@media (max-width: 425px) {
+  .mobile-main-books-main-wrapper {
+    padding: 0 10px;
   }
-  .mobile-books-main-heading {
-    width: 130%;
-    margin-bottom: 0.5rem;
+  .mobile-main-books-main-title {
+    font-size: 16px;
+  }
+  .mobile-books-backIcon {
+    font-size: 35px;
+  }
+  .mobile-main-books-search-input {
+    width: 55%;
+    font-size: 0.8rem;
+    padding: 0.2rem;
+  }
+  .mobile-main-books-search-options {
+    width: 45%;
+    gap: 0.4rem;
+  }
+  .mobile-main-books-option-button {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .mobile-eBooks-item,
+  .mobile-main-books-notes-item,
+  .mobile-main-books-university-item,
+  .mobile-main-books-lifeLesson-item {
+    width: 90px;
+  }
+  .mobile-eBooks-image,
+  .mobile-main-books-notes-image,
+  .mobile-main-books-university-image,
+  .mobile-main-books-lifeLesson-image {
+    height: 110px;
+  }
+}
+
+@media (max-width: 375px) {
+  .mobile-main-books-main-title {
+    font-size: 15px;
   }
   .mobile-main-books-search-input {
     width: 60%;
@@ -894,43 +919,57 @@
   .mobile-main-books-search-options {
     width: 40%;
   }
-  .mobile-main-books-search-container {
-    max-width: 100%;
-    margin: auto;
-    gap: 0.5rem;
+  .mobile-eBooks-item,
+  .mobile-main-books-notes-item,
+  .mobile-main-books-university-item,
+  .mobile-main-books-lifeLesson-item {
+    width: 85px;
+  }
+  .mobile-eBooks-image,
+  .mobile-main-books-notes-image,
+  .mobile-main-books-university-image,
+  .mobile-main-books-lifeLesson-image {
+    height: 100px;
   }
 }
 
-@media (max-width: 375px) {
-  .mobile-main-books-notes-item,
-  .mobile-main-books-university-item,
-  .mobile-main-books-lifeLesson-item {
-    width: 91px;
+@media (max-width: 320px) {
+  .mobile-main-books-main-wrapper {
+    padding: 0 5px;
   }
-}
-@media (max-width: 425px) {
-  .mobile-main-books-notes-item,
-  .mobile-main-books-university-item,
-  .mobile-main-books-lifeLesson-item {
-    width: 92px;
+  .mobile-main-books-main-title {
+    font-size: 14px;
+  }
+  .mobile-books-backIcon {
+    font-size: 30px;
   }
   .mobile-main-books-search-container {
     max-width: 100%;
-    gap: 0.5rem;
+    gap: 0.3rem;
   }
-  .mobile-main-books-search-options{
-    gap: 0.75rem;
+  .mobile-main-books-search-input {
+    width: 65%;
+    font-size: 0.7rem;
   }
-  .mobile-main-books-option-button{
-    width: 35px;
-    height: 35px;
+  .mobile-main-books-search-options {
+    width: 35%;
+    gap: 0.3rem;
   }
-
-}
-@media (max-width: 768px) {
+  .mobile-main-books-option-button {
+    width: 25px;
+    height: 25px;
+    font-size: 10px;
+  }
+  .mobile-eBooks-item,
   .mobile-main-books-notes-item,
   .mobile-main-books-university-item,
   .mobile-main-books-lifeLesson-item {
-    width: 91px;
+    width: 80px;
+  }
+  .mobile-eBooks-image,
+  .mobile-main-books-notes-image,
+  .mobile-main-books-university-image,
+  .mobile-main-books-lifeLesson-image {
+    height: 95px;
   }
 }

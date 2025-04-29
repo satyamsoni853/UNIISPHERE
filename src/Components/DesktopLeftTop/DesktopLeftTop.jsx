@@ -40,7 +40,7 @@ function DesktopLeftTop() {
   }, [articles]);
 
   return (
-    <div className="leftsectiontop-1">
+    <div className="leftsectiontop-1"  >
       <h3 className="leftsectiontop-1-heading">Trends</h3>
       <div className="leftsectiontop-1-container">
         <div className="leftsectiontop-1-scroll">

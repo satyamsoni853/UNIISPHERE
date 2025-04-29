@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: column;
  position: relative;
+ z-index: 999;
 
 }
 
 .messages-widget {
   position: fixed;
-  z-index: 99;
+  z-index: 9999;
   bottom: 20px;
   right: 20px;
   background: rgb(242, 215, 219);
@@ -24,7 +25,7 @@
 
 .messages-widget:hover {
   background: rgb(235, 200, 205);
-}
+
  
   border-radius: 50%;
   object-fit: cover;

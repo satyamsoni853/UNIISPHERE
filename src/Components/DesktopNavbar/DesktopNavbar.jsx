@@ -508,20 +508,20 @@ function DesktopNavbar() {
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
       {activeIcon === "home" ? (
-        <IoHomeOutline
+        <IoHome
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
         />
       ) : (
-        <IoHome 
+        <IoHomeOutline
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
         />
       )}
       <img
-        src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
+        src={activeIcon === "network" ?  NetworkBlack : NetworkWhite}
         alt="Network"
         className="desktop-icon"
         onClick={() => {
@@ -531,14 +531,14 @@ function DesktopNavbar() {
         }}
       />
       <img
-        src={activeIcon === "add" ? AddWhite : AddBlack}
+        src={activeIcon === "add" ?  AddBlack: AddWhite }
         alt="Add"
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
       <div className="notification-icon-container">
         <img
-          src={activeIcon === "notifications" ? NotificationWhite : NotificationBlack}
+          src={activeIcon === "notifications" ?  NotificationBlack: NotificationWhite }
           alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
@@ -590,7 +590,7 @@ function DesktopNavbar() {
         )}
       </div>
       <img
-        src  src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
+         src={activeIcon === "clender" ?  ClenderBlack: ClenderWhite}
         alt="Calendar"
         className="desktop-icon"
         onClick={handleClenderClick}

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./NetworkPageSection.css";
 import ProfilePhoto from "./ProfilePhoto.svg";
-import ConnectSvg from "./Connection.svg"; // Fixed variable name (connectsvg -> connectSvg)
-import DesktopRightSection from "../DesktopRight/DesktopRight.jsx"
-import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx"; // Fixed naming (DesktopNavbarr -> DesktopNavbar)
+import ConnectSvg from "./Connection.svg";
+import DesktopRightSection from "../DesktopRight/DesktopRight.jsx";
+import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx";
 import Background from "../Background/Background.jsx";
-import MobileFooter from "../Mobilefooter/MobileFooter.jsx"; // Fixed naming (Mobilefooter -> MobileFooter)
+import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import redXIcon from "./Close.svg";
 import greenCheckIcon from "./Check.svg";
 import MobileNavbar from "../MobileNavbar/MobileNavbar.jsx";
+
 
 // DUMMY_DATA - Used for testing when API is not available
 const DUMMY_DATA = [
@@ -73,6 +74,8 @@ const REQUEST_DUMMY_DATA = [
 function NetworkPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [showRequestMode, setShowRequestMode] = useState(false);
+  const [showCatchUpMode, setShowCatchUpMode] = useState(false);
+  const [showNewConnectionMode, setShowNewConnectionMode] = useState(false);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [connections, setConnections] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -93,10 +96,12 @@ function NetworkPage() {
   useEffect(() => {
     if (showRequestMode) {
       fetchPendingRequests();
+    } else if (showCatchUpMode || showNewConnectionMode) {
+      fetchConnections();
     } else {
       fetchConnections();
     }
-  }, [showRequestMode]);
+  }, [showRequestMode, showCatchUpMode, showNewConnectionMode]);
 
   const fetchConnections = async () => {
     setConnectionsLoading(true);
@@ -174,7 +179,7 @@ function NetworkPage() {
       return;
     }
 
-    const loginUserId = localStorage.getItem("LoginuserId"); // Fixed variable name (LoginuserId -> loginUserId)
+    const loginUserId = localStorage.getItem("LoginuserId");
     console.log("Connection login userId:", loginUserId);
 
     try {
@@ -227,7 +232,7 @@ function NetworkPage() {
   const handleAcceptRequest = async (connectionId) => {
     if (!token) return;
 
-    const loginUserId = localStorage.getItem("LoginuserId"); // Fixed variable name
+    const loginUserId = localStorage.getItem("LoginuserId");
     if (!loginUserId) {
       console.error("loginUserId not found in localStorage");
       return;
@@ -353,10 +358,22 @@ function NetworkPage() {
 
   const handleRequestClick = () => {
     setShowRequestMode(true);
+    setShowCatchUpMode(false);
+    setShowNewConnectionMode(false);
   };
 
-  const handleCatchUpClick = () => {
+  const handleCatchUpClick = (userId) => {
+    console.log(`Catching up with user: ${userId || "all"}`);
+    setShowCatchUpMode(true);
     setShowRequestMode(false);
+    setShowNewConnectionMode(false);
+  };
+
+  const handleNewConnectionClick = () => {
+    setShowNewConnectionMode(true);
+    setShowRequestMode(false);
+    setShowCatchUpMode(false);
+    fetchConnections();
   };
 
   const toggleDummyData = () => {
@@ -371,156 +388,221 @@ function NetworkPage() {
         <Background />
         <div className="networkpage">
           <div className="networkpage-container">
-            <div className="networkpage-left-section">
-              {/* Uncomment to enable dummy data toggle button */}
-              {/* <button
-                onClick={toggleDummyData}
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  right: "10px",
-                  zIndex: 1000,
-                  padding: "5px 10px",
-                  backgroundColor: useDummyData ? "#4CAF50" : "#f44336",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                {useDummyData ? "Using Dummy Data" : "Using Real API"}
-              </button> */}
-
-              {showRequestMode ? (
-                <div className="networkpage-grid">
-                  {loading ? (
-                    <div>Loading pending requests...</div>
-                  ) : error ? (
-                    <div>Error: {error}</div>
-                  ) : pendingRequests.length > 0 ? (
-                    pendingRequests.map((request, index) => (
-                      <div
-                        key={request.id}
-                        className="networkpage-card"
-                        style={{
-                          backgroundColor:
-                            backgroundColors[index % backgroundColors.length],
-                        }}
-                      >
-                        <div className="networkpage-profile-pic-container">
-                          <img
-                            src={
-                              request.user1?.profilePictureUrl || profilePhoto
-                            }
-                            alt={`${request.user1?.username}'s profile`}
-                            className="networkpage-profile-pic"
-                            onError={(e) => {
-                              e.target.src = ProfilePhoto;
-                            }}
-                          />
-                        </div>
-                        <h3 className="networkpage-name">
-                          {request.user1?.username || "Unknown User"}
-                        </h3>
-                        <p className="networkpage-education">
-                          {request.user1?.headline || "No headline"}
-                        </p>
-                        <div className="networkpage-actions">
-                          <img
-                            src={redXIcon}
-                            alt="Decline"
-                            className="action-icon"
-                            onClick={() => handleDeclineRequest(request.id)}
-                            style={{ cursor: "pointer" }}
-                          />
-                          <img
-                            src={greenCheckIcon}
-                            alt="Accept"
-                            className="action-icon"
-                            onClick={() => handleAcceptRequest(request.id)}
-                            style={{ cursor: "pointer" }}
-                          />
-                        </div>
-                        <div className="networkpage-stats">
-                          {/* <span>Request ID: {request.id}</span>
-                          <span>From: {request.userId1}</span> */}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div>No pending connection requests</div>
-                  )}
-                </div>
-              ) : (
-                <div className="networkpage-grid">
-                  {connectionsLoading ? (
-                    <div>Loading users...</div>
-                  ) : error ? (
-                    <div>Error: {error}</div>
-                  ) : connections.length > 0 ? (
-                    connections.map((user, index) => (
-                      <div
-                        key={user.id}
-                        className="networkpage-card"
-                        style={{
-                          backgroundColor:
-                            backgroundColors[index % backgroundColors.length],
-                        }}
-                      >
-                        <div className="networkpage-profile-pic-container">
-                          <img
-                            src={user.profilePictureUrl}
-                            alt={`${user.username}'s profile`}
-                            className="networkpage-profile-pic"
-                            onError={(e) => {
-                              e.target.src = ProfilePhoto;
-                            }}
-                          />
-                        </div>
-                        <h3 className="networkpage-name">{user.username}</h3>
-                        <p className="networkpage-education">ID: {user.id}</p>
-                        <p className="networkpage-description">
-                          {user.headline || "No headline"}
-                        </p>
+            <div className="networkpage-content">
+              {/* Left Section: Connections/Requests */}
+              <div className="networkpage-left-section">
+                {showRequestMode ? (
+                  <div className="networkpage-grid">
+                    {loading ? (
+                      <div>Loading pending requests...</div>
+                    ) : error ? (
+                      <div>Error: {error}</div>
+                    ) : pendingRequests.length > 0 ? (
+                      pendingRequests.map((request, index) => (
                         <div
-                          className="networkpage-connect-icon"
-                          onClick={handleConnectClick}
+                          key={request.id}
+                          className="networkpage-card"
+                          style={{
+                            backgroundColor:
+                              backgroundColors[index % backgroundColors.length],
+                          }}
                         >
-                          <img src={ConnectSvg} alt="Connect" />
+                          <div className="networkpage-profile-pic-container">
+                            <img
+                              src={request.user1?.profilePictureUrl || ProfilePhoto}
+                              alt={`${request.user1?.username}'s profile`}
+                              className="networkpage-profile-pic"
+                              onError={(e) => {
+                                e.target.src = ProfilePhoto;
+                              }}
+                            />
+                          </div>
+                          <h3 className="networkpage-name">
+                            {request.user1?.username || "Unknown User"}
+                          </h3>
+                          <p className="networkpage-education">
+                            {request.user1?.headline || "No headline"}
+                          </p>
+                          <div className="networkpage-actions">
+                            <img
+                              src={redXIcon}
+                              alt="Decline"
+                              className="action-icon"
+                              onClick={() => handleDeclineRequest(request.id)}
+                              style={{ cursor: "pointer" }}
+                            />
+                            <img
+                              src={greenCheckIcon}
+                              alt="Accept"
+                              className="action-icon"
+                              onClick={() => handleAcceptRequest(request.id)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </div>
+                          <div className="networkpage-stats">
+                            {/* <span>Request ID: {request.id}</span>
+                            <span>From: {request.userId1}</span> */}
+                          </div>
                         </div>
-                        <div className="networkpage-stats">
-                          <span>{user.connections} connect</span>
-                          <span>{user.collaborations} collaborate</span>
+                      ))
+                    ) : (
+                      <div>No pending connection requests</div>
+                    )}
+                  </div>
+                ) : showCatchUpMode ? (
+                  <div className="networkpage-grid catchup-mode">
+                    {connectionsLoading ? (
+                      <div>Loading users...</div>
+                    ) : error ? (
+                      <div>Error: {error}</div>
+                    ) : connections.length > 0 ? (
+                      connections.map((user, index) => (
+                        <div key={user.id} className="connection-row">
+                          <div
+                            className="networkpage-card"
+                            style={{
+                              backgroundColor:
+                                backgroundColors[index % backgroundColors.length],
+                            }}
+                          >
+                            <div className="networkpage-profile-pic-container">
+                              <img
+                                src={user.profilePictureUrl}
+                                alt={`${user.username}'s profile`}
+                                className="networkpage-profile-pic"
+                                onError={(e) => {
+                                  e.target.src = ProfilePhoto;
+                                }}
+                              />
+                            </div>
+                            <h3 className="networkpage-name">{user.username}</h3>
+                            <p className="networkpage-education">ID: {user.id}</p>
+                            <p className="networkpage-description">
+                              {user.headline || "No headline"}
+                            </p>
+                            <div className="networkpage-actions">
+                              <div
+                                className="networkpage-connect-icon"
+                                onClick={handleConnectClick}
+                              >
+                                <img src={ConnectSvg} alt="Connect" />
+                              </div>
+                            </div>
+                            <div className="networkpage-stats">
+                              <span>{user.connections} connect</span>
+                              <span>{user.collaborations} collaborate</span>
+                            </div>
+                          </div>
+                          {!isMobile && (
+                            <div className="catchup-container">
+                              <h2 className="catchup-heading">{user.username}</h2>
+                              <p className="catchup-text">
+                                Catch up with {user.username}! Share updates, collaborate on projects, or start a new conversation.
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div>No users found</div>
-                  )}
-                </div>
-              )}
+                      ))
+                    ) : (
+                      <div>No users found</div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="networkpage-grid">
+                    {connectionsLoading ? (
+                      <div>Loading users...</div>
+                    ) : error ? (
+                      <div>Error: {error}</div>
+                    ) : connections.length > 0 ? (
+                      connections.map((user, index) => (
+                        <div
+                          key={user.id}
+                          className="networkpage-card"
+                          style={{
+                            backgroundColor:
+                              backgroundColors[index % backgroundColors.length],
+                          }}
+                        >
+                          <div className="networkpage-profile-pic-container">
+                            <img
+                              src={user.profilePictureUrl}
+                              alt={`${user.username}'s profile`}
+                              className="networkpage-profile-pic"
+                              onError={(e) => {
+                                e.target.src = ProfilePhoto;
+                              }}
+                            />
+                          </div>
+                          <h3 className="networkpage-name">{user.username}</h3>
+                          <p className="networkpage-education">ID: {user.id}</p>
+                          <p className="networkpage-description">
+                            {user.headline || "No headline"}
+                          </p>
+                          <div className="networkpage-actions">
+                            <div
+                              className="networkpage-connect-icon"
+                              onClick={handleConnectClick}
+                            >
+                              <img src={ConnectSvg} alt="Connect" />
+                            </div>
+                           
+                          </div>
+                          <div className="networkpage-stats">
+                            <span>{user.connections} connect</span>
+                            <span>{user.collaborations} collaborate</span>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div>No users found</div>
+                    )}
+                  </div>
+                )}
 
-              <div className="networkpage-buttons">
-                <button
-                  className="networkpage-action-btn"
-                  onClick={handleCatchUpClick}
-                >
-                  CATCH UP
-                </button>
-                <button
-                  className="networkpage-action-btn"
-                  onClick={handleRequestClick}
-                >
-                  REQUEST
-                </button>
-                <button
-                  onClick={fetchPendingRequests}
-                  className="networkpage-action-btn"
-                >
-                  NEW CONNECTION
-                </button>
+                <div className="networkpage-buttons">
+                  <button
+                    className="networkpage-action-btn  CATCHUP-Btn "
+                    onClick={() => handleCatchUpClick(null)}
+                  >
+                    CATCHUP
+                  </button>
+                  <button
+                    className="networkpage-action-btn REQUEST-Btn"
+                    onClick={handleRequestClick}
+                  >
+                    REQUEST
+                  </button>
+                  <button
+                    className="networkpage-action-btn NEW-CONNECTION-Btn"
+                    onClick={handleNewConnectionClick}
+                  >
+                    NEW CONNECTION
+                  </button>
+                </div>
               </div>
             </div>
+
+            {/* Mobile Catch Up Containers */}
+            {isMobile && showCatchUpMode && (
+              <div className="networkpage-mobile-catchup">
+                {connectionsLoading ? (
+                  <div>Loading users...</div>
+                ) : error ? (
+                  <div>Error: {error}</div>
+                ) : connections.length > 0 ? (
+                  connections.map((user, index) => (
+                    <div key={user.id} className="catchup-container mobile">
+                      <h2 className="catchup-heading">{user.username}</h2>
+                      <p className="catchup-text">
+                        Catch up with {user.username}! Share updates, collaborate on projects, or start a new conversation.
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <div>No users found</div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -534,6 +616,7 @@ function NetworkPage() {
         </div>
       )}
       {isMobile && <MobileFooter />}
+      <DesktopRightSection/>
     </div>
   );
 }

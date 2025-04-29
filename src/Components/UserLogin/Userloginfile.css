@@ -152,6 +152,9 @@
   top: 10px;
   left: 10px;
   width: 80px;
+  border-radius: 70px;
+  /* display: none; */
+  /* border-right: 20px solid white; */
   background-color: transparent;
 }
 .button-container {

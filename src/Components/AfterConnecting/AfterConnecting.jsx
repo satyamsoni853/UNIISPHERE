@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Background from "../Background/Background.jsx";
-import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
+import DesktopLeftBottomSection from "../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx";
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
-import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
+import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 import backIcon from "./backsvg.svg";
@@ -37,7 +37,8 @@ function AfterConnecting() {
     {
       title: "Internship Tech Corp",
       subtitle: "Internship",
-      description: "Assisted in developing a mobile app during a summer internship.",
+      description:
+        "Assisted in developing a mobile app during a summer internship.",
     },
     {
       title: "Open Source Contribution",
@@ -100,7 +101,12 @@ function AfterConnecting() {
     fullAboutText: "Nothing to say as of now",
     skills: dummySkills,
     interests: dummyInterests,
-    education: ["Hansraj College (DU)", "BA Programme", "12th Class", "10th Class"],
+    education: [
+      "Hansraj College (DU)",
+      "BA Programme",
+      "12th Class",
+      "10th Class",
+    ],
     collaboratorName: dummyCollabs.collaboratorName,
     subCollaborators: dummyCollabs.subCollaborators,
     paragraph: dummyCollabs.paragraph,
@@ -171,7 +177,8 @@ function AfterConnecting() {
         const transformedData = {
           profilePic: data.profilePictureUrl || defaultData.profilePic,
           collabs:
-            data.connections1?.filter((c) => c.status === "accepted").length || 0,
+            data.connections1?.filter((c) => c.status === "accepted").length ||
+            0,
           connections:
             (data.connections1?.length || 0) + (data.connections2?.length || 0),
           connections1: data.connections1 || [],
@@ -184,11 +191,22 @@ function AfterConnecting() {
           address: data.location || defaultData.address,
           about: data.About || defaultData.about,
           fullAboutText: data.About || defaultData.about,
-          skills: data.Skills && data.Skills.length > 0 ? data.Skills : dummySkills,
-          interests: data.Interests && data.Interests.length > 0 ? data.Interests : dummyInterests,
-          education: data.education && data.education.length >= 4 ? data.education : defaultData.education,
-          collaboratorName: data.collaboratorName || dummyCollabs.collaboratorName,
-          subCollaborators: data.subCollaborators && data.subCollaborators.length > 0 ? data.subCollaborators : dummyCollabs.subCollaborators,
+          skills:
+            data.Skills && data.Skills.length > 0 ? data.Skills : dummySkills,
+          interests:
+            data.Interests && data.Interests.length > 0
+              ? data.Interests
+              : dummyInterests,
+          education:
+            data.education && data.education.length >= 4
+              ? data.education
+              : defaultData.education,
+          collaboratorName:
+            data.collaboratorName || dummyCollabs.collaboratorName,
+          subCollaborators:
+            data.subCollaborators && data.subCollaborators.length > 0
+              ? data.subCollaborators
+              : dummyCollabs.subCollaborators,
           paragraph: data.paragraph || dummyCollabs.paragraph,
           experiences:
             data.experiences && data.experiences.length > 0
@@ -302,7 +320,9 @@ function AfterConnecting() {
 
   const prevInterestSlide = () => {
     setCurrentInterestIndex((prev) =>
-      prev === 0 ? Math.max(data.interests.length - 4, 0) : Math.max(prev - 1, 0)
+      prev === 0
+        ? Math.max(data.interests.length - 4, 0)
+        : Math.max(prev - 1, 0)
     );
   };
 
@@ -379,14 +399,16 @@ function AfterConnecting() {
                       />
                     </div>
                     <div className="afterconnectinginProfile-full-section-parent-collabs-connection">
-                    <div className="afterconnectinginProfile-full-section-message-box">
-                      <Link
-                        to={`/MessageFinalClass2/${userId}`}
-                        onClick={() => localStorage.setItem("SearchUserId", userId)}
-                      >
-                        Message
-                      </Link>
-                    </div>
+                      <div className="afterconnectinginProfile-full-section-message-box">
+                        <Link
+                          to={`/MessageFinalClass2/${userId}`}
+                          onClick={() =>
+                            localStorage.setItem("SearchUserId", userId)
+                          }
+                        >
+                          Message
+                        </Link>
+                      </div>
                       <div className="afterconnectinginProfile-full-section-collabsDetails">
                         <h4>Collabs</h4>
                         <span>{data.collabs}</span>
@@ -395,9 +417,7 @@ function AfterConnecting() {
                         <h4>Connections</h4>
                         <span>{data.connections}</span>
                       </div>
-                      
                     </div>
-                    
                   </div>
 
                   <div className="afterconnectinginProfile-full-section-profile-info">
@@ -419,7 +439,9 @@ function AfterConnecting() {
                 </div>
 
                 <div className="afterconnectinginProfile-full-section-goal-section">
-                  <p className="afterconnectinginProfile-full-section-heading">About</p>
+                  <p className="afterconnectinginProfile-full-section-heading">
+                    About
+                  </p>
                   <p>
                     {data.about === "Nothing to say as of now" ? (
                       <span style={{ fontStyle: "italic", color: "#666" }}>
@@ -441,11 +463,15 @@ function AfterConnecting() {
                 </div>
 
                 <div className="afterconnectinginProfile-full-section-upload-slider-box">
-                  <p className="afterconnectinginProfile-full-section-heading">Upload</p>
+                  <p className="afterconnectinginProfile-full-section-heading">
+                    Upload
+                  </p>
                   <div className="afterconnectinginProfile-full-section-down-upload-slider-con">
                     <IoIosArrowBack
                       className={`afterconnectinginProfile-full-section-Back ${
-                        currentImageIndex === 0 ? "afterconnectingindisabled" : ""
+                        currentImageIndex === 0
+                          ? "afterconnectingindisabled"
+                          : ""
                       }`}
                       onClick={prevImageSlide}
                       disabled={currentImageIndex === 0}
@@ -469,7 +495,9 @@ function AfterConnecting() {
                     </div>
                     <IoIosArrowForward
                       className={`afterconnectinginProfile-full-section-Forward ${
-                        currentImageIndex >= images.length - 3 ? "afterconnectingindisabled" : ""
+                        currentImageIndex >= images.length - 3
+                          ? "afterconnectingindisabled"
+                          : ""
                       }`}
                       onClick={nextImageSlide}
                       disabled={currentImageIndex >= images.length - 3}
@@ -478,7 +506,9 @@ function AfterConnecting() {
                 </div>
 
                 <div className="afterconnectinginProfile-full-section-experience-slider-box">
-                  <p className="afterconnectinginProfile-full-section-heading">Experience</p>
+                  <p className="afterconnectinginProfile-full-section-heading">
+                    Experience
+                  </p>
                   <div className="afterconnectinginProfile-full-section-down-experience-slider-con">
                     <IoIosArrowBack
                       className={`afterconnectinginProfile-full-section-Back ${
@@ -488,43 +518,54 @@ function AfterConnecting() {
                       disabled={currentExpIndex === 0}
                     />
                     <div className="afterconnectinginProfile-full-section-slide-track">
-                      {data.experiences && data.experiences.length > 0 ? (
-                        data.experiences
-                          .slice(currentExpIndex, currentExpIndex + 3)
-                          .map((exp, index) => (
-                            <div
-                              style={{
-                                backgroundColor: color[index % color.length],
-                              }}
-                              key={index}
-                              className="afterconnectinginProfile-full-section-experince-inner-div"
-                            >
-                              <div className="afterconnectinginProfile-full-section-experince-innerdiv-heading">
-                                <h3>{exp.title || "Untitled"}</h3>
-                                <h5>{exp.subtitle || "No subtitle"}</h5>
+                      {data.experiences && data.experiences.length > 0
+                        ? data.experiences
+                            .slice(currentExpIndex, currentExpIndex + 3)
+                            .map((exp, index) => (
+                              <div
+                                style={{
+                                  backgroundColor: color[index % color.length],
+                                }}
+                                key={index}
+                                className="afterconnectinginProfile-full-section-experince-inner-div"
+                              >
+                                <div className="afterconnectinginProfile-full-section-experince-innerdiv-heading">
+                                  <h3>{exp.title || "Untitled"}</h3>
+                                  <h5>{exp.subtitle || "No subtitle"}</h5>
+                                </div>
+                                <p>
+                                  {exp.description ||
+                                    "No description available"}
+                                </p>
                               </div>
-                              <p>{exp.description || "No description available"}</p>
-                            </div>
-                          ))
-                      ) : (
-                        dummyExperienceData
-                          .slice(currentExpIndex, currentExpIndex + 3)
-                          .map((exp, index) => (
-                            <div
-                              style={{
-                                backgroundColor: color[index % color.length],
-                              }}
-                              key={index}
-                              className="afterconnectinginProfile-full-section-experince-inner-div"
-                            >
-                              <div className="afterconnectinginProfile-full-section-experince-innerdiv-heading">
-                                <h3>{exp.title} <span style={{ fontSize: "12px", color: "#888" }}>[Dummy]</span></h3>
-                                <h5>{exp.subtitle}</h5>
+                            ))
+                        : dummyExperienceData
+                            .slice(currentExpIndex, currentExpIndex + 3)
+                            .map((exp, index) => (
+                              <div
+                                style={{
+                                  backgroundColor: color[index % color.length],
+                                }}
+                                key={index}
+                                className="afterconnectinginProfile-full-section-experince-inner-div"
+                              >
+                                <div className="afterconnectinginProfile-full-section-experince-innerdiv-heading">
+                                  <h3>
+                                    {exp.title}{" "}
+                                    <span
+                                      style={{
+                                        fontSize: "12px",
+                                        color: "#888",
+                                      }}
+                                    >
+                                      [Dummy]
+                                    </span>
+                                  </h3>
+                                  <h5>{exp.subtitle}</h5>
+                                </div>
+                                <p>{exp.description}</p>
                               </div>
-                              <p>{exp.description}</p>
-                            </div>
-                          ))
-                      )}
+                            ))}
                     </div>
                     <IoIosArrowForward
                       className={`afterconnectinginProfile-full-section-Forward ${
@@ -540,47 +581,54 @@ function AfterConnecting() {
 
                 <div className="afterconnectinginProfile-full-section-main-wrapper-section">
                   <div className="afterconnectinginProfile-full-section-heading-and-logos">
-                    <p className="afterconnectinginProfile-full-section-heading">Skills</p>
+                    <p className="afterconnectinginProfile-full-section-heading">
+                      Skills
+                    </p>
                     <div className="afterconnectinginProfile-full-section-logos"></div>
                   </div>
                   <div className="afterconnectinginProfile-full-section-content-and-arrow">
                     <IoIosArrowBack
                       className={`afterconnectinginProfile-full-section-left-btn ${
-                        currentSkillIndex === 0 ? "afterconnectingindisabled" : ""
+                        currentSkillIndex === 0
+                          ? "afterconnectingindisabled"
+                          : ""
                       }`}
                       onClick={prevSkillSlide}
                       disabled={currentSkillIndex === 0}
                     />
                     <div className="afterconnectinginProfile-full-section-suggested-tags">
-                      {data.skills && data.skills.length > 0 ? (
-                        data.skills
-                          .slice(currentSkillIndex, currentSkillIndex + 4)
-                          .map((skill, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                backgroundColor: color[index % color.length],
-                              }}
-                              className="afterconnectinginProfile-full-section-tag"
-                            >
-                              {skill || "Unnamed skill"}
-                            </div>
-                          ))
-                      ) : (
-                        dummySkills
-                          .slice(currentSkillIndex, currentSkillIndex + 4)
-                          .map((skill, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                backgroundColor: color[index % color.length],
-                              }}
-                              className="afterconnectinginProfile-full-section-tag"
-                            >
-                              {skill} <span style={{ fontSize: "10px", color: "#888" }}>[Dummy]</span>
-                            </div>
-                          ))
-                      )}
+                      {data.skills && data.skills.length > 0
+                        ? data.skills
+                            .slice(currentSkillIndex, currentSkillIndex + 4)
+                            .map((skill, index) => (
+                              <div
+                                key={index}
+                                style={{
+                                  backgroundColor: color[index % color.length],
+                                }}
+                                className="afterconnectinginProfile-full-section-tag"
+                              >
+                                {skill || "Unnamed skill"}
+                              </div>
+                            ))
+                        : dummySkills
+                            .slice(currentSkillIndex, currentSkillIndex + 4)
+                            .map((skill, index) => (
+                              <div
+                                key={index}
+                                style={{
+                                  backgroundColor: color[index % color.length],
+                                }}
+                                className="afterconnectinginProfile-full-section-tag"
+                              >
+                                {skill}{" "}
+                                <span
+                                  style={{ fontSize: "10px", color: "#888" }}
+                                >
+                                  [Dummy]
+                                </span>
+                              </div>
+                            ))}
                     </div>
                     <IoIosArrowForward
                       className={`afterconnectinginProfile-full-section-right-btn ${
@@ -596,7 +644,9 @@ function AfterConnecting() {
 
                 {/* Collabs Section */}
                 <div className="afterconnectinginProfile-full-section-main-collabs-section">
-                  <p className="afterconnectinginProfile-full-section-heading">Collabs</p>
+                  <p className="afterconnectinginProfile-full-section-heading">
+                    Collabs
+                  </p>
                   <div className="afterconnectinginProfile-full-section-innerDiv-onlyContent">
                     <div className="afterconnectinginProfile-full-section-left">
                       <div className="afterconnectinginProfile-full-section-collabratorCard">
@@ -605,11 +655,24 @@ function AfterConnecting() {
                         </div>
                         <div className="afterconnectinginProfile-full-section-collabratorDetails">
                           <h4>
-                            {data.collaboratorName || dummyCollabs.collaboratorName}
+                            {data.collaboratorName ||
+                              dummyCollabs.collaboratorName}
                             {!data.collaboratorName && (
-                              <span style={{ fontSize: "12px", color: "#888" }}> [Dummy]</span>
+                              <span style={{ fontSize: "12px", color: "#888" }}>
+                                {" "}
+                                [Dummy]
+                              </span>
                             )}
                           </h4>
+                          <p className="afterconnectinginProfile-full-section-para">
+                            {data.paragraph || dummyCollabs.paragraph}
+                            {!data.paragraph && (
+                              <span style={{ fontSize: "12px", color: "#888" }}>
+                                {" "}
+                                [Dummy]
+                              </span>
+                            )}
+                          </p>
                           <div className="afterconnectinginProfile-full-section-subCollabrators">
                             {/* <div className="afterconnectinginProfile-full-section-sunCollabrators-name">
                               {(data.subCollaborators && data.subCollaborators.length > 0
@@ -628,12 +691,6 @@ function AfterConnecting() {
                           </div>
                         </div>
                       </div>
-                      <p className="afterconnectinginProfile-full-section-para">
-                        {data.paragraph || dummyCollabs.paragraph}
-                        {!data.paragraph && (
-                          <span style={{ fontSize: "12px", color: "#888" }}> [Dummy]</span>
-                        )}
-                      </p>
                     </div>
                     <div className="afterconnectinginProfile-full-section-right">
                       <img src={uploadimage1} alt="Collab Background" />
@@ -644,47 +701,60 @@ function AfterConnecting() {
                 {/* Interests Section */}
                 <div className="afterconnectinginProfile-full-section-main-wrapper-section">
                   <div className="afterconnectinginProfile-full-section-heading-and-logos">
-                    <p className="afterconnectinginProfile-full-section-heading">Interests</p>
+                    <p className="afterconnectinginProfile-full-section-heading">
+                      Interests
+                    </p>
                     <div className="afterconnectinginProfile-full-section-logos"></div>
                   </div>
                   <div className="afterconnectinginProfile-full-section-content-and-arrow">
                     <IoIosArrowBack
                       className={`afterconnectinginProfile-full-section-left-btn ${
-                        currentInterestIndex === 0 ? "afterconnectingindisabled" : ""
+                        currentInterestIndex === 0
+                          ? "afterconnectingindisabled"
+                          : ""
                       }`}
                       onClick={prevInterestSlide}
                       disabled={currentInterestIndex === 0}
                     />
                     <div className="afterconnectinginProfile-full-section-suggested-tags">
-                      {data.interests && data.interests.length > 0 ? (
-                        data.interests
-                          .slice(currentInterestIndex, currentInterestIndex + 4)
-                          .map((interest, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                backgroundColor: color[index % color.length],
-                              }}
-                              className="afterconnectinginProfile-full-section-tag"
-                            >
-                              {interest || "Unnamed interest"}
-                            </div>
-                          ))
-                      ) : (
-                        dummyInterests
-                          .slice(currentInterestIndex, currentInterestIndex + 4)
-                          .map((interest, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                backgroundColor: color[index % color.length],
-                              }}
-                              className="afterconnectinginProfile-full-section-tag"
-                            >
-                              {interest} <span style={{ fontSize: "10px", color: "#888" }}>[Dummy]</span>
-                            </div>
-                          ))
-                      )}
+                      {data.interests && data.interests.length > 0
+                        ? data.interests
+                            .slice(
+                              currentInterestIndex,
+                              currentInterestIndex + 4
+                            )
+                            .map((interest, index) => (
+                              <div
+                                key={index}
+                                style={{
+                                  backgroundColor: color[index % color.length],
+                                }}
+                                className="afterconnectinginProfile-full-section-tag"
+                              >
+                                {interest || "Unnamed interest"}
+                              </div>
+                            ))
+                        : dummyInterests
+                            .slice(
+                              currentInterestIndex,
+                              currentInterestIndex + 4
+                            )
+                            .map((interest, index) => (
+                              <div
+                                key={index}
+                                style={{
+                                  backgroundColor: color[index % color.length],
+                                }}
+                                className="afterconnectinginProfile-full-section-tag"
+                              >
+                                {interest}{" "}
+                                <span
+                                  style={{ fontSize: "10px", color: "#888" }}
+                                >
+                                  [Dummy]
+                                </span>
+                              </div>
+                            ))}
                     </div>
                     <IoIosArrowForward
                       className={`afterconnectinginProfile-full-section-right-btn ${
@@ -693,7 +763,9 @@ function AfterConnecting() {
                           : ""
                       }`}
                       onClick={nextInterestSlide}
-                      disabled={currentInterestIndex >= data.interests.length - 4}
+                      disabled={
+                        currentInterestIndex >= data.interests.length - 4
+                      }
                     />
                   </div>
                 </div>
@@ -719,7 +791,8 @@ function AfterConnecting() {
                               : "afterconnectinginbtn-right"
                           }`}
                           style={{
-                            backgroundColor: educationColors[index % educationColors.length],
+                            backgroundColor:
+                              educationColors[index % educationColors.length],
                             color: "#333",
                             border: "1px solid #ccc",
                           }}

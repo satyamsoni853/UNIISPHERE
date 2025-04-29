@@ -227,8 +227,8 @@
 
 .mobile-middle-action-bar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: end;
+  align-items: end;
   width: 100%;
   padding: 10px;
 }
