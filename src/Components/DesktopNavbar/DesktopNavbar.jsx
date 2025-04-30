@@ -2,7 +2,8 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { IoHome, IoHomeOutline } from "react-icons/io5";
+import { FaHome } from "react-icons/fa";
+import { GoHome } from "react-icons/go";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
@@ -18,9 +19,10 @@ import ProfileImage from "./ProfileImage.png";
 import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
-import ClenderBlack from './ClenderBlackIcon.svg';
-import ClenderWhite from './ClenderWhiteIcon.svg';
+import ClenderBlack from "./ClenderBlackIcon.svg";
+import ClenderWhite from "./ClenderWhiteIcon.svg";
 import Background from "../Background/Background";
+import { IoIosAdd, IoIosAddCircleOutline } from "react-icons/io";
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -51,26 +53,27 @@ function DesktopNavbar() {
   const navigate = useNavigate();
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] =
+    useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
     {
       time: "2 hrs",
       message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
-      color: "notification-border-blue-400",
+      color: "desktop-notification-border-blue-400",
     },
     {
       time: "3 hrs",
       message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
-      color: "notification-border-yellow-400",
+      color: "desktop-notification-border-yellow-400",
     },
     {
       time: "6 hrs",
       message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
-      color: "notification-border-red-400",
+      color: "desktop-notification-border-red-400",
     },
   ]);
   const buttonscolor = ["#DB3E3933", "#DDC058", "#A17A97"];
@@ -227,7 +230,9 @@ function DesktopNavbar() {
     setError(null);
     try {
       const response = await axios.get(
-        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
+        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(
+          username
+        )}`
       );
       setSearchResults(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
@@ -504,24 +509,28 @@ function DesktopNavbar() {
       ]
     : recentSearches;
 
+  console.log("Combined Recent Results:", combinedRecentResults);
+
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
       {activeIcon === "home" ? (
-        <IoHome
+        <GoHome
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
+          style={{ color: "white" }}
         />
       ) : (
-        <IoHomeOutline
+        <FaHome
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
+          style={{ color: "black" }}
         />
       )}
       <img
-        src={activeIcon === "network" ?  NetworkBlack : NetworkWhite}
+        src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
         alt="Network"
         className="desktop-icon"
         onClick={() => {
@@ -531,25 +540,29 @@ function DesktopNavbar() {
         }}
       />
       <img
-        src={activeIcon === "add" ?  AddBlack: AddWhite }
+        src={activeIcon === "add" ? AddWhite : AddBlack}
         alt="Add"
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-      <div className="notification-icon-container">
+      <div className="desktop-notification-icon-container">
         <img
-          src={activeIcon === "notifications" ?  NotificationBlack: NotificationWhite }
-          alt="Notifications"
+          src={
+            activeIcon === "notification" || showDropdown
+              ? NotificationWhite
+              : NotificationBlack
+          }
+          alt="Network"
           className="desktop-icon"
           onClick={handleNotificationClick}
         />
         {showNotificationDropdown && (
-          <div className="notification-dropdown">
-            <div className="notification-tabs">
+          <div className="desktop-notification-dropdown">
+            <div className="desktop-notification-tabs">
               {Object.keys(timeFilters).map((tab) => (
                 <button
                   key={tab}
-                  className={`notification-tab-button ${
+                  className={`desktop-notification-tab-button ${
                     activeNotificationTab === tab ? "active" : ""
                   }`}
                   onClick={() => setActiveNotificationTab(tab)}
@@ -558,30 +571,36 @@ function DesktopNavbar() {
                 </button>
               ))}
             </div>
-            <div className="notification-list">
+            <div className="desktop-notification-list">
               {filteredNotifications.length > 0 ? (
                 filteredNotifications.map((notif, index) => (
                   <div
                     key={index}
-                    className={`notification-item ${notif.color}`}
+                    className={`desktop-notification-item ${notif.color}`}
                   >
                     <img
                       src="https://via.placeholder.com/40"
                       alt="Profile"
-                      className="notification-profile-pic"
+                      className="desktop-notification-profile-pic"
                     />
-                    <div className="notification-content">
-                      <p className="notification-sender">Vijay Prasad</p>
-                      <p className="notification-message">{notif.message}</p>
+                    <div className="desktop-notification-content">
+                      <p className="desktop-notification-sender">
+                        Vijay Prasad
+                      </p>
+                      <p className="desktop-notification-message">
+                        {notif.message}
+                      </p>
                     </div>
-                    <span className="notification-time">{notif.time}</span>
+                    <span className="desktop-notification-time">
+                      {notif.time}
+                    </span>
                     {notif.alert && (
-                      <span className="notification-alert">🔔</span>
+                      <span className="desktop-notification-alert">🔔</span>
                     )}
                   </div>
                 ))
               ) : (
-                <p className="notification-empty">
+                <p className="desktop-notification-empty">
                   No notifications in this time range.
                 </p>
               )}
@@ -589,16 +608,9 @@ function DesktopNavbar() {
           </div>
         )}
       </div>
-      <img
-         src={activeIcon === "clender" ?  ClenderBlack: ClenderWhite}
-        alt="Calendar"
-        className="desktop-icon"
-        onClick={handleClenderClick}
-        title="Calendar"
-      />
 
       {/* User Dropdown */}
-      <div className="user-icon-container">
+      <div className="desktop-user-icon-container">
         <img
           src={userProfileImage || UserIcon}
           alt="User"
@@ -606,53 +618,57 @@ function DesktopNavbar() {
           onClick={handleUserIconClick}
         />
         {isUserDropdownOpen && (
-          <div className="self-profile-card">
-            <div className="self-profile-header">
+          <div className="desktop-self-profile-card">
+            <div className="desktop-self-profile-header">
               <img
                 src={
                   localStorage.profilePicture ||
                   "https://via.placeholder.com/50"
                 }
                 alt="Profile"
-                className="self-profile-pic"
+                className="desktop-self-profile-pic"
               />
-              <div className="self-profile-info">
-                <h2 className="self-profile-name">
+              <div className="desktop-self-profile-info">
+                <h2 className="desktop-self-profile-name">
                   {localStorage.username || "User Name"}
                 </h2>
-                <p className="self-profile-label">Position</p>
+                <p className="desktop-self-profile-label">Position</p>
               </div>
             </div>
             <button
-              className="self-profile-edit-button"
+              className="desktop-self-profile-edit-button"
               onClick={handleEditProfile}
             >
               Edit Profile
             </button>
-            <div className="self-profile-stats">
-              <div className="self-profile-stat">
+            <div className="desktop-self-profile-stats">
+              <div className="desktop-self-profile-stat">
                 <span>Posts</span>
-                <span className="self-profile-stat-value">{posts}</span>
+                <span className="desktop-self-profile-stat-value">{posts}</span>
               </div>
-              <div className="self-profile-stat">
+              <div className="desktop-self-profile-stat">
                 <span>Likes</span>
-                <span className="self-profile-stat-value">{totalLikes}</span>
+                <span className="desktop-self-profile-stat-value">
+                  {totalLikes}
+                </span>
               </div>
-              <div className="self-profile-stat">
+              <div className="desktop-self-profile-stat">
                 <span>Comments</span>
-                <span className="self-profile-stat-value">{totalComments}</span>
+                <span className="desktop-self-profile-stat-value">
+                  {totalComments}
+                </span>
               </div>
             </div>
-            <div className="self-profile-menu">
+            <div className="desktop-self-profile-menu">
               <div
-                className="self-profile-menu-item"
+                className="desktop-self-profile-menu-item"
                 onClick={() => navigate("/SelfSetting")}
               >
                 Settings
               </div>
-              <div className="self-profile-menu-item">Help</div>
+              <div className="desktop-self-profile-menu-item">Help</div>
               <div
-                className="self-profile-menu-item self-profile-sign-out"
+                className="desktop-self-profile-menu-item desktop-self-profile-sign-out"
                 onClick={handleSignOut}
               >
                 Sign Out
@@ -664,28 +680,28 @@ function DesktopNavbar() {
 
       {/* Network Dropdown */}
       {showDropdown && (
-        <div className="connections-card">
-          <div className="connections-item">
-            <Link to="/NetworkPage" className="connection-link">
+        <div className="desktop-connections-card">
+          <div className="desktop-connections-item">
+            <Link to="/NetworkPage" className="desktop-connection-link">
               Connection
             </Link>
           </div>
-          <div className="connections-item">Edu-vault</div>
-          <div className="connections-item active">
-            <Link to="/HumanLib" className="connection-link">
+          <div className="desktop-connections-item">Edu-vault</div>
+          <div className="desktop-connections-item active">
+            <Link to="/HumanLib" className="desktop-connection-link">
               Human Library
             </Link>
           </div>
-          <div className="connections-item">Guidance</div>
-          <div className="connections-item">NGOs</div>
-          <div className="connections-item">
+          <div className="desktop-connections-item">Guidance</div>
+          <div className="desktop-connections-item">NGOs</div>
+          <div className="desktop-connections-item">
             <Link
               to={
                 localStorage.getItem("userId")
                   ? `/blog/${localStorage.getItem("userId")}`
                   : "/blog"
               }
-              className="connection-link"
+              className="desktop-connection-link"
             >
               Blog
             </Link>
@@ -710,9 +726,9 @@ function DesktopNavbar() {
           <div className="desktop-search-results">
             <Background />
             {/* Recent Searches Section with Search Results */}
-            <div className="search-section">
-              <h4 className="search-section-title">Recent</h4>
-              <div className="recent-search-list">
+            <div className="desktop-search-section">
+              <h4 className="desktop-search-section-title">Recent</h4>
+              <div className="desktop-recent-search-list">
                 {isLoading ? (
                   <div className="desktop-search-loading">Searching...</div>
                 ) : error ? (
@@ -721,21 +737,16 @@ function DesktopNavbar() {
                   combinedRecentResults.map((item) => (
                     <div
                       key={item.id}
-                      className="recent-search-item"
+                      className="desktop-recent-search-item"
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={
-                          ProfileImage ||
-                          item.avatar ||
-                          item.profilePicture ||
-                          UserIcon
-                        }
-                        alt={item.name || item.username}
-                        className="recent-search-avatar"
+                        src={item.avatar}
+                        alt={item.name}
+                        className="desktop-recent-search-avatar"
                       />
-                      <span className="recent-search-name">
-                        {item.name || item.username}
+                      <span className="desktop-recent-search-name">
+                        {item.name}
                       </span>
                     </div>
                   ))
@@ -748,22 +759,24 @@ function DesktopNavbar() {
             </div>
 
             {/* Suggested Users Section */}
-            <div className="search-section">
-              <h4 className="search-section-title">Suggested</h4>
+            <div className="desktop-search-section">
+              <h4 className="desktop-search-section-title">Suggested</h4>
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="suggested-user-item"
+                  className="desktop-suggested-user-item"
                   onClick={() => handleProfileClick(user.id)}
                 >
                   <img
                     src={ProfileImage}
                     alt={user.name}
-                    className="suggested-user-avatar"
+                    className="desktop-suggested-user-avatar"
                   />
-                  <div className="suggested-user-info">
-                    <span className="suggested-user-name">{user.name}</span>
-                    <p className="suggested-user-university">
+                  <div className="desktop-suggested-user-info">
+                    <span className="desktop-suggested-user-name">
+                      {user.name}
+                    </span>
+                    <p className="desktop-suggested-user-university">
                       {user.university}
                     </p>
                   </div>
@@ -772,11 +785,11 @@ function DesktopNavbar() {
             </div>
 
             {/* Tabs for Trend/Event/News */}
-            <div className="search-section">
-              <h4 className="search-section-title search-section-title2">
+            <div className="desktop-search-section">
+              <h4 className="desktop-search-section-title desktop-search-section-title2">
                 What you should put your eyes & thoughts on
               </h4>
-              <div className="search-tabs">
+              <div className="desktop-search-tabs">
                 {["Trend", "Event", "News"].map((tab, index) => (
                   <button
                     style={{
@@ -785,7 +798,7 @@ function DesktopNavbar() {
                     }}
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`search-tab-button ${
+                    className={`desktop-search-tab-button ${
                       activeTab === tab ? "active" : ""
                     }`}
                   >
@@ -795,65 +808,69 @@ function DesktopNavbar() {
               </div>
 
               {activeTab === "Trend" ? (
-                <div className="trend-results">
+                <div className="desktop-trend-results">
                   {trends.map((trend) => (
-                    <div key={trend.id} className="trend-item">
+                    <div key={trend.id} className="desktop-trend-item">
                       <img
                         src={Trendimage}
                         alt={trend.title}
-                        className="trend-image"
+                        className="desktop-trend-image"
                       />
-                      <div className="trend-info">
-                        <p className="trend-title">{trend.title}</p>
-                        <p className="trend-description">{trend.description}</p>
+                      <div className="desktop-trend-info">
+                        <p className="desktop-trend-title">{trend.title}</p>
+                        <p className="desktop-trend-description">
+                          {trend.description}
+                        </p>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : activeTab === "Event" ? (
-                <div className="event-results">
+                <div className="desktop-event-results">
                   {events.length > 0 ? (
                     events.map((event) => (
-                      <div key={event.id} className="event-item">
+                      <div key={event.id} className="desktop-event-item">
                         <img
                           src={
                             event.image || "https://via.placeholder.com/60x40"
                           }
                           alt={event.title}
-                          className="event-image"
+                          className="desktop-event-image"
                         />
-                        <div className="event-info">
-                          <p className="event-title">{event.title}</p>
-                          <p className="event-description">
+                        <div className="desktop-event-info">
+                          <p className="desktop-event-title">{event.title}</p>
+                          <p className="desktop-event-description">
                             {event.description}
                           </p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="no-results">No events found</p>
+                    <p className="desktop-no-results">No events found</p>
                   )}
                 </div>
               ) : (
-                <div className="news-results">
+                <div className="desktop-news-results">
                   {news.length > 0 ? (
                     news.map((item) => (
-                      <div key={item.id} className="news-item">
+                      <div key={item.id} className="desktop-news-item">
                         <img
                           src={
                             item.image || "https://via.placeholder.com/60x40"
                           }
                           alt={item.title}
-                          className="news-image"
+                          className="desktop-news-image"
                         />
-                        <div className="news-info">
-                          <p className="news-title">{item.title}</p>
-                          <p className="news-description">{item.description}</p>
+                        <div className="desktop-news-info">
+                          <p className="desktop-news-title">{item.title}</p>
+                          <p className="desktop-news-description">
+                            {item.description}
+                          </p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="no-results">No news found</p>
+                    <p className="desktop-no-results">No news found</p>
                   )}
                 </div>
               )}
@@ -871,18 +888,20 @@ function DesktopNavbar() {
 
       {/* Upload Section Overlay */}
       {showUploadSection && (
-        <div className="upload-overlay" onClick={handleCloseUpload}>
+        <div className="desktop-upload-overlay" onClick={handleCloseUpload}>
           <div
-            className="upload-container"
+            className="desktop-upload-container"
             onClick={(e) => e.stopPropagation()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
             {mediaList.length === 0 && (
-              <div className="upload-first-div">
-                <p className="upload-text">Drag & Drop your media here</p>
+              <div className="desktop-upload-first-div">
+                <p className="desktop-upload-text">
+                  Drag & Drop your media here
+                </p>
                 <button
-                  className="upload-button"
+                  className="desktop-upload-button"
                   onClick={() => inputRef.current.click()}
                 >
                   Upload from computer
@@ -890,8 +909,8 @@ function DesktopNavbar() {
               </div>
             )}
             {mediaList.length !== 0 && showAddMore && (
-              <div className="after-upload">
-                <div className="navbar">
+              <div className="desktop-after-upload">
+                <div className="desktop-create-post-navbar">
                   <img src={BackIcon} alt="Back" onClick={handleCloseUpload} />
                   <h6
                     onClick={() => {
@@ -902,18 +921,18 @@ function DesktopNavbar() {
                     Continue
                   </h6>
                 </div>
-                <div className="preview-container">
+                <div className="desktop-preview-container">
                   {mediaList.map((media, index) => (
-                    <div key={index} className="media-item">
+                    <div key={index} className="desktop-media-item">
                       {media.mediaType === "image" ? (
                         <img
-                          className="imageAndVideo"
+                          className="desktop-imageAndVideo"
                           src={media.previewURL}
                           alt="Uploaded media"
                         />
                       ) : (
                         <video
-                          className="imageAndVideo"
+                          className="desktop-imageAndVideo"
                           src={media.previewURL}
                           controls
                         />
@@ -922,7 +941,7 @@ function DesktopNavbar() {
                   ))}
                 </div>
                 <button
-                  className="add-more-btn"
+                  className="desktop-add-more-btn"
                   onClick={() => inputRef.current.click()}
                 >
                   Add More
@@ -930,10 +949,10 @@ function DesktopNavbar() {
               </div>
             )}
             {showPostDetails && (
-              <div className="create-post-main-container">
-                <div className="create-post-after-upload">
-                  <div className="create-post-navbar">
-                    <div className="image-and-name">
+              <div className="desktop-create-post-main-container">
+                <div className="desktop-create-post-after-upload">
+                  <div className="desktop-create-post-navbar">
+                    <div className="desktop-image-and-name">
                       <img src={ProfileImage} alt="Profile" />
                       <h3>{username || "Himanshu Choudary"}</h3>
                     </div>
@@ -941,29 +960,32 @@ function DesktopNavbar() {
                       {isLoading ? "Posting..." : "Create Post"}
                     </h6>
                   </div>
-                  <div className="post-content-container">
-                    <div className="image-and-caption">
+                  <div className="desktop-post-content-container">
+                    <div className="desktop-image-and-caption">
                       {mediaList.map((media, index) => (
-                        <div key={index} className="post-media-container">
+                        <div
+                          key={index}
+                          className="desktop-post-media-container"
+                        >
                           {media.mediaType === "image" ? (
                             <img
-                              className="create-post-imageAndVideo"
+                              className="desktop-create-post-imageAndVideo"
                               src={media.previewURL}
                               alt="Uploaded media"
                             />
                           ) : (
                             <video
-                              className="create-post-imageAndVideo"
+                              className="desktop-create-post-imageAndVideo"
                               src={media.previewURL}
                               controls
                             />
                           )}
                         </div>
                       ))}
-                      <div className="form-group">
-                        <label className="input-label">Caption</label>
+                      <div className="desktop-form-group">
+                        <label className="desktop-input-label">Caption</label>
                         <textarea
-                          className="caption-input"
+                          className="desktop-caption-input"
                           value={caption}
                           onChange={(e) => setCaption(e.target.value)}
                           placeholder="Write a caption..."
@@ -971,31 +993,35 @@ function DesktopNavbar() {
                         />
                       </div>
                     </div>
-                    <div className="privacy-settings">
-                      <div className="setting-item">
-                        <div className="setting-info">
+                    <div className="desktop-privacy-settings">
+                      <div className="desktop-post-mention">
+                        <h1>Add Mention</h1>
+                        <IoIosAdd className="desktop-post-mention-icon" />
+                      </div>
+                      <div className="desktop-setting-item">
+                        <div className="desktop-setting-info">
                           <h4>Hide Likes</h4>
-                          <p className="setting-description">
+                          <p className="desktop-setting-description">
                             Only you can see the number of likes on your post.
                           </p>
                         </div>
-                        <label className="toggle-switch">
+                        <label className="desktop-toggle-switch">
                           <input
                             type="checkbox"
                             checked={hideLikes}
                             onChange={(e) => setHideLikes(e.target.checked)}
                           />
-                          <span className="slider round"></span>
+                          <span className="desktop-slider desktop-round"></span>
                         </label>
                       </div>
-                      <div className="setting-item">
-                        <div className="setting-info">
+                      <div className="desktop-setting-item">
+                        <div className="desktop-setting-info">
                           <h4>Turn Off Comments</h4>
-                          <p className="setting-description">
+                          <p className="desktop-setting-description">
                             No one will be able to comment on this post.
                           </p>
                         </div>
-                        <label className="toggle-switch">
+                        <label className="desktop-toggle-switch">
                           <input
                             type="checkbox"
                             checked={disableComments}
@@ -1003,12 +1029,14 @@ function DesktopNavbar() {
                               setDisableComments(e.target.checked)
                             }
                           />
-                          <span className="slider round"></span>
+                          <span className="desktop-slider desktop-round"></span>
                         </label>
                       </div>
                     </div>
-                    <div className="submit-section">
-                      {error && <p className="error-message">{error}</p>}
+                    <div className="desktop-submit-section">
+                      {error && (
+                        <p className="desktop-error-message">{error}</p>
+                      )}
                     </div>
                   </div>
                 </div>

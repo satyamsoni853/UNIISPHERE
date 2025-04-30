@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./EventNews.css";
 import EventNewsImage from "./EventNewsImage.png";
-import {  IoArrowBackCircleOutline } from "react-icons/io5";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-import TrendImage from './trend.png';
+import TrendImage from "./trend.png";
 
 const EventNews = () => {
   const [selectedNews, setSelectedNews] = useState(null); // State to track the selected news item
@@ -119,18 +119,26 @@ const EventNews = () => {
                 <div key={index} className="event-news-item">
                   <h2>{even.title}</h2>
                   <div
-                    style={{ flexDirection: isEven ? "row" : "row-reverse" }}
+                    style={{ 
+                      flexDirection: isEven ? "row" :"row-reverse",
+                    gap:isEven ? "0rem" :"1rem" }}
                     className="event-item-image-and-description"
                   >
-                    <p className="event-item-description-title">{even.description}</p>
+                    <div className="event-item-description-title">
+                      {even.description}
+                    </div>
                     <img
                       src={even.image_url}
                       alt=""
                       onClick={() => handleImageClick(even)} // Click on image to show detailed view
                       style={{ cursor: "pointer" }}
                     />
-                    {isEven && <IoIosArrowForward className="event-news-forward-arrow" />}
-                    {!isEven && <IoIosArrowBack className="event-news-back-arrow" />}
+                    {isEven && (
+                      <IoIosArrowForward className="event-news-forward-arrow" />
+                    )}
+                    {!isEven && (
+                      <IoIosArrowBack className="event-news-back-arrow" />
+                    )}
                   </div>
                 </div>
               );
@@ -147,7 +155,11 @@ const EventNews = () => {
               <h2>{selectedNews.title}</h2>
             </div>
             <div className="detail-content">
-              <img src={selectedNews.image_url} alt="" className="detail-image" />
+              <img
+                src={selectedNews.image_url}
+                alt=""
+                className="detail-image"
+              />
               <p>{selectedNews.description}</p>
             </div>
             <div className="related-news">
@@ -185,7 +197,9 @@ const EventNews = () => {
                     style={{ flexDirection: isEven ? "row" : "row-reverse" }}
                     className="mobile-event-item-image-and-description"
                   >
-                    <p className="mobile-event-item-description-title">{even.description}</p>
+                    <p className="mobile-event-item-description-title">
+                      {even.description}
+                    </p>
                     <img
                       src={TrendImage}
                       alt=""
@@ -208,14 +222,22 @@ const EventNews = () => {
               <h2>{selectedNews.title}</h2>
             </div>
             <div className="mobile-detail-content">
-              <img src={selectedNews.image_url} alt="" className="mobile-detail-image" />
+              <img
+                src={selectedNews.image_url}
+                alt=""
+                className="mobile-detail-image"
+              />
               <p>{selectedNews.description}</p>
             </div>
             <div className="mobile-related-news">
               <h3>Similar</h3>
               <div className="mobile-related-news-items">
                 {relatedNews.map((item, index) => (
-                  <a key={index} href={item.link} className="mobile-related-news-item">
+                  <a
+                    key={index}
+                    href={item.link}
+                    className="mobile-related-news-item"
+                  >
                     {item.title}
                   </a>
                 ))}
