@@ -7,7 +7,9 @@
   padding: 0 20px;
   box-sizing: border-box;
 }
-
+.main-eBooks-arrows-and-items {
+  display: flex;
+}
 .main-books-main-title {
   margin-top: 110px;
   font-size: 40px;
@@ -59,14 +61,28 @@
   font-weight: 600;
 }
 
-.main-books-option-button-1 { background-color: #db3e39; }
-.main-books-option-button-2 { background-color: #ddc058; }
-.main-books-option-button-3 { background-color: #2b9da7; }
-.main-books-option-button-4 { background-color: #a17a97; }
-.main-books-option-button-5 { background-color: #80898e; }
-.main-books-option-button-6 { background-color: #ea756a; }
+.main-books-option-button-1 {
+  background-color: #db3e39;
+}
+.main-books-option-button-2 {
+  background-color: #ddc058;
+}
+.main-books-option-button-3 {
+  background-color: #2b9da7;
+}
+.main-books-option-button-4 {
+  background-color: #a17a97;
+}
+.main-books-option-button-5 {
+  background-color: #80898e;
+}
+.main-books-option-button-6 {
+  background-color: #ea756a;
+}
 
-.main-books-option-button:hover { opacity: 0.9; }
+.main-books-option-button:hover {
+  opacity: 0.9;
+}
 .main-books-option-button:active,
 .main-books-option-button:focus {
   border-color: #1f2937;
@@ -97,7 +113,6 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
@@ -187,7 +202,6 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
@@ -260,7 +274,6 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
@@ -333,7 +346,7 @@
   position: relative;
   width: 100%;
   justify-content: center;
-  overflow-x: auto;
+
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
@@ -402,7 +415,7 @@
 /* Media query for screens up to 1440px */
 @media (max-width: 1440px) {
   .main-books-main-wrapper {
-    margin-left: 20px;
+    margin-left: 50px;
   }
   .main-books-main-title {
     font-size: 36px;
@@ -429,70 +442,98 @@
   .main-books-notes-content,
   .main-books-university-content,
   .main-books-lifeLesson-content {
-    gap: 3rem;
+    gap: 2rem;
   }
   .main-books-nav-arrow {
     margin-left: 30px;
   }
 }
 
-/* Media query for screens up to 1024px */
-@media (max-width: 1024px) {
-  .main-books-main-title {
-    font-size: 32px;
-    padding-left: 20px;
-    width: 100%;
-  }
-  .main-books-search-input {
-    font-size: 1.3rem;
-    width: 60%;
-    padding: 0.4rem;
-  }
-  .main-books-search-options {
-    width: 35%;
-  }
-  .main-books-option-button {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-  }
-  .eBooks-item {
-    width: 200px;
-    height: 360px;
-  }
-  .eBooks-image {
-    height: 320px;
-  }
-  .main-books-notes-item,
-  .main-books-university-item,
-  .main-books-lifeLesson-item {
-    width: 200px;
-  }
-  .main-books-notes-image,
-  .main-books-university-image,
-  .main-books-lifeLesson-image {
-    height: 280px;
-  }
-  .eBooks-content,
+@media (max-width: 1200px) {
+  /* Adjust content containers */
   .main-books-notes-content,
   .main-books-university-content,
   .main-books-lifeLesson-content {
-    gap: 2rem;
+    gap: 2rem; /* Reduce gap from 3.8rem to 2rem, approx. 32px */
+    width: 120%; /* Ensure it fits within the parent container */
+    margin-right: 0; /* Remove any right margin causing overflow */
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
   }
+
+  /* Reduce item widths */
+  .main-books-notes-item,
+  .main-books-university-item,
+  .main-books-lifeLesson-item {
+    width: 220px; /* Decrease from 250px to 220px */
+  }
+  .main-books-notes-content::-webkit-scrollbar,
+  .main-books-university-content::-webkit-scrollbar,
+  .main-books-lifeLesson-content ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Adjust navigation arrows if present */
   .main-books-nav-arrow {
-    font-size: 2rem;
+    font-size: 2rem; /* Slightly smaller arrows */
+    margin-left: 10px; /* Consistent spacing */
+    margin-right: 10px; /* Prevent pushing content */
   }
-  .eBooks-title,
-  .main-books-notes-title,
-  .main-books-university-title,
-  .main-books-lifeLesson-title {
-    font-size: 1.2rem;
+
+  /* Ensure the main wrapper fits */
+  .main-books-main-wrapper {
+    padding: 0 15px; /* Reduce padding to maximize space */
   }
-  .main-books-section-title-notes,
-  .main-books-section-title-university,
-  .main-books-section-title-lifeLesson {
-    font-size: 32px;
-    margin-left: 20px;
+}
+@media (max-width: 1024px) {
+  .eBooks-content {
+    margin-left: 35px;
+    gap: 1rem;
+  }
+  .main-books-search-container {
+    gap: 20px;
+  }
+  .main-books-search-options {
+    width: 35%;
+    gap: 0.2rem;
+  }
+  .main-books-option-button {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+  }
+  .main-books-lifeLesson-content::-webkit-scrollbar {
+    display: none;
+  }
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  .card {
+    flex: 1 1 calc(50% - 1rem);
+    min-width: 200px;
+  }
+  .pricing-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .tile-image {
+    max-width: 100%;
+    height: auto;
+  }
+  .nav-bar {
+    padding: 0 1rem;
+  }
+  .search-bar {
+    width: 40%;
+    min-width: 200px;
+  }
+  .nav-icon {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
   }
 }
 
@@ -648,12 +689,24 @@
   font-weight: 500;
 }
 
-.mobile-main-books-option-button-1 { background-color: #db3e39; }
-.mobile-main-books-option-button-2 { background-color: #ddc058; }
-.mobile-main-books-option-button-3 { background-color: #2b9da7; }
-.mobile-main-books-option-button-4 { background-color: #a17a97; }
-.mobile-main-books-option-button-5 { background-color: #80898e; }
-.mobile-main-books-option-button-6 { background-color: #ea756a; }
+.mobile-main-books-option-button-1 {
+  background-color: #db3e39;
+}
+.mobile-main-books-option-button-2 {
+  background-color: #ddc058;
+}
+.mobile-main-books-option-button-3 {
+  background-color: #2b9da7;
+}
+.mobile-main-books-option-button-4 {
+  background-color: #a17a97;
+}
+.mobile-main-books-option-button-5 {
+  background-color: #80898e;
+}
+.mobile-main-books-option-button-6 {
+  background-color: #ea756a;
+}
 
 .mobile-main-books-option-button:hover {
   opacity: 0.9;
@@ -871,6 +924,14 @@
 }
 
 /* Media Queries for Smaller Mobile Devices */
+@media (max-width:767px){
+  .mobile-eBooks-content::-webkit-scrollbar,
+  .mobile-books-lifeLesson-content::-webkit-scrollbar,
+  .mobile-main-books-notes-content::-webkit-scrollbar,
+  .mobile-main-books-university-content::-webkit-scrollbar{
+    display: none;
+  }
+}
 @media (max-width: 425px) {
   .mobile-main-books-main-wrapper {
     padding: 0 10px;
@@ -907,6 +968,12 @@
   .mobile-main-books-lifeLesson-image {
     height: 110px;
   }
+  .mobile-eBooks-content::-webkit-scrollbar,
+  .mobile-books-lifeLesson-content::-webkit-scrollbar,
+  .mobile-main-books-notes-content::-webkit-scrollbar,
+  .mobile-main-books-university-content::-webkit-scrollbar{
+    display: none;
+  }
 }
 
 @media (max-width: 375px) {
@@ -930,6 +997,12 @@
   .mobile-main-books-university-image,
   .mobile-main-books-lifeLesson-image {
     height: 100px;
+  }
+  .mobile-eBooks-content::-webkit-scrollbar,
+  .mobile-books-lifeLesson-content::-webkit-scrollbar,
+  .mobile-main-books-notes-content::-webkit-scrollbar,
+  .mobile-main-books-university-content::-webkit-scrollbar{
+    display: none;
   }
 }
 
@@ -971,5 +1044,11 @@
   .mobile-main-books-university-image,
   .mobile-main-books-lifeLesson-image {
     height: 95px;
+  }
+  .mobile-eBooks-content::-webkit-scrollbar,
+  .mobile-books-lifeLesson-content::-webkit-scrollbar,
+  .mobile-main-books-notes-content::-webkit-scrollbar,
+  .mobile-main-books-university-content::-webkit-scrollbar{
+    display: none;
   }
 }

@@ -185,30 +185,34 @@ const Books = () => {
         {/* Ebooks Section */}
         <div className="eBooks-section">
           <h2 className="main-books-section-title-notes">E-Books</h2>
-          <div className="eBooks-content">
-            <button className="nav-arrow left-arrow" onClick={handlePrev}>
+         <div className="main-eBooks-arrows-and-items">
+         <button className="nav-arrow left-arrow" onClick={handlePrev}>
               <IoChevronBack />
             </button>
-            {visibleBooks.map((book, index) => (
-              <div key={index} className="eBooks-item-section">
-                <div className="eBooks-item">
-                  <img src={ForYou} alt={book.title} className="eBooks-image" />
-                  <div className="eBooks-details">
-                    <h3 className="eBooks-title">{book.title}</h3>
-                    <p className="eBooks-price">
-                      Price-{book.price} Rent-{book.rent}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button
+         <div className="eBooks-content">
+         
+         {visibleBooks.map((book, index) => (
+           <div key={index} className="eBooks-item-section">
+             <div className="eBooks-item">
+               <img src={ForYou} alt={book.title} className="eBooks-image" />
+               <div className="eBooks-details">
+                 <h3 className="eBooks-title">{book.title}</h3>
+                 <p className="eBooks-price">
+                   Price-{book.price} Rent-{book.rent}
+                 </p>
+               </div>
+             </div>
+           </div>
+         ))}
+        
+       </div>
+       <button
               className="main-books-nav-arrow main-books-right-arrow"
               onClick={handleNext}
             >
               <IoIosArrowForward />
             </button>
-          </div>
+         </div>
         </div>
 
         {/* Notes Section */}
@@ -293,7 +297,7 @@ const Books = () => {
           <h2 className="main-books-section-title-lifeLesson">Life Lesson</h2>
           <div className="main-books-lifeLesson-content">
             <button
-              className="nav-arrow left-arrow"
+              className="main-books-nav-arrow main-books-left-arrow"
               onClick={handleLifeLessonPrev}
             >
               <IoChevronBack />
