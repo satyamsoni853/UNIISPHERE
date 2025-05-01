@@ -183,6 +183,7 @@
  scroll-behavior: smooth;
   font-weight: 600;
   color: #5A5A5A;
+  
 }
 .mobile-event-item-description-title::-webkit-scrollbar {
 display: none;
