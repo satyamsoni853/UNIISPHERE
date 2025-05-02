@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function LibBlog() {
   return (
-    <div>
+    <div className="libblog-section-main-parent-container">
       <div className="libblog-section-navbar-container">
         <DesktopNavbar />
         <Background />
@@ -26,7 +26,7 @@ function LibBlog() {
           <div className="libblog-section-section-card-container">
             {/* Content */}
             <h1 className="libblog-section-section-title">
-              Welcome to <span>LibBlog</span>
+              Welcome to <span>Blog</span>
             </h1>
             <p className="libblog-section-section-subtitle">
               Explore academic books, novels, notes, references, life lessons, and more to support your learning and personal growth.
