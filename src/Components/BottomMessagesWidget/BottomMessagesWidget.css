@@ -155,7 +155,7 @@ background: linear-gradient(to bottom, #91f09877,#9cdbf265);
 }
 
 .message-text {
-  width: calc(100% -60px);
+  width: calc(100% - 60px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -167,6 +167,7 @@ background: linear-gradient(to bottom, #91f09877,#9cdbf265);
     display: none;
  
   font-size: 20px;
+}
 }
 
  
