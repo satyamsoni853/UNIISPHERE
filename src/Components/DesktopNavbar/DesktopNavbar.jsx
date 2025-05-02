@@ -15,7 +15,6 @@ import NetworkBlack from "./NetworkBlackIcon.svg";
 import NetworkWhite from "./NetworkWhiteIcon.svg";
 import NotificationBlack from "./NotificationBlackIcon.svg";
 import NotificationWhite from "./NotificationWhiteIcon.svg";
-import ProfileImage from "./ProfileImage.png";
 import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
@@ -48,6 +47,8 @@ function DesktopNavbar() {
   const [userProfileImage, setUserProfileImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [allUsersResponse, setAllUsersResponse] = useState(null);
+  const [connect, setConnect] = useState(0);
+  const [collaborate, setCollaborate] = useState(0);
   const inputRef = useRef(null);
   const searchContainerRef = useRef(null);
   const navigate = useNavigate();
@@ -203,6 +204,97 @@ function DesktopNavbar() {
     fetchAllUsers();
   }, [navigate, setError]);
 
+  // Fetch profile data for username and profile picture
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      const authToken = localStorage.getItem("authToken");
+      const userId = localStorage.getItem("userId");
+      if (!authToken || !userId) {
+        setError("Please log in to continue");
+        navigate("/login");
+        setLoading(false);
+        return;
+      }
+      try {
+        setLoading(true);
+        const profileResponse = await axios.get(
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        if (profileResponse.data && profileResponse.data.length > 0) {
+          const userData = profileResponse.data[0];
+          setUsername(userData.username || "");
+          setUserProfileImage(userData.profilePictureUrl || "");
+          localStorage.setItem("profilePicture", userData.profilePictureUrl || "");
+          localStorage.setItem("username", userData.username || "");
+          const connectCount = userData._count?.connections1 || 0;
+          const collaborateCount = userData._count?.connections2 || 0;
+          setConnect(connectCount);
+          setCollaborate(collaborateCount);
+        } else {
+          console.error("No profile data found:", profileResponse.data);
+          setError("No profile data found");
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+        setError(error.response?.data?.message || "Failed to load profile data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, [navigate, setError]);
+
+  // Fetch stats from /posts
+  const fetchStats = async () => {
+    const authToken = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("userId");
+    if (!authToken || !userId) {
+      setError("Please log in to continue");
+      navigate("/login");
+      return;
+    }
+    try {
+      const response = await axios.get(
+        "https://uniisphere-1.onrender.com/posts",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Profile Stats response:", response.data);
+      if (response.data.totalPosts && Array.isArray(response.data.totalPosts)) {
+        const userPosts = response.data.totalPosts.filter(
+          (post) => post.user.id === userId
+        );
+        const totalLikesCount = userPosts.reduce(
+          (sum, post) => sum + (post._count?.Likes || 0),
+          0
+        );
+        const totalCommentsCount = userPosts.reduce(
+          (sum, post) => sum + (post._count?.Comments || 0),
+          0
+        );
+        setTotalLikes(totalLikesCount);
+        setTotalComments(totalCommentsCount);
+        setPosts(userPosts.length);
+      } else {
+        console.error("Unexpected API response structure:", response.data);
+        setError("Failed to load stats");
+      }
+    } catch (err) {
+      console.error("Stats fetch error:", err);
+      setError(err.response?.data?.message || "Failed to fetch stats");
+    }
+  };
+
   // Time filters for notifications
   const timeFilters = {
     Today: (time) => time.includes("hrs"),
@@ -236,55 +328,6 @@ function DesktopNavbar() {
       setIsLoading(false);
     }
   }, []);
-
-  // Fetch stats from /posts
-  const fetchStats = async () => {
-    const authToken = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
-    if (!authToken || !userId) {
-      setError("Please log in to continue");
-      navigate("/login");
-      return;
-    }
-    try {
-      const response = await axios.get(
-        "https://uniisphere-1.onrender.com/posts",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Profile Stats response:", response.data);
-      if (response.data.totalPosts && Array.isArray(response.data.totalPosts)) {
-        const userPosts = response.data.totalPosts.filter(
-          (post) => post.user.id === userId
-        );
-        if (userPosts.length > 0) {
-          setUsername(userPosts[0].user.username || "");
-          setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
-        }
-        const totalLikesCount = userPosts.reduce(
-          (sum, post) => sum + (post._count?.Likes || 0),
-          0
-        );
-        const totalCommentsCount = userPosts.reduce(
-          (sum, post) => sum + (post._count?.Comments || 0),
-          0
-        );
-        setTotalLikes(totalLikesCount);
-        setTotalComments(totalCommentsCount);
-        setPosts(userPosts.length);
-      } else {
-        console.error("Unexpected API response structure:", response.data);
-        setError("Failed to load stats");
-      }
-    } catch (err) {
-      console.error("Stats fetch error:", err);
-      setError(err.response?.data?.message || "Failed to fetch stats");
-    }
-  };
 
   // Debounced search
   const debouncedSearch = useCallback(
@@ -930,8 +973,12 @@ function DesktopNavbar() {
                 <div className="desktop-create-post-after-upload">
                   <div className="desktop-create-post-navbar">
                     <div className="desktop-image-and-name">
-                      <img src={ProfileImage} alt="Profile" />
-                      <h3>{username || "Himanshu Choudary"}</h3>
+                      <img
+                        src={userProfileImage || "https://via.placeholder.com/40"}
+                        alt={username || "User"}
+                        className="desktop-profile-pic"
+                      />
+                      <h3>{username || "User"}</h3>
                     </div>
                     <h6 onClick={handlePostSubmit} disabled={isLoading}>
                       {isLoading ? "Posting..." : "Create Post"}

@@ -86,6 +86,8 @@
 .profile-company {
   font-size: 1.2rem;
   margin-bottom: 0.2rem;
+  text-transform: capitalize;
+  font-weight: 600;
 }
 
 .profile-location {
