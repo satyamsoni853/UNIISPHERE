@@ -686,9 +686,9 @@ function DesktopNavbar() {
               Connection
             </Link>
           </div>
-          <div className="connections-item">Edu-vault</div>
-          <div className="connections-item active">
-            <Link to="/HumanLib" className="connection-link">
+          <div className="desktop-connections-item">Edu-vault</div>
+          <div className="desktop-connections-item active">
+            <Link to="/HumanLibGuidelines" className="desktop-connection-link">
               Human Library
             </Link>
           </div>
