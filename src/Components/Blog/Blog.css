@@ -18,6 +18,12 @@
   width: 100%;
   max-width: 480px;
 }
+.blog-nav{  
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  width: 100%;
+}
 
 .blog-dropdown {
   cursor: pointer;
@@ -595,6 +601,15 @@
   cursor: pointer;
 }
 
+@media (max-width: 1024px) {
+  .desktop-blog-sidebar-blogs-name{
+    font-size: 16px;
+  }
+  .desktop-blog-sidebar-blogs-description{
+    font-size: 12px;
+    line-height: 1;
+  }
+}
 
 /* 
 /////////////////////////////////////////////////////////////////////////////// Create desktop section  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */

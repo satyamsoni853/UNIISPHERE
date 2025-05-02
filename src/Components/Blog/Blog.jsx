@@ -462,6 +462,11 @@ const Blog = () => {
                           <h2 className="desktop-blog-title">{blog.title}</h2>
                           <div className="desktop-blog-author">{blog.author?.name || "Unknown Author"}</div>
                         </div>
+                        <div className="desktop-blog-video-section">
+                        <iframe width="100%" height="500px" style={{
+                          borderRadius: "15px",
+                        }} src="https://www.youtube.com/embed/lTxn2BuqyzU?si=QqNpjxlhAl5DQbJG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
                         <div className="desktop-blog-text-body">
                           {blog.description && (
                             <p className="desktop-blog-content">{blog.description}</p>
