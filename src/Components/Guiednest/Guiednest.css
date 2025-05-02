@@ -1,0 +1,146 @@
+.guiednest-section-section-container {
+    padding-top: 30%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       min-height: 100vh;
+       padding: 1rem;
+       /* background-color: #f3f4f6; */
+     }
+     
+    
+     .guiednest-section-section-card {
+       width: 100%;
+       max-width: 80rem;
+       padding: 3rem;
+       /* background-color: white; */
+       border-radius: 0.5rem;
+       /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+       border-right: 8px solid #bfdbfe;
+       border-bottom: 8px solid #bfdbfe;
+     }
+     
+     .guiednest-section-section-title {
+       font-size: clamp(2rem, 5vw, 3rem);
+       /* font-weight: 700; */
+       text-align: center;
+       color: #1f2937;
+     }
+     
+     .guiednest-section-section-title span {
+       font-size: clamp(2rem, 5vw, 3rem);
+       font-weight: 700;
+       text-align: center;
+       color: #1f2937;
+     }
+     
+     .guiednest-section-section-subtitle {
+       text-align: start;
+       font-size: clamp(1rem, 3vw, 1.5rem);
+       color: #4b5563;
+       margin-top: 0.5rem;
+     }
+     
+     .guiednest-section-section-section {
+       margin-top: 1.5rem;
+     }
+     
+     .guiednest-section-section-section-title {
+       font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+       font-weight: 600;
+       color: #1f2937;
+     }
+     
+     .guiednest-section-section-list {
+       list-style: disc;
+       list-style-position: inside;
+       color: #4b5563;
+       margin-top: 0.5rem;
+     }
+     
+     .guiednest-section-section-list li {
+       margin-top: 0.25rem;
+       font-weight: 800;
+       font-size: clamp(0.9rem, 2vw, 1.1rem);
+     }
+     
+     .guiednest-section-section-button-container {
+       margin-top: 2rem;
+       display: flex;
+       justify-content: center;
+     }
+     
+     .guiednest-section-section-button {
+       background-color: #2563eb;
+       color: white;
+       font-weight: 600;
+       font-size: clamp(1rem, 2.5vw, 1.3rem);
+       padding: 0.75rem 2.5rem;
+       border-radius: 9999px;
+       border: none;
+       cursor: pointer;
+       transition: background-color 0.2s;
+     }
+     
+     .guiednest-section-section-button:hover {
+       background-color: #1d4ed8;
+     }
+     
+     /* Media Queries for smaller screens */
+     @media (max-width: 768px) {
+       .guiednest-section-section-card {
+         padding: 2rem;
+         border-right: 6px solid #bfdbfe;
+         border-bottom: 6px solid #bfdbfe;
+       }
+     
+       .guiednest-section-section-title {
+         font-size: clamp(1.8rem, 6vw, 2.5rem);
+       }
+     
+       .guiednest-section-section-title span {
+         font-size: clamp(1.8rem, 6vw, 2.5rem);
+       }
+     
+       .guiednest-section-section-subtitle {
+         font-size: clamp(0.9rem, 3.5vw, 1.3rem);
+       }
+     
+       .guiednest-section-section-section-title {
+         font-size: clamp(1rem, 3vw, 1.2rem);
+       }
+     
+       .guiednest-section-section-list li {
+         font-size: clamp(0.8rem, 2.5vw, 1rem);
+       }
+     
+       .guiednest-section-section-button {
+         padding: 0.6rem 2rem;
+         font-size: clamp(0.9rem, 3vw, 1.2rem);
+       }
+     }
+     
+     @media (max-width: 480px) {
+       .guiednest-section-section-card {
+         padding: 1.5rem;
+         border-right: 4px solid #bfdbfe;
+         border-bottom: 4px solid #bfdbfe;
+       }
+     
+       .guiednest-section-section-title {
+         font-size: clamp(1.5rem, 7vw, 2rem);
+       }
+     
+       .guiednest-section-section-title span {
+         font-size: clamp(1.5rem, 7vw, 2rem);
+       }
+     
+       .guiednest-section-section-subtitle {
+         font-size: clamp(0.8rem, 4vw, 1.1rem);
+       }
+     
+       .guiednest-section-section-button {
+         padding: 0.5rem 1.5rem;
+         font-size: clamp(0.8rem, 3.5vw, 1rem);
+       }
+     }
