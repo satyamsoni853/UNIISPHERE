@@ -227,6 +227,7 @@ function DesktopNavbar() {
         )}`
       );
       setSearchResults(Array.isArray(response.data) ? response.data : []);
+      console.log("Search API Response:", response.data);
     } catch (err) {
       console.error("Search error:", err);
       setError(err.response?.data?.message || "Failed to fetch profiles");
@@ -520,11 +521,11 @@ function DesktopNavbar() {
       <div className="desktop-notification-icon-container">
         <img
           src={
-            activeIcon === "notification" || showDropdown
+            activeIcon === "notifications" || showDropdown
               ? NotificationWhite
               : NotificationBlack
           }
-          alt="Network"
+          alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
         />
@@ -713,12 +714,16 @@ function DesktopNavbar() {
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={item.avatar || "https://via.placeholder.com/40"}
-                        alt={item.name}
+                        src={
+                          item.profilePictureUrl || "https://via.placeholder.com/40"
+                        }
+                        alt={`${item.firstName} ${item.lastName}`}
                         className="desktop-recent-search-avatar"
                       />
                       <span className="desktop-recent-search-name">
-                        {item.name}
+                        {(item.firstName || item.lastName)
+                          ? `${item.firstName || ''} ${item.lastName || ''}`.trim()
+                          : item.username || 'Unknown User'}
                       </span>
                     </div>
                   ))
@@ -740,7 +745,7 @@ function DesktopNavbar() {
                   onClick={() => handleProfileClick(user.id)}
                 >
                   <img
-                    src={ProfileImage}
+                    src={user.avatar || "https://via.placeholder.com/40"}
                     alt={user.name}
                     className="desktop-suggested-user-avatar"
                   />
