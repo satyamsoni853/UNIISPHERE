@@ -154,6 +154,7 @@ const EventNews = () => {
               />
               <h2>{selectedNews.title}</h2>
             </div>
+            
             <div className="detail-content">
               <img
                 src={selectedNews.image_url}
