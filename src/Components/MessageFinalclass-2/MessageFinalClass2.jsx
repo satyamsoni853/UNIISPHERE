@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { IoCall, IoSend, IoArrowBackCircleSharp } from "react-icons/io5";
 import { MdOutlineVideoCall } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import backIcon from "./backsvg.svg";
-import callingIcon from "./call.svg";
 import gallaryIcon from "./gallary.svg";
 import profilePicSmall from "./profilePicSmall.png";
 import stickerIcon from "./sticker.svg";
@@ -731,9 +729,8 @@ function MessageFinalClass2() {
           {conversations.map((conversation) => (
             <div
               key={conversation.id}
-              className={`message-part-2-message-item ${
-                conversation.id === messageId ? "active" : ""
-              }`}
+              className={`message-part-2-message-item ${conversation.id === messageId ? "active" : ""
+                }`}
               onClick={() =>
                 (window.location.href = `/MessageFinalClass2/${conversation.id}`)
               }
@@ -804,11 +801,10 @@ function MessageFinalClass2() {
                     </p>
                   )}
                   <div
-                    className={`message-part-2-message ${
-                      message.senderId === senderId
+                    className={`message-part-2-message ${message.senderId === senderId
                         ? "message-part-2-sent"
                         : "message-part-2-received"
-                    }`}
+                      }`}
                     onContextMenu={(e) => handleRightClick(e, message.id)}
                     onTouchStart={(e) => handleTouchStart(e, message.id)}
                     onTouchEnd={handleTouchEnd}
@@ -848,13 +844,13 @@ function MessageFinalClass2() {
             {contextMenu && (
               <div
                 className="message-context-menu"
-               
+
               >
                 <button
                   onClick={() => handleDeleteMessage(contextMenu.messageId)}
                   className="message-context-menu-item"
                 >
-                  Delete <MdOutlineDeleteOutline/>
+                  Delete <MdOutlineDeleteOutline />
                 </button>
               </div>
             )}
@@ -965,9 +961,8 @@ function MessageFinalClass2() {
             />
             <div className="message-part-2-icons">
               <span
-                className={`message-part-2-send-icon ${
-                  isSending ? "disabled" : ""
-                }`}
+                className={`message-part-2-send-icon ${isSending ? "disabled" : ""
+                  }`}
                 onClick={!isSending ? handleSendClick : undefined}
               >
                 <IoSend />
@@ -988,9 +983,8 @@ function MessageFinalClass2() {
               </span>
               <span onClick={handleVoiceRecord}>
                 <img
-                  className={`message-part-2-chat-all-icon ${
-                    isRecording ? "recording" : ""
-                  }`}
+                  className={`message-part-2-chat-all-icon ${isRecording ? "recording" : ""
+                    }`}
                   src={microphoneIcon}
                   alt="MicrophoneIcon"
                 />
