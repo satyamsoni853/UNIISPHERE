@@ -80,14 +80,6 @@ function DesktopNavbar() {
 
   // Search-related state
   const [activeTab, setActiveTab] = useState("Trend");
-  const [recentSearches] = useState([
-    { id: 1, name: "Roshan", avatar: "https://via.placeholder.com/40" },
-    { id: 2, name: "John", avatar: "https://via.placeholder.com/40" },
-    { id: 3, name: "Anju", avatar: "https://via.placeholder.com/40" },
-    { id: 4, name: "Updesh", avatar: "https://via.placeholder.com/40" },
-    { id: 5, name: "Anup", avatar: "https://via.placeholder.com/40" },
-    { id: 6, name: "Uday", avatar: "https://via.placeholder.com/40" },
-  ]);
   const [suggestedUsers] = useState([
     {
       id: 7,
@@ -491,26 +483,6 @@ function DesktopNavbar() {
     };
   }, [mediaList]);
 
-  // Filter recent searches based on search query
-  const filteredRecentSearches = searchQuery
-    ? recentSearches.filter((search) =>
-        search.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : recentSearches;
-
-  // Combine filtered recent searches with search results
-  const combinedRecentResults = searchQuery
-    ? [
-        ...filteredRecentSearches,
-        ...searchResults.filter(
-          (user) =>
-            !filteredRecentSearches.some((search) => search.id === user.id)
-        ),
-      ]
-    : recentSearches;
-
-  console.log("Combined Recent Results:", combinedRecentResults);
-
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
@@ -725,23 +697,23 @@ function DesktopNavbar() {
         {showResults && (
           <div className="desktop-search-results">
             <Background />
-            {/* Recent Searches Section with Search Results */}
+            {/* Search Results Section */}
             <div className="desktop-search-section">
-              <h4 className="desktop-search-section-title">Recent</h4>
+              <h4 className="desktop-search-section-title">Users</h4>
               <div className="desktop-recent-search-list">
                 {isLoading ? (
                   <div className="desktop-search-loading">Searching...</div>
                 ) : error ? (
                   <div className="desktop-search-error">{error}</div>
-                ) : combinedRecentResults.length > 0 ? (
-                  combinedRecentResults.map((item) => (
+                ) : searchResults.length > 0 ? (
+                  searchResults.map((item) => (
                     <div
                       key={item.id}
                       className="desktop-recent-search-item"
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={item.avatar}
+                        src={item.avatar || "https://via.placeholder.com/40"}
                         alt={item.name}
                         className="desktop-recent-search-avatar"
                       />
