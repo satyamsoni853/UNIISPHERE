@@ -229,7 +229,10 @@ function DesktopNavbar() {
           const userData = profileResponse.data[0];
           setUsername(userData.username || "");
           setUserProfileImage(userData.profilePictureUrl || "");
-          localStorage.setItem("profilePicture", userData.profilePictureUrl || "");
+          localStorage.setItem(
+            "profilePicture",
+            userData.profilePictureUrl || ""
+          );
           localStorage.setItem("username", userData.username || "");
           const connectCount = userData._count?.connections1 || 0;
           const collaborateCount = userData._count?.connections2 || 0;
@@ -241,7 +244,9 @@ function DesktopNavbar() {
         }
       } catch (error) {
         console.error("Error fetching profile data:", error);
-        setError(error.response?.data?.message || "Failed to load profile data");
+        setError(
+          error.response?.data?.message || "Failed to load profile data"
+        );
       } finally {
         setLoading(false);
       }
@@ -702,21 +707,25 @@ function DesktopNavbar() {
               Connection
             </Link>
           </div>
-          <div className="desktop-connections-item">Edu-vault</div>
+          <div className="desktop-connections-item">
+            <Link to="/EduValt" className="desktop-connection-link">
+              Edu-vault
+            </Link>
+          </div>
           <div className="desktop-connections-item active">
             <Link to="/HumanLibGuidelines" className="desktop-connection-link">
               Human Library
             </Link>
           </div>
-          <div className="desktop-connections-item">Guidance</div>
+          <div className="desktop-connections-item">
+            <Link to="/Guiednest" className="desktop-connection-link">
+              Guidance
+            </Link>
+          </div>
           <div className="desktop-connections-item">NGOs</div>
           <div className="desktop-connections-item">
             <Link
-              to={
-                localStorage.getItem("userId")
-                  ? `/blog/${localStorage.getItem("userId")}`
-                  : "/blog"
-              }
+              to="/libblog"
               className="desktop-connection-link"
             >
               Blog
@@ -758,15 +767,18 @@ function DesktopNavbar() {
                     >
                       <img
                         src={
-                          item.profilePictureUrl || "https://via.placeholder.com/40"
+                          item.profilePictureUrl ||
+                          "https://via.placeholder.com/40"
                         }
                         alt={`${item.firstName} ${item.lastName}`}
                         className="desktop-recent-search-avatar"
                       />
                       <span className="desktop-recent-search-name">
-                        {(item.firstName || item.lastName)
-                          ? `${item.firstName || ''} ${item.lastName || ''}`.trim()
-                          : item.username || 'Unknown User'}
+                        {item.firstName || item.lastName
+                          ? `${item.firstName || ""} ${
+                              item.lastName || ""
+                            }`.trim()
+                          : item.username || "Unknown User"}
                       </span>
                     </div>
                   ))
@@ -974,7 +986,9 @@ function DesktopNavbar() {
                   <div className="desktop-create-post-navbar">
                     <div className="desktop-image-and-name">
                       <img
-                        src={userProfileImage || "https://via.placeholder.com/40"}
+                        src={
+                          userProfileImage || "https://via.placeholder.com/40"
+                        }
                         alt={username || "User"}
                         className="desktop-profile-pic"
                       />

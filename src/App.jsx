@@ -81,6 +81,7 @@ function App() {
             <Route path="/education/:userId" element={<EducationEdit />} />
             <Route path="/uploadsection/:userId" element={<UploadSection />} />
             <Route path="/AboutAndExperience/:userId" element={<AboutAndExperience />} />
+            <Route path="/about/:userId" element={<AboutAndExperience />} />
             <Route path="/blog/:userId" element={<Blog />} />
             <Route path="/blogcreate/:userId" element={<BlogCreate />} />
 

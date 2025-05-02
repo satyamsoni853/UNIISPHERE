@@ -40,18 +40,7 @@ function LibBlog() {
               </ul>
             </div>
 
-            {/* <div className="libblog-section-section-section">
-              <h2 className="libblog-section-section-section-title">SAFETY & MODERATION</h2>
-              <ul className="libblog-section-section-list">
-                <li>
-                  Conversations may be monitored for safety and reported content
-                </li>
-                <li>
-                  Your identity remains anonymous unless you choose to disclose it
-                </li>
-                <li>Block and report features are available at all times</li>
-              </ul>
-            </div> */}
+            
 
             <div className="libblog-section-section-button-container">
               <Link to="/HumanLib" className="libblog-section-section-button">
