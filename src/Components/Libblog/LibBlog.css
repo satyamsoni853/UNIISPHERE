@@ -1,9 +1,20 @@
+.libblog-section-main-parent-container{
+  width: 100%;
+  min-height:100vh ;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.libblog-section-navbar-container{
+  height: 20%;
+}
+
 .libblog-section-section-container {
-    padding-top: 30%;
+    height: 80vh;
        display: flex;
        align-items: center;
        justify-content: center;
-       min-height: 100vh;
+    
        padding: 1rem;
        /* background-color: #f3f4f6; */
      }
