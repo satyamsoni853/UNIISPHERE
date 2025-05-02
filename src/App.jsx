@@ -7,6 +7,9 @@ import UserLogin from "./Components/UserLogin/UserLogin.jsx";
 import AfterOtpSection1 from "./Components/AfterOtpSection1/AfterOtpSection1.jsx";
 import UserSignupWithEmailAndPassword from "./Components/UserSignupWithEmailAndPassword/UserSignupWithEmailAndPassword.jsx";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
+import EduValt from "./Components/EduValt/EduValt.jsx";
+import LibBlog from "./Components/libblog/LibBlog.jsx";
+import Guiednest from "./Components/Guiednest/Guiednest.jsx";
 
 // Lazy load other components
 const View = lazy(() => import("./Components/View/View.jsx"));
@@ -98,6 +101,9 @@ function App() {
             <Route path="/EventNews" element={<EventNews />} />
             <Route path="/EventDescription" element={<EventDesc />} />
             <Route path="/HumanLibGuidelines" element={<HumanLibGuidelines />} />
+            <Route path="/EduValt" element={<EduValt/>} />
+            <Route path="/Guiednest" element={<Guiednest />} />
+            <Route path="/libblog" element={< LibBlog />} />
           </Routes>
         </Suspense>
       </div>
