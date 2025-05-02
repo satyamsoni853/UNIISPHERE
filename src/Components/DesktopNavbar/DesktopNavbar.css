@@ -61,7 +61,21 @@
   height: 40px;
 }
 
-
+/* Search Results */
+/* .main-desktop-search-results {
+  position: absolute;
+  top: 100%;
+  left: -200%;
+  right: 0;
+  width: 350%;
+  max-height: 400px;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 5px;
+} */
 
 .desktop-search-result-item {
   display: flex;
@@ -107,54 +121,54 @@
 }
 
 /* User Dropdown */
-.desktop-user-icon-container {
+.user-icon-container {
   position: relative;
   display: inline-block;
 }
 
-.desktop-self-profile-card {
+.self-profile-card {
   position: absolute;
   top: 200%;
   width: 450px;
   background-color: white;
   border: 2px solid grey;
   border-radius: 15px;
-  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 15px;
   z-index: 1001;
 }
 
-.desktop-self-profile-header {
+.self-profile-header {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;
 }
 
-.desktop-self-profile-pic {
+.self-profile-pic {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   border: 2px solid #f76b6b;
 }
 
-.desktop-self-profile-info {
+.self-profile-info {
   flex: 1;
 }
 
-.desktop-self-profile-name {
+.self-profile-name {
   margin: 0;
   font-size: 18px;
   font-weight: bold;
 }
 
-.desktop-self-profile-label {
+.self-profile-label {
   margin: 0;
   color: #666;
   font-size: 14px;
 }
 
-.desktop-self-profile-edit-button {
+.self-profile-edit-button {
   width: 100%;
   padding: 8px;
   margin: 10px 0;
@@ -166,40 +180,41 @@
   text-align: center;
 }
 
-.desktop-self-profile-edit-button:hover {
+.self-profile-edit-button:hover {
   background-color: #9690e5;
 }
 
-.desktop-self-profile-stats {
+.self-profile-stats {
   display: flex;
   justify-content: space-between;
   margin: 15px 50px;
 }
 
-.desktop-self-profile-stat {
+.self-profile-stat {
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.desktop-self-profile-stat span {
+.self-profile-stat span {
   display: block;
   font-size: 18px;
   color: #666;
 }
 
-.desktop-self-profile-stat-value {
+.self-profile-stat-value {
   font-size: 14px;
   font-weight: bold;
   color: #333;
 }
 
-.desktop-self-profile-menu {
+.self-profile-menu {
   margin-top: 15px;
+  
 }
 
-.desktop-self-profile-menu-item {
+.self-profile-menu-item {
   padding: 8px 0;
   cursor: pointer;
   font-size: 18px;
@@ -207,20 +222,20 @@
   text-align: center;
 }
 
-.desktop-self-profile-menu-item:hover {
+.self-profile-menu-item:hover {
   color: #f76b6b;
 }
 
-.desktop-self-profile-sign-out {
+.self-profile-sign-out {
   color: #f76b6b;
 }
 
-.desktop-self-profile-sign-out:hover {
+.self-profile-sign-out:hover {
   color: #d9534f;
 }
 
 /* Network Dropdown */
-.desktop-connections-card {
+.connections-card {
   position: absolute;
   background-color: #fff;
   border-radius: 15px;
@@ -235,26 +250,26 @@
   flex-direction: column;
   justify-content: space-evenly;
 }
-.desktop-connections-card :nth-child(1) {
+.connections-card :nth-child(1) {
   box-shadow: 0 2px 5px 2px #a7e1eb7b;
 }
-.desktop-connections-card :nth-child(2) {
+.connections-card :nth-child(2) {
   box-shadow: 0 2px 5px 2px rgba(233, 149, 198, 0.429);
 }
-.desktop-connections-card :nth-child(3) {
+.connections-card :nth-child(3) {
   box-shadow: 0 2px 5px 2px #474fe96a;
 }
-.desktop-connections-card :nth-child(4) {
+.connections-card :nth-child(4) {
   box-shadow: 0 2px 5px 2px rgba(21, 75, 84, 0.338);
 }
-.desktop-connections-card :nth-child(5) {
+.connections-card :nth-child(5) {
   box-shadow: 0 2px 5px 2px #8d61e38c;
 }
-.desktop-connections-card :nth-child(6) {
+.connections-card :nth-child(6) {
   box-shadow: 0 2px 5px 2px #73d2868c;
 }
 
-.desktop-connections-item {
+.connections-item {
   width: 282px;
   border-radius: 20px;
   height: 48px;
@@ -267,28 +282,28 @@
   transition: background-color 0.2s;
 }
 
-.desktop-connections-item:hover {
+.connections-item:hover {
   background-color: #f8f8f8;
 }
 
-.desktop-connections-item.active {
-  /* background-color: #e6f0ff; */
+.connections-item.active {
+  background-color: #e6f0ff;
   color: #3b82f6;
 }
 
-.desktop-connection-link {
+.connection-link {
   color: inherit;
   text-decoration: none;
   display: block;
 }
 
 /* Notification Dropdown */
-.desktop-notification-icon-container {
+.notification-icon-container {
   position: relative;
   display: inline-block;
 }
 
-.desktop-notification-dropdown {
+.notification-dropdown {
   position: absolute;
   top: 150%;
   width: 600px;
@@ -301,13 +316,13 @@
   padding: 40px;
 }
 
-.desktop-notification-tabs {
+.notification-tabs {
   display: flex;
   border-bottom: 1px solid #e5e7eb;
   margin-bottom: 10px;
 }
 
-.desktop-notification-tab-button {
+.notification-tab-button {
   padding: 8px 12px;
   margin-right: 5px;
   margin-bottom: 20px;
@@ -318,16 +333,16 @@
   color: #6b7280;
 }
 
-.desktop-notification-tab-button.active {
+.notification-tab-button.active {
   color: #3b82f6;
   border-bottom: 2px solid #3b82f6;
 }
 
-.desktop-notification-list {
+.notification-list {
   padding: 5px 0;
 }
 
-.desktop-notification-item {
+.notification-item {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -339,44 +354,44 @@
   transition: background-color 0.2s;
 }
 
-.desktop-notification-item:hover {
+.notification-item:hover {
   background-color: #f3f4f6;
 }
 
-.desktop-notification-border-blue-400 {
+.notification-border-blue-400 {
   border-left-color: #60a5fa;
 }
 
-.desktop-notification-border-yellow-400 {
+.notification-border-yellow-400 {
   border-left-color: #fbbf24;
 }
 
-.desktop-notification-border-red-400 {
+.notification-border-red-400 {
   border-left-color: #f87171;
 }
 
-.desktop-notification-border-gray-400 {
+.notification-border-gray-400 {
   border-left-color: #9ca3af;
 }
 
-.desktop-notification-profile-pic {
+.notification-profile-pic {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 12px;
 }
 
-.desktop-notification-content {
+.notification-content {
   flex: 1;
 }
 
-.desktop-notification-sender {
+.notification-sender {
   font-weight: 600;
   margin-bottom: 2px;
   color: #111827;
 }
 
-.desktop-notification-message {
+.notification-message {
   font-size: 13px;
   color: #6b7280;
   white-space: nowrap;
@@ -385,18 +400,18 @@
   max-width: 200px;
 }
 
-.desktop-notification-time {
+.notification-time {
   font-size: 12px;
   color: #9ca3af;
   margin-left: 10px;
 }
 
-.desktop-notification-alert {
+.notification-alert {
   margin-left: 10px;
   color: #ef4444;
 }
 
-.desktop-notification-empty {
+.notification-empty {
   text-align: center;
   padding: 20px;
   color: #6b7280;
@@ -404,7 +419,7 @@
 }
 
 /* Upload Section */
-.desktop-upload-overlay {
+.upload-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -418,20 +433,17 @@
   overflow: auto;
 }
 
-.desktop-upload-first-div {
+.upload-first-div {
   display: flex;
-  width: 100%;
-  height: 200px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.desktop-upload-container {
+.upload-container {
   width: 100%;
-  max-width: 500px;
-  border-radius: 20px;
-  background-color: #fff;
+  max-width: 600px;
+  background: white;
   padding: 20px;
   position: relative;
   max-height: 90vh;
@@ -442,12 +454,12 @@
   overflow: hidden;
 }
 
-.desktop-upload-text {
+.upload-text {
   margin-bottom: 10px;
   text-align: center;
 }
 
-.desktop-upload-button {
+.upload-button {
   padding: 5px 10px;
   background: #007bff;
   color: white;
@@ -457,29 +469,24 @@
   margin-top: 10px;
 }
 
-.desktop-after-upload {
+.after-upload {
   text-align: center;
 }
 
-.desktop-create-post-navbar {
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.desktop-create-post-navbar img {
+.navbar img {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
-.desktop-create-post-navbar h6 {
-  color: #007bff;
-  font-weight: 600;
-  cursor: pointer;
-}
 
-.desktop-preview-container {
+.preview-container {
   display: flex;
   gap: 10px;
   justify-content: center;
@@ -487,17 +494,17 @@
   flex-wrap: wrap;
 }
 
-.desktop-media-item {
+.media-item {
   position: relative;
 }
 
-.desktop-imageAndVideo {
+.imageAndVideo {
   max-width: 100%;
   max-height: 200px;
   border-radius: 5px;
 }
 
-.desktop-add-more-btn {
+.add-more-btn {
   padding: 5px 10px;
   background: #007bff;
   color: white;
@@ -506,166 +513,132 @@
   cursor: pointer;
 }
 
-.desktop-create-post-main-container {
+.create-post-main-container {
   width: 100%;
 }
 
-.desktop-create-post-after-upload {
+.create-post-after-upload {
   text-align: center;
 }
 
-.desktop-image-and-name {
+.create-post-navbar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 }
 
-.desktop-image-and-name img {
+.image-and-name img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
 }
 
-.desktop-image-and-name h3 {
-  font-size: 20px;
-  font-weight: 600;
+.image-and-name h3 {
+  margin: 0;
 }
 
-.desktop-post-content-container {
+.post-content-container {
   text-align: left;
 }
 
-.desktop-image-and-caption {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+.image-and-caption {
+  margin-bottom: 20px;
 }
 
-.desktop-post-media-container {
+.post-media-container {
   margin-bottom: 10px;
 }
 
-.desktop-create-post-imageAndVideo {
-  max-width: 115px;
-  object-fit: cover;
-  max-height: 143px;
+.create-post-imageAndVideo {
+  max-width: 100%;
+  max-height: 200px;
   border-radius: 5px;
 }
 
-.desktop-form-group {
-  width: calc(100% - 120px);
-  height: 143px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
+.form-group {
+  margin-bottom: 20px;
 }
 
-.desktop-input-label {
-  font-size: 16px;
-  font-weight: 600;
-  display: inline-block;
+.input-label {
+  display: block;
+  margin-bottom: 5px;
 }
 
-.desktop-caption-input {
+.caption-input {
   width: 100%;
   padding: 5px;
-  height: 65%;
   border: 1px solid #ccc;
-  border-radius: 15px;
-  resize: none;
+  border-radius: 5px;
 }
 
-.desktop-post-mention {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.privacy-settings {
+  margin-bottom: 20px;
 }
 
-.desktop-post-mention h1 {
-  font-size: 20px;
-  font-weight: 600;
-  margin-right: 10px;
-}
-
-.desktop-post-mention-icon {
-  font-size: 35px;
-  color: #007bff;
-  cursor: pointer;
-}
-
-.desktop-setting-item {
+.setting-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.desktop-setting-info h4 {
-  font-size: 20px;
-  font-weight: 600;
+.setting-info h4 {
+  margin: 0;
 }
 
-.desktop-setting-info {
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
-}
-
-.desktop-setting-description {
+.setting-description {
   font-size: 12px;
   color: #666;
 }
 
-.desktop-toggle-switch {
+.toggle-switch {
   position: relative;
   display: inline-block;
-  width: 44px;
-  height: 25px;
+  width: 40px;
+  height: 20px;
 }
 
-.desktop-toggle-switch input {
+.toggle-switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.desktop-slider {
+.slider {
   position: absolute;
   cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0px;
+  bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
   border-radius: 20px;
 }
 
-.desktop-slider:before {
+.slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
   left: 2px;
-  bottom: 4px;
-  background-color: rgb(0, 0, 0);
+  bottom: 2px;
+  background-color: white;
   transition: 0.4s;
   border-radius: 50%;
 }
 
-input:checked + .desktop-slider:before {
-  background-color: #ffffff;
-  transform: translateX(20px);
-}
-input:checked + .desktop-slider {
-  background-color: #000000;
+input:checked + .slider {
+  background-color: #007bff;
 }
 
-.desktop-submit-section {
+.submit-section {
   text-align: center;
 }
 
-.desktop-error-message {
+.error-message {
   color: red;
   margin-top: 10px;
 }
@@ -677,7 +650,12 @@ input:checked + .desktop-slider {
   }
 }
 
+/* //for seacrg container  */
+
+/* Reset default margins and ensure the navbar takes full width */
+
 /* Style the search input wrapper */
+
 .desktop-search-bar:focus {
   border-color: #666;
   background-color: #fff;
@@ -709,6 +687,7 @@ input:checked + .desktop-slider {
   z-index: 1000;
   max-height: 500px;
   overflow-y: auto;
+
   padding: 20px;
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
@@ -717,38 +696,97 @@ input:checked + .desktop-slider {
   display: none;
 }
 
+/* Decorative circles */
+/* .decorative-circles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+.circle-1 {
+  width: 40px;
+  height: 40px;
+  background: #a3dffa;
+  top: 10px;
+  left: 20px;
+}
+
+.circle-2 {
+  width: 30px;
+  height: 30px;
+  background: #ffd1dc;
+  top: 50px;
+  left: 60px;
+}
+
+.circle-3 {
+  width: 50px;
+  height: 50px;
+  background: #ffeb99;
+  top: 80px;
+  right: 20px;
+}
+
+.circle-4 {
+  width: 20px;
+  height: 20px;
+  background: #d4a5eb;
+  bottom: 30px;
+  right: 50px;
+}
+
+.circle-5 {
+  width: 35px;
+  height: 35px;
+  background: #a3dffa;
+  bottom: 60px;
+  left: 30px;
+} */
+
 /* Style each section in the dropdown */
-.desktop-search-section {
+.search-section {
   padding: 10px 0;
   width: 90%;
+
   position: relative;
   z-index: 1;
 }
 
-.desktop-search-section::-webkit-scrollbar {
+.search-section::-webkit-scrollbar {
   display: none;
 }
 
-.desktop-search-section-title {
+.search-section-title {
   position: relative;
   overflow: hidden;
   font-size: 20px;
   font-weight: 600;
+
   margin-bottom: 15px;
   color: #000000;
   text-transform: uppercase;
 }
-.desktop-search-section-title2 {
+.search-section-title2 {
   position: relative;
   overflow: hidden;
   font-size: 16px;
   font-weight: 600;
+
   margin-bottom: 15px;
   color: #000000;
   text-transform: uppercase;
 }
-.desktop-search-section-title::after,
-.desktop-search-section-title2::after {
+.search-section-title::after,
+.search-section-title2::after {
   content: "";
   top: 9px;
   margin-left: 20px;
@@ -759,7 +797,7 @@ input:checked + .desktop-slider {
 }
 
 /* Style the recent search list */
-.desktop-recent-search-list {
+.recent-search-list {
   display: flex;
   gap: 20px;
   overflow-x: auto;
@@ -768,49 +806,53 @@ input:checked + .desktop-slider {
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-.desktop-recent-search-list::-webkit-scrollbar {
+.recent-search-list::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
-.desktop-search-recents-list {
+.desktop-search-recents-list{
   display: flex;
   gap: 30px;
   align-items: center;
 }
-.desktop-recent-search-arrow {
+.desktop-recent-search-arrow{
   font-size: 30px;
   margin-left: 20px;
+ 
   margin-bottom: 10px;
   cursor: pointer;
 }
 
 /* Style the recent search items */
-.desktop-recent-search-item {
+.recent-search-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
+ 
   cursor: pointer;
+ 
   text-align: center;
 }
 
-.desktop-recent-search-avatar {
+.recent-search-avatar {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.desktop-recent-search-name {
+.recent-search-name {
   font-size: 17px;
   color: #000000;
   white-space: nowrap;
   overflow: hidden;
   font-weight: 500;
   text-overflow: ellipsis;
+  
 }
 
 /* Style the suggested user items */
-.desktop-suggested-user-item {
+.suggested-user-item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -818,39 +860,40 @@ input:checked + .desktop-slider {
   cursor: pointer;
 }
 
-.desktop-suggested-user-avatar {
+.suggested-user-avatar {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.desktop-suggested-user-info {
+.suggested-user-info {
   display: flex;
   flex-direction: column;
 }
 
-.desktop-suggested-user-name {
+.suggested-user-name {
   font-size: 20px;
   font-weight: 500;
   color: #000000;
 }
 
-.desktop-suggested-user-university {
+.suggested-user-university {
   font-size: 16px;
   font-weight: 500;
   color: #000000;
 }
 
 /* Style the tabs */
-.desktop-search-tabs {
+.search-tabs {
   display: flex;
   gap: 50px;
+
   padding-left: 20px;
   margin-bottom: 15px;
 }
 
-.desktop-search-tab-button {
+.search-tab-button {
   width: 145px;
   height: 41px;
   font-size: 16px;
@@ -864,42 +907,43 @@ input:checked + .desktop-slider {
   text-transform: uppercase;
 }
 
-.desktop-search-tab-button.active {
+.search-tab-button.active {
   background: #e0e0e0;
   color: #333;
 }
 
 /* Style the trend/event/news items */
-.desktop-trend-item,
-.desktop-event-item,
-.desktop-news-item {
+.trend-item,
+.event-item,
+.news-item {
   display: flex;
   gap: 12px;
   padding: 20px 0;
   cursor: pointer;
+
   border-bottom: 1px solid black;
 }
 
-.desktop-trend-image,
-.desktop-event-image,
-.desktop-news-image {
+.trend-image,
+.event-image,
+.news-image {
   width: 100px;
   height: 60px;
   border-radius: 4px;
   object-fit: cover;
 }
 
-.desktop-trend-info,
-.desktop-event-info,
-.desktop-news-info {
+.trend-info,
+.event-info,
+.news-info {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.desktop-trend-title,
-.desktop-event-title,
-.desktop-news-title {
+.trend-title,
+.event-title,
+.news-title {
   font-size: 20px;
   font-weight: 600;
   margin: 0;
@@ -907,16 +951,16 @@ input:checked + .desktop-slider {
   line-height: 1.2;
 }
 
-.desktop-trend-description,
-.desktop-event-description,
-.desktop-news-description {
+.trend-description,
+.event-description,
+.news-description {
   font-size: 16px;
   color: #000000;
   font-weight: 600;
   line-height: 1.4;
 }
 
-.desktop-trend-category {
+.trend-category {
   font-size: 12px;
   color: #999;
   margin: 4px 0 0 0;
@@ -924,7 +968,7 @@ input:checked + .desktop-slider {
 }
 
 /* Style the no-results message */
-.desktop-no-results {
+.no-results {
   font-size: 14px;
   color: #666;
 }
@@ -946,12 +990,21 @@ input:checked + .desktop-slider {
 }
 
 /* Adjust the upload overlay if needed */
-.desktop-upload-overlay {
+.upload-overlay {
   z-index: 2000;
 }
 
-@media (max-width: 1024px) {
-  .desktop-search-results {
+
+@media (max-width:1024px) {
+  .desktop-search-results{
+    left: 5%;
+    width: 900px;
+  }
+}
+
+
+@media (max-width:1024px) {
+  .desktop-search-results{
     left: 5%;
     width: 900px;
   }

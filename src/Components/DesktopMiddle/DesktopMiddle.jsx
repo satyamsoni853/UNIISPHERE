@@ -758,16 +758,17 @@ function DesktopMiddle() {
                     </span>
                     <span className="middle-post-caption">
                       {renderCaption(post.caption, index)}
-                    </span>
-                  </div>
-                  {post.caption && post.caption.length > 100 && (
+                      {post.caption && post.caption.length > 100 && (
                     <span
                       className="middle-see-more"
                       onClick={() => toggleSeeMore(index)}
                     >
-                      {seeMore[index] ? "See Less" : "See More"}
+                      {seeMore[index] ? "....See Less" : "....See More"}
                     </span>
                   )}
+                    </span>
+                  </div>
+                 
                 </div>
               </div>
             );

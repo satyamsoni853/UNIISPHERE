@@ -2,8 +2,7 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { FaHome } from "react-icons/fa";
-import { GoHome } from "react-icons/go";
+import { IoHome, IoHomeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
@@ -15,13 +14,11 @@ import NetworkBlack from "./NetworkBlackIcon.svg";
 import NetworkWhite from "./NetworkWhiteIcon.svg";
 import NotificationBlack from "./NotificationBlackIcon.svg";
 import NotificationWhite from "./NotificationWhiteIcon.svg";
-import Trendimage from "./trend.png";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
-import ClenderBlack from "./ClenderBlackIcon.svg";
-import ClenderWhite from "./ClenderWhiteIcon.svg";
+import ClenderBlack from './ClenderBlackIcon.svg';
+import ClenderWhite from './ClenderWhiteIcon.svg';
 import Background from "../Background/Background";
-import { IoIosAdd, IoIosAddCircleOutline } from "react-icons/io";
 
 function DesktopNavbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -47,34 +44,31 @@ function DesktopNavbar() {
   const [userProfileImage, setUserProfileImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [allUsersResponse, setAllUsersResponse] = useState(null);
-  const [connect, setConnect] = useState(0);
-  const [collaborate, setCollaborate] = useState(0);
   const inputRef = useRef(null);
   const searchContainerRef = useRef(null);
   const navigate = useNavigate();
 
   // Notification state
-  const [showNotificationDropdown, setShowNotificationDropdown] =
-    useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [activeNotificationTab, setActiveNotificationTab] = useState("Today");
   const [notifications, setNotifications] = useState([
     {
       time: "2 hrs",
       message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
-      color: "desktop-notification-border-blue-400",
+      color: "notification-border-blue-400",
     },
     {
       time: "3 hrs",
       message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
-      color: "desktop-notification-border-yellow-400",
+      color: "notification-border-yellow-400",
     },
     {
       time: "6 hrs",
       message: "Hello brother, how are you? I'm doing that ...",
       alert: true,
-      color: "desktop-notification-border-red-400",
+      color: "notification-border-red-400",
     },
   ]);
   const buttonscolor = ["#DB3E3933", "#DDC058", "#A17A97"];
@@ -86,19 +80,19 @@ function DesktopNavbar() {
       id: 7,
       name: "Rahul",
       university: "UPES",
-      avatar: "https://via.placeholder.com/40",
+      profilePictureUrl: "https://via.placeholder.com/40",
     },
     {
       id: 8,
       name: "Satyam",
       university: "IITM",
-      avatar: "https://via.placeholder.com/40",
+      profilePictureUrl: "https://via.placeholder.com/40",
     },
     {
       id: 9,
       name: "Jack",
       university: "Delhi University",
-      avatar: "https://via.placeholder.com/40",
+      profilePictureUrl: "https://via.placeholder.com/40",
     },
   ]);
   const [trends] = useState([
@@ -204,56 +198,37 @@ function DesktopNavbar() {
     fetchAllUsers();
   }, [navigate, setError]);
 
-  // Fetch profile data for username and profile picture
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      const authToken = localStorage.getItem("authToken");
-      const userId = localStorage.getItem("userId");
-      if (!authToken || !userId) {
-        setError("Please log in to continue");
-        navigate("/login");
-        setLoading(false);
-        return;
-      }
-      try {
-        setLoading(true);
-        const profileResponse = await axios.get(
-          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        if (profileResponse.data && profileResponse.data.length > 0) {
-          const userData = profileResponse.data[0];
-          setUsername(userData.username || "");
-          setUserProfileImage(userData.profilePictureUrl || "");
-          localStorage.setItem(
-            "profilePicture",
-            userData.profilePictureUrl || ""
-          );
-          localStorage.setItem("username", userData.username || "");
-          const connectCount = userData._count?.connections1 || 0;
-          const collaborateCount = userData._count?.connections2 || 0;
-          setConnect(connectCount);
-          setCollaborate(collaborateCount);
-        } else {
-          console.error("No profile data found:", profileResponse.data);
-          setError("No profile data found");
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-        setError(
-          error.response?.data?.message || "Failed to load profile data"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Time filters for notifications
+  const timeFilters = {
+    Today: (time) => time.includes("hrs"),
+    "Last Week": (time) => time.includes("days") && parseInt(time) <= 7,
+    "Last Month": (time) =>
+      time.includes("days") && parseInt(time) > 7 && parseInt(time) <= 30,
+    "Last Year": (time) => time.includes("days") && parseInt(time) > 30,
+  };
 
-    fetchProfileData();
-  }, [navigate, setError]);
+  const filteredNotifications = notifications.filter((notif) =>
+    timeFilters[activeNotificationTab](notif.time)
+  );
+
+  // Fetch profiles by username
+  const fetchProfiles = useCallback(async (username = "") => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(
+        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
+      );
+      console.log("Search API Response:", response.data);
+      setSearchResults(Array.isArray(response.data) ? response.data : []);
+    } catch (err) {
+      console.error("Search error:", err);
+      setError(err.response?.data?.message || "Failed to fetch profiles");
+      setSearchResults([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // Fetch stats from /posts
   const fetchStats = async () => {
@@ -279,6 +254,11 @@ function DesktopNavbar() {
         const userPosts = response.data.totalPosts.filter(
           (post) => post.user.id === userId
         );
+        if (userPosts.length > 0) {
+          console.log("Setting userProfileImage:", userPosts[0].user.profilePictureUrl);
+          setUsername(userPosts[0].user.username || "");
+          setUserProfileImage(userPosts[0].user.profilePictureUrl || "");
+        }
         const totalLikesCount = userPosts.reduce(
           (sum, post) => sum + (post._count?.Likes || 0),
           0
@@ -299,40 +279,6 @@ function DesktopNavbar() {
       setError(err.response?.data?.message || "Failed to fetch stats");
     }
   };
-
-  // Time filters for notifications
-  const timeFilters = {
-    Today: (time) => time.includes("hrs"),
-    "Last Week": (time) => time.includes("days") && parseInt(time) <= 7,
-    "Last Month": (time) =>
-      time.includes("days") && parseInt(time) > 7 && parseInt(time) <= 30,
-    "Last Year": (time) => time.includes("days") && parseInt(time) > 30,
-  };
-
-  const filteredNotifications = notifications.filter((notif) =>
-    timeFilters[activeNotificationTab](notif.time)
-  );
-
-  // Fetch profiles by username
-  const fetchProfiles = useCallback(async (username = "") => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await axios.get(
-        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(
-          username
-        )}`
-      );
-      setSearchResults(Array.isArray(response.data) ? response.data : []);
-      console.log("Search API Response:", response.data);
-    } catch (err) {
-      console.error("Search error:", err);
-      setError(err.response?.data?.message || "Failed to fetch profiles");
-      setSearchResults([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
 
   // Debounced search
   const debouncedSearch = useCallback(
@@ -536,18 +482,16 @@ function DesktopNavbar() {
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
       {activeIcon === "home" ? (
-        <GoHome
+        <IoHomeOutline
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
-          style={{ color: "white" }}
         />
       ) : (
-        <FaHome
+        <IoHome
           className="desktop-icon"
           onClick={() => handleIconClick("home")}
           title="Home"
-          style={{ color: "black" }}
         />
       )}
       <img
@@ -566,24 +510,20 @@ function DesktopNavbar() {
         className="desktop-icon"
         onClick={() => handleIconClick("add")}
       />
-      <div className="desktop-notification-icon-container">
+      <div className="notification-icon-container">
         <img
-          src={
-            activeIcon === "notifications" || showDropdown
-              ? NotificationWhite
-              : NotificationBlack
-          }
+          src={activeIcon === "notifications" ? NotificationWhite : NotificationBlack}
           alt="Notifications"
           className="desktop-icon"
           onClick={handleNotificationClick}
         />
         {showNotificationDropdown && (
-          <div className="desktop-notification-dropdown">
-            <div className="desktop-notification-tabs">
+          <div className="notification-dropdown">
+            <div className="notification-tabs">
               {Object.keys(timeFilters).map((tab) => (
                 <button
                   key={tab}
-                  className={`desktop-notification-tab-button ${
+                  className={`notification-tab-button ${
                     activeNotificationTab === tab ? "active" : ""
                   }`}
                   onClick={() => setActiveNotificationTab(tab)}
@@ -592,36 +532,31 @@ function DesktopNavbar() {
                 </button>
               ))}
             </div>
-            <div className="desktop-notification-list">
+            <div className="notification-list">
               {filteredNotifications.length > 0 ? (
                 filteredNotifications.map((notif, index) => (
                   <div
                     key={index}
-                    className={`desktop-notification-item ${notif.color}`}
+                    className={`notification-item ${notif.color}`}
                   >
                     <img
-                      src="https://via.placeholder.com/40"
+                      src={notif.profilePictureUrl || "https://via.placeholder.com/40"}
                       alt="Profile"
-                      className="desktop-notification-profile-pic"
+                      className="notification-profile-pic"
+                      onError={(e) => (e.target.src = UserIcon)}
                     />
-                    <div className="desktop-notification-content">
-                      <p className="desktop-notification-sender">
-                        Vijay Prasad
-                      </p>
-                      <p className="desktop-notification-message">
-                        {notif.message}
-                      </p>
+                    <div className="notification-content">
+                      <p className="notification-sender">Vijay Prasad</p>
+                      <p className="notification-message">{notif.message}</p>
                     </div>
-                    <span className="desktop-notification-time">
-                      {notif.time}
-                    </span>
+                    <span className="notification-time">{notif.time}</span>
                     {notif.alert && (
-                      <span className="desktop-notification-alert">🔔</span>
+                      <span className="notification-alert">🔔</span>
                     )}
                   </div>
                 ))
               ) : (
-                <p className="desktop-notification-empty">
+                <p className="notification-empty">
                   No notifications in this time range.
                 </p>
               )}
@@ -629,67 +564,69 @@ function DesktopNavbar() {
           </div>
         )}
       </div>
+      <img
+        src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
+        alt="Calendar"
+        className="desktop-icon"
+        onClick={handleClenderClick}
+        title="Calendar"
+      />
 
       {/* User Dropdown */}
-      <div className="desktop-user-icon-container">
+      <div className="user-icon-container">
         <img
           src={userProfileImage || UserIcon}
           alt="User"
           className="desktop-user-icon"
           onClick={handleUserIconClick}
+          onError={(e) => (e.target.src = UserIcon)}
         />
         {isUserDropdownOpen && (
-          <div className="desktop-self-profile-card">
-            <div className="desktop-self-profile-header">
+          <div className="self-profile-card">
+            <div className="self-profile-header">
               <img
-                src={
-                  localStorage.profilePicture ||
-                  "https://via.placeholder.com/50"
-                }
+                src={userProfileImage || "https://via.placeholder.com/50"}
                 alt="Profile"
-                className="desktop-self-profile-pic"
+                className="self-profile-pic"
+                onError={(e) => (e.target.src = UserIcon)}
               />
-              <div className="desktop-self-profile-info">
-                <h2 className="desktop-self-profile-name">
-                  {localStorage.username || "User Name"}
+              <div className="self-profile-info">
+                <h2 className="self-profile-name">
+                  {username || "User Name"}
                 </h2>
-                <p className="desktop-self-profile-label">Position</p>
+                <p className="self-profile-label">Position</p>
               </div>
             </div>
             <button
-              className="desktop-self-profile-edit-button"
+              className="self-profile-edit-button"
               onClick={handleEditProfile}
             >
               Edit Profile
             </button>
-            <div className="desktop-self-profile-stats">
-              <div className="desktop-self-profile-stat">
+            <div className="self-profile-stats">
+              <div className="self-profile-stat">
                 <span>Posts</span>
-                <span className="desktop-self-profile-stat-value">{posts}</span>
+                <span className="self-profile-stat-value">{posts}</span>
               </div>
-              <div className="desktop-self-profile-stat">
+              <div className="self-profile-stat">
                 <span>Likes</span>
-                <span className="desktop-self-profile-stat-value">
-                  {totalLikes}
-                </span>
+                <span className="self-profile-stat-value">{totalLikes}</span>
               </div>
-              <div className="desktop-self-profile-stat">
+              <div className="self-profile-stat">
                 <span>Comments</span>
-                <span className="desktop-self-profile-stat-value">
-                  {totalComments}
-                </span>
+                <span className="self-profile-stat-value">{totalComments}</span>
               </div>
             </div>
-            <div className="desktop-self-profile-menu">
+            <div className="self-profile-menu">
               <div
-                className="desktop-self-profile-menu-item"
+                className="self-profile-menu-item"
                 onClick={() => navigate("/SelfSetting")}
               >
                 Settings
               </div>
-              <div className="desktop-self-profile-menu-item">Help</div>
+              <div className="self-profile-menu-item">Help</div>
               <div
-                className="desktop-self-profile-menu-item desktop-self-profile-sign-out"
+                className="self-profile-menu-item self-profile-sign-out"
                 onClick={handleSignOut}
               >
                 Sign Out
@@ -701,33 +638,30 @@ function DesktopNavbar() {
 
       {/* Network Dropdown */}
       {showDropdown && (
-        <div className="desktop-connections-card">
-          <div className="desktop-connections-item">
-            <Link to="/NetworkPage" className="desktop-connection-link">
+        <div className="connections-card">
+          <div className="connections-item">
+            <Link to="/NetworkPage" className="connection-link">
               Connection
             </Link>
           </div>
-          <div className="desktop-connections-item">
+          <div className="connections-item">
             <Link to="/EduValt" className="desktop-connection-link">
               Edu-vault
             </Link>
           </div>
-          <div className="desktop-connections-item active">
+          <div className="connections-item active">
             <Link to="/HumanLibGuidelines" className="desktop-connection-link">
               Human Library
             </Link>
           </div>
-          <div className="desktop-connections-item">
+          <div className="connections-item">
             <Link to="/Guiednest" className="desktop-connection-link">
               Guidance
             </Link>
           </div>
-          <div className="desktop-connections-item">NGOs</div>
-          <div className="desktop-connections-item">
-            <Link
-              to="/libblog"
-              className="desktop-connection-link"
-            >
+          <div className="connections-item">NGOs</div>
+          <div className="connections-item">
+            <Link to="/libblog" className="desktop-connection-link">
               Blog
             </Link>
           </div>
@@ -751,9 +685,9 @@ function DesktopNavbar() {
           <div className="desktop-search-results">
             <Background />
             {/* Search Results Section */}
-            <div className="desktop-search-section">
-              <h4 className="desktop-search-section-title">Users</h4>
-              <div className="desktop-recent-search-list">
+            <div className="search-section">
+              <h4 className="search-section-title">Users</h4>
+              <div className="recent-search-list">
                 {isLoading ? (
                   <div className="desktop-search-loading">Searching...</div>
                 ) : error ? (
@@ -762,23 +696,18 @@ function DesktopNavbar() {
                   searchResults.map((item) => (
                     <div
                       key={item.id}
-                      className="desktop-recent-search-item"
+                      className="recent-search-item"
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={
-                          item.profilePictureUrl ||
-                          "https://via.placeholder.com/40"
-                        }
-                        alt={`${item.firstName} ${item.lastName}`}
-                        className="desktop-recent-search-avatar"
+                        src={item.profilePictureUrl || UserIcon}
+                        alt={item.name || item.username}
+                        className="recent-search-avatar"
+                        loading="lazy"
+                        onError={(e) => (e.target.src = UserIcon)}
                       />
-                      <span className="desktop-recent-search-name">
-                        {item.firstName || item.lastName
-                          ? `${item.firstName || ""} ${
-                              item.lastName || ""
-                            }`.trim()
-                          : item.username || "Unknown User"}
+                      <span className="recent-search-name">
+                        {item.name || item.username}
                       </span>
                     </div>
                   ))
@@ -791,37 +720,35 @@ function DesktopNavbar() {
             </div>
 
             {/* Suggested Users Section */}
-            <div className="desktop-search-section">
-              <h4 className="desktop-search-section-title">Suggested</h4>
+            <div className="search-section">
+              <h4 className="search-section-title">Suggested</h4>
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="desktop-suggested-user-item"
+                  className="suggested-user-item"
                   onClick={() => handleProfileClick(user.id)}
                 >
                   <img
-                    src={user.avatar || "https://via.placeholder.com/40"}
+                    src={user.profilePictureUrl || UserIcon}
                     alt={user.name}
-                    className="desktop-suggested-user-avatar"
+                    className="suggested-user-avatar"
+                    loading="lazy"
+                    onError={(e) => (e.target.src = UserIcon)}
                   />
-                  <div className="desktop-suggested-user-info">
-                    <span className="desktop-suggested-user-name">
-                      {user.name}
-                    </span>
-                    <p className="desktop-suggested-user-university">
-                      {user.university}
-                    </p>
+                  <div className="suggested-user-info">
+                    <span className="suggested-user-name">{user.name}</span>
+                    <p className="suggested-user-university">{user.university}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Tabs for Trend/Event/News */}
-            <div className="desktop-search-section">
-              <h4 className="desktop-search-section-title desktop-search-section-title2">
+            <div className="search-section">
+              <h4 className="search-section-title search-section-title2">
                 What you should put your eyes & thoughts on
               </h4>
-              <div className="desktop-search-tabs">
+              <div className="search-tabs">
                 {["Trend", "Event", "News"].map((tab, index) => (
                   <button
                     style={{
@@ -830,7 +757,7 @@ function DesktopNavbar() {
                     }}
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`desktop-search-tab-button ${
+                    className={`search-tab-button ${
                       activeTab === tab ? "active" : ""
                     }`}
                   >
@@ -840,69 +767,62 @@ function DesktopNavbar() {
               </div>
 
               {activeTab === "Trend" ? (
-                <div className="desktop-trend-results">
+                <div className="trend-results">
                   {trends.map((trend) => (
-                    <div key={trend.id} className="desktop-trend-item">
+                    <div key={trend.id} className="trend-item">
                       <img
-                        src={Trendimage}
+                        src={trend.image}
                         alt={trend.title}
-                        className="desktop-trend-image"
+                        className="trend-image"
+                        onError={(e) => (e.target.src = UserIcon)}
                       />
-                      <div className="desktop-trend-info">
-                        <p className="desktop-trend-title">{trend.title}</p>
-                        <p className="desktop-trend-description">
-                          {trend.description}
-                        </p>
+                      <div className="trend-info">
+                        <p className="trend-title">{trend.title}</p>
+                        <p className="trend-description">{trend.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : activeTab === "Event" ? (
-                <div className="desktop-event-results">
+                <div className="event-results">
                   {events.length > 0 ? (
                     events.map((event) => (
-                      <div key={event.id} className="desktop-event-item">
+                      <div key={event.id} className="event-item">
                         <img
-                          src={
-                            event.image || "https://via.placeholder.com/60x40"
-                          }
+                          src={event.image || "https://via.placeholder.com/60x40"}
                           alt={event.title}
-                          className="desktop-event-image"
+                          className="event-image"
+                          onError={(e) => (e.target.src = UserIcon)}
                         />
-                        <div className="desktop-event-info">
-                          <p className="desktop-event-title">{event.title}</p>
-                          <p className="desktop-event-description">
-                            {event.description}
-                          </p>
+                        <div className="event-info">
+                          <p className="event-title">{event.title}</p>
+                          <p className="event-description">{event.description}</p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="desktop-no-results">No events found</p>
+                    <p className="no-results">No events found</p>
                   )}
                 </div>
               ) : (
-                <div className="desktop-news-results">
+                <div className="news-results">
                   {news.length > 0 ? (
                     news.map((item) => (
-                      <div key={item.id} className="desktop-news-item">
+                      <div key={item.id} className="news-item">
                         <img
-                          src={
-                            item.image || "https://via.placeholder.com/60x40"
-                          }
+                          src={item.image || "https://via.placeholder.com/60x40"}
                           alt={item.title}
-                          className="desktop-news-image"
+                          className="news-image"
+                          onError={(e) => (e.target.src = UserIcon)}
                         />
-                        <div className="desktop-news-info">
-                          <p className="desktop-news-title">{item.title}</p>
-                          <p className="desktop-news-description">
-                            {item.description}
-                          </p>
+                        <div className="news-info">
+                          <p className="news-title">{item.title}</p>
+                          <p className="news-description">{item.description}</p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="desktop-no-results">No news found</p>
+                    <p className="no-results">No news found</p>
                   )}
                 </div>
               )}
@@ -920,20 +840,18 @@ function DesktopNavbar() {
 
       {/* Upload Section Overlay */}
       {showUploadSection && (
-        <div className="desktop-upload-overlay" onClick={handleCloseUpload}>
+        <div className="upload-overlay" onClick={handleCloseUpload}>
           <div
-            className="desktop-upload-container"
+            className="upload-container"
             onClick={(e) => e.stopPropagation()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
             {mediaList.length === 0 && (
-              <div className="desktop-upload-first-div">
-                <p className="desktop-upload-text">
-                  Drag & Drop your media here
-                </p>
+              <div className="upload-first-div">
+                <p className="upload-text">Drag & Drop your media here</p>
                 <button
-                  className="desktop-upload-button"
+                  className="upload-button"
                   onClick={() => inputRef.current.click()}
                 >
                   Upload from computer
@@ -941,8 +859,8 @@ function DesktopNavbar() {
               </div>
             )}
             {mediaList.length !== 0 && showAddMore && (
-              <div className="desktop-after-upload">
-                <div className="desktop-create-post-navbar">
+              <div className="after-upload">
+                <div className="navbar">
                   <img src={BackIcon} alt="Back" onClick={handleCloseUpload} />
                   <h6
                     onClick={() => {
@@ -953,18 +871,18 @@ function DesktopNavbar() {
                     Continue
                   </h6>
                 </div>
-                <div className="desktop-preview-container">
+                <div className="preview-container">
                   {mediaList.map((media, index) => (
-                    <div key={index} className="desktop-media-item">
+                    <div key={index} className="media-item">
                       {media.mediaType === "image" ? (
                         <img
-                          className="desktop-imageAndVideo"
+                          className="imageANdVideo"
                           src={media.previewURL}
                           alt="Uploaded media"
                         />
                       ) : (
                         <video
-                          className="desktop-imageAndVideo"
+                          className="imageAndVideo"
                           src={media.previewURL}
                           controls
                         />
@@ -973,7 +891,7 @@ function DesktopNavbar() {
                   ))}
                 </div>
                 <button
-                  className="desktop-add-more-btn"
+                  className="add-more-btn"
                   onClick={() => inputRef.current.click()}
                 >
                   Add More
@@ -981,49 +899,44 @@ function DesktopNavbar() {
               </div>
             )}
             {showPostDetails && (
-              <div className="desktop-create-post-main-container">
-                <div className="desktop-create-post-after-upload">
-                  <div className="desktop-create-post-navbar">
-                    <div className="desktop-image-and-name">
+              <div className="create-post-main-container">
+                <div className="create-post-after-upload">
+                  <div className="create-post-navbar">
+                    <div className="image-and-name">
                       <img
-                        src={
-                          userProfileImage || "https://via.placeholder.com/40"
-                        }
-                        alt={username || "User"}
-                        className="desktop-profile-pic"
+                        src={userProfileImage || UserIcon}
+                        alt="Profile"
+                        onError={(e) => (e.target.src = UserIcon)}
                       />
-                      <h3>{username || "User"}</h3>
+                      <h3>{username || "Himanshu Choudary"}</h3>
                     </div>
                     <h6 onClick={handlePostSubmit} disabled={isLoading}>
                       {isLoading ? "Posting..." : "Create Post"}
                     </h6>
                   </div>
-                  <div className="desktop-post-content-container">
-                    <div className="desktop-image-and-caption">
+                  <div className="post-content-container">
+                    <div className="image-and-caption">
                       {mediaList.map((media, index) => (
-                        <div
-                          key={index}
-                          className="desktop-post-media-container"
-                        >
+                        <div key={index} className="post-media-container">
                           {media.mediaType === "image" ? (
                             <img
-                              className="desktop-create-post-imageAndVideo"
+                              className="create-post-imageAndVideo"
                               src={media.previewURL}
                               alt="Uploaded media"
                             />
                           ) : (
                             <video
-                              className="desktop-create-post-imageAndVideo"
+                              className="create-post-imageAndVideo"
                               src={media.previewURL}
                               controls
                             />
                           )}
                         </div>
                       ))}
-                      <div className="desktop-form-group">
-                        <label className="desktop-input-label">Caption</label>
+                      <div className="form-group">
+                        <label className="input-label">Caption</label>
                         <textarea
-                          className="desktop-caption-input"
+                          className="caption-input"
                           value={caption}
                           onChange={(e) => setCaption(e.target.value)}
                           placeholder="Write a caption..."
@@ -1031,35 +944,31 @@ function DesktopNavbar() {
                         />
                       </div>
                     </div>
-                    <div className="desktop-privacy-settings">
-                      <div className="desktop-post-mention">
-                        <h1>Add Mention</h1>
-                        <IoIosAdd className="desktop-post-mention-icon" />
-                      </div>
-                      <div className="desktop-setting-item">
-                        <div className="desktop-setting-info">
+                    <div className="privacy-settings">
+                      <div className="setting-item">
+                        <div className="setting-info">
                           <h4>Hide Likes</h4>
-                          <p className="desktop-setting-description">
+                          <p className="setting-description">
                             Only you can see the number of likes on your post.
                           </p>
                         </div>
-                        <label className="desktop-toggle-switch">
+                        <label className="toggle-switch">
                           <input
                             type="checkbox"
                             checked={hideLikes}
                             onChange={(e) => setHideLikes(e.target.checked)}
                           />
-                          <span className="desktop-slider desktop-round"></span>
+                          <span className="slider round"></span>
                         </label>
                       </div>
-                      <div className="desktop-setting-item">
-                        <div className="desktop-setting-info">
+                      <div className="setting-item">
+                        <div className="setting-info">
                           <h4>Turn Off Comments</h4>
-                          <p className="desktop-setting-description">
+                          <p className="setting-description">
                             No one will be able to comment on this post.
                           </p>
                         </div>
-                        <label className="desktop-toggle-switch">
+                        <label className="toggle-switch">
                           <input
                             type="checkbox"
                             checked={disableComments}
@@ -1067,14 +976,12 @@ function DesktopNavbar() {
                               setDisableComments(e.target.checked)
                             }
                           />
-                          <span className="desktop-slider desktop-round"></span>
+                          <span className="slider round"></span>
                         </label>
                       </div>
                     </div>
-                    <div className="desktop-submit-section">
-                      {error && (
-                        <p className="desktop-error-message">{error}</p>
-                      )}
+                    <div className="submit-section">
+                      {error && <p className="error-message">{error}</p>}
                     </div>
                   </div>
                 </div>

@@ -796,21 +796,23 @@ function MobileMiddleSection() {
 
               <div className="mobile-middle-post-text">
                 <div className="mobile-middle-post-text-content">
+                  
+                  <span className="mobile-middle-post-caption">
                   <span className="mobile-middle-post-author">
                     {post.authorName}
                   </span>{" "}
-                  <span className="mobile-middle-post-caption">
                     {renderCaption(post.caption, index)}
-                  </span>
-                </div>
-                {post.caption && post.caption.length > 100 && (
+                    {post.caption && post.caption.length > 100 && (
                   <span
                     className="mobile-middle-see-more"
                     onClick={() => toggleSeeMore(index)}
                   >
-                    {seeMore[index] ? "See Less" : "See More"}
+                    {seeMore[index] ? "....See Less" : "...See More"}
                   </span>
                 )}
+                  </span>
+                </div>
+               
               </div>
             </div>
           );

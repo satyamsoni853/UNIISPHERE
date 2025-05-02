@@ -276,6 +276,8 @@
 
 .mobile-middle-post-author {
   font-weight: bold;
+  text-transform: capitalize;
+  margin-right: 10px;
 }
 
 .mobile-middle-post-caption {
@@ -938,3 +940,4 @@
     font-size: 12px;
   }
 }
+
