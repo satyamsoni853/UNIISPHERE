@@ -27,7 +27,7 @@
   background: rgb(235, 200, 205);
 
  
-  border-radius: 50%;
+  border-radius: 10%;
   object-fit: cover;
   border: 2px solid white;
 }

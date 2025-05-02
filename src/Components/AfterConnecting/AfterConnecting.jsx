@@ -442,9 +442,9 @@ function AfterConnecting() {
                   <p className="afterconnectinginProfile-full-section-heading">
                     About
                   </p>
-                  <p>
+                  <p className="afterconnectinginProfile-about">
                     {data.about === "Nothing to say as of now" ? (
-                      <span style={{ fontStyle: "italic", color: "#666" }}>
+                      <span style={{color: "#666" }}  >
                         {data.about}
                       </span>
                     ) : (

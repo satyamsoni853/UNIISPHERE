@@ -42,8 +42,10 @@
 /* Profile Section Container */
 .afterconnectinginProfile-full-section-container {
   width: 90%;
-  max-width: 600px;
-  margin: 6rem auto 2rem;
+  max-width: 650px;
+  /* margin: 6rem auto 2rem; */
+  margin-top: 100px;
+  margin-left: 50px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -98,6 +100,8 @@
   justify-content: space-around;
   width: 70%;
   gap: 2rem;
+  text-decoration: none;
+
 }
 
 .afterconnectinginProfile-full-section-connectionsDetails,
@@ -109,9 +113,14 @@
 
 .afterconnectinginProfile-full-section-collabsDetails h4,
 .afterconnectinginProfile-full-section-connectionsDetails h4 {
-  font-size: 1.25rem;
-  font-weight: 100;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  font-weight: 600;
   color: #666;
+}
+.afterconnectinginProfile-about{
+  text-transform: capitalize;
+  
 }
 
 .afterconnectinginProfile-full-section-collabsDetails span,
@@ -124,14 +133,14 @@
 /* Message Box */
 .afterconnectinginProfile-full-section-message-box {
   position: absolute;
-  left: -10rem;
-  top: 50%;
+  left: -12rem;
+  top: 60%;
   /* transform: translateY(-50%); */
   width: 8rem;
   height: 2rem;
   font-size: 1rem;
   color: black;
-  text-decoration: none;
+  text-decoration:none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,7 +162,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  line-height: 1.2;
+  line-height: 0.7;
 }
 
 .afterconnectinginProfile-full-section-profile-info p:first-child {
@@ -215,6 +224,8 @@
   border-top: 10px solid #f9f6f6;
   border-bottom: 10px solid #f9f6f6;
   padding: 1.5rem;
+  /* width: 600px; */
+  
 }
 
 .afterconnectinginProfile-full-section-goal-button {
@@ -225,7 +236,18 @@
   cursor: pointer;
   font-size: 0.875rem;
 }
-
+.afterconnectinginProfile-full-section-Back{
+  font-size: 2rem;
+}
+.afterconnectinginProfile-full-section-Forward{
+  font-size: 2rem;
+}
+.afterconnectinginProfile-full-section-left-btn {
+  font-size: 2rem;
+}
+.afterconnectinginProfile-full-section-right-btn{
+  font-size: 2rem;
+}
 /* Upload Slider */
 .afterconnectinginProfile-full-section-upload-slider-box {
   border-bottom: 10px solid #f9f6f6;
