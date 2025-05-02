@@ -4,7 +4,7 @@ import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import DesktopLeftBottomSection from '../DesktopLeftBottomSection/DesktopLeftBottomSection.jsx'
 import DesktopLeftTop from "../DesktopLeftTop/DesktopLeftTop.jsx";
 import Background from "../Background/Background.jsx";
-import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
+import DesktopNavbar from '../DesktopNavbar/DesktopNavbar.jsx'
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import axios from "axios";
@@ -55,7 +55,7 @@ function AboutAndExperiance() {
         if (response.data) {
           setAboutDesc(response.data.about || "");
           if (response.data.experience && response.data.experience.length > 0) {
-            const exp = response.data.experience[0]; // Assuming single experience for simplicity
+            const exp = response.data.experience[0];
             setTitle(exp.title || "");
             setName(exp.name || "");
             setLocation(exp.location || "");
