@@ -175,7 +175,7 @@ function SkillForm() {
         <Background />
         <div className="Skill-left-main-container">
           <DesktopLeftTop />
-          <DesktopLeftBottom />
+          <DesktopLeftBottomSection />
         </div>
         <div className="Skill-middle-main-container">
           <div className="middle-skills-mainParent">

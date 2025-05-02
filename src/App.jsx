@@ -34,6 +34,7 @@ import Resources from "./Components/Resources/Resources.jsx";
 import Books from "./Components/Resources/Books.jsx";
 import EventNews from './Components/Resources/EventNews.jsx'
  import EventDesc from "./Components/Resources/EventDescription.jsx";
+ import HumanLibGuidelines from './Components/HumanLibGuidlines/HumanLibGuidlines.jsx'
 function App() {
   return (
     <Router>
@@ -71,7 +72,11 @@ function App() {
           <Route path="/education/:userId" element={<EducationEdit />} />
           <Route path="/uploadsection/:userId" element={<UploadSection />} />
           <Route
-            path="/AboutAndExperiance/:userId"
+            path="/about/:userId"
+            element={<AboutAndExperience />}
+          />
+          <Route
+            path="/AboutAndExperience/:userId"
             element={<AboutAndExperience />}
           />
           <Route path="/blog/:userId" element={<Blog />} />
@@ -101,6 +106,7 @@ function App() {
           <Route path="/books" element={<Books/>} />
           <Route path="/EventNews" element={<EventNews/>} />
           <Route path="/EventDescription" element={<EventDesc/>} />
+          <Route path="/HumanLibGuidelines" element={<HumanLibGuidelines/>} />
           
 
         </Routes>
