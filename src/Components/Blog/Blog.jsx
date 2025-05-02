@@ -200,18 +200,27 @@ const Blog = () => {
           />
         );
       } else if (media.type === "youtube") {
+        const embedUrl = getYouTubeEmbedUrl(media.url);
         return (
-          <iframe
-            key={uniqueIndex}
-            width="100%"
-            height="315"
-            src={getYouTubeEmbedUrl(media.url)}
-            title="YouTube video"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{ marginBottom: "10px" }}
-          ></iframe>
+          <div key={uniqueIndex} className="youtube-video-container">
+            <iframe
+              width="100%"
+              height="315"
+              src={embedUrl}
+              title="YouTube video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ marginBottom: "10px" }}
+            ></iframe>
+            <div className="youtube-video-metadata">
+              <div className="youtube-channel-name">VIJAY PRASHAD [Works at Google]</div>
+              <div className="youtube-video-title">AGAIN THE NOTICE</div>
+              <div className="youtube-video-description">
+                of BeEn have evolved to go in the university and will probably prefer the university of BeEn have evolved to go in the university and will probably prefer the university to
+              </div>
+            </div>
+          </div>
         );
       } else {
         return (
@@ -299,7 +308,7 @@ const Blog = () => {
                             src={blog.author?.avatar || profile}
                             alt="Profile"
                             className="blog-profile-pic"
-                            onError={(e) => { e.target.src = profile; }} // Fallback on error
+                            onError={(e) => { e.target.src = profile; }}
                           />
                         </div>
                         <div className="blog-user-info">
@@ -424,7 +433,7 @@ const Blog = () => {
                               src={blog.author?.avatar || profile}
                               alt="Profile"
                               className="desktop-blog-profile-pic"
-                              onError={(e) => { e.target.src = profile; }} // Fallback on error
+                              onError={(e) => { e.target.src = profile; }}
                             />
                           </div>
                           <div className="desktop-blog-user-info">
