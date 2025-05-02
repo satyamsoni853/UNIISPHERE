@@ -8,7 +8,7 @@ import AfterOtpSection1 from "./Components/AfterOtpSection1/AfterOtpSection1.jsx
 import UserSignupWithEmailAndPassword from "./Components/UserSignupWithEmailAndPassword/UserSignupWithEmailAndPassword.jsx";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
 import EduValt from "./Components/EduValt/EduValt.jsx";
-import LibBlog from "./Components/libblog/LibBlog.jsx";
+import LibBlog from "./Components/Libblog/LibBlog.jsx";
 import Guiednest from "./Components/Guiednest/Guiednest.jsx";
 
 // Lazy load other components

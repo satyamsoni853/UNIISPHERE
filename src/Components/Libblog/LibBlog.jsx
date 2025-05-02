@@ -6,11 +6,21 @@ import { Link } from "react-router-dom";
 
 function LibBlog() {
   return (
-    <div >
-    <div className="libblog-section-navbar-container">
-    <DesktopNavbar />
-    <Background />
-    </div>
+    <div>
+      <div className="libblog-section-navbar-container">
+        <DesktopNavbar />
+        <Background />
+        <Link
+          to={
+            localStorage.getItem("userId")
+              ? `/blog/${localStorage.getItem("userId")}`
+              : "/blog"
+          }
+          className="desktop-connection-link"
+        >
+          Blog
+        </Link>
+      </div>
       <div className="libblog-section-section-container">
         <div className="libblog-section-section-card">
           <div className="libblog-section-section-card-container">
@@ -19,7 +29,7 @@ function LibBlog() {
               Welcome to <span>LibBlog</span>
             </h1>
             <p className="libblog-section-section-subtitle">
-            Explore academic books, novels, notes, references, life lessons, and more to support your learning and personal growth.
+              Explore academic books, novels, notes, references, life lessons, and more to support your learning and personal growth.
             </p>
 
             <div className="libblog-section-section-section">
@@ -40,10 +50,15 @@ function LibBlog() {
               </ul>
             </div>
 
-            
-
             <div className="libblog-section-section-button-container">
-              <Link to="/HumanLib" className="libblog-section-section-button">
+              <Link
+                to={
+                  localStorage.getItem("userId")
+                    ? `/blog/${localStorage.getItem("userId")}`
+                    : "/blog"
+                }
+                className="libblog-section-section-button"
+              >
                 I ACCEPT
               </Link>
             </div>
