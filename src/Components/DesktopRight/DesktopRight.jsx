@@ -4,23 +4,41 @@ import ConnectAndCollaborate from "./connectAndCollaborate.png";
 import ConnectImage from "./connectImage.png";
 import "./DesktopRight.css";
 import ProfileImage from "./profileImage.jpeg";
-import Suggestion1Image from "./suggestion1Image.png";
-import Suggestion2Image from "./suggestion2Image.png";
-import Suggestion3Image from "./suggestion3Image.png";
 import ConnectAndCollaborateSvg from "./connectAndCollaborate.svg";
 import BottomMessagesWidget from "../BottomMessagesWidget/BottomMessagesWidget";
 
-const suggestions = [
-  { img: Suggestion1Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion2Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion1Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion2Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
-  { img: Suggestion3Image, name: "Ajay Pratap", university: "BHU(Banaras Hindu University)" },
+// Dummy data for suggestions in case API fails
+const dummySuggestions = [
+  {
+    img: ProfileImage,
+    name: "Ajay Pratap",
+    university: "BHU (Banaras Hindu University)",
+  },
+  {
+    img: ProfileImage,
+    name: "Ravi Sharma",
+    university: "IIT Delhi",
+  },
+  {
+    img: ProfileImage,
+    name: "Priya Singh",
+    university: "JNU (Jawaharlal Nehru University)",
+  },
+  {
+    img: ProfileImage,
+    name: "Priya Singh",
+    university: "JNU (Jawaharlal Nehru University)",
+  },
+  {
+    img: ProfileImage,
+    name: "Priya Singh",
+    university: "JNU (Jawaharlal Nehru University)",
+  },
+  {
+    img: ProfileImage,
+    name: "Priya Singh",
+    university: "JNU (Jawaharlal Nehru University)",
+  },
 ];
 
 function DesktopRightSection() {
@@ -29,6 +47,7 @@ function DesktopRightSection() {
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const [profileData, setProfileData] = useState(null);
+  const [suggestions, setSuggestions] = useState([]); // State for dynamic suggestions
   const [loading, setLoading] = useState(true);
 
   const getAuthData = () => {
@@ -44,26 +63,29 @@ function DesktopRightSection() {
       if (!authData) {
         console.error("No authentication data available");
         setError("Authentication required");
+        setSuggestions(dummySuggestions); // Use dummy data if no auth
         setLoading(false);
         return;
       }
 
       setUserId(authData.userId);
-      const storedUserId = localStorage.getItem("userId");
 
       try {
+        // Fetch profile data
         const profileResponse = await axios.get(
           `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authData.userId}`,
           {
             headers: {
-              "Authorization": `Bearer ${authData.token}`
-            }
+              Authorization: `Bearer ${authData.token}`,
+            },
           }
         );
+
         const username = profileResponse.data[0].username;
         const profilePictureUrl = profileResponse.data[0].profilePictureUrl;
         localStorage.setItem("profilePicture", profilePictureUrl);
         localStorage.setItem("username", username);
+
         if (profileResponse.data && profileResponse.data.length > 0) {
           const userData = profileResponse.data[0];
           setProfileData(userData);
@@ -73,9 +95,30 @@ function DesktopRightSection() {
           setConnect(connectCount);
           setCollaborate(collaborateCount);
         }
+
+        // Fetch suggestions with GET request and userId in body
+        const suggestionsResponse = await axios({
+          method: "get",
+          url: `https://uniisphere-1.onrender.com/api/suggestions`,
+          data: { userId: authData.userId }, // Sending userId in body
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        // Map the API response to the required suggestion format
+        const fetchedSuggestions = suggestionsResponse.data.map((user) => ({
+          img: user.profilePictureUrl || ProfileImage, // Fallback to default image
+          name: `${user.firstName || ""} ${user.lastName || ""}`.trim() || "Unknown User",
+          university: user.university || "University not specified",
+        }));
+
+        setSuggestions(fetchedSuggestions);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setError("Failed to load profile data");
+        setError("Failed to load data");
+        setSuggestions(dummySuggestions); // Use dummy data on error
       } finally {
         setLoading(false);
       }
@@ -92,12 +135,14 @@ function DesktopRightSection() {
   const getProfilePictureUrl = () => {
     if (!profileData) return ProfileImage;
 
-    return profileData.profilePictureUrl ||
+    return (
+      profileData.profilePictureUrl ||
       profileData.profileImageUrl ||
       profileData.avatarUrl ||
       profileData.photoUrl ||
       profileData.profilePicture ||
-      ProfileImage;
+      ProfileImage
+    );
   };
 
   return (
@@ -112,7 +157,9 @@ function DesktopRightSection() {
             src={getProfilePictureUrl()}
             alt="Profile"
             className="profile-image"
-            onError={(e) => { e.target.src = ProfileImage }}
+            onError={(e) => {
+              e.target.src = ProfileImage;
+            }}
           />
           <div className="profile-right">
             <div className="profile-numbers">
@@ -142,7 +189,9 @@ function DesktopRightSection() {
                 <p className="suggestion-name">{suggestion.name}</p>
                 <p className="suggestion-university">{suggestion.university}</p>
               </div>
-              <button><img className="connect-btn" src={ConnectImage} alt="" /></button>
+              <button>
+                <img className="Desktop-connect-btn" src={ConnectImage} alt="" />
+              </button>
             </div>
           ))}
         </div>

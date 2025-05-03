@@ -14,8 +14,8 @@
 }
 
 .desktop-icon {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   margin: 0 10px;
   cursor: pointer;
 }
@@ -61,21 +61,6 @@
   height: 40px;
 }
 
-/* Search Results */
-/* .main-desktop-search-results {
-  position: absolute;
-  top: 100%;
-  left: -200%;
-  right: 0;
-  width: 350%;
-  max-height: 400px;
-  overflow-y: auto;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  margin-top: 5px;
-} */
 
 .desktop-search-result-item {
   display: flex;

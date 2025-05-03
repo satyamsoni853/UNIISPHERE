@@ -3,6 +3,8 @@ import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IoHome, IoHomeOutline } from "react-icons/io5";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { IoNotifications } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import "./DesktopNavbar.css";
 
@@ -12,8 +14,6 @@ import AddWhite from "./AddWhiteIcon.svg";
 import BackIcon from "./BackIcon.svg";
 import NetworkBlack from "./NetworkBlackIcon.svg";
 import NetworkWhite from "./NetworkWhiteIcon.svg";
-import NotificationBlack from "./NotificationBlackIcon.svg";
-import NotificationWhite from "./NotificationWhiteIcon.svg";
 import UnisphereLogoIcon from "./UnisphereLogoIcon.svg";
 import UserIcon from "./UserIcon.svg";
 import ClenderBlack from './ClenderBlackIcon.svg';
@@ -511,12 +511,19 @@ function DesktopNavbar() {
         onClick={() => handleIconClick("add")}
       />
       <div className="notification-icon-container">
-        <img
-          src={activeIcon === "notifications" ? NotificationWhite : NotificationBlack}
-          alt="Notifications"
-          className="desktop-icon"
-          onClick={handleNotificationClick}
-        />
+        {activeIcon === "notifications" ? (
+          <IoMdNotificationsOutline
+            className="desktop-icon"
+            onClick={handleNotificationClick}
+            title="Notifications"
+          />
+        ) : (
+          <IoNotifications
+            className="desktop-icon"
+            onClick={handleNotificationClick}
+            title="Notifications"
+          />
+        )}
         {showNotificationDropdown && (
           <div className="notification-dropdown">
             <div className="notification-tabs">

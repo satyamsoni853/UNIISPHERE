@@ -1,71 +1,52 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-// import { jwtDecode } from "jwt-decode";
-// import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import jwtDecode from "jwt-decode";
+import "./GoogleLoginComponent.css";
 
-// function GoogleLoginComponent() {
-//   const navigate = useNavigate();
+function GoogleLoginComponent() {
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-//   const handleGoogleSuccess = async (credentialResponse) => {
-//     try {
-//       const token = credentialResponse.credential;
-//       const decoded = jwtDecode(token);
-//       const email = decoded.email;
-//       const username = decoded.name || email.split("@")[0];
+  const handleSuccess = (credentialResponse) => {
+    try {
+      // Decode the JWT token to get user info
+      const decoded = jwtDecode(credentialResponse.credential);
+      const { email } = decoded;
 
-//       const response = await axios.post(
-//         "https://uniisphere-1.onrender.com/auth/register/google",
-//         { email, username }
-//       );
-//       console.log("Google OTP sent:", response.data);
+      if (email) {
+        // Redirect to /AfterOtpSection1 with email in state
+        navigate("/AfterOtpSection1", { state: { email } });
+      } else {
+        setError("Unable to retrieve email. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error decoding Google token:", err);
+      setError("Authentication failed. Please try again.");
+    }
+  };
 
-//       navigate("/signup", {
-//         state: { email, username, step: 2 },
-//       });
-//     } catch (error) {
-//       console.error("Google login failed:", error);
-//     }
-//   };
+  const handleError = () => {
+    setError("Google login failed. Please try again.");
+  };
 
-//   const handleGoogleFailure = (error) => {
-//     console.error("Google login error:", error);
-//   };
+  return (
+    <div className="google-login-container">
+      <h2>Login with Google</h2>
+      {error && <div className="error-message">{error}</div>}
+      <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+        <GoogleLogin
+          onSuccess={handleSuccess}
+          onError={handleError}
+          useOneTap
+          text="continue_with"
+          shape="rectangular"
+          theme="filled_blue"
+          size="large"
+        />
+      </GoogleOAuthProvider>
+    </div>
+  );
+}
 
-//   return (
-//     <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-//       <GoogleOAuthProvider clientId="YOUR_ACTUAL_CLIENT_ID.apps.googleusercontent.com">
-//         <GoogleLogin
-//           onSuccess={handleGoogleSuccess}
-//           onError={handleGoogleFailure}
-//           render={(renderProps) => (
-//             <button
-//               onClick={renderProps.onClick}
-//               disabled={renderProps.disabled}
-//               style={{
-//                 display: "flex",
-//                 alignItems: "center",
-//                 padding: "10px 20px",
-//                 fontSize: "16px",
-//                 border: "1px solid #4285f4",
-//                 borderRadius: "4px",
-//                 backgroundColor: "#4285f4",
-//                 color: "white",
-//                 cursor: "pointer",
-//               }}
-//             >
-//               <img
-//                 src="https://developers.google.com/identity/images/g-logo.png"
-//                 alt="Google Icon"
-//                 style={{ width: "20px", marginRight: "10px" }}
-//               />
-//               Continue with Google
-//             </button>
-//           )}
-//         />
-//       </GoogleOAuthProvider>
-//     </div>
-//   );
-// }
-
-// export default GoogleLoginComponent;
+export default GoogleLoginComponent;
