@@ -19,8 +19,7 @@ import SmallImage14 from './SmallImage14.png';
 const images = [
   SmallImage1, SmallImage2, SmallImage3, SmallImage4, SmallImage5, SmallImage6,
   SmallImage7, SmallImage8, SmallImage9, SmallImage10, SmallImage11, SmallImage12,
-  SmallImage13, SmallImage14, SmallImage1, SmallImage2, SmallImage3, SmallImage4,
-  SmallImage5, SmallImage6
+  SmallImage13, SmallImage14, SmallImage1, SmallImage2
 ];
 
 function Background() {

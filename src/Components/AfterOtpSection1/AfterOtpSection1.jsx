@@ -11,7 +11,11 @@ function AfterOtpSection1() {
   const navigate = useNavigate();
 
   // Extract state from location with fallback
-  const { email: passedEmail, username: passedUsername, token: passedToken } = location.state || {};
+  const {
+    email: passedEmail,
+    username: passedUsername,
+    token: passedToken,
+  } = location.state || {};
 
   // Debug token presence
   useEffect(() => {
@@ -43,6 +47,9 @@ function AfterOtpSection1() {
   // State for Step 3 (Education/Work + Headline)
   const [headline, setHeadline] = useState("");
   const [college, setCollege] = useState("");
+  const [twelveSchool, setTwelveSchool] = useState("");
+  const [tenthschool, setTenthschool] = useState("");
+
   const [degree, setDegree] = useState("");
   const [workorProject, setWorkorProject] = useState("");
   const [startYear, setStartYear] = useState("");
@@ -209,7 +216,10 @@ function AfterOtpSection1() {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
-    console.log("Step 8 - Profile Picture Selected:", profilePicture?.name || "None");
+    console.log(
+      "Step 8 - Profile Picture Selected:",
+      profilePicture?.name || "None"
+    );
     setError("");
     setStep(9);
     setIsSubmitting(false);
@@ -265,7 +275,9 @@ function AfterOtpSection1() {
     console.log("Starting profile submission...");
 
     if (!token) {
-      setError("Authentication token is missing. Please go back to the login page and try again.");
+      setError(
+        "Authentication token is missing. Please go back to the login page and try again."
+      );
       setIsSubmitting(false);
       return;
     }
@@ -283,7 +295,9 @@ function AfterOtpSection1() {
         console.log("Profile picture compressed and resized successfully");
         const originalSize = profilePicture.size;
         const compressedSize = Math.round((profilePictureUrl.length * 3) / 4);
-        console.log(`Image size reduced from ${originalSize} to ~${compressedSize} bytes`);
+        console.log(
+          `Image size reduced from ${originalSize} to ~${compressedSize} bytes`
+        );
       }
 
       const userData = {
@@ -309,7 +323,8 @@ function AfterOtpSection1() {
 
       const logData = { ...userData };
       if (logData.profilePictureBase64) {
-        logData.profilePictureBase64 = logData.profilePictureBase64.substring(0, 50) + "...";
+        logData.profilePictureBase64 =
+          logData.profilePictureBase64.substring(0, 50) + "...";
       }
       console.log("Profile data being sent:", logData);
 
@@ -319,7 +334,7 @@ function AfterOtpSection1() {
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
           timeout: 30000,
         }
@@ -328,7 +343,8 @@ function AfterOtpSection1() {
       console.log("Profile completion successful:", response.data);
 
       // Extract userId from response if provided, fallback to username
-      const returnedUserId = response.data.userId || response.data.id || username;
+      const returnedUserId =
+        response.data.userId || response.data.id || username;
       setUserId(returnedUserId);
 
       alert("Profile completed successfully!");
@@ -337,14 +353,18 @@ function AfterOtpSection1() {
       navigate("/view", {
         state: {
           userToken: response.data.token, // Make sure this matches what you're looking for
-          userId: response.data.user.id    // Make sure this matches what you're looking for
-        }
+          userId: response.data.user.id, // Make sure this matches what you're looking for
+        },
       });
     } catch (err) {
       console.error("Error details:", err);
       if (err.response) {
         console.error("Server response:", err.response.data);
-        setError(`Profile completion failed: ${err.response.data?.error || err.response.statusText}`);
+        setError(
+          `Profile completion failed: ${
+            err.response.data?.error || err.response.statusText
+          }`
+        );
       } else if (err.request) {
         setError("Network error. Please check your connection and try again.");
       } else {
@@ -356,13 +376,14 @@ function AfterOtpSection1() {
   };
 
   const handleSkip = async () => {
-    const syntheticEvent = { preventDefault: () => { } };
+    const syntheticEvent = { preventDefault: () => {} };
     await handleNinthStepSubmit(syntheticEvent);
   };
 
   // Interest and Skill Handlers
   const handleInterestSelect = (interest) => {
-    if (selectedInterests.includes(interest) || selectedInterests.length >= 5) return;
+    if (selectedInterests.includes(interest) || selectedInterests.length >= 5)
+      return;
     setSelectedInterests([...selectedInterests, interest]);
     setSearchInterest("");
   };
@@ -538,6 +559,24 @@ function AfterOtpSection1() {
           placeholder="Enter your college name"
           value={college}
           onChange={(e) => setCollege(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group controlId="tenthschool" className="mb-3">
+        <Form.Label>10Th School</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter your 10Th School name"
+          value={tenthschool}
+          onChange={(e) => tenthschool(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group controlId="twelveSchool" className="mb-3">
+        <Form.Label>12Th School</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter your 12th School name"
+          value={twelveSchool}
+          onChange={(e) => twelveSchool(e.target.value)}
         />
       </Form.Group>
       <Form.Group controlId="degree" className="mb-3">
@@ -936,20 +975,20 @@ function AfterOtpSection1() {
           {step === 1
             ? renderFirstStep()
             : step === 2
-              ? renderSecondStep()
-              : step === 3
-                ? renderThirdStep()
-                : step === 4
-                  ? renderFourthStep()
-                  : step === 5
-                    ? renderFifthStep()
-                    : step === 6
-                      ? renderSixthStep()
-                      : step === 7
-                        ? renderSeventhStep()
-                        : step === 8
-                          ? renderEighthStep()
-                          : renderNinthStep()}
+            ? renderSecondStep()
+            : step === 3
+            ? renderThirdStep()
+            : step === 4
+            ? renderFourthStep()
+            : step === 5
+            ? renderFifthStep()
+            : step === 6
+            ? renderSixthStep()
+            : step === 7
+            ? renderSeventhStep()
+            : step === 8
+            ? renderEighthStep()
+            : renderNinthStep()}
           <p className="privacy-text">
             Your Privacy is Important <br />
             We may send you member uploads, recruiter messages, job suggestions,

@@ -24,25 +24,23 @@
 
 /* Manually setting different positions for 20 images */
 .img-0 { top: 15%; left: 10%; }
-.img-1 { top: 40%; left: 0%; }
-.img-2 { top: 35%; left: 30%; }
-.img-3 { top: 20%; left: 20%; }
+.img-1 { top: 42%; left: 3%; }
+.img-2 { top: 45%; left: 40%; }
+.img-3 { top: 0%; left: 20%; }
 .img-4 { top: 25%; left: 67%; }
-.img-5 { top: 20%; left: 90%; }
-.img-6 { top: 35%; left: 20%; }
-.img-7 { top: 80%; left: 0%; }
+.img-5 { top: 45%; left: 25%; } 
+/* black */
+.img-6 {top: 40%; left: 80%;  }
+.img-7 { top: 80%; left: 5%; }
 .img-8 { top: 40%; left: 90%; }
-.img-9 { top: 55%; left: 0%; }
-.img-10 { top: 65%; left: 90%; }
-.img-11 { top: 60%; left: 67%; }
-.img-12 { top: 65%; left: 20%; }
-.img-13 { top: 80%; left: 67%; }
+/* .img-9 { top: 55%; left: 10%; } */
+.img-10 { top: 5%; left: 90%; }
+.img-11 { top: 0%; left: 67%; }
+.img-12 { top: 65%; left: 35%; }
+.img-13 { top: 80%; left: 60%; }
 .img-14 { top: 75%; left: 80%; }
 .img-15 { top: 80%; left: 30%; }
-.img-16 { top: 85%; left: 60%; }
-.img-17 { top: 90%; left: 90%; }
-.img-18 { top: 95%; left: 10%; }
-.img-19 { top: 80%; left: 20%; } 
+
 
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
   .img-0,.img-6,.img-2,.img-3,img-4,.img-10,.img-11, .img-12, .img-13, .img-14, 
