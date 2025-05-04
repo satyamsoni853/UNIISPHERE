@@ -3,7 +3,7 @@ import "./DesktopLeftBottomSection.css";
 import image1 from "./Image1.png";
 import image2 from "./Image2.png";
 import image3 from "./Image3.png";
-import Feature from "../Fearure/Feauture";
+import Feature from "../Feature/Feature";
 
 function DesktopLeftBottomSection() {
   const [suggestedItems, setSuggestedItems] = useState([
@@ -36,7 +36,7 @@ function DesktopLeftBottomSection() {
 
       <p className="leftsectionbottom-1-button">See All</p>
     </div>
-import Feature from "../Fearure/Feauture";
+
     <Feature/>
    </div>
   );

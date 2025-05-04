@@ -234,24 +234,42 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-evenly;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  
 }
 .connections-card :nth-child(1) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px #a7e1eb7b;
 }
 .connections-card :nth-child(2) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px rgba(233, 149, 198, 0.429);
 }
 .connections-card :nth-child(3) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px #474fe96a;
 }
 .connections-card :nth-child(4) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px rgba(21, 75, 84, 0.338);
 }
 .connections-card :nth-child(5) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px #8d61e38c;
 }
 .connections-card :nth-child(6) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px #73d2868c;
+}
+.connections-card :nth-child(7) {
+  margin-top: 15px;
+  box-shadow: 0 2px 5px 2px #896c8d8c;
+}
+.connections-card :nth-child(8) {
+  margin-top: 15px;
+  box-shadow: 0 2px 5px 2px #8676be8c;
 }
 
 .connections-item {
