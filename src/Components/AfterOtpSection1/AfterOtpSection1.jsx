@@ -310,7 +310,7 @@ function AfterOtpSection1() {
         Gender: Gender || "",
         Skills: selectedSkills,
         Interests: selectedInterests,
-        headline: headline || "",
+        headline: headline ? [headline] : [],
         location: userLocation || "",
         About: About || "",
         college: college || "",

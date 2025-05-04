@@ -14,6 +14,13 @@ function AboutAndExperiance() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [experiences, setExperiences] = useState([{
+    title: "",
+    organizationName: "",
+    location: "",
+    locationType: "",
+    description: ""
+  }]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -24,12 +31,7 @@ function AboutAndExperiance() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const [title, setTitle] = useState(""); // Title for the experience section
-  const [name, setName] = useState(""); // Organization/Company name
-  const [aboutDesc, setAboutDesc] = useState(""); // About description content
-  const [location, setLocation] = useState(""); // Location input
-  const [locationType, setLocationType] = useState(""); // Location type (e.g., remote, onsite)
-  const [description, setDescription] = useState(""); // Detailed description for experience
+  const [aboutDesc, setAboutDesc] = useState("");
 
   // Fetch existing about and experience data on component mount
   useEffect(() => {
@@ -53,14 +55,9 @@ function AboutAndExperiance() {
         );
 
         if (response.data) {
-          setAboutDesc(response.data.about || "");
-          if (response.data.experience && response.data.experience.length > 0) {
-            const exp = response.data.experience[0];
-            setTitle(exp.title || "");
-            setName(exp.name || "");
-            setLocation(exp.location || "");
-            setLocationType(exp.locationType || "");
-            setDescription(exp.description || "");
+          setAboutDesc(response.data.About || "");
+          if (response.data.experiences && response.data.experiences.length > 0) {
+            setExperiences(response.data.experiences);
           }
         }
       } catch (error) {
@@ -94,7 +91,7 @@ function AboutAndExperiance() {
         `https://uniisphere-1.onrender.com/users/profile`,
         {
           userId: userId,
-          about: aboutDesc,
+          About: aboutDesc,
         },
         {
           headers: {
@@ -126,8 +123,42 @@ function AboutAndExperiance() {
     }
   };
 
+  const handleExperienceChange = (index, field, value) => {
+    const newExperiences = [...experiences];
+    newExperiences[index] = {
+      ...newExperiences[index],
+      [field]: value
+    };
+    setExperiences(newExperiences);
+  };
+
+  const handleAddExperience = () => {
+    setExperiences([...experiences, {
+      title: "",
+      organizationName: "",
+      location: "",
+      locationType: "",
+      description: ""
+    }]);
+  };
+
+  const handleRemoveExperience = (index) => {
+    if (experiences.length > 1) {
+      const newExperiences = experiences.filter((_, i) => i !== index);
+      setExperiences(newExperiences);
+    }
+  };
+
   const handleSaveExperience = async () => {
-    if (!title.trim() || !name.trim() || !location.trim() || !locationType.trim() || !description.trim()) {
+    const isValid = experiences.every(exp => 
+      exp.title.trim() && 
+      exp.organizationName.trim() && 
+      exp.location.trim() && 
+      exp.locationType.trim() && 
+      exp.description.trim()
+    );
+
+    if (!isValid) {
       alert("Please fill in all experience fields.");
       return;
     }
@@ -141,19 +172,29 @@ function AboutAndExperiance() {
         throw new Error("User not authenticated. Please log in.");
       }
 
-      const experienceData = {
-        title,
-        name,
-        location,
-        locationType,
-        description,
-      };
+      // Log the data being sent
+      console.log("Sending experience data:", {
+        userId,
+        experiences: experiences.map(exp => ({
+          title: exp.title,
+          organizationName: exp.organizationName,
+          location: exp.location,
+          locationType: exp.locationType,
+          description: exp.description
+        }))
+      });
 
       const response = await axios.patch(
         `https://uniisphere-1.onrender.com/users/profile`,
         {
-          userId: userId,
-          experience: [experienceData], // Sending as an array for consistency
+          userId,
+          experiences: experiences.map(exp => ({
+            title: exp.title,
+            organizationName: exp.organizationName,
+            location: exp.location,
+            locationType: exp.locationType,
+            description: exp.description
+          }))
         },
         {
           headers: {
@@ -163,12 +204,15 @@ function AboutAndExperiance() {
         }
       );
 
+      console.log("API Response:", response.data);
+
       if (response.status === 200) {
         alert("Experience saved successfully!");
         navigate(`/ProfileEditSection/${userId}`);
       }
     } catch (error) {
       console.error("Error saving experience:", error);
+      console.error("Error response:", error.response?.data);
       if (error.response?.status === 401) {
         alert("Your session has expired. Please log in again.");
         localStorage.removeItem("AuthToken");
@@ -209,7 +253,7 @@ function AboutAndExperiance() {
                 </div>
                 <textarea
                   className="middle-aboutExperience-textarea"
-                  defaultValue="The actual idea of Uniisphere was of The Founder Himanshu who worked for months to think and plan all the essential stuff."
+                  placeholder="Tell us about yourself..."
                   value={aboutDesc}
                   onChange={(e) => setAboutDesc(e.target.value)}
                   maxLength={1000}
@@ -235,50 +279,72 @@ function AboutAndExperiance() {
               {/* Experience Section */}
               <div className="middle-aboutExperience-experienceSection">
                 <h3>Experience</h3>
-                <div className="middle-aboutExperience-inputGroup">
-                  <label>Title</label>
-                  <input
-                    type="text"
-                    className="middle-aboutExperience-input"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </div>
-                <div className="middle-aboutExperience-inputGroup">
-                  <label>Name of Organization / Company</label>
-                  <input
-                    type="text"
-                    className="middle-aboutExperience-input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="middle-aboutExperience-inputGroup">
-                  <label>Location</label>
-                  <input
-                    type="text"
-                    className="middle-aboutExperience-input"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                  />
-                </div>
-                <div className="middle-aboutExperience-inputGroup">
-                  <label>Location Type</label>
-                  <input
-                    type="text"
-                    className="middle-aboutExperience-input"
-                    value={locationType}
-                    onChange={(e) => setLocationType(e.target.value)}
-                  />
-                </div>
-                <div className="middle-aboutExperience-inputGroup">
-                  <label>Description</label>
-                  <textarea
-                    className="middle-aboutExperience-textarea"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
+                {experiences.map((exp, index) => (
+                  <div key={index} className="experience-entry">
+                    <div className="middle-aboutExperience-inputGroup">
+                      <label>Title*</label>
+                      <input
+                        type="text"
+                        className="middle-aboutExperience-input"
+                        value={exp.title}
+                        onChange={(e) => handleExperienceChange(index, 'title', e.target.value)}
+                      />
+                    </div>
+                    <div className="middle-aboutExperience-inputGroup">
+                      <label>Name of Organization / Company*</label>
+                      <input
+                        type="text"
+                        className="middle-aboutExperience-input"
+                        value={exp.organizationName}
+                        onChange={(e) => handleExperienceChange(index, 'organizationName', e.target.value)}
+                      />
+                    </div>
+                    <div className="middle-aboutExperience-inputGroup">
+                      <label>Location*</label>
+                      <input
+                        type="text"
+                        className="middle-aboutExperience-input"
+                        value={exp.location}
+                        onChange={(e) => handleExperienceChange(index, 'location', e.target.value)}
+                      />
+                    </div>
+                    <div className="middle-aboutExperience-inputGroup">
+                      <label>Location Type*</label>
+                      <select
+                        className="middle-aboutExperience-input"
+                        value={exp.locationType}
+                        onChange={(e) => handleExperienceChange(index, 'locationType', e.target.value)}
+                      >
+                        <option value="">Select Type</option>
+                        <option value="Remote">Remote</option>
+                        <option value="On-site">On-site</option>
+                        <option value="Hybrid">Hybrid</option>
+                      </select>
+                    </div>
+                    <div className="middle-aboutExperience-inputGroup">
+                      <label>Description*</label>
+                      <textarea
+                        className="middle-aboutExperience-textarea"
+                        value={exp.description}
+                        onChange={(e) => handleExperienceChange(index, 'description', e.target.value)}
+                      />
+                    </div>
+                    {experiences.length > 1 && (
+                      <button
+                        className="remove-experience-btn"
+                        onClick={() => handleRemoveExperience(index)}
+                      >
+                        Remove Experience
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  className="add-experience-btn"
+                  onClick={handleAddExperience}
+                >
+                  Add Another Experience
+                </button>
                 <div className="middle-aboutExperience-buttons">
                   <button
                     className="middle-aboutExperience-cancel"
@@ -294,11 +360,11 @@ function AboutAndExperiance() {
                   >
                     {loading ? "Saving..." : "Save"}
                   </button>
-                  {isMobile && <MobileFooter />}
                 </div>
               </div>
             </div>
           </div>
+          {isMobile && <MobileFooter />}
         </div>
         <div className="AboutAndExperiance-right-main-container">
           <DesktopRight />
