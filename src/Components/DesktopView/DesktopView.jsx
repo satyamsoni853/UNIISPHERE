@@ -5,6 +5,7 @@ import DesktopLeftTop from '../DesktopLeftTop/DesktopLeftTop';
 import DesktopMiddle from '../DesktopMiddle/DesktopMiddle';
 import DesktopRight from '../DesktopRight/DesktopRight';
 import Background from '../Background/Background';
+import Feature from '../Feature/Feature';
 import './DesktopView.css';
 
 function DesktopView() {
@@ -23,6 +24,7 @@ function DesktopView() {
         <aside className="desktop-view-left">
           <DesktopLeftTop />
           <DesktopLeftBottomSection />
+          {/* <Feature/> */}
         </aside>
 
         {/* Middle Section */}
