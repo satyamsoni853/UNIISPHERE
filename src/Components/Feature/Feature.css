@@ -1,0 +1,146 @@
+ 
+.feature-messages-widget {
+  position: fixed;
+  z-index: 9999;
+  bottom: 5px;
+  left: 25px;
+  background: rgb(242, 215, 219);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  width: 350px;
+  transition: all 0.3s ease-in-out;
+}
+
+.feature-messages-widget:hover {
+  background: rgb(235, 200, 205);
+
+ 
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.feature-messages-text {
+  color: black;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.feature-icon {
+  margin-left: auto;
+ 
+}
+
+.desktop-feedback-container {
+  display: flex;
+  position: fixed;
+  left: 20%;
+  top: 18%;
+  padding: 50px 100px;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 9999;
+  width: 1000px;
+  height: 600px;
+  background-color: white;
+  border-radius: 40px;
+  box-shadow:4px 4px 4px #00000040;
+  
+}
+
+.desktop-feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.desktop-feedback-header h1 {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.desktop-feedback-close-btn {
+  background: none;
+  border: none;
+  font-size: 50px;
+  cursor: pointer;
+}
+
+.desktop-feedback-emojis {
+  display: flex;
+  justify-content: space-between;
+}
+.desktop-feedback-emoji{
+  font-size: 35px;
+}
+.desktop-feedback-emoji-emotions{
+  font-size: 18px;
+  color: #828181;
+}
+.desktop-feedback-emoji-btn{
+  display: flex;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.desktop-feedback-textarea-container {
+  display: flex;
+  gap: 10px;
+
+  flex-direction: column;
+}
+.desktop-feedback-label{
+  font-size: 22px;
+  font-weight: 500;
+}
+.desktop-feedback-textarea {
+  width: 100%;
+  padding: 5px 10px;
+  height: 80px;
+  border: 2px solid #000000;
+  border-radius: 25px;
+  resize: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.desktop-feedback-buttons {
+  display: flex;
+ width: 100%;
+ justify-content: space-evenly;
+}
+
+.desktop-feedback-cancel-btn {
+  background-color: #F2EDED;
+  width: 183px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  border: none;
+  border-radius: 20px;
+ 
+  cursor: pointer;
+}
+
+.desktop-feedback-submit-btn {
+  background-color: #003CFFCC;
+  width: 183px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: none;
+  border-radius: 20px;
+ 
+  cursor: pointer;
+}
