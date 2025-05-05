@@ -10,8 +10,7 @@ import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
 import EduValt from "./Components/EduValt/EduValt.jsx";
 import LibBlog from "./Components/Libblog/LibBlog.jsx";
 import Guiednest from "./Components/Guiednest/Guiednest.jsx";
-import HumanLibConnectionIntro from './Components/HumanLibConnection/HumanLibConnectionIntro.jsx';
-import HumanLibConnectionLoading from './Components/HumanLibConnection/HumanLibConnectionLoading.jsx';
+
 
 // Lazy load other components
 const View = lazy(() => import("./Components/View/View.jsx"));
@@ -108,8 +107,6 @@ function App() {
             <Route path="/Guiednest" element={<Guiednest />} />
             <Route path="/libblog" element={< LibBlog />} />
 
-            <Route path="/connect/intro" element={<HumanLibConnectionIntro />} />
-            <Route path="/connect/loading" element={<HumanLibConnectionLoading />} />
           </Routes>
         </Suspense>
       </div>
