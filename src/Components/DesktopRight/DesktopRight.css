@@ -13,6 +13,7 @@
   -ms-overflow-style: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   background-color: white;
+  overflow: hidden;
 }
 
 .right-section-container::-webkit-scrollbar {
