@@ -598,7 +598,7 @@ function DesktopNavbar() {
       {/* User Dropdown */}
       <div className="user-icon-container">
         <img
-          src={userProfileImage || UserIcon}
+          src={localStorage.getItem("profilePicture")}
           alt="User"
           className="desktop-user-icon"
           onClick={handleUserIconClick}
@@ -608,14 +608,14 @@ function DesktopNavbar() {
           <div className="self-profile-card">
             <div className="self-profile-header">
               <img
-                src={userProfileImage || "https://via.placeholder.com/50"}
+                src={localStorage.getItem("profilePicture") || "https://via.placeholder.com/50"}
                 alt="Profile"
                 className="self-profile-pic"
                 onError={(e) => (e.target.src = UserIcon)}
               />
               <div className="self-profile-info">
                 <h2 className="self-profile-name">
-                  {username || "User Name"}
+                  {localStorage.getItem("username") || "User Name"}
                 </h2>
                 <p className="self-profile-label">Position</p>
               </div>
@@ -737,7 +737,7 @@ function DesktopNavbar() {
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={item.profilePictureUrl || UserIcon}
+                        src={localStorage.getItem("profilePicture")}
                         alt={item.name || item.username}
                         className="recent-search-avatar"
                         loading="lazy"

@@ -153,6 +153,13 @@ function PersonalInfoUpdate() {
           return;
         }
 
+        // Special handling for headline
+        if (key === 'headline') {
+          formData.append('headline', JSON.stringify({ text: value }));
+          console.log(`Appending headline as object:`, { text: value });
+          return;
+        }
+
         // Handle arrays - only append if they have items
         if (Array.isArray(value)) {
           if (value.length > 0) {
