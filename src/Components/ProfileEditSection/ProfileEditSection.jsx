@@ -43,11 +43,11 @@ function ProfileEditSection() {
   const skillsRef = useRef(null);
   const interestsRef = useRef(null);
   const bgGradients = [
-    "linear-gradient(to bottom, #44A9B133, #33FF0033)",
-    "linear-gradient(to bottom, #DC4A4533, #E1C86B33)",
-    "linear-gradient(to bottom, #AC89A333, #67646433)",
-    "linear-gradient(to bottom, #44A9B133, #75757533)",
+    "linear-gradient(180deg, rgba(4, 230, 255, 0.04) 0%, rgba(255, 217, 0, 0.04) 88.89%)",
+    "linear-gradient(180deg, rgba(220, 74, 69, 0.06) 0%, rgba(225, 200, 107, 0.06) 100%)",
+    "linear-gradient(180deg, rgba(172, 137, 163, 0.06) 0%, rgba(103, 100, 100, 0.06) 100%)",
   ];
+  
 
   // Handle window resize for mobile detection
   useEffect(() => {
@@ -427,7 +427,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollLeft(skillsRef)}
                     >
-                      <IoIosArrowBack />
+                      <IoIosArrowBack className="Followers-middle-section-2-ArrowBack" />
                     </button>
                     <div
                       className="Followers-middle-section-2-skill-list-public"
@@ -449,7 +449,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollRight(skillsRef)}
                     >
-                      <IoIosArrowForward />
+                      {/* <IoIosArrowForward /> */}
                     </button>
                   </div>
                 </div>
@@ -478,7 +478,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollLeft(interestsRef)}
                     >
-                      <IoIosArrowBack />
+                      <IoIosArrowBack className="Followers-middle-section-2-ArrowBack" />
                     </button>
                     <div
                       className="Followers-middle-section-2-skill-list-public"
@@ -500,7 +500,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollRight(interestsRef)}
                     >
-                      <IoIosArrowForward />
+                      {/* <IoIosArrowForward /> */}
                     </button>
                   </div>
                 </div>
