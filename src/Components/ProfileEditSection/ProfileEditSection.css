@@ -33,10 +33,11 @@
 
 /* Middle Section */
 .Followers-middle-section-2-middle-section-public {
-  width: 30vw; /* Fixed width for desktop */
+  width: 35vw; /* Fixed width for desktop */
   border-radius: 15px;
   margin-top: 100px;
   padding: 20px;
+  margin-left: 60px;
   
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   /* background: white;  */
