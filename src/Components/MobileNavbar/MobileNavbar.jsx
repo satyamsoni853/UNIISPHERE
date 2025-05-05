@@ -114,7 +114,7 @@ function MobileNavbar() {
     setError(null);
     try {
       const response = await axios.get(
-        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
+        `https://uniisphere-backend-latest.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
       );
       console.log("Search API Response:", response.data);
       setSearchResults(Array.isArray(response.data) ? response.data : []);
@@ -132,7 +132,7 @@ function MobileNavbar() {
     const fetchUnreadMessages = async () => {
       try {
         const response = await fetch(
-          `https://uniisphere-1.onrender.com/api/messages/conversations?userId=${userId}`,
+          `https://uniisphere-backend-latest.onrender.com/api/messages/conversations?userId=${userId}`,
           {
             method: "GET",
             headers: {

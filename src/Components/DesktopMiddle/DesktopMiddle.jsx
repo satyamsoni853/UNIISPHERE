@@ -92,7 +92,7 @@ function DesktopMiddle() {
   const fetchUserProfile = async (userId, token) => {
     try {
       const response = await axios.get(
-        `https://uniisphere-1.onrender.com/api/users/${userId}`,
+        `https://uniisphere-backend-latest.onrender.com/api/users/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -118,7 +118,7 @@ function DesktopMiddle() {
   const fetchConnections = async (token) => {
     try {
       const response = await axios.get(
-        "https://uniisphere-1.onrender.com/api/connections",
+        "https://uniisphere-backend-latest.onrender.com/api/connections",
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -152,7 +152,7 @@ function DesktopMiddle() {
   const fetchSentConnectionRequests = async (token) => {
     try {
       const response = await axios.get(
-        "https://uniisphere-1.onrender.com/api/connections/sent",
+        "https://uniisphere-backend-latest.onrender.com/api/connections/sent",
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -186,7 +186,7 @@ function DesktopMiddle() {
     setImageLoading(true);
     try {
       const [feedResponse, sentRequests] = await Promise.all([
-        axios.get("https://uniisphere-1.onrender.com/api/feed", {
+        axios.get("https://uniisphere-backend-latest.onrender.com/api/feed", {
           headers: { Authorization: `Bearer ${authData.token}` },
           timeout: 10000,
         }),
@@ -259,7 +259,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
+        `https://uniisphere-backend-latest.onrender.com/api/connect/${receiverId}`,
         {
           userId: authData.userId,
           senderName: userProfile?.name || "Anonymous",
@@ -301,8 +301,8 @@ function DesktopMiddle() {
 
     try {
       const endpoint = post.isLiked
-        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
-        : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
+        ? `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/unlike`
+        : `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/like`;
 
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
@@ -364,7 +364,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
+        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/comments`,
         {
           postId: post._id,
           userId: authData.userId,
@@ -434,7 +434,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${post._id}/share`,
+        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/share`,
         {
           postId: post._id,
           userId: authData.userId,
@@ -518,7 +518,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${post._id}/save`,
+        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/save`,
         { userId: authData.userId },
         {
           headers: {

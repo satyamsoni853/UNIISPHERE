@@ -329,7 +329,7 @@ function AfterOtpSection1() {
       console.log("Profile data being sent:", logData);
 
       const response = await axios.post(
-        "https://uniisphere-1.onrender.com/auth/completeProfile",
+        "https://uniisphere-backend-latest.onrender.com/auth/completeProfile",
         userData,
         {
           headers: {

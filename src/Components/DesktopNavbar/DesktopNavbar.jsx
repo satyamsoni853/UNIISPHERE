@@ -156,7 +156,7 @@ function DesktopNavbar() {
       }
       try {
         const response = await axios.get(
-          "https://uniisphere-1.onrender.com/api/connections",
+          "https://uniisphere-backend-latest.onrender.com/api/connections",
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
         console.log("Connections API Response:", response.data);
@@ -184,7 +184,7 @@ function DesktopNavbar() {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://uniisphere-1.onrender.com/users/getAll",
+          "https://uniisphere-backend-latest.onrender.com/users/getAll",
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
         const users = Array.isArray(response.data) ? response.data : [];
@@ -223,7 +223,7 @@ function DesktopNavbar() {
     setError(null);
     try {
       const response = await axios.get(
-        `https://uniisphere-1.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
+        `https://uniisphere-backend-latest.onrender.com/getProfile/profile/?search=${encodeURIComponent(username)}`
       );
       console.log("Search API Response:", response.data);
       setSearchResults(Array.isArray(response.data) ? response.data : []);
@@ -247,7 +247,7 @@ function DesktopNavbar() {
     }
     try {
       const response = await axios.get(
-        "https://uniisphere-1.onrender.com/posts",
+        "https://uniisphere-backend-latest.onrender.com/posts",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -447,7 +447,7 @@ function DesktopNavbar() {
       formData.append("location", location || "");
       formData.append("tags", "");
       const postResponse = await axios.post(
-        "https://uniisphere-1.onrender.com/posts",
+        "https://uniisphere-backend-latest.onrender.com/posts",
         formData,
         { headers: { Authorization: `Bearer ${authToken}` } }
       );

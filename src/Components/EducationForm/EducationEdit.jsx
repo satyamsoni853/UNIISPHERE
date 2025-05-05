@@ -72,7 +72,7 @@ function EducationEdit() {
       }
 
       const response = await axios.patch(
-        `https://uniisphere-1.onrender.com/users/profile`,
+        `https://uniisphere-backend-latest.onrender.com/users/profile`,
         {
           userId: userId,
           Skills: educationList.map((edu) => edu.name), // Using 'Skills' as per provided API, but likely should be 'education'

@@ -58,7 +58,7 @@ function PersonalInfoUpdate() {
         }
 
         const response = await axios.get(
-          "https://uniisphere-1.onrender.com/users/profile",
+          "https://uniisphere-backend-latest.onrender.com/users/profile",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -189,7 +189,7 @@ function PersonalInfoUpdate() {
 
       console.log("Sending PATCH request to update profile...");
       const response = await axios.patch(
-        "https://uniisphere-1.onrender.com/users/profile",
+        "https://uniisphere-backend-latest.onrender.com/users/profile",
         formData,
         {
           headers: {

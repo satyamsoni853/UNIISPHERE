@@ -92,7 +92,7 @@ const MessagesWidget = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://uniisphere-1.onrender.com/api/messages/conversations?userId=${userId}`,
+          `https://uniisphere-backend-latest.onrender.com/api/messages/conversations?userId=${userId}`,
           {
             method: "GET",
             headers: {

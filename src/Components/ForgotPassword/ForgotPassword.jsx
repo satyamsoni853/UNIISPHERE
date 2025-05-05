@@ -17,7 +17,7 @@ function ForgotPassword() {
   // Function to send OTP
   const sendOtp = async () => {
     try {
-      const response = await axios.post('https://uniisphere-1.onrender.com/auth/forgot-password', { email });
+      const response = await axios.post('https://uniisphere-backend-latest.onrender.com/auth/forgot-password', { email });
       alert(response.data.message || 'OTP sent successfully');
       setOtpSent(true);
     } catch (error) {
@@ -32,7 +32,7 @@ function ForgotPassword() {
       return;
     }
     try {
-      const response = await axios.post('https://uniisphere-1.onrender.com/auth/reset-password', {
+      const response = await axios.post('https://uniisphere-backend-latest.onrender.com/auth/reset-password', {
         email,
         otp,
         newPassword,

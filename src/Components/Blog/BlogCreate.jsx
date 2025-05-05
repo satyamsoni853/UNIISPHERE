@@ -137,7 +137,7 @@ const BlogCreate = () => {
         formData.append("titlePhoto", file);
 
         const response = await axios.post(
-          "https://uniisphere-1.onrender.com/api/blog/create",
+          "https://uniisphere-backend-latest.onrender.com/api/blog/create",
           formData,
           {
             headers: {
@@ -150,7 +150,7 @@ const BlogCreate = () => {
       } else {
         // If no file, send JSON directly
         const response = await axios.post(
-          "https://uniisphere-1.onrender.com/api/blog/create",
+          "https://uniisphere-backend-latest.onrender.com/api/blog/create",
           blogData,
           {
             headers: {
