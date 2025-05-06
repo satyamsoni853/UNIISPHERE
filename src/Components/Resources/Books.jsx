@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Import axios
+import axios from "axios";
 import "./Books.css";
 import ForYou from "./ForYou.jpg";
 import { IoIosArrowForward } from "react-icons/io";
@@ -10,19 +10,26 @@ import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import Background from "../Background/Background";
 
 const Books = () => {
-  // Fetch books from API using token and userId from localStorage
   useEffect(() => {
+    // Print all localStorage contents
+    // console.log("LocalStorage Contents:");
+    // for (const [key, value] of Object.entries(localStorage)) {
+    //   console.log(`${key}: ${value}`);
+    // }
+
     const fetchBooks = async () => {
       try {
         // Retrieve token and userId from localStorage
-        const token = localStorage.getItem("authToken") || localStorage.getItem("token");
+        const token = localStorage.getItem("token") || localStorage.getItem("authToken");
         const userId = localStorage.getItem("userId");
+
+        console.log("Token:", token);
+        console.log("UserId:", userId);
 
         if (!token || !userId) {
           console.error("Token or userId not found in localStorage");
           return;
         }
-        console.log("Token:", token);
 
         const response = await axios.get(
           "https://uniisphere-backend-latest.onrender.com/api/books",
@@ -35,12 +42,23 @@ const Books = () => {
           }
         );
 
-        console.log("API Response:", response.data); // Log response to console
+        // Log the full API response
+        console.log("Books API Response:", {
+          data: response.data,
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+        });
       } catch (error) {
         console.error("Error fetching books:", error.message);
         if (error.response) {
           console.error("Response data:", error.response.data);
           console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+        } else {
+          console.error("Error setting up request:", error.message);
         }
       }
     };
@@ -460,62 +478,84 @@ const Books = () => {
             </div>
 
             {/* Preferred by top Universities */}
-            <div className="mobile-main-books-university-section">
-              <h2 className="mobile-main-books-section-title-university">
+            <div className="main-books-university-section">
+              <h2 className="main-books-section-title-university">
                 Preferred by top Universities
               </h2>
-              <div className="mobile-main-books-university-content">
+              <div className="main-books-university-content">
+                <button
+                  className="nav-arrow left-arrow"
+                  onClick={handleUniversityPrev}
+                >
+                  <IoChevronBack />
+                </button>
                 {visibleUniversity.map((note, index) => (
-                  <div className="mobile-main-books-university-item-section">
+                  <div className="main-books-university-item-section">
                     <div key={index}>
-                      <div className="mobile-main-books-university-item">
+                      <div className="main-books-university-item">
                         <img
                           src={ForYou}
                           alt={note.title}
-                          className="mobile-main-books-university-image"
+                          className="main-books-university-image"
                         />
                       </div>
-                      <div className="mobile-main-books-university-details">
-                        <h3 className="mobile-main-books-university-title">
+                      <div className="main-books-university-details">
+                        <h3 className="main-books-university-title">
                           {note.title}
                         </h3>
-                        <p className="mobile-main-books-university-price">
+                        <p className="main-books-university-price">
                           Price-{note.price} Rent-{note.rent}
                         </p>
                       </div>
                     </div>
                   </div>
                 ))}
+                <button
+                  className="main-books-nav-arrow main-books-right-arrow"
+                  onClick={handleUniversityNext}
+                >
+                  <IoIosArrowForward />
+                </button>
               </div>
             </div>
 
             {/* LIFE LESSON */}
-            <div className="mobile-main-books-lifeLesson-section">
-              <h2 className="mobile-main-books-section-title-lifeLesson">
-                Life Lesson
-              </h2>
-              <div className="mobile-main-books-lifeLesson-content">
+            <div className="main-books-lifeLesson-section">
+              <h2 className="main-books-section-title-lifeLesson">Life Lesson</h2>
+              <div className="main-books-lifeLesson-content">
+                <button
+                  className="main-books-nav-arrow main-books-left-arrow"
+                  onClick={handleLifeLessonPrev}
+                >
+                  <IoChevronBack />
+                </button>
                 {visibleLifeLesson.map((university, index) => (
-                  <div className="mobile-main-books-lifeLesson-item-section">
+                  <div className="main-books-lifeLesson-item-section">
                     <div key={index}>
-                      <div className="mobile-main-books-lifeLesson-item">
+                      <div className="main-books-lifeLesson-item">
                         <img
                           src={ForYou}
                           alt={university.title}
-                          className="mobile-main-books-lifeLesson-image"
+                          className="main-books-lifeLesson-image"
                         />
                       </div>
-                      <div className="mobile-main-books-lifeLesson-details">
-                        <h3 className="mobile-main-books-lifeLesson-title">
+                      <div className="main-books-lifeLesson-details">
+                        <h3 className="main-books-lifeLesson-title">
                           {university.title}
                         </h3>
-                        <p className="mobile-main-books-lifeLesson-price">
+                        <p className="main-books-lifeLesson-price">
                           Price-{university.price} Rent-{university.rent}
                         </p>
                       </div>
                     </div>
                   </div>
                 ))}
+                <button
+                  className="main-books-nav-arrow main-books-right-arrow"
+                  onClick={handleLifeLessonNext}
+                >
+                  <IoIosArrowForward />
+                </button>
               </div>
             </div>
           </div>
