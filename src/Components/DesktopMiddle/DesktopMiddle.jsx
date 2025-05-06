@@ -190,7 +190,7 @@ function DesktopMiddle() {
     setImageLoading(true);
     try {
       const [feedResponse, sentRequests] = await Promise.all([
-        axios.get("https://uniisphere-backend-latest.onrender.com/api/feed", {
+        axios.get("https://uniisphere-backend-latest.onrender.com/api/feed/feed", {
           headers: { Authorization: `Bearer ${authData.token}` },
           timeout: 10000,
         }),
