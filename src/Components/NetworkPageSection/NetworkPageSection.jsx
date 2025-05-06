@@ -130,7 +130,7 @@ function NetworkPage() {
       }
 
       const response = await axios.get(
-        "https://uniisphere-backend-latest.onrender.com/users/getAll",
+        "https://uniisphere-backend-latest.onrender.com/api/users/getAll",
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
