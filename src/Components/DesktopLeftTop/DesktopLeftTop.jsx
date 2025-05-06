@@ -4,7 +4,6 @@ import "./DesktopLeftTop.css";
 function DesktopLeftTop() {
   const [articles, setArticles] = useState([]);
   const [visibleCount, setVisibleCount] = useState(5);
-  const vogueImage = "https://assets.vogue.in/photos/67d9bec33c1d29dc8d270a80/16:9/w_1280,c_limit/aries_image.png";
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -23,7 +22,6 @@ function DesktopLeftTop() {
 
           return {
             id: index + 1,
-            image: vogueImage, // Use the provided Vogue image for all articles
             title: isTargetArticle
               ? "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara"
               : item.title || "Untitled Article",
@@ -45,13 +43,11 @@ function DesktopLeftTop() {
         setArticles([
           {
             id: 1,
-            image: vogueImage,
             title: "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara",
             author: "JustShowBiz: Unable to fetch full details at this time..."
           },
           {
             id: 2,
-            image: vogueImage,
             title: "Fallback News",
             author: "Unable to fetch news at this time..."
           }
@@ -73,11 +69,22 @@ function DesktopLeftTop() {
         <div className="leftsectiontop-1-scroll">
           {articles.slice(0, visibleCount).map((article) => (
             <div key={article.id} className="leftsectiontop-1-article">
-              <img
-                src={article.image}
-                alt={article.title}
-                className="leftsectiontop-1-image"
-              />
+              <span
+                className="leftsectiontop-1-arrow"
+                style={{
+                  display: "inline-block",
+  width: "50px",
+  height: "50px",
+  lineHeight: "40px",
+  textAlign: "center",
+  fontSize: "50px",
+  marginRight: "10px",
+  border: "1px solid black", // <-- Add this line
+    borderRadius: "10px"
+                }}
+              >
+                ➔
+              </span>
               <div className="leftsectiontop-1-details">
                 <p className="leftsectiontop-1-title">{article.title}</p>
                 <p className="leftsectiontop-1-author">{article.author}</p>
