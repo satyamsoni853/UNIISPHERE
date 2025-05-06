@@ -21,6 +21,7 @@ import InstagramIcon from "./insta.svg";
 import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
 import { SearchIcon } from "lucide-react";
+import Toast from '../Common/Toast';
 
 function MobileMiddleSection() {
   const [showComment, setShowComment] = useState(false);
@@ -51,6 +52,9 @@ function MobileMiddleSection() {
   const imageModalRef = useRef(null); // For image modal click outside
   const location = useLocation();
   const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
 
   const userData = {
     profilePicture: profilePhoto,
@@ -107,7 +111,7 @@ function MobileMiddleSection() {
   const fetchConnections = async (token) => {
     try {
       const response = await axios.get(
-        "https://uniisphere-1.onrender.com/api/connections",
+        "https://uniisphere-backend-latest.onrender.com/api/connections",
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -130,7 +134,7 @@ function MobileMiddleSection() {
   const fetchSentConnectionRequests = async (token) => {
     try {
       const response = await axios.get(
-        "https://uniisphere-1.onrender.com/api/connections/sent",
+        "https://uniisphere-backend-latest.onrender.com/api/connections/sent",
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -161,7 +165,7 @@ function MobileMiddleSection() {
     setImageLoading(true);
     try {
       const [feedResponse, sentRequests] = await Promise.all([
-        axios.get("https://uniisphere-1.onrender.com/api/feed", {
+        axios.get("https://uniisphere-backend-latest.onrender.com/api/feed", {
           headers: { Authorization: `Bearer ${authData.token}` },
           timeout: 10000,
         }),
@@ -227,7 +231,7 @@ function MobileMiddleSection() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
+        `https://uniisphere-backend-latest.onrender.com/api/connect/${receiverId}`,
         {
           userId: authData.userId,
           senderName: userData.name || "Anonymous",
@@ -282,8 +286,8 @@ function MobileMiddleSection() {
 
     try {
       const endpoint = post.isLiked
-        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
-        : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
+        ? `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/unlike`
+        : `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/like`;
 
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
@@ -347,7 +351,7 @@ function MobileMiddleSection() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
+        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/comments`,
         {
           postId: post._id,
           userId: authData.userId,
@@ -419,7 +423,7 @@ function MobileMiddleSection() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${post._id}/share`,
+        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/share`,
         {
           postId: post._id,
           userId: authData.userId,
@@ -448,18 +452,17 @@ function MobileMiddleSection() {
     }
   };
 
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
+
   const handleCopyLink = () => {
     const post = posts[activeSharePostIndex];
     const postUrl = `${window.location.origin}/post/${post._id}`;
-    navigator.clipboard
-      .writeText(postUrl)
-      .then(() => {
-        alert("Link copied to clipboard!");
-      })
-      .catch((err) => {
-        console.error("Failed to copy link:", err);
-        setShareError("Failed to copy link.");
-      });
+    navigator.clipboard.writeText(postUrl);
+    showSuccessToast("Link copied to clipboard!");
   };
 
   const handleShareToWhatsApp = () => {
@@ -503,7 +506,7 @@ function MobileMiddleSection() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/${post._id}/save`,
+        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/save`,
         { userId: authData.userId },
         {
           headers: {
@@ -514,7 +517,7 @@ function MobileMiddleSection() {
         }
       );
       console.log("Save post response:", response.data);
-      alert("Post saved successfully!");
+      showSuccessToast("Post saved successfully!");
     } catch (error) {
       console.error("Save post error:", error.response?.data || error);
       setShareError(
@@ -1321,6 +1324,12 @@ function MobileMiddleSection() {
           </div>
         </div>
       )}
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }

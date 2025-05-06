@@ -9,6 +9,7 @@ import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import axios from "axios";
 import "./EducationEdit.css";
+import Toast from '../Common/Toast';
 
 function EducationEdit() {
   const { userId } = useParams();
@@ -22,6 +23,9 @@ function EducationEdit() {
     { id: 4, name: "12th" },
   ]);
   const [newEducation, setNewEducation] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -31,7 +35,7 @@ function EducationEdit() {
 
   const handleAddEducation = () => {
     if (newEducation.trim() === "") {
-      alert("Please enter a valid education entry.");
+      showErrorToast("Please enter a valid education entry.");
       return;
     }
     setEducationList([
@@ -51,15 +55,41 @@ function EducationEdit() {
 
   const handleRemoveEducation = (id) => {
     if (educationList.length === 1) {
-      alert("At least one education entry is required.");
+      showErrorToast("At least one education entry is required.");
       return;
     }
     setEducationList(educationList.filter((edu) => edu.id !== id));
   };
 
+  const showErrorToast = (message) => {
+    setToastMessage(message);
+    setToastType('error');
+    setShowToast(true);
+  };
+
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
+
+  const validateEducation = (education) => {
+    if (!education.school || !education.degree || !education.startDate || !education.endDate) {
+      showErrorToast("Please enter a valid education entry.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSave = async () => {
     if (educationList.length === 0) {
-      alert("Please add at least one education entry.");
+      showErrorToast("At least one education entry is required.");
+      return;
+    }
+
+    const isValid = educationList.every(validateEducation);
+    if (!isValid) {
+      showErrorToast("Please add at least one education entry.");
       return;
     }
 
@@ -72,7 +102,7 @@ function EducationEdit() {
       }
 
       const response = await axios.patch(
-        `https://uniisphere-1.onrender.com/users/profile`,
+        `https://uniisphere-backend-latest.onrender.com/users/profile`,
         {
           userId: userId,
           Skills: educationList.map((edu) => edu.name), // Using 'Skills' as per provided API, but likely should be 'education'
@@ -87,15 +117,13 @@ function EducationEdit() {
 
       console.log("Response:", response.data);
 
-      if (response.status === 200) {
-        alert("Education details saved successfully!");
-        navigate(`/ProfileEditSection/${userId}`);
-      }
+      showSuccessToast("Education details saved successfully!");
+      navigate(`/ProfileEditSection/${userId}`);
     } catch (error) {
       console.error("Error saving education:", error);
 
       if (error.response?.status === 401) {
-        alert("Your session has expired. Please log in again.");
+        showErrorToast("Your session has expired. Please log in again.");
         localStorage.removeItem("AuthToken");
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
@@ -106,7 +134,7 @@ function EducationEdit() {
           error.response?.data?.message ||
           error.response?.data?.error ||
           "Failed to save education details. Please try again.";
-        alert(errorMessage);
+        showErrorToast(errorMessage);
       }
     } finally {
       setLoading(false);
@@ -205,6 +233,12 @@ function EducationEdit() {
           <DesktopRight />
         </div>
       </div>
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }

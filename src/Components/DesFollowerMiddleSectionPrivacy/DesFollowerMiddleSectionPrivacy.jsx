@@ -74,7 +74,7 @@ function DesFollowerMiddleSectionPrivacy() {
         setLoading(true);
         const token = localStorage.getItem("AuthToken");
         const response = await fetch(
-          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${userId}`,
+          `https://uniisphere-backend-latest.onrender.com/getProfile/profile/?userId=${userId}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -140,7 +140,7 @@ function DesFollowerMiddleSectionPrivacy() {
       }
 
       const response = await fetch(
-        `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
+        `https://uniisphere-backend-latest.onrender.com/api/connect/${receiverId}`,
         {
           method: "POST",
           headers: {

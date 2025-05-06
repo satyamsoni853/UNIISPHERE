@@ -286,7 +286,7 @@ function MessageFinalClass2() {
         setIsLoading(true);
         setConversationError(null);
         const response = await fetch(
-          `https://uniisphere-1.onrender.com/api/messages/conversations?userId=${senderId}`,
+          `https://uniisphere-backend-latest.onrender.com/api/messages/conversations?userId=${senderId}`,
           {
             method: "GET",
             headers: {
@@ -329,7 +329,7 @@ function MessageFinalClass2() {
   const fetchConversation = async () => {
     try {
       const response = await fetch(
-        `https://uniisphere-1.onrender.com/api/messages/conversation/${messageId}`,
+        `https://uniisphere-backend-latest.onrender.com/api/messages/conversation/${messageId}`,
         {
           method: "GET",
           headers: {
@@ -455,7 +455,7 @@ function MessageFinalClass2() {
 
     try {
       const response = await fetch(
-        `https://uniisphere-1.onrender.com/api/messages/${messageId}`,
+        `https://uniisphere-backend-latest.onrender.com/api/messages/${messageId}`,
         {
           method: "DELETE",
           headers: {
@@ -507,7 +507,7 @@ function MessageFinalClass2() {
 
     try {
       const response = await fetch(
-        "https://uniisphere-1.onrender.com/api/messages",
+        "https://uniisphere-backend-latest.onrender.com/api/messages",
         {
           method: "POST",
           headers: {
@@ -598,7 +598,7 @@ function MessageFinalClass2() {
       formData.append("file", file);
 
       const response = await fetch(
-        "https://uniisphere-1.onrender.com/api/messages",
+        "https://uniisphere-backend-latest.onrender.com/api/messages",
         {
           method: "POST",
           headers: {
@@ -667,7 +667,7 @@ function MessageFinalClass2() {
       formData.append("file", blob, "audio.webm");
 
       const response = await fetch(
-        "https://uniisphere-1.onrender.com/api/messages",
+        "https://uniisphere-backend-latest.onrender.com/api/messages",
         {
           method: "POST",
           headers: {

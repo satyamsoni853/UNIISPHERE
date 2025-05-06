@@ -76,7 +76,7 @@ const UploadSection = () => {
       
       // If you need to update user profile data (like in your example)
       const profileResponse = await axios.patch(
-        `https://uniisphere-1.onrender.com/users/profile/`,
+        `https://uniisphere-backend-latest.onrender.com/users/profile/`,
         { 
           // Add the data you want to update here
           // For example, if you're updating bio:
@@ -93,7 +93,7 @@ const UploadSection = () => {
 
       // Then send the post data
       const postResponse = await axios.post(
-        `https://uniisphere-1.onrender.com/posts/`, // Replace with your actual posts endpoint
+        `https://uniisphere-backend-latest.onrender.com/posts/`, // Replace with your actual posts endpoint
         formData,
         {
           headers: {

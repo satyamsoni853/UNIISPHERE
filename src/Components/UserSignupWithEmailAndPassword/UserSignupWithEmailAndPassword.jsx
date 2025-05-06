@@ -21,7 +21,7 @@ function UserSignupwithemailandpass() {
 
     try {
       const response = await axios.post(
-        "https://uniisphere-1.onrender.com/auth/register",
+        "https://uniisphere-backend-latest.onrender.com/auth/register",
         { email, username }
       );
       console.log("OTP sent:", response.data);
@@ -43,7 +43,7 @@ function UserSignupwithemailandpass() {
     try {
       const response = await axios.post(
         "https://uniisphere-1.onrender.com/auth/verifyOtp",
-        { email, otp: otpString }
+        { email, otp }
       );
       console.log("OTP verified:", response.data);
 

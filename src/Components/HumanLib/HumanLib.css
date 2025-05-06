@@ -2,1136 +2,1077 @@
 
 /* Wrapper for the entire layout */
 .HumanLib-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 0; /* Ensure no margins on wrapper */
-}
-
-/* Main content area (container for the form and sidebar) */
-.HumanLib-main-content {
-  display: flex;
-  flex: 1;
-}
-
-/* Container styles for the form (left/center section) */
-.HumanLib-container {
-  width: 72%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: start;
-  position: relative;
-  overflow: hidden;
-  padding: 20px;
-}
-
-/* Apply margin-left only to the first page content */
-.HumanLib-container > div:not(.HumanLib-second-page-content, .HumanLib-third-page-content, .HumanLib-chat-container) {
-  margin-left: 200px;
-}
-
-/* Override margin-left for the second, third, and chat page content */
-.HumanLib-second-page-content,
-.HumanLib-third-page-content,
-.HumanLib-chat-container {
-  margin-left: 0 !important; /* Override any inherited margin */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  text-align: center; /* Center text */
-}
-
-/* Right section (sidebar) */
-.HumanLib-right-section {
-  width: 300px; /* Fixed width for the sidebar */
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* Image container for the circular arrangement */
-.HumanLib-image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center; /* Ensure vertical centering */
-  margin-bottom: 30px;
-}
-
-/* Concentric circles container */
-.HumanLib-concentric-circles {
-  position: relative;
-  width: 484px; /* Fits 420px circle + 12px borders x 2 + margin */
-  height: 484px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent; /* Gaps show parent background */
-}
-
-/* Base styles for all circles */
-.HumanLib-circle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0; /* Start invisible */
-  border: 4px solid transparent; /* White border */
-  outline: 4px solid transparent; /* Light green border */
-  outline-offset: 4px; /* Green outside white */
-  box-sizing: border-box;
-}
-
-/* Pseudo-element for light purple border */
-.HumanLib-circle::before {
-  content: '';
-  position: absolute;
-  top: -8px; /* Offset to encircle green */
-  left: -8px;
-  width: calc(100% + 16px); /* Size for outer border */
-  height: calc(100% + 16px);
-  border: 4px solid transparent; /* Light purple border */
-  border-radius: 50%;
-  z-index: -1; /* Behind circle */
-}
-
-/* Individual circle styles */
-.HumanLib-circle-red {
-  width: 420px; /* Largest circle */
-  height: 420px;
-  background-color: #ff0000; /* Red */
-  animation: fadeCycle 14s ease-in infinite;
-  animation-delay: 0s; /* Starts at 0s */
-}
-
-.HumanLib-circle-orange {
-  width: 380px; /* 40px smaller for 20px gap */
-  height: 380px;
-  background-color: #ffa500; /* Orange */
-  animation: fadeCycle 14s ease-in infinite;
-  animation-delay: 1s;
-}
-
-.HumanLib-circle-yellow {
-  width: 340px;
-  height: 340px;
-  background-color: #ffff00; /* Yellow */
-  animation: fadeCycle 14s ease-in infinite;
-  animation-delay: 2s;
-}
-
-.HumanLib-circle-green {
-  width: 300px;
-  height: 300px;
-  background-color: #91f491; /* Green */
-  animation: fadeCycle 14s ease-in infinite;
-  animation-delay: 3s;
-}
-
-.HumanLib-circle-blue {
-  width: 260px;
-  height: 260px;
-  background-color: #0000ff; /* Blue */
-  animation: fadeCycle 14s ease-in infinite;
-  animation-delay: 4s;
-}
-
-.HumanLib-circle-indigo {
-  width: 220px;
-  height: 220px;
-  background-color: #4b0082; /* Indigo */
-  animation: fadeCycle 14s ease-in infinite;
-  animation-delay: 5s;
-}
-
-.HumanLib-circle-violet {
-  width: 180px; /* Smallest circle */
-  height: 180px;
-  background-color: #ee82ee; /* Violet */
-  animation: fadeCycle 14s ease-in infinite;
-  animation-delay: 6s;
-}
-
-/* Animation keyframes for outer-to-inner and inner-to-outer */
-@keyframes fadeCycle {
-  /* Outer to inner phase */
-  0% {
-    opacity: 0;
-    border-color: transparent;
-    outline-color: transparent;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0; /* Ensure no margins on wrapper */
   }
-  7.14% { /* ~1s for 14s cycle */
-    opacity: 1;
-    border-color: white;
-    outline-color: #90ee90; /* Light green */
+  
+  /* Main content area (container for the form and sidebar) */
+  .HumanLib-main-content {
+    display: flex;
+    flex: 1;
   }
-  14.28% { /* ~2s */
-    opacity: 1;
-    border-color: white;
-    outline-color: #90ee90;
-  }
-  /* Fade out for transition */
-  21.42% { /* ~3s */
-    opacity: 0;
-    border-color: transparent;
-    outline-color: transparent;
-  }
-  /* Inner to outer phase */
-  50% { /* ~7s */
-    opacity: 0;
-    border-color: transparent;
-    outline-color: transparent;
-  }
-  57.14% { /* ~8s */
-    opacity: 1;
-    border-color: white;
-    outline-color: #90ee90;
-  }
-  64.28% { /* ~9s */
-    opacity: 1;
-    border-color: white;
-    outline-color: #90ee90;
-  }
-  /* Fade out for cycle restart */
-  71.42% { /* ~10s */
-    opacity: 0;
-    border-color: transparent;
-    outline-color: transparent;
-  }
-  100% {
-    opacity: 0;
-    border-color: transparent;
-    outline-color: transparent;
-  }
-}
-
-/* Animate pseudo-element’s light purple border */
-.HumanLib-circle::before {
-  animation: fadeCycleBefore 14s ease-in infinite;
-  animation-delay: inherit; /* Match circle’s delay */
-}
-
-@keyframes fadeCycleBefore {
-  0% { border-color: transparent; }
-  7.14% { border-color: #dda0dd; /* Light purple */ }
-  14.28% { border-color: #dda0dd; }
-  21.42% { border-color: transparent; }
-  50% { border-color: transparent; }
-  57.14% { border-color: #dda0dd; }
-  64.28% { border-color: #dda0dd; }
-  71.42% { border-color: transparent; }
-  100% { border-color: transparent; }
-}
-
-/* Central image (second phase only) */
-.HumanLib-central-image {
-  position: absolute;
-  top: 20%;
-  left: 20%;
-  width: 60%;
-  height: 60%;
-  background-color: #e0e0e0; /* Placeholder background */
-  border-radius: 50%;
-}
-
-/* Orbiting images (second phase only) */
-.HumanLib-orbiting-image {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background-color: #d0d0d0; /* Placeholder background */
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-}
-
-/* Position each orbiting image along the pink circle (radius = 150px) */
-.HumanLib-orbiting-image-1 {
-  transform: translate(-50%, -50%) translateX(150px);
-}
-
-.HumanLib-orbiting-image-2 {
-  transform: translate(-50%, -50%) rotate(90deg) translateX(150px) rotate(-90deg);
-}
-
-.HumanLib-orbiting-image-3 {
-  transform: translate(-50%, -50%) translateX(-150px);
-}
-
-.HumanLib-orbiting-image-4 {
-  transform: translate(-50%, -50%) rotate(270deg) translateX(150px) rotate(-270deg);
-}
-
-/* Apply the orbiting animation to the parent container (second phase only) */
-.HumanLib-second-page-content .HumanLib-concentric-circles {
-  animation: orbit 10s linear infinite;
-}
-
-/* Keyframes for the orbit animation */
-@keyframes orbit {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Title styles */
-.HumanLib-title {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* Description styles */
-.HumanLib-description {
-  font-size: 24px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-/* Input styles (first page) */
-.HumanLib-input {
-  width: 800px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-/* Button container */
-.HumanLib-button-container {
-  display: flex;
-  gap: 100px;
-}
-
-/* Button styles */
-.HumanLib-button {
-  padding: 10px 80px;
-  font-size: 16px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.HumanLib-cancel {
-  background-color: #ccc;
-  color: #333;
-}
-
-.HumanLib-start {
-  background-color: #007bff;
-  color: white;
-}
-
-/* Chat interface styles (Phase 4) */
-.HumanLib-chat-container {
-  position: fixed; /* Ensure it overlays the page */
-  top: 110px; /* Margin from top to account for navbar */
-  left: 0;
-  width: 100vw; /* Full viewport width */
-  height: calc(100vh - 90px); /* Full height minus navbar */
-  z-index: 1000; /* Above other elements */
-  display: flex;
-  flex-direction: column;
-  border-radius: 0; /* Remove rounding for full-screen */
-  box-shadow: none; /* Remove shadow for full-screen */
-  overflow: hidden;
-  margin: 0; /* Remove any margins */
-  padding: 0; /* Remove any padding */
-  box-sizing: border-box; /* Ensure padding doesn’t add width */
-}
-
-/* Chat header */
-.HumanLib-chat-header {
-  display: flex;
-  width: 100%; 
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  background: white;
-  border-top: 50px;
-  border-bottom: 1px solid #ddd;
-  box-sizing: border-box;
-}
-
-.HumanLib-chat-contact {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.HumanLib-contact-avatar {
-  width: 50px;
-  height: 50px;
-  background: #ccc; /* Placeholder for avatar */
-  border-radius: 50%;
-}
-
-.HumanLib-contact-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.HumanLib-contact-status {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-.HumanLib-chat-timestamp {
-  font-size: 14px;
-  color: #666;
-}
-
-/* Chat messages area */
-.HumanLib-chat-messages {
-  flex: 1;
-  width: 100%; /* Full width */
-  padding: 30px;
-  overflow-y: auto;
-  background: url('path-to-abstract-background.png') no-repeat center/cover; /* Replace with your background image */
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-sizing: border-box;
-}
-
-.HumanLib-message {
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  max-width: 60%;
-}
-
-.HumanLib-message-received {
-  align-self: flex-start;
-}
-
-.HumanLib-message-sent {
-  align-self: flex-end;
-  flex-direction: row-reverse;
-}
-
-.HumanLib-message-avatar {
-  width: 40px;
-  height: 40px;
-  background: #ccc; /* Placeholder for avatar */
-  border-radius: 50%;
-}
-
-.HumanLib-message-content {
-  background: #f0f0f0; /* Received message background */
-  padding: 12px 18px;
-  border-radius: 15px;
-  position: relative;
-}
-
-.HumanLib-message-sent .HumanLib-message-content {
-  background: #ff69b4; /* Sent message background (pink) */
-  color: white;
-}
-
-.HumanLib-message-sender {
-  font-size: 14px;
-  font-weight: bold;
-  margin: 0 0 5px;
-}
-
-.HumanLib-message-text {
-  font-size: 16px;
-  margin: 0;
-}
-
-.HumanLib-voice-message {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.HumanLib-voice-waveform {
-  font-size: 16px;
-  color: white;
-}
-
-.HumanLib-message-timestamp {
-  font-size: 12px;
-  color: #999;
-  margin-top: 5px;
-  text-align: right;
-}
-
-.HumanLib-chat-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.HumanLib-chat-actions button {
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: none;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.HumanLib-chat-actions button:first-child {
-  background-color: #ff4444;
-  color: white;
-}
-
-.HumanLib-chat-actions button:last-child {
-  background-color: #666;
-  color: white;
-}
-
-.HumanLib-message {
-  display: flex;
-  margin: 8px 0;
-  align-items: flex-start;
-}
-
-.HumanLib-message-sent {
-  flex-direction: row-reverse;
-}
-
-.HumanLib-message-content {
-  max-width: 70%;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background-color: #f0f2f5;
-}
-
-.HumanLib-message-sent .HumanLib-message-content {
-  background-color: #0084ff;
-  color: white;
-}
-
-.HumanLib-message-timestamp {
-  font-size: 11px;
-  color: #666;
-  margin-top: 4px;
-}
-
-.HumanLib-message-sent .HumanLib-message-timestamp {
-  color: #fff;
-  opacity: 0.8;
-}
-
-.error-message {
-  color: #ff4444;
-  padding: 8px;
-  text-align: center;
-  margin: 8px 0;
-}
-
-/* Message input area */
-.HumanLib-chat-input {
-  display: flex;
-  align-items: center;
-  width: 100%; /* Full width */
-  padding: 15px 30px;
-  background: #f5f5f5;
-  border-top: 1px solid #ddd;
-  gap: 15px;
-  box-sizing: border-box;
-  padding-bottom: 50px;
-}
-
-.HumanLib-chat-input input {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  outline: none;
-  font-size: 16px;
-}
-
-.HumanLib-emoji-button,
-.HumanLib-voice-button,
-.HumanLib-send-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 5px;
-}
-
-.HumanLib-send-button {
-  color: #ff69b4;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .HumanLib-container > div:not(.HumanLib-second-page-content, .HumanLib-third-page-content, .HumanLib-chat-container) {
-    margin-left: 0px;
-    text-align: start;
-  }
-  .HumanLib-description{
-    text-align: start;
-    margin-right: 80px;
-  }
-  /* Hide the right section on mobile */
-  .HumanLib-right-section {
-    display: none;
-  }
-
-  /* Make the main container take full width */
+  
+  /* Container styles for the form (left/center section) */
   .HumanLib-container {
-    width: 100%;
-    padding: 15px;
+    width: 72%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
   }
-
-  /* Remove the margin-left and center content */
-  .HumanLib-container > div {
-    margin-left: 0;
-    text-align: center; /* Center content on mobile */
+  
+  /* Apply margin-left only to the first page content */
+  .HumanLib-container > div:not(.HumanLib-second-page-content, .HumanLib-third-page-content, .HumanLib-chat-container) {
+    margin-left: 200px;
   }
-
-  /* Ensure second, third, and chat page content is centered */
+  
+  /* Override margin-left for the second, third, and chat page content */
   .HumanLib-second-page-content,
   .HumanLib-third-page-content,
   .HumanLib-chat-container {
-    margin-left: 0 !important;
-    text-align: center;
-  }
-
-  /* Adjust title font size */
-  .HumanLib-title {
-    font-size: 2rem;
-  }
-
-  /* Adjust description font size */
-  .HumanLib-description {
-    font-size: 16px;
-    text-align: center;
-  }
-
-  /* Adjust input field width for mobile */
-  .HumanLib-input {
-    width: 100%;
-    max-width: 100%;
-    font-size: 14px;
-  }
-
-  /* Adjust button container for mobile */
-  .HumanLib-button-container {
+    margin-left: 0 !important; /* Override any inherited margin */
+    display: flex;
     flex-direction: column;
-    gap: 20px;
-    align-items: center;
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Center text */
   }
-
-  /* Adjust button padding for mobile */
-  .HumanLib-button {
-    padding: 10px 40px;
-    font-size: 14px;
-    width: 100%;
-    max-width: 200px;
+  
+  /* Right section (sidebar) */
+  .HumanLib-right-section {
+    width: 300px; /* Fixed width for the sidebar */
+    padding: 20px;
+    box-sizing: border-box;
   }
-
-  /* Center the image container on mobile */
+  
+  /* Image container for the circular arrangement */
   .HumanLib-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Ensure vertical centering */
+    margin-bottom: 30px;
+  }
+  
+  /* Concentric circles container */
+  .HumanLib-concentric-circles {
+    position: relative;
+    width: 484px; /* Fits 420px circle + 12px borders x 2 + margin */
+    height: 484px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent; /* Gaps show parent background */
+  }
+  
+  /* Base styles for all circles */
+  .HumanLib-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0; /* Start invisible */
+    border: 4px solid transparent; /* White border */
+    outline: 4px solid transparent; /* Light green border */
+    outline-offset: 4px; /* Green outside white */
+    box-sizing: border-box;
+  }
+  
+  /* Pseudo-element for light purple border */
+  .HumanLib-circle::before {
+    content: '';
+    position: absolute;
+    top: -8px; /* Offset to encircle green */
+    left: -8px;
+    width: calc(100% + 16px); /* Size for outer border */
+    height: calc(100% + 16px);
+    border: 4px solid transparent; /* Light purple border */
+    border-radius: 50%;
+    z-index: -1; /* Behind circle */
+  }
+  
+  /* Individual circle styles */
+  .HumanLib-circle-red {
+    width: 420px; /* Largest circle */
+    height: 420px;
+    background-color: #ff0000; /* Red */
+    animation: fadeCycle 14s ease-in infinite;
+    animation-delay: 0s; /* Starts at 0s */
+  }
+  
+  .HumanLib-circle-orange {
+    width: 380px; /* 40px smaller for 20px gap */
+    height: 380px;
+    background-color: #ffa500; /* Orange */
+    animation: fadeCycle 14s ease-in infinite;
+    animation-delay: 1s;
+  }
+  
+  .HumanLib-circle-yellow {
+    width: 340px;
+    height: 340px;
+    background-color: #ffff00; /* Yellow */
+    animation: fadeCycle 14s ease-in infinite;
+    animation-delay: 2s;
+  }
+  
+  .HumanLib-circle-green {
+    width: 300px;
+    height: 300px;
+    background-color: #91f491; /* Green */
+    animation: fadeCycle 14s ease-in infinite;
+    animation-delay: 3s;
+  }
+  
+  .HumanLib-circle-blue {
+    width: 260px;
+    height: 260px;
+    background-color: #0000ff; /* Blue */
+    animation: fadeCycle 14s ease-in infinite;
+    animation-delay: 4s;
+  }
+  
+  .HumanLib-circle-indigo {
+    width: 220px;
+    height: 220px;
+    background-color: #4b0082; /* Indigo */
+    animation: fadeCycle 14s ease-in infinite;
+    animation-delay: 5s;
+  }
+  
+  .HumanLib-circle-violet {
+    width: 180px; /* Smallest circle */
+    height: 180px;
+    background-color: #ee82ee; /* Violet */
+    animation: fadeCycle 14s ease-in infinite;
+    animation-delay: 6s;
+  }
+  
+  /* Animation keyframes for outer-to-inner and inner-to-outer */
+  @keyframes fadeCycle {
+    /* Outer to inner phase */
+    0% {
+      opacity: 0;
+      border-color: transparent;
+      outline-color: transparent;
+    }
+    7.14% { /* ~1s for 14s cycle */
+      opacity: 1;
+      border-color: white;
+      outline-color: #90ee90; /* Light green */
+    }
+    14.28% { /* ~2s */
+      opacity: 1;
+      border-color: white;
+      outline-color: #90ee90;
+    }
+    /* Fade out for transition */
+    21.42% { /* ~3s */
+      opacity: 0;
+      border-color: transparent;
+      outline-color: transparent;
+    }
+    /* Inner to outer phase */
+    50% { /* ~7s */
+      opacity: 0;
+      border-color: transparent;
+      outline-color: transparent;
+    }
+    57.14% { /* ~8s */
+      opacity: 1;
+      border-color: white;
+      outline-color: #90ee90;
+    }
+    64.28% { /* ~9s */
+      opacity: 1;
+      border-color: white;
+      outline-color: #90ee90;
+    }
+    /* Fade out for cycle restart */
+    71.42% { /* ~10s */
+      opacity: 0;
+      border-color: transparent;
+      outline-color: transparent;
+    }
+    100% {
+      opacity: 0;
+      border-color: transparent;
+      outline-color: transparent;
+    }
+  }
+  
+  /* Animate pseudo-element’s light purple border */
+  .HumanLib-circle::before {
+    animation: fadeCycleBefore 14s ease-in infinite;
+    animation-delay: inherit; /* Match circle’s delay */
+  }
+  
+  @keyframes fadeCycleBefore {
+    0% { border-color: transparent; }
+    7.14% { border-color: #dda0dd; /* Light purple */ }
+    14.28% { border-color: #dda0dd; }
+    21.42% { border-color: transparent; }
+    50% { border-color: transparent; }
+    57.14% { border-color: #dda0dd; }
+    64.28% { border-color: #dda0dd; }
+    71.42% { border-color: transparent; }
+    100% { border-color: transparent; }
+  }
+  
+  /* Central image (second phase only) */
+  .HumanLib-central-image {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    background-color: #e0e0e0; /* Placeholder background */
+    border-radius: 50%;
+  }
+  
+  /* Orbiting images (second phase only) */
+  .HumanLib-orbiting-image {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #d0d0d0; /* Placeholder background */
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+  }
+  
+  /* Position each orbiting image along the pink circle (radius = 150px) */
+  .HumanLib-orbiting-image-1 {
+    transform: translate(-50%, -50%) translateX(150px);
+  }
+  
+  .HumanLib-orbiting-image-2 {
+    transform: translate(-50%, -50%) rotate(90deg) translateX(150px) rotate(-90deg);
+  }
+  
+  .HumanLib-orbiting-image-3 {
+    transform: translate(-50%, -50%) translateX(-150px);
+  }
+  
+  .HumanLib-orbiting-image-4 {
+    transform: translate(-50%, -50%) rotate(270deg) translateX(150px) rotate(-270deg);
+  }
+  
+  /* Apply the orbiting animation to the parent container (second phase only) */
+  .HumanLib-second-page-content .HumanLib-concentric-circles {
+    animation: orbit 10s linear infinite;
+  }
+  
+  /* Keyframes for the orbit animation */
+  @keyframes orbit {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Title styles */
+  .HumanLib-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Description styles */
+  .HumanLib-description {
+    font-size: 24px;
+    color: #666;
     margin-bottom: 20px;
   }
-
-  /* Adjust the concentric circles size for mobile */
-  .HumanLib-concentric-circles {
-    width: 200px;
-    height: 200px;
-  }
-
-  /* Adjust circle sizes for mobile */
-  .HumanLib-circle-red {
-    width: 200px;
-    height: 200px;
-  }
-
-  .HumanLib-circle-orange {
-    width: 180px;
-    height: 180px;
-  }
-
-  .HumanLib-circle-yellow {
-    width: 160px;
-    height: 160px;
-  }
-
-  .HumanLib-circle-green {
-    width: 140px;
-    height: 140px;
-  }
-
-  .HumanLib-circle-blue {
-    width: 120px;
-    height: 120px;
-  }
-
-  .HumanLib-circle-indigo {
-    width: 100px;
-    height: 100px;
-  }
-
-  .HumanLib-circle-violet {
-    width: 80px;
-    height: 80px;
-  }
-
-  /* Adjust orbiting images size and orbit radius for mobile (radius = 100px) */
-  .HumanLib-orbiting-image {
-    width: 40px;
-    height: 40px;
-  }
-
-  .HumanLib-orbiting-image-1 {
-    transform: translate(-50%, -50%) translateX(100px);
-  }
-
-  .HumanLib-orbiting-image-2 {
-    transform: translate(-50%, -50%) rotate(90deg) translateX(100px) rotate(-90deg);
-  }
-
-  .HumanLib-orbiting-image-3 {
-    transform: translate(-50%, -50%) translateX(-100px);
-  }
-
-  .HumanLib-orbiting-image-4 {
-    transform: translate(-50%, -50%) rotate(270deg) translateX(100px) rotate(-270deg);
-  }
-
-  /* Chat container on mobile */
-  .HumanLib-chat-container {
-    top: 90px; /* Keep top margin for navbar */
-    width: 100vw;
-    height: calc(100vh - 90px);
-    position: fixed;
-    left: 0;
-    margin: 0;
-    padding: 0;
-  }
-
-  .HumanLib-chat-header {
-    padding: 10px 20px;
-  }
-
-  .HumanLib-chat-contact {
-    gap: 10px;
-  }
-
-  .HumanLib-contact-avatar {
-    width: 40px;
-    height: 40px;
-  }
-
-  .HumanLib-contact-name {
+  
+  /* Input styles (first page) */
+  .HumanLib-input {
+    width: 800px;
+    padding: 10px;
     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
   }
-
-  .HumanLib-contact-status {
-    font-size: 12px;
+  
+  /* Button container */
+  .HumanLib-button-container {
+    display: flex;
+    gap: 100px;
   }
-
-  .HumanLib-chat-timestamp {
-    font-size: 12px;
+  
+  /* Button styles */
+  .HumanLib-button {
+    padding: 10px 80px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
   }
-
-  .HumanLib-chat-messages {
-    padding: 15px;
+  
+  .HumanLib-cancel {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .HumanLib-start {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* Chat interface styles (Phase 4) */
+  .HumanLib-chat-container {
+    position: fixed; /* Ensure it overlays the page */
+    top: 110px; /* Margin from top to account for navbar */
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: calc(100vh - 90px); /* Full height minus navbar */
+    z-index: 1000; /* Above other elements */
+    display: flex;
+    flex-direction: column;
+    border-radius: 0; /* Remove rounding for full-screen */
+    box-shadow: none; /* Remove shadow for full-screen */
+    overflow: hidden;
+    margin: 0; /* Remove any margins */
+    padding: 0; /* Remove any padding */
+    box-sizing: border-box; /* Ensure padding doesn’t add width */
+  }
+  
+  /* Chat header */
+  .HumanLib-chat-header {
+    display: flex;
+    width: 100%; 
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: white;
+    border-top: 50px;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+  
+  .HumanLib-chat-contact {
+    display: flex;
+    align-items: center;
     gap: 15px;
   }
-
-  .HumanLib-message {
-    max-width: 80%;
-  }
-
-  .HumanLib-message-avatar {
-    width: 30px;
-    height: 30px;
-  }
-
-  .HumanLib-message-content {
-    padding: 10px 15px;
-  }
-
-  .HumanLib-message-sender {
-    font-size: 12px;
-  }
-
-  .HumanLib-message-text {
-    font-size: 14px;
-  }
-
-  .HumanLib-voice-waveform {
-    font-size: 14px;
-  }
-
-  .HumanLib-message-timestamp {
-    font-size: 10px;
-  }
-
-  .HumanLib-chat-input {
-    padding: 10px 20px;
-    gap: 10px;
-  }
-
-  .HumanLib-chat-input input {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .HumanLib-emoji-button,
-  .HumanLib-voice-button,
-  .HumanLib-send-button {
-    font-size: 20px;
-  }
-}
-
-/* Further adjustments for very small screens (e.g., below 480px) */
-@media (max-width: 480px) {
-  .HumanLib-title {
-    font-size: 1.5rem;
-  }
-
-  .HumanLib-description {
-    font-size: 14px;
-  }
-
-  .HumanLib-input {
-    font-size: 12px;
-  }
-
-  .HumanLib-button {
-    padding: 8px 30px;
-    font-size: 12px;
-    max-width: 180px;
-  }
-
-  .HumanLib-concentric-circles {
-    width: 150px;
-    height: 150px;
-  }
-
-  /* Adjust circle sizes for very small screens */
-  .HumanLib-circle-red {
-    width: 150px;
-    height: 150px;
-  }
-
-  .HumanLib-circle-orange {
-    width: 130px;
-    height: 130px;
-  }
-
-  .HumanLib-circle-yellow {
-    width: 110px;
-    height: 110px;
-  }
-
-  .HumanLib-circle-green {
-    width: 90px;
-    height: 90px;
-  }
-
-  .HumanLib-circle-blue {
-    width: 70px;
-    height: 70px;
-  }
-
-  .HumanLib-circle-indigo {
+  
+  .HumanLib-contact-avatar {
     width: 50px;
     height: 50px;
+    background: #ccc; /* Placeholder for avatar */
+    border-radius: 50%;
   }
-
-  .HumanLib-circle-violet {
-    width: 30px;
-    height: 30px;
-  }
-
-  .HumanLib-orbiting-image {
-    width: 30px;
-    height: 30px;
-  }
-
-  .HumanLib-orbiting-image-1 {
-    transform: translate(-50%, -50%) translateX(75px);
-  }
-
-  .HumanLib-orbiting-image-2 {
-    transform: translate(-50%, -50%) rotate(90deg) translateX(75px) rotate(-90deg);
-  }
-
-  .HumanLib-orbiting-image-3 {
-    transform: translate(-50%, -50%) translateX(-75px);
-  }
-
-  .HumanLib-orbiting-image-4 {
-    transform: translate(-50%, -50%) rotate(270deg) translateX(75px) rotate(-270deg);
-  }
-
-  /* Chat adjustments for very small screens */
-  .HumanLib-chat-container {
-    top: 90px; /* Keep top margin for navbar */
-    width: 100vw;
-    height: calc(100vh - 90px);
-    position: fixed;
-    left: 0;
-    margin: 0;
-    padding: 0;
-  }
-
-  .HumanLib-chat-header {
-    padding: 8px 15px;
-  }
-
-  .HumanLib-chat-contact {
-    gap: 8px;
-  }
-
-  .HumanLib-contact-avatar {
-    width: 35px;
-    height: 35px;
-  }
-
+  
   .HumanLib-contact-name {
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
   }
-
+  
   .HumanLib-contact-status {
-    font-size: 10px;
+    font-size: 14px;
+    color: #666;
+    margin: 0;
   }
-
+  
   .HumanLib-chat-timestamp {
-    font-size: 10px;
+    font-size: 14px;
+    color: #666;
   }
-
+  
+  /* Chat messages area */
   .HumanLib-chat-messages {
-    padding: 10px;
-    gap: 10px;
+    flex: 1;
+    width: 100%; /* Full width */
+    padding: 30px;
+    overflow-y: auto;
+    background: url('path-to-abstract-background.png') no-repeat center/cover; /* Replace with your background image */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
   }
-
+  
   .HumanLib-message {
-    max-width: 85%;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    max-width: 60%;
   }
-
+  
+  .HumanLib-message-received {
+    align-self: flex-start;
+  }
+  
+  .HumanLib-message-sent {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+  
   .HumanLib-message-avatar {
-    width: 25px;
-    height: 25px;
+    width: 40px;
+    height: 40px;
+    background: #ccc; /* Placeholder for avatar */
+    border-radius: 50%;
   }
-
+  
   .HumanLib-message-content {
-    padding: 8px 12px;
+    background: #f0f0f0; /* Received message background */
+    padding: 12px 18px;
+    border-radius: 15px;
+    position: relative;
   }
-
+  
+  .HumanLib-message-sent .HumanLib-message-content {
+    background: #ff69b4; /* Sent message background (pink) */
+    color: white;
+  }
+  
   .HumanLib-message-sender {
-    font-size: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 5px;
   }
-
+  
   .HumanLib-message-text {
-    font-size: 12px;
+    font-size: 16px;
+    margin: 0;
   }
-
+  
+  .HumanLib-voice-message {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
   .HumanLib-voice-waveform {
-    font-size: 12px;
+    font-size: 16px;
+    color: white;
   }
-
+  
   .HumanLib-message-timestamp {
-    font-size: 8px;
-  }
-
-  .HumanLib-chat-input {
-    padding: 8px 15px;
-    gap: 8px;
-  }
-
-  .HumanLib-chat-input input {
     font-size: 12px;
-    padding: 8px;
+    color: #999;
+    margin-top: 5px;
+    text-align: right;
   }
-
+  
+  
+  /* Message input area */
+  .HumanLib-chat-input {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width */
+    padding: 15px 30px;
+    background: #f5f5f5;
+    border-top: 1px solid #ddd;
+    gap: 15px;
+    box-sizing: border-box;
+    padding-bottom: 50px;
+  }
+  
+  .HumanLib-chat-input input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+  }
+  
   .HumanLib-emoji-button,
   .HumanLib-voice-button,
   .HumanLib-send-button {
-    font-size: 18px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
   }
-}
-
-/* Container for the entire section */
-.HumanLib-second-page-content-phase2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Optional: Add decorative shapes in the background (using pseudo-elements) */
-.HumanLib-second-page-content-phase2::before,
-.HumanLib-second-page-content-phase2::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.3;
-}
-
-.HumanLib-second-page-content-phase2::before {
-  top: -50px;
-  left: -50px;
-  width: 150px;
-  height: 150px;
-  background-color: #ffe5b4; /* Light peach */
-}
-
-.HumanLib-second-page-content-phase2::after {
-  bottom: -50px;
-  right: -50px;
-  width: 150px;
-  height: 150px;
-  background-color: #b3e5fc; /* Light blue */
-}
-
-/* Container for the image and circles */
-.HumanLib-image-container-phase2 {
-  position: relative;
-  width: 500px;
-  height: 500px;
-  margin-bottom: 30px;
-}
-
-/* Concentric circles container */
-.HumanLib-concentric-circles-phase2 {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Styling for the circles (pink and blue) */
-.HumanLib-circle-phase2 {
-  position: absolute;
-  border-radius: 50%;
-  border-style: solid;
-  box-sizing: border-box;
-}
-
-/* Pink outer circle */
-.HumanLib-circle-pink-phase2 {
-  width: 400px;
-  height: 400px;
-  border: 2px solid #ff99cc; /* Pink color matching the image */
-  background: transparent;
-}
-
-/* Light blue inner circle */
-.HumanLib-circle-blue-phase2 {
-  width: 300px;
-  height: 300px;
-  border: 2px solid #b3e5fc; /* Light blue color matching the image */
-  background: transparent;
-}
-
-/* Central image */
-.HumanLib-central-image-phase2 {
-  width: 150px;
-  height: 150px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-  position: absolute;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-/* Orbiting colored circles */
-.HumanLib-orbiting-image-phase2 {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-/* Individual orbiting colored circles with different colors */
-.HumanLib-orbiting-image-1-phase2 {
-  background-color: #ff66b2; /* Pink */
-  animation: orbit 20s linear infinite;
-}
-
-.HumanLib-orbiting-image-2-phase2 {
-  background-color: #ff9900; /* Orange */
-  animation: orbit 20s linear infinite;
-  animation-delay: -5s;
-}
-
-.HumanLib-orbiting-image-3-phase2 {
-  background-color: #66cc99; /* Green */
-  animation: orbit 20s linear infinite;
-  animation-delay: -10s;
-}
-
-.HumanLib-orbiting-image-4-phase2 {
-  background-color: #9966ff; /* Purple */
-  animation: orbit 20s linear infinite;
-  animation-delay: -15s;
-}
-
-/* Keyframes for orbiting animation */
-@keyframes orbit {
-  0% {
-    transform: rotate(0deg) translateX(200px) rotate(0deg); /* 200px is half the pink circle's width */
+  
+  .HumanLib-send-button {
+    color: #ff69b4;
   }
-  100% {
-    transform: rotate(360deg) translateX(200px) rotate(-360deg);
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    /* Hide the right section on mobile */
+    .HumanLib-right-section {
+      display: none;
+    }
+  
+    /* Make the main container take full width */
+    .HumanLib-container {
+      width: 100%;
+      padding: 15px;
+    }
+  
+    /* Remove the margin-left and center content */
+    .HumanLib-container > div {
+      margin-left: 0;
+      text-align: center; /* Center content on mobile */
+    }
+  
+    /* Ensure second, third, and chat page content is centered */
+    .HumanLib-second-page-content,
+    .HumanLib-third-page-content,
+    .HumanLib-chat-container {
+      margin-left: 0 !important;
+      text-align: center;
+    }
+  
+    /* Adjust title font size */
+    .HumanLib-title {
+      font-size: 2rem;
+    }
+  
+    /* Adjust description font size */
+    .HumanLib-description {
+      font-size: 16px;
+      text-align: center;
+    }
+  
+    /* Adjust input field width for mobile */
+    .HumanLib-input {
+      width: 100%;
+      max-width: 100%;
+      font-size: 14px;
+    }
+  
+    /* Adjust button container for mobile */
+    .HumanLib-button-container {
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+  
+    /* Adjust button padding for mobile */
+    .HumanLib-button {
+      padding: 10px 40px;
+      font-size: 14px;
+      width: 100%;
+      max-width: 200px;
+    }
+  
+    /* Center the image container on mobile */
+    .HumanLib-image-container {
+      margin-bottom: 20px;
+    }
+  
+    /* Adjust the concentric circles size for mobile */
+    .HumanLib-concentric-circles {
+      width: 200px;
+      height: 200px;
+    }
+  
+    /* Adjust circle sizes for mobile */
+    .HumanLib-circle-red {
+      width: 200px;
+      height: 200px;
+    }
+  
+    .HumanLib-circle-orange {
+      width: 180px;
+      height: 180px;
+    }
+  
+    .HumanLib-circle-yellow {
+      width: 160px;
+      height: 160px;
+    }
+  
+    .HumanLib-circle-green {
+      width: 140px;
+      height: 140px;
+    }
+  
+    .HumanLib-circle-blue {
+      width: 120px;
+      height: 120px;
+    }
+  
+    .HumanLib-circle-indigo {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .HumanLib-circle-violet {
+      width: 80px;
+      height: 80px;
+    }
+  
+    /* Adjust orbiting images size and orbit radius for mobile (radius = 100px) */
+    .HumanLib-orbiting-image {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .HumanLib-orbiting-image-1 {
+      transform: translate(-50%, -50%) translateX(100px);
+    }
+  
+    .HumanLib-orbiting-image-2 {
+      transform: translate(-50%, -50%) rotate(90deg) translateX(100px) rotate(-90deg);
+    }
+  
+    .HumanLib-orbiting-image-3 {
+      transform: translate(-50%, -50%) translateX(-100px);
+    }
+  
+    .HumanLib-orbiting-image-4 {
+      transform: translate(-50%, -50%) rotate(270deg) translateX(100px) rotate(-270deg);
+    }
+  
+    /* Chat container on mobile */
+    .HumanLib-chat-container {
+      top: 90px; /* Keep top margin for navbar */
+      width: 100vw;
+      height: calc(100vh - 90px);
+      position: fixed;
+      left: 0;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .HumanLib-chat-header {
+      padding: 10px 20px;
+    }
+  
+    .HumanLib-chat-contact {
+      gap: 10px;
+    }
+  
+    .HumanLib-contact-avatar {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .HumanLib-contact-name {
+      font-size: 16px;
+    }
+  
+    .HumanLib-contact-status {
+      font-size: 12px;
+    }
+  
+    .HumanLib-chat-timestamp {
+      font-size: 12px;
+    }
+  
+    .HumanLib-chat-messages {
+      padding: 15px;
+      gap: 15px;
+    }
+  
+    .HumanLib-message {
+      max-width: 80%;
+    }
+  
+    .HumanLib-message-avatar {
+      width: 30px;
+      height: 30px;
+    }
+  
+    .HumanLib-message-content {
+      padding: 10px 15px;
+    }
+  
+    .HumanLib-message-sender {
+      font-size: 12px;
+    }
+  
+    .HumanLib-message-text {
+      font-size: 14px;
+    }
+  
+    .HumanLib-voice-waveform {
+      font-size: 14px;
+    }
+  
+    .HumanLib-message-timestamp {
+      font-size: 10px;
+    }
+  
+    .HumanLib-chat-input {
+      padding: 10px 20px;
+      gap: 10px;
+    }
+  
+    .HumanLib-chat-input input {
+      font-size: 14px;
+      padding: 10px;
+    }
+  
+    .HumanLib-emoji-button,
+    .HumanLib-voice-button,
+    .HumanLib-send-button {
+      font-size: 20px;
+    }
   }
-}
-
-/* Title styling */
-.HumanLib-title-phase2 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 15px;
-  max-width: 600px;
-  line-height: 1.3;
-}
-
-/* Description styling */
-.HumanLib-description-phase2 {
-  font-size: 1.1rem;
-  color: #666;
-  margin-bottom: 25px;
-  max-width: 500px;
-  line-height: 1.5;
-}
-
-/* Button container */
-.HumanLib-button-container-phase2 {
-  display: flex;
-  justify-content: center;
-}
-
-/* Button styling */
-.HumanLib-button-phase2 {
-  padding: 12px 40px;
-  font-size: 1.1rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Start button specific styling */
-.HumanLib-start-phase2 {
-  background-color: #007bff; /* Blue to match the image */
-  color: #fff;
-}
-
-.HumanLib-start-phase2:hover {
-  background-color: #0056b3; /* Slightly darker blue on hover */
-}
+  
+  /* Further adjustments for very small screens (e.g., below 480px) */
+  @media (max-width: 480px) {
+    .HumanLib-title {
+      font-size: 1.5rem;
+    }
+  
+    .HumanLib-description {
+      font-size: 14px;
+    }
+  
+    .HumanLib-input {
+      font-size: 12px;
+    }
+  
+    .HumanLib-button {
+      padding: 8px 30px;
+      font-size: 12px;
+      max-width: 180px;
+    }
+  
+    .HumanLib-concentric-circles {
+      width: 150px;
+      height: 150px;
+    }
+  
+    /* Adjust circle sizes for very small screens */
+    .HumanLib-circle-red {
+      width: 150px;
+      height: 150px;
+    }
+  
+    .HumanLib-circle-orange {
+      width: 130px;
+      height: 130px;
+    }
+  
+    .HumanLib-circle-yellow {
+      width: 110px;
+      height: 110px;
+    }
+  
+    .HumanLib-circle-green {
+      width: 90px;
+      height: 90px;
+    }
+  
+    .HumanLib-circle-blue {
+      width: 70px;
+      height: 70px;
+    }
+  
+    .HumanLib-circle-indigo {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .HumanLib-circle-violet {
+      width: 30px;
+      height: 30px;
+    }
+  
+    .HumanLib-orbiting-image {
+      width: 30px;
+      height: 30px;
+    }
+  
+    .HumanLib-orbiting-image-1 {
+      transform: translate(-50%, -50%) translateX(75px);
+    }
+  
+    .HumanLib-orbiting-image-2 {
+      transform: translate(-50%, -50%) rotate(90deg) translateX(75px) rotate(-90deg);
+    }
+  
+    .HumanLib-orbiting-image-3 {
+      transform: translate(-50%, -50%) translateX(-75px);
+    }
+  
+    .HumanLib-orbiting-image-4 {
+      transform: translate(-50%, -50%) rotate(270deg) translateX(75px) rotate(-270deg);
+    }
+  
+    /* Chat adjustments for very small screens */
+    .HumanLib-chat-container {
+      top: 90px; /* Keep top margin for navbar */
+      width: 100vw;
+      height: calc(100vh - 90px);
+      position: fixed;
+      left: 0;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .HumanLib-chat-header {
+      padding: 8px 15px;
+    }
+  
+    .HumanLib-chat-contact {
+      gap: 8px;
+    }
+  
+    .HumanLib-contact-avatar {
+      width: 35px;
+      height: 35px;
+    }
+  
+    .HumanLib-contact-name {
+      font-size: 14px;
+    }
+  
+    .HumanLib-contact-status {
+      font-size: 10px;
+    }
+  
+    .HumanLib-chat-timestamp {
+      font-size: 10px;
+    }
+  
+    .HumanLib-chat-messages {
+      padding: 10px;
+      gap: 10px;
+    }
+  
+    .HumanLib-message {
+      max-width: 85%;
+    }
+  
+    .HumanLib-message-avatar {
+      width: 25px;
+      height: 25px;
+    }
+  
+    .HumanLib-message-content {
+      padding: 8px 12px;
+    }
+  
+    .HumanLib-message-sender {
+      font-size: 10px;
+    }
+  
+    .HumanLib-message-text {
+      font-size: 12px;
+    }
+  
+    .HumanLib-voice-waveform {
+      font-size: 12px;
+    }
+  
+    .HumanLib-message-timestamp {
+      font-size: 8px;
+    }
+  
+    .HumanLib-chat-input {
+      padding: 8px 15px;
+      gap: 8px;
+    }
+  
+    .HumanLib-chat-input input {
+      font-size: 12px;
+      padding: 8px;
+    }
+  
+    .HumanLib-emoji-button,
+    .HumanLib-voice-button,
+    .HumanLib-send-button {
+      font-size: 18px;
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* Container for the entire section */
+  .HumanLib-second-page-content-phase2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Optional: Add decorative shapes in the background (using pseudo-elements) */
+  .HumanLib-second-page-content-phase2::before,
+  .HumanLib-second-page-content-phase2::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+  
+  .HumanLib-second-page-content-phase2::before {
+    top: -50px;
+    left: -50px;
+    width: 150px;
+    height: 150px;
+    background-color: #ffe5b4; /* Light peach */
+  }
+  
+  .HumanLib-second-page-content-phase2::after {
+    bottom: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background-color: #b3e5fc; /* Light blue */
+  }
+  
+  /* Container for the image and circles */
+  .HumanLib-image-container-phase2 {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin-bottom: 30px;
+  }
+  
+  /* Concentric circles container */
+  .HumanLib-concentric-circles-phase2 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Styling for the circles (pink and blue) */
+  .HumanLib-circle-phase2 {
+    position: absolute;
+    border-radius: 50%;
+    border-style: solid;
+    box-sizing: border-box;
+  }
+  
+  /* Pink outer circle */
+  .HumanLib-circle-pink-phase2 {
+    width: 400px;
+    height: 400px;
+    border: 2px solid #ff99cc; /* Pink color matching the image */
+    background: transparent;
+  }
+  
+  /* Light blue inner circle */
+  .HumanLib-circle-blue-phase2 {
+    width: 300px;
+    height: 300px;
+    border: 2px solid #b3e5fc; /* Light blue color matching the image */
+    background: transparent;
+  }
+  
+  /* Central image */
+  .HumanLib-central-image-phase2 {
+    width: 150px;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  /* Orbiting colored circles */
+  .HumanLib-orbiting-image-phase2 {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  /* Individual orbiting colored circles with different colors */
+  .HumanLib-orbiting-image-1-phase2 {
+    background-color: #ff66b2; /* Pink */
+    animation: orbit 20s linear infinite;
+  }
+  
+  .HumanLib-orbiting-image-2-phase2 {
+    background-color: #ff9900; /* Orange */
+    animation: orbit 20s linear infinite;
+    animation-delay: -5s;
+  }
+  
+  .HumanLib-orbiting-image-3-phase2 {
+    background-color: #66cc99; /* Green */
+    animation: orbit 20s linear infinite;
+    animation-delay: -10s;
+  }
+  
+  .HumanLib-orbiting-image-4-phase2 {
+    background-color: #9966ff; /* Purple */
+    animation: orbit 20s linear infinite;
+    animation-delay: -15s;
+  }
+  
+  /* Keyframes for orbiting animation */
+  @keyframes orbit {
+    0% {
+      transform: rotate(0deg) translateX(200px) rotate(0deg); /* 200px is half the pink circle's width */
+    }
+    100% {
+      transform: rotate(360deg) translateX(200px) rotate(-360deg);
+    }
+  }
+  
+  /* Title styling */
+  .HumanLib-title-phase2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+    max-width: 600px;
+    line-height: 1.3;
+  }
+  
+  /* Description styling */
+  .HumanLib-description-phase2 {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 25px;
+    max-width: 500px;
+    line-height: 1.5;
+  }
+  
+  /* Button container */
+  .HumanLib-button-container-phase2 {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Button styling */
+  .HumanLib-button-phase2 {
+    padding: 12px 40px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Start button specific styling */
+  .HumanLib-start-phase2 {
+    background-color: #007bff; /* Blue to match the image */
+    color: #fff;
+  }
+  
+  .HumanLib-start-phase2:hover {
+    background-color: #0056b3; /* Slightly darker blue on hover */
+  }
