@@ -15,13 +15,14 @@ const Books = () => {
     const fetchBooks = async () => {
       try {
         // Retrieve token and userId from localStorage
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("authToken") || localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
         if (!token || !userId) {
           console.error("Token or userId not found in localStorage");
           return;
         }
+        console.log("Token:", token);
 
         const response = await axios.get(
           "https://uniisphere-backend-latest.onrender.com/api/books",
