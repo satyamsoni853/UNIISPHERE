@@ -16,30 +16,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a0b2e, #2e1b4e, #1b263b);
+  /* background: linear-gradient(135deg, #1a0b2e, #2e1b4e, #1b263b); */
   position: relative;
   overflow: hidden;
 }
 
-.ComingSoon-particles {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.25) 1px, transparent 1px),
-                    radial-gradient(circle, rgba(0, 255, 255, 0.2) 1px, transparent 1px);
-  background-size: 20px 20px, 30px 30px;
-  background-position: 0 0, 10px 10px;
-  animation: ComingSoonParticles 12s linear infinite;
-  z-index: 1;
-}
 
-@keyframes ComingSoonParticles {
-  0% {
-    background-position: 0 0, 10px 10px;
-  }
-  100% {
-    background-position: 100px 100px, 110px 110px;
-  }
-}
 
 .ComingSoon-content {
   text-align: center;
@@ -51,7 +33,7 @@ body {
 .ComingSoon-title {
   font-size: 4rem;
   font-weight: 700;
-  color: #ffffff;
+  color: black;
   margin-bottom: 2rem;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(0, 255, 255, 0.7);
 }
@@ -59,7 +41,7 @@ body {
 .ComingSoon-subtitle {
   font-size: 1.5rem;
   font-weight: 300;
-  color: #e0e0e0;
+  color:black;
   margin-bottom: 3rem;
   line-height: 1.6;
 }
@@ -135,12 +117,12 @@ body {
   display: block;
   font-size: 3rem;
   font-weight: 700;
-  color: #ffffff;
+  color: black;
 }
 
 .ComingSoon-timer-label {
   font-size: 1rem;
-  color: #e0e0e0;
+  color: black;
 }
 
 .ComingSoon-bounce {
