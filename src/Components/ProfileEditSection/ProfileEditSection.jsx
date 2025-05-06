@@ -80,7 +80,7 @@ function ProfileEditSection() {
         console.log("Profile Edit Section The stored user ID is:", storedUserId);
 
         const response = await axios.get(
-          `https://uniisphere-backend-latest.onrender.com/users/profile/${storedUserId}`,
+          `https://uniisphere-backend-latest.onrender.com/api/users/profile/${storedUserId}`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -219,7 +219,7 @@ function ProfileEditSection() {
         console.log("Authorization header:", tokenWithBearer);
 
         const response = await axios.patch(
-          "https://uniisphere-backend-latest.onrender.com/users/profile",
+          "https://uniisphere-backend-latest.onrender.com/api/users/profile",
           formData,
           {
             headers: {

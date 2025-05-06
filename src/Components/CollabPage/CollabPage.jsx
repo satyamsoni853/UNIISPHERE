@@ -4,7 +4,7 @@ import profilePhoto from "./profilephoto.png"; // Default profile photo
 import DesktopNavbarr from "../DesktopNavbar/DesktopNavbar.jsx";
 import Background from "../Background/Background.jsx";
 import MobileFooter from "../Mobilefooter/MobileFooter";
-import DesktopRightsection from "../DesktopRight/DesktopRight"; // Importing the DesktopRightsection component
+import DesktopRightsection from "../DesktopRight/DesktopRight";
 
 function CollabPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -53,7 +53,6 @@ function CollabPage() {
     },
   ]);
 
-  // Function to remove a collaborator
   const handleRemoveCollaborator = (index) => {
     setCollaborators((prev) => prev.filter((_, i) => i !== index));
   };
