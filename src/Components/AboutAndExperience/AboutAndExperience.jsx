@@ -104,7 +104,7 @@ function AboutAndExperiance() {
       }
 
       const response = await axios.patch(
-        `https://uniisphere-backend-latest.onrender.com/users/profile`,
+        `https://uniisphere-backend-latest.onrender.com/api/users/profile`,
         {
           userId: userId,
           About: aboutDesc,
@@ -188,7 +188,7 @@ function AboutAndExperiance() {
       }
 
       const response = await axios.patch(
-        `https://uniisphere-backend-latest.onrender.com/users/profile`,
+        `https://uniisphere-backend-latest.onrender.com/api/users/profile`,
         {
           userId,
           experiences: experiences.map(exp => ({
