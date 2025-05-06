@@ -491,14 +491,14 @@ function DesktopNavbar() {
       {/* Navigation Icons */}
       <div className="icon-wrapper">
         {activeIcon === "home" ? (
-          <IoHomeOutline
+          <IoHome
             className="desktop-icon"
             size={24}
             onClick={() => handleIconClick("home")}
             title="Home"
           />
         ) : (
-          <IoHome
+          <IoHomeOutline
             className="desktop-icon"
             size={24}
             onClick={() => handleIconClick("home")}
@@ -508,7 +508,7 @@ function DesktopNavbar() {
       </div>
       <div className="icon-wrapper">
         <img
-          src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
+          src={activeIcon === "network" ?   NetworkBlack:NetworkWhite}
           alt="Explore"
           className="desktop-icon"
           onClick={() => handleIconClick("network")}
@@ -516,7 +516,7 @@ function DesktopNavbar() {
       </div>
       <div className="icon-wrapper">
         <img
-          src={activeIcon === "add" ? AddWhite : AddBlack}
+          src={activeIcon === "add" ?   AddBlack:AddWhite}
           alt="Add"
           className="desktop-icon"
           onClick={() => handleIconClick("add")}
@@ -524,14 +524,14 @@ function DesktopNavbar() {
       </div>
       <div className="notification-icon-container icon-wrapper">
         {activeIcon === "notifications" ? (
-          <IoMdNotificationsOutline
+          <IoNotifications
             className="desktop-icon"
             size={24}
             onClick={handleNotificationClick}
             title="Notifications"
           />
         ) : (
-          <IoNotifications
+          <IoMdNotificationsOutline
             className="desktop-icon"
             size={24}
             onClick={handleNotificationClick}
@@ -678,6 +678,11 @@ function DesktopNavbar() {
             </Link>
           </div>
           <div className="connections-item">
+            <Link to="/MentorSection" className="connection-link">
+              MentorShip
+            </Link>
+          </div>
+          <div className="connections-item">
             <Link to="/coming-soon" className="connection-link">
               Skillup
             </Link>
@@ -689,7 +694,7 @@ function DesktopNavbar() {
           </div>
           <div className="connections-item">
             <Link to="/coming-soon" className="connection-link">
-              NGO
+              Intern Zone
             </Link>
           </div>
           <div className="connections-item">
@@ -699,14 +704,10 @@ function DesktopNavbar() {
           </div>
           <div className="connections-item">
             <Link to="/libblog" className="connection-link">
-              Communityblog
+              Blog
             </Link>
           </div>
-          <div className="connections-item">
-            <Link to="/MentorSection" className="connection-link">
-              Mentor Page
-            </Link>
-          </div>
+       
         </div>
       )}
 

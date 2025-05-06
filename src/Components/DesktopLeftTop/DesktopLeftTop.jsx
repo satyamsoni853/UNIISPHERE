@@ -9,19 +9,37 @@ function DesktopLeftTop() {
   const observerRef = useRef(null);
 
   useEffect(() => {
-    const fetchedArticles = [
-      { id: 1, image: DesktopLeft2image1, title: "Students Association Union...", author: "As per the rumors it is said that the elections of this year is going that the elections of this year is going see more..." },
-      { id: 2, image: DesktopLeft2image2, title: "Technology Innovations", author: "Latest advancements in AI and tech are taking the world by storm..." },
-      { id: 3, image: DesktopLeft2image2, title: "Sports Updates", author: "The championship final is set to take place this weekend..." },
-      { id: 4, image: DesktopLeft2image2, title: "Health & Lifestyle", author: "Experts suggest a balanced diet for a healthier life..." },
-      { id: 5, image: DesktopLeft2image2, title: "Environmental Concerns", author: "Climate change effects are becoming more evident..." },
-      { id: 6, image: DesktopLeft2image1, title: "Stock Market Trends", author: "Investors are keeping a close eye on the fluctuating markets... " },
-      { id: 7, image: DesktopLeft2image2, title: "Entertainment Buzz", author: "New movie releases and celebrity gossip are trending..." },
-      { id: 8, image: DesktopLeft2image1, title: "Educational Reforms", author: "Governments are focusing on improving the education system..." },
-      { id: 9, image: DesktopLeft2image2, title: "Space Exploration", author: "NASA's new mission to Mars is set to launch soon..." },
-      { id: 10, image: DesktopLeft2image1, title: "Global Politics", author: "World leaders discuss climate policies at the UN summit..." }
-    ];
-    setArticles(fetchedArticles);
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(
+          "https://newsdata.io/api/1/news?apikey=pub_85216b04c15ab86fa40b413472e8e68aad1a5&q=news&country=in&language=en&category=entertainment,politics,science,technology"
+        );
+        const data = await response.json();
+        
+        // Map API response to match existing article structure
+        const formattedArticles = data.results.map((item, index) => ({
+          id: index + 1,
+          image: index % 2 === 0 ? DesktopLeft2image1 : DesktopLeft2image2, // Alternate between images
+          title: item.title || "Untitled Article",
+          author: item.description?.slice(0, 100) + "..." || "No description available"
+        }));
+        
+        setArticles(formattedArticles);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+        // Fallback data in case of API failure
+        setArticles([
+          {
+            id: 1,
+            image: DesktopLeft2image1,
+            title: "Fallback News",
+            author: "Unable to fetch news at this time..."
+          }
+        ]);
+      }
+    };
+
+    fetchArticles();
   }, []);
 
   useEffect(() => {
@@ -40,7 +58,7 @@ function DesktopLeftTop() {
   }, [articles]);
 
   return (
-    <div className="leftsectiontop-1"  >
+    <div className="leftsectiontop-1">
       <h3 className="leftsectiontop-1-heading">Trends</h3>
       <div className="leftsectiontop-1-container">
         <div className="leftsectiontop-1-scroll">
