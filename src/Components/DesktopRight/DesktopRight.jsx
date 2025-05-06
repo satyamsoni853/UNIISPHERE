@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import ConnectAndCollaborate from "./connectAndCollaborate.png";
 import ConnectImage from "./connectImage.png";
 import "./DesktopRight.css";
 import ProfileImage from "./profileImage.jpeg";
 import ConnectAndCollaborateSvg from "./connectAndCollaborate.svg";
 import BottomMessagesWidget from "../BottomMessagesWidget/BottomMessagesWidget";
 
+// Dummy data for suggestions in case API fails
 const dummySuggestions = [
   {
     img: ProfileImage,
@@ -45,7 +47,7 @@ function DesktopRightSection() {
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const [profileData, setProfileData] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState([]); // State for dynamic suggestions
   const [loading, setLoading] = useState(true);
 
   const getAuthData = () => {
@@ -61,7 +63,7 @@ function DesktopRightSection() {
       if (!authData) {
         console.error("No authentication data available");
         setError("Authentication required");
-        setSuggestions(dummySuggestions);
+        setSuggestions(dummySuggestions); // Use dummy data if no auth
         setLoading(false);
         return;
       }
@@ -69,8 +71,9 @@ function DesktopRightSection() {
       setUserId(authData.userId);
 
       try {
+        // Fetch profile data
         const profileResponse = await axios.get(
-          `https://uniisphere-backend-latest.onrender.com/api/users/profile/?userId=${authData.userId}`,
+          `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authData.userId}`,
           {
             headers: {
               Authorization: `Bearer ${authData.token}`,
@@ -93,18 +96,20 @@ function DesktopRightSection() {
           setCollaborate(collaborateCount);
         }
 
+        // Fetch suggestions with GET request and userId in body
         const suggestionsResponse = await axios({
           method: "get",
-          url: `https://uniisphere-backend-latest.onrender.com/api/suggestions`,
-          data: { userId: authData.userId },
+          url: `https://uniisphere-1.onrender.com/api/suggestions`,
+          data: { userId: authData.userId }, // Sending userId in body
           headers: {
             Authorization: `Bearer ${authData.token}`,
             "Content-Type": "application/json",
           },
         });
 
+        // Map the API response to the required suggestion format
         const fetchedSuggestions = suggestionsResponse.data.map((user) => ({
-          img: user.profilePictureUrl || ProfileImage,
+          img: user.profilePictureUrl || ProfileImage, // Fallback to default image
           name: `${user.firstName || ""} ${user.lastName || ""}`.trim() || "Unknown User",
           university: user.university || "University not specified",
         }));
@@ -113,7 +118,7 @@ function DesktopRightSection() {
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to load data");
-        setSuggestions(dummySuggestions);
+        setSuggestions(dummySuggestions); // Use dummy data on error
       } finally {
         setLoading(false);
       }

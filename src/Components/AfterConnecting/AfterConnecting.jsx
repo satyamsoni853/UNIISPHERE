@@ -157,7 +157,7 @@ function AfterConnecting() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://uniisphere-backend-latest.onrender.com/getProfile/profile/?userId=${userId}`,
+          `https://uniisphere-1.onrender.com/api/users/profile/?userId=${userId}`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,

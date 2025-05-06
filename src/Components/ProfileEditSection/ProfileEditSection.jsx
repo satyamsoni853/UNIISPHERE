@@ -15,6 +15,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function ProfileEditSection() {
+  console.log("ProfileEditSection component mounted");
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [userId, setUserId] = useState(null);
@@ -67,17 +68,20 @@ function ProfileEditSection() {
       }
       hasFetched.current = true;
 
-      console.log("Fetching user data...");
+      console.log("Starting to fetch user data...");
       try {
         const storedUserId = localStorage.getItem("userId");
         const authToken = localStorage.getItem("authToken");
 
+        console.log("Stored User ID:", storedUserId);
+        console.log("Auth Token exists:", !!authToken);
+
         if (!storedUserId || !authToken) {
-          throw new Error("User ID not found in localStorage.");
+          throw new Error("User ID or Auth Token not found in localStorage.");
         }
 
         setUserId(storedUserId);
-        console.log("Profile Edit Section The stored user ID is:", storedUserId);
+        console.log("Making API request to:", `https://uniisphere-backend-latest.onrender.com/api/users/profile/${storedUserId}`);
 
         const response = await axios.get(
           `https://uniisphere-backend-latest.onrender.com/api/users/profile/${storedUserId}`,
@@ -93,14 +97,17 @@ function ProfileEditSection() {
         if (response.status === 200) {
           const userData = response.data.user || response.data;
           setUserData(userData);
-          logUserDetails(userData);
+          console.log("User data set successfully:", userData);
         }
       } catch (err) {
         console.error("Error fetching user data:", err);
         console.error("Error response:", err.response?.data);
+        console.error("Error status:", err.response?.status);
+        console.error("Error headers:", err.response?.headers);
         setError("Failed to load data. Please try again later.");
       } finally {
         setLoading(false);
+        console.log("Fetch completed, loading set to false");
       }
     };
 
