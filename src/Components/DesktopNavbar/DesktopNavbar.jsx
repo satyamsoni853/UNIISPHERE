@@ -662,7 +662,7 @@ function DesktopNavbar() {
       {/* Network Dropdown */}
       {showDropdown && (
         <div className="connections-card">
-          <div className="connections-item">
+          <div className="connections-item connections-card-1">
             <Link to="/NetworkPage" className="connection-link">
               Connection
             </Link>
@@ -674,7 +674,7 @@ function DesktopNavbar() {
           </div>
           <div className="connections-item">
             <Link to="/HumanLibGuidelines" className="connection-link">
-              Humanlib
+              Human Library
             </Link>
           </div>
           <div className="connections-item">
@@ -700,6 +700,11 @@ function DesktopNavbar() {
           <div className="connections-item">
             <Link to="/libblog" className="connection-link">
               Communityblog
+            </Link>
+          </div>
+          <div className="connections-item">
+            <Link to="/MentorSection" className="connection-link">
+              Mentor Page
             </Link>
           </div>
         </div>
