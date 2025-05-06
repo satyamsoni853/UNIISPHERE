@@ -34,7 +34,7 @@
 /* Middle Section */
 .Followers-middle-section-2-middle-section-public {
   width: 35vw; /* Fixed width for desktop */
-  border-radius: 15px;
+  border-radius: 50px;
   margin-top: 100px;
   padding: 20px;
   margin-left: 60px;
@@ -212,11 +212,13 @@
 .Followers-middle-section-2-profile-buttons-public button:nth-child(1) {
   background: linear-gradient(180deg, rgba(4, 230, 255, 0.04) 0%, rgba(255, 217, 0, 0.04) 88.89%);
 border: 0.5px solid #000000;
+border-radius: 20px;
 
 }
 
 .Followers-middle-section-2-profile-buttons-public button:nth-child(2) {
   background: linear-gradient(180deg, rgba(67, 4, 255, 0.04) 0%, rgba(255, 0, 0, 0.04) 88.89%);
+  border-radius: 20px;
 }
 
 /* Scrollable Sections */
@@ -291,7 +293,7 @@ border: 0.5px solid #000000;
 .Followers-middle-section-2-headingAndEdit-public p {
   font-size: 30px;
   font-weight: 600;
-  font-weight: 200;
+  /* font-weight: 200; */
 }
 
 .Followers-middle-section-2-icon-public {
@@ -552,4 +554,8 @@ border: 0.5px solid #000000;
   .Followers-middle-section-2-top-nav-Icon {
     display: none;
   }
+}
+.Followers-middle-section-2-skill-list-public .Followers-middle-section-2-skillsMiniDiv-public{
+  border-radius: 20px;
+  border: 0.1px solid grey;
 }
