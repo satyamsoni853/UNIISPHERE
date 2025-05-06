@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import axios
 import "./Books.css";
 import ForYou from "./ForYou.jpg";
 import { IoIosArrowForward } from "react-icons/io";
@@ -9,6 +10,44 @@ import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import Background from "../Background/Background";
 
 const Books = () => {
+  // Fetch books from API using token and userId from localStorage
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        // Retrieve token and userId from localStorage
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+
+        if (!token || !userId) {
+          console.error("Token or userId not found in localStorage");
+          return;
+        }
+
+        const response = await axios.get(
+          "https://uniisphere-backend-latest.onrender.com/api/books",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "X-User-ID": userId, // Pass userId in a custom header
+            },
+            timeout: 10000, // 10-second timeout
+          }
+        );
+
+        console.log("API Response:", response.data); // Log response to console
+      } catch (error) {
+        console.error("Error fetching books:", error.message);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+        }
+      }
+    };
+
+    fetchBooks();
+  }, []); // Empty dependency array to run once on mount
+
+  // Your existing static data (unchanged)
   const explorationBooks = [
     { title: "E-Books", author: "George Keeley", price: 890, rent: 200 },
     { title: "E-Books", author: "George Keeley", price: 1000, rent: 190 },
@@ -68,13 +107,13 @@ const Books = () => {
     { title: "Study Notes 4", price: 590, rent: 100 },
   ];
 
-  // State
+  // State for carousel navigation (unchanged)
   const [startIndex, setStartIndex] = useState(0);
   const [notesStartIndex, setNotesStartIndex] = useState(0);
   const [universityStartIndex, setUniversityStartIndex] = useState(0);
   const [lifeLessonStartIndex, setLifeLessonStartIndex] = useState(0);
 
-  // Data Slicing for Display
+  // Data slicing for display (unchanged)
   const visibleBooks = explorationBooks.slice(startIndex, startIndex + 4);
   const visibleNotes = notesItems.slice(notesStartIndex, notesStartIndex + 4);
   const visibleUniversity = universityItems.slice(
@@ -138,11 +177,11 @@ const Books = () => {
   const handleLifeLessonPrev = () => {
     setLifeLessonStartIndex((prevIndex) => {
       const newIndex = prevIndex - 4;
-    
       return newIndex < 0 ? Math.max(0, lifeLessonItems.length - 4) : newIndex;
     });
   };
 
+  // Your existing JSX (unchanged)
   return (
     <>
       <DesktopNavbar />
@@ -158,7 +197,6 @@ const Books = () => {
             placeholder="Search"
             className="main-books-search-input"
           />
-
           {/* Search Options */}
           <div className="main-books-search-options">
             <button className="main-books-option-button main-books-option-button-1">
@@ -185,34 +223,32 @@ const Books = () => {
         {/* Ebooks Section */}
         <div className="eBooks-section">
           <h2 className="main-books-section-title-notes">E-Books</h2>
-         <div className="main-eBooks-arrows-and-items">
-         <button className="nav-arrow left-arrow" onClick={handlePrev}>
+          <div className="main-eBooks-arrows-and-items">
+            <button className="nav-arrow left-arrow" onClick={handlePrev}>
               <IoChevronBack />
             </button>
-         <div className="eBooks-content">
-         
-         {visibleBooks.map((book, index) => (
-           <div key={index} className="eBooks-item-section">
-             <div className="eBooks-item">
-               <img src={ForYou} alt={book.title} className="eBooks-image" />
-               <div className="eBooks-details">
-                 <h3 className="eBooks-title">{book.title}</h3>
-                 <p className="eBooks-price">
-                   Price-{book.price} Rent-{book.rent}
-                 </p>
-               </div>
-             </div>
-           </div>
-         ))}
-        
-       </div>
-       <button
+            <div className="eBooks-content">
+              {visibleBooks.map((book, index) => (
+                <div key={index} className="eBooks-item-section">
+                  <div className="eBooks-item">
+                    <img src={ForYou} alt={book.title} className="eBooks-image" />
+                    <div className="eBooks-details">
+                      <h3 className="eBooks-title">{book.title}</h3>
+                      <p className="eBooks-price">
+                        Price-{book.price} Rent-{book.rent}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button
               className="main-books-nav-arrow main-books-right-arrow"
               onClick={handleNext}
             >
               <IoIosArrowForward />
             </button>
-         </div>
+          </div>
         </div>
 
         {/* Notes Section */}
@@ -273,9 +309,7 @@ const Books = () => {
                     />
                   </div>
                   <div className="main-books-university-details">
-                    <h3 className="main-books-university-title">
-                      {note.title}
-                    </h3>
+                    <h3 className="main-books-university-title">{note.title}</h3>
                     <p className="main-books-university-price">
                       Price-{note.price} Rent-{note.rent}
                     </p>

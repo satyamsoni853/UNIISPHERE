@@ -668,7 +668,7 @@ function DesktopNavbar() {
             </Link>
           </div>
           <div className="connections-item">
-            <Link to="/EduValt" className="connection-link">
+            <Link to="/Books" className="connection-link">
               Eduvault
             </Link>
           </div>
