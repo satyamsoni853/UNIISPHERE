@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./DesktopLeftTop.css";
-import DesktopLeft2image1 from "./DesktopLeft2image1.png";
-import DesktopLeft2image2 from "./DesktopLeft2image2.png";
 
 function DesktopLeftTop() {
   const [articles, setArticles] = useState([]);
   const [visibleCount, setVisibleCount] = useState(5);
-  const observerRef = useRef(null);
+  const vogueImage = "https://assets.vogue.in/photos/67d9bec33c1d29dc8d270a80/16:9/w_1280,c_limit/aries_image.png";
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -15,23 +13,45 @@ function DesktopLeftTop() {
           "https://newsdata.io/api/1/news?apikey=pub_85216b04c15ab86fa40b413472e8e68aad1a5&q=news&country=in&language=en&category=entertainment,politics,science,technology"
         );
         const data = await response.json();
-        
+
         // Map API response to match existing article structure
-        const formattedArticles = data.results.map((item, index) => ({
-          id: index + 1,
-          image: index % 2 === 0 ? DesktopLeft2image1 : DesktopLeft2image2, // Alternate between images
-          title: item.title || "Untitled Article",
-          author: item.description?.slice(0, 100) + "..." || "No description available"
-        }));
-        
-        setArticles(formattedArticles);
+        const formattedArticles = data.results.map((item, index) => {
+          // Prioritize the specific article if matched
+          const isTargetArticle =
+            item.title === "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara" &&
+            item.source_id?.toLowerCase().includes("justshowbiz");
+
+          return {
+            id: index + 1,
+            image: vogueImage, // Use the provided Vogue image for all articles
+            title: isTargetArticle
+              ? "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara"
+              : item.title || "Untitled Article",
+            author: isTargetArticle
+              ? "JustShowBiz: " + (item.description?.slice(0, 100) + "..." || "No description available")
+              : item.description?.slice(0, 100) + "..." || "No description available"
+          };
+        });
+
+        // Ensure the target article is at the top if found
+        const sortedArticles = formattedArticles.sort((a, b) =>
+          a.title === "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara" ? -1 : 1
+        );
+
+        setArticles(sortedArticles);
       } catch (error) {
         console.error("Error fetching articles:", error);
-        // Fallback data in case of API failure
+        // Fallback data including the specific article
         setArticles([
           {
             id: 1,
-            image: DesktopLeft2image1,
+            image: vogueImage,
+            title: "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara",
+            author: "JustShowBiz: Unable to fetch full details at this time..."
+          },
+          {
+            id: 2,
+            image: vogueImage,
             title: "Fallback News",
             author: "Unable to fetch news at this time..."
           }
@@ -42,20 +62,9 @@ function DesktopLeftTop() {
     fetchArticles();
   }, []);
 
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setVisibleCount((prevCount) => Math.min(prevCount + 3, articles.length));
-      }
-    });
-
-    const target = document.querySelector(".scroll-trigger");
-    if (target) observerRef.current.observe(target);
-
-    return () => {
-      if (observerRef.current) observerRef.current.disconnect();
-    };
-  }, [articles]);
+  const handleSeeMore = () => {
+    setVisibleCount((prevCount) => Math.min(prevCount + 3, articles.length));
+  };
 
   return (
     <div className="leftsectiontop-1">
@@ -75,7 +84,25 @@ function DesktopLeftTop() {
               </div>
             </div>
           ))}
-          {visibleCount < articles.length && <div className="scroll-trigger"></div>}
+          {visibleCount < articles.length && (
+            <button
+              className="see-more-button"
+              onClick={handleSeeMore}
+              style={{
+                display: "block",
+                margin: "20px auto",
+                padding: "10px 20px",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontSize: "16px"
+              }}
+            >
+              See More
+            </button>
+          )}
         </div>
       </div>
     </div>
