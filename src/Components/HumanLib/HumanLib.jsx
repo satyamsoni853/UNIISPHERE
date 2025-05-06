@@ -3,63 +3,84 @@ import "./HumanLib.css"; // Import the external CSS file
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import Background from "../Background/Background.jsx";
-import Toast from '../Common/Toast';
-import axios from 'axios';
+import Toast from "../Common/Toast";
+import axios from "axios";
 
 function HumanLib() {
-  // State to track the current phase (1: Nickname, 2: Get connected, 3: Connecting, 4: Chat)
+  // Existing state variables
   const [phase, setPhase] = useState(1);
-  // State for nickname input in Phase 1
   const [nickname, setNickname] = useState("");
-  // State for chat data
-  const [chatHistory, setChatHistory] = useState([]); // Store the full chat history
-  const [selectedChatId, setSelectedChatId] = useState(null); // Track the selected chat
+  const [chatHistory, setChatHistory] = useState([]);
+  const [selectedChatId, setSelectedChatId] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  // State to control the 10-second delay in Phase 3
   const [isPhase3TimerActive, setIsPhase3TimerActive] = useState(false);
-  const chatMessagesRef = useRef(null);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('success');
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+  // New state for online users
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
-  // Sender ID and token (assumed to be stored in localStorage)
-  const senderId = localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8";
-  const token = localStorage.getItem("authToken") || "your-auth-token-here";
+  const chatMessagesRef = useRef(null);
+
+  // Sender ID and token
+  const senderId =
+    localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8";
+  const token =
+    localStorage.getItem("authToken") || "your-auth-token-here";
 
   // Handler to transition to the next phase
-  const handleNextPhase = (nextPhase) => {
+  const handleNextPhase = async (nextPhase) => {
     if (phase === 1 && !nickname.trim()) {
       showErrorToast("Please enter a nickname to proceed.");
       return;
     }
     if (phase === 2) {
-      // Go to Phase 3 (Connecting) instead of directly to Phase 4
-      setPhase(3);
-      setIsPhase3TimerActive(true); // Start the timer for Phase 3
+      // Call the getOnlineUsers API before transitioning to Phase 3
+      try {
+        const response = await axios.get(
+          "https://uniisphere-backend-latest.onrender.com/api/human-lib/getOnlineUsers",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await response.data;
+        setOnlineUsers(data); // Store the list of online users
+        showSuccessToast("Fetched online users successfully.");
+        // Proceed to Phase 3
+        setPhase(3);
+        setIsPhase3TimerActive(true);
+      } catch (err) {
+        showErrorToast("Failed to fetch online users. Proceeding to connect...");
+        console.error(err);
+        // Optionally proceed to Phase 3 even if the API fails
+        setPhase(3);
+        setIsPhase3TimerActive(true);
+      }
     } else if (phase === 3 && isPhase3TimerActive) {
-      // Prevent manual transition during the 10-second timer
       return;
     } else {
       setPhase(nextPhase || phase + 1);
     }
   };
 
-  // Automatically transition from Phase 3 to Phase 4 after 10 seconds
+  // Existing useEffect for Phase 3 timer
   useEffect(() => {
     if (phase !== 3 || !isPhase3TimerActive) return;
 
     const timer = setTimeout(() => {
       setIsPhase3TimerActive(false);
-      setPhase(4); // Move to Phase 4 after 10 seconds
-    }, 10000); // 10 seconds
+      setPhase(4);
+    }, 10000);
 
-    return () => clearTimeout(timer); // Cleanup the timer on unmount or phase change
+    return () => clearTimeout(timer);
   }, [phase, isPhase3TimerActive]);
 
-  // Fetch chat history when entering Phase 4
+  // Existing useEffect for fetching chat history
   useEffect(() => {
     if (phase !== 4) return;
 
@@ -67,7 +88,6 @@ function HumanLib() {
       setIsLoading(true);
       setError(null);
       try {
-        // Pass userId as a query parameter
         const response = await axios.get(
           `https://uniisphere-backend-latest.onrender.com/api/anonymous-chat/history?userId=${senderId}`,
           {
@@ -80,19 +100,17 @@ function HumanLib() {
         const data = await response.data;
 
         if (data && data.length > 0) {
-          // Transform the chat history for display
           const transformedHistory = data.map((chat) => ({
             chatId: chat.chatId,
             lastMessage: chat.lastMessage || "No messages yet",
             timestamp: chat.updatedAt
               ? new Date(chat.updatedAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
               : "Unknown",
           }));
           setChatHistory(transformedHistory);
-          // Automatically select the most recent chat
           setSelectedChatId(transformedHistory[0].chatId);
           showSuccessToast("Now you are chatting with a random person.");
         } else {
@@ -110,7 +128,7 @@ function HumanLib() {
     }
   }, [phase, token, senderId]);
 
-  // Fetch chat messages when a chat is selected
+  // Existing useEffect for fetching chat messages
   useEffect(() => {
     if (!selectedChatId) return;
 
@@ -145,20 +163,18 @@ function HumanLib() {
     };
 
     fetchMessages();
-
-    // Poll for new messages every 2 seconds
     const intervalId = setInterval(fetchMessages, 2000);
     return () => clearInterval(intervalId);
   }, [selectedChatId, token, senderId]);
 
-  // Auto-scroll to the bottom of the chat when new messages are added
+  // Existing auto-scroll effect
   useEffect(() => {
     if (chatMessagesRef.current) {
       chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
     }
   }, [chatMessages]);
 
-  // Handle sending a message
+  // Existing handleSendMessage
   const handleSendMessage = async () => {
     if (!messageInput.trim() || !selectedChatId) return;
 
@@ -173,7 +189,6 @@ function HumanLib() {
       type: "text",
     };
 
-    // Optimistic update
     setChatMessages((prev) => [...prev, newMessage]);
     setMessageInput("");
 
@@ -194,12 +209,11 @@ function HumanLib() {
       const data = await response.data;
     } catch (err) {
       setError(err.message);
-      // Remove the optimistic update if the request fails
       setChatMessages((prev) => prev.filter((msg) => msg !== newMessage));
     }
   };
 
-  // Handle Enter key to send message
+  // Existing handleKeyDown
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -207,7 +221,7 @@ function HumanLib() {
     }
   };
 
-  // Dummy page component for when there's an error or no chat history
+  // Existing DummyPage component
   const DummyPage = () => (
     <div className="HumanLib-dummy-page">
       <h2 className="HumanLib-title">No Active Chat Found</h2>
@@ -217,39 +231,33 @@ function HumanLib() {
       </p>
       <button
         className="HumanLib-button HumanLib-start"
-        onClick={() => setPhase(2)} // Go back to Phase 2 to try again
+        onClick={() => setPhase(2)}
       >
         Try Again
       </button>
     </div>
   );
 
+  // Existing toast functions
   const showErrorToast = (message) => {
     setToastMessage(message);
-    setToastType('error');
+    setToastType("error");
     setShowToast(true);
   };
 
   const showSuccessToast = (message) => {
     setToastMessage(message);
-    setToastType('success');
+    setToastType("success");
     setShowToast(true);
   };
 
   return (
     <div className="HumanLib-wrapper">
-      {/* Navbar at the top */}
       <DesktopNavbar />
-
-      {/* Background component (assumed to provide abstract shapes) */}
       <Background />
-
-      {/* Main content area with the form and right sidebar */}
       <div className="HumanLib-main-content">
-        {/* Form container (left/center section) */}
         <div className="HumanLib-container">
           {phase === 1 ? (
-            // First page: Nickname entry form
             <div>
               <h2 className="HumanLib-title">Enter Your Nickname</h2>
               <p className="HumanLib-description">
@@ -270,38 +278,44 @@ function HumanLib() {
                 <button
                   className="HumanLib-button HumanLib-start"
                   onClick={() => handleNextPhase()}
-                  disabled={!nickname.trim()} // Disable button if nickname is empty
+                  disabled={!nickname.trim()}
                 >
                   Start searching
                 </button>
               </div>
             </div>
           ) : phase === 2 ? (
-            // Second page: "Get connected" content
             <div className="HumanLib-second-page-content-phase2">
               <div className="HumanLib-image-container-phase2">
-                {/* Concentric circles and orbiting images */}
                 <div className="HumanLib-concentric-circles-phase2">
-                  {/* Pink outer circle (static) */}
                   <div className="HumanLib-circle-phase2 HumanLib-circle-pink-phase2"></div>
-                  {/* Light blue inner circle (static) */}
                   <div className="HumanLib-circle-phase2 HumanLib-circle-blue-phase2"></div>
-                  {/* Central image (static) */}
                   <div className="HumanLib-central-image-phase2"></div>
-                  {/* Orbiting colored circles on the pink circle */}
                   <div className="HumanLib-orbiting-image-phase2 HumanLib-orbiting-image-1-phase2"></div>
                   <div className="HumanLib-orbiting-image-phase2 HumanLib-orbiting-image-2-phase2"></div>
                   <div className="HumanLib-orbiting-image-phase2 HumanLib-orbiting-image-3-phase2"></div>
                   <div className="HumanLib-orbiting-image-phase2 HumanLib-orbiting-image-4-phase2"></div>
                 </div>
               </div>
-
               <h2 className="HumanLib-title">
                 Get connected with the ones who are just like you. And want to share their feelings
               </h2>
               <p className="HumanLib-description">
                 With just a click, get connected to another student who will never judge your feelings.
               </p>
+              {/* Display online users */}
+              <div className="HumanLib-online-users">
+                <h3>Online Users</h3>
+                {onlineUsers.length === 0 ? (
+                  <p>No users online or click "Start searching" to fetch.</p>
+                ) : (
+                  <ul>
+                    {onlineUsers.map((user) => (
+                      <li key={user.userId}>{user.nickname || "Anonymous"}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
               <div className="HumanLib-button-container">
                 <button
                   className="HumanLib-button HumanLib-start"
@@ -312,24 +326,15 @@ function HumanLib() {
               </div>
             </div>
           ) : phase === 3 ? (
-            // Third page: "Connecting" content (shown for 10 seconds)
             <div className="HumanLib-third-page-content">
               <div className="HumanLib-image-container">
-                {/* Concentric circles for the third phase */}
                 <div className="HumanLib-concentric-circles">
-                  {/* Outer circle (red) */}
                   <div className="HumanLib-circle HumanLib-circle-red"></div>
-                  {/* Orange circle */}
                   <div className="HumanLib-circle HumanLib-circle-orange"></div>
-                  {/* Yellow circle */}
                   <div className="HumanLib-circle HumanLib-circle-yellow"></div>
-                  {/* Green circle */}
                   <div className="HumanLib-circle HumanLib-circle-green"></div>
-                  {/* Blue circle */}
                   <div className="HumanLib-circle HumanLib-circle-blue"></div>
-                  {/* Indigo circle */}
                   <div className="HumanLib-circle HumanLib-circle-indigo"></div>
-                  {/* Inner circle (violet) */}
                   <div className="HumanLib-circle HumanLib-circle-violet"></div>
                 </div>
               </div>
@@ -339,20 +344,17 @@ function HumanLib() {
               <button
                 className="HumanLib-button HumanLib-start"
                 onClick={() => handleNextPhase()}
-                disabled={isPhase3TimerActive} // Disable button during the 10-second timer
+                disabled={isPhase3TimerActive}
               >
                 {isPhase3TimerActive ? "Connecting..." : "Start Chat"}
               </button>
             </div>
           ) : (
-            // Fourth page: Chat interface with history sidebar or dummy page
             <div className="HumanLib-chat-wrapper">
               {error ? (
-                // Show dummy page if there's an error or no chat history
                 <DummyPage />
               ) : (
                 <>
-                  {/* Chat history sidebar */}
                   <div className="HumanLib-chat-history-sidebar">
                     <h3 className="HumanLib-sidebar-title">Chat History</h3>
                     {isLoading && <p>Loading chat history...</p>}
@@ -362,8 +364,9 @@ function HumanLib() {
                     {chatHistory.map((chat) => (
                       <div
                         key={chat.chatId}
-                        className={`HumanLib-chat-history-item ${selectedChatId === chat.chatId ? "active" : ""
-                          }`}
+                        className={`HumanLib-chat-history-item ${
+                          selectedChatId === chat.chatId ? "active" : ""
+                        }`}
                         onClick={() => setSelectedChatId(chat.chatId)}
                       >
                         <div className="HumanLib-chat-history-info">
@@ -373,10 +376,7 @@ function HumanLib() {
                       </div>
                     ))}
                   </div>
-
-                  {/* Chat interface */}
                   <div className="HumanLib-chat-container">
-                    {/* Chat header */}
                     <div className="HumanLib-chat-header">
                       <div className="HumanLib-chat-contact">
                         <div className="HumanLib-contact-avatar"></div>
@@ -389,8 +389,6 @@ function HumanLib() {
                         {new Date().toLocaleDateString()}
                       </div>
                     </div>
-
-                    {/* Chat messages area */}
                     <div className="HumanLib-chat-messages" ref={chatMessagesRef}>
                       {!selectedChatId && <p>Select a chat to view messages.</p>}
                       {selectedChatId && chatMessages.length === 0 && (
@@ -399,10 +397,12 @@ function HumanLib() {
                       {chatMessages.map((message, index) => (
                         <div
                           key={index}
-                          className={`HumanLib-message ${message.isSent ? "HumanLib-message-sent" : "HumanLib-message-received"
-                            }`}
+                          className={`HumanLib-message ${
+                            message.isSent
+                              ? "HumanLib-message-sent"
+                              : "HumanLib-message-received"
+                          }`}
                         >
-                          {/* Sender avatar for received messages */}
                           {!message.isSent && (
                             <div className="HumanLib-message-avatar"></div>
                           )}
@@ -410,7 +410,9 @@ function HumanLib() {
                             <p className="HumanLib-message-sender">{message.sender}</p>
                             {message.type === "voice" ? (
                               <div className="HumanLib-voice-message">
-                                <span className="HumanLib-voice-waveform">🎙️ Voice message</span>
+                                <span className="HumanLib-voice-waveform">
+                                  🎙️ Voice message
+                                </span>
                               </div>
                             ) : (
                               <p className="HumanLib-message-text">{message.text}</p>
@@ -420,8 +422,6 @@ function HumanLib() {
                         </div>
                       ))}
                     </div>
-
-                    {/* Message input area */}
                     <div className="HumanLib-chat-input">
                       <input
                         type="text"
@@ -429,14 +429,14 @@ function HumanLib() {
                         value={messageInput}
                         onChange={(e) => setMessageInput(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        disabled={!selectedChatId} // Disable input if no chat is selected
+                        disabled={!selectedChatId}
                       />
                       <button className="HumanLib-emoji-button">😊</button>
                       <button className="HumanLib-voice-button">🎙️</button>
                       <button
                         className="HumanLib-send-button"
                         onClick={handleSendMessage}
-                        disabled={!selectedChatId} // Disable send button if no chat is selected
+                        disabled={!selectedChatId}
                       >
                         ➤
                       </button>
@@ -447,8 +447,6 @@ function HumanLib() {
             </div>
           )}
         </div>
-
-        {/* Right sidebar (hidden in chat phase for simplicity) */}
         {phase !== 4 && (
           <div className="HumanLib-right-section">
             <DesktopRight />
