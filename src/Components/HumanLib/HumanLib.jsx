@@ -3,6 +3,8 @@ import "./HumanLib.css"; // Import the external CSS file
 import DesktopNavbar from "../DesktopNavbar/DesktopNavbar.jsx";
 import DesktopRight from "../DesktopRight/DesktopRight.jsx";
 import Background from "../Background/Background.jsx";
+import Toast from '../Common/Toast';
+import axios from 'axios';
 
 function HumanLib() {
   // State to track the current phase (1: Nickname, 2: Get connected, 3: Connecting, 4: Chat)
@@ -19,6 +21,9 @@ function HumanLib() {
   // State to control the 10-second delay in Phase 3
   const [isPhase3TimerActive, setIsPhase3TimerActive] = useState(false);
   const chatMessagesRef = useRef(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
 
   // Sender ID and token (assumed to be stored in localStorage)
   const senderId = localStorage.getItem("LoginuserId") || "18114725-fcc6-4cbe-a617-894a464b9fc8";
@@ -27,7 +32,7 @@ function HumanLib() {
   // Handler to transition to the next phase
   const handleNextPhase = (nextPhase) => {
     if (phase === 1 && !nickname.trim()) {
-      alert("Please enter a nickname to proceed."); // Alert for empty nickname
+      showErrorToast("Please enter a nickname to proceed.");
       return;
     }
     if (phase === 2) {
@@ -63,28 +68,16 @@ function HumanLib() {
       setError(null);
       try {
         // Pass userId as a query parameter
-        const response = await fetch(
+        const response = await axios.get(
           `https://uniisphere-backend-latest.onrender.com/api/anonymous-chat/history?userId=${senderId}`,
           {
-            method: "GET",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
         );
 
-        // Log the response status and headers
-        console.log("Chat History API Response Status:", response.status);
-        console.log("Chat History API Response Headers:", [...response.headers.entries()]);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch chat history: ${response.status}`);
-        }
-
-        const data = await response.json();
-        // Log the response data
-        console.log("Chat History API Response Data:", data);
+        const data = await response.data;
 
         if (data && data.length > 0) {
           // Transform the chat history for display
@@ -101,14 +94,12 @@ function HumanLib() {
           setChatHistory(transformedHistory);
           // Automatically select the most recent chat
           setSelectedChatId(transformedHistory[0].chatId);
-          // Show alert when chat history is successfully fetched
-          alert("Now you are chatting with a random person.");
+          showSuccessToast("Now you are chatting with a random person.");
         } else {
           throw new Error("No chat history found");
         }
       } catch (err) {
         setError(err.message);
-        console.error("Chat History API Error:", err.message);
       } finally {
         setIsLoading(false);
       }
@@ -125,28 +116,16 @@ function HumanLib() {
 
     const fetchMessages = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           `https://uniisphere-backend-latest.onrender.com/api/anonymous-chat/${selectedChatId}/messages`,
           {
-            method: "GET",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
         );
 
-        // Log the response status and headers
-        console.log("Messages API Response Status:", response.status);
-        console.log("Messages API Response Headers:", [...response.headers.entries()]);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch messages");
-        }
-
-        const data = await response.json();
-        // Log the response data
-        console.log("Messages API Response Data:", data);
+        const data = await response.data;
 
         const transformedMessages = data.map((msg) => ({
           sender: msg.senderId === senderId ? "You" : msg.senderNickname || "Anonymous",
@@ -162,7 +141,6 @@ function HumanLib() {
         setChatMessages(transformedMessages);
       } catch (err) {
         setError(err.message);
-        console.error("Messages API Error:", err.message);
       }
     };
 
@@ -200,35 +178,22 @@ function HumanLib() {
     setMessageInput("");
 
     try {
-      const response = await fetch(
+      const response = await axios.post(
         `https://uniisphere-backend-latest.onrender.com/api/anonymous-chat/${selectedChatId}/messages`,
         {
-          method: "POST",
+          content: messageInput,
+          senderId: senderId,
+        },
+        {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            content: messageInput,
-            senderId: senderId,
-          }),
         }
       );
 
-      // Log the response status and headers
-      console.log("Send Message API Response Status:", response.status);
-      console.log("Send Message API Response Headers:", [...response.headers.entries()]);
-
-      if (!response.ok) {
-        throw new Error("Failed to send message");
-      }
-
-      const data = await response.json();
-      // Log the response data
-      console.log("Send Message API Response Data:", data);
+      const data = await response.data;
     } catch (err) {
       setError(err.message);
-      console.error("Send Message API Error:", err.message);
       // Remove the optimistic update if the request fails
       setChatMessages((prev) => prev.filter((msg) => msg !== newMessage));
     }
@@ -247,7 +212,7 @@ function HumanLib() {
     <div className="HumanLib-dummy-page">
       <h2 className="HumanLib-title">No Active Chat Found</h2>
       <p className="HumanLib-description">
-        It looks like we couldn’t find an active chat for you at the moment. <br />
+        It looks like we couldn't find an active chat for you at the moment. <br />
         Please try again later or start a new search.
       </p>
       <button
@@ -258,6 +223,18 @@ function HumanLib() {
       </button>
     </div>
   );
+
+  const showErrorToast = (message) => {
+    setToastMessage(message);
+    setToastType('error');
+    setShowToast(true);
+  };
+
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
 
   return (
     <div className="HumanLib-wrapper">
@@ -478,6 +455,12 @@ function HumanLib() {
           </div>
         )}
       </div>
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }

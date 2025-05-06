@@ -7,17 +7,33 @@ import { Link, useNavigate } from "react-router-dom";
 import Background from "../Background/Background";
 import Unispherelogo from "./Unispherelogo.png";
 import "./Userloginfile.css";
+import Toast from '../Common/Toast';
 
 function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false); // New loading state
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
   const navigate = useNavigate();
+
+  const showErrorToast = (message) => {
+    setToastMessage(message);
+    setToastType('error');
+    setShowToast(true);
+  };
+
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
 
   const handleLogin = async () => {
     if (!email || !password) {
-      alert("Please enter both email and password!");
+      showErrorToast("Please enter both email and password!");
       return;
     }
 
@@ -51,7 +67,7 @@ function UserLogin() {
           userId,
         });
 
-        alert("Login Successful!");
+        showSuccessToast("Login Successful!");
 
         navigate("/View", {
           state: {
@@ -61,12 +77,8 @@ function UserLogin() {
         });
       }
     } catch (error) {
-      alert(
-        `Login Failed: ${
-          error.response?.data?.message ||
-          "An error occurred. Please try again."
-        }`
-      );
+      const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+      showErrorToast(errorMessage);
       console.error("Login Error:", error);
     } finally {
       setIsLoading(false); // Stop loading
@@ -224,6 +236,12 @@ function UserLogin() {
           </p>
         </div>
       </div>
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }

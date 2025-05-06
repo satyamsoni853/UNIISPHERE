@@ -9,6 +9,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Toast from '../Common/Toast';
 
 function AboutAndExperiance() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -21,6 +22,9 @@ function AboutAndExperiance() {
     locationType: "",
     description: ""
   }]);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
 
   useEffect(() => {
     const handleResize = () => {
@@ -72,9 +76,21 @@ function AboutAndExperiance() {
     navigate(-1);
   };
 
+  const showErrorToast = (message) => {
+    setToastMessage(message);
+    setToastType('error');
+    setShowToast(true);
+  };
+
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
+
   const handleSaveAbout = async () => {
     if (!aboutDesc.trim()) {
-      alert("Please enter an about description.");
+      showErrorToast("Please enter an about description.");
       return;
     }
 
@@ -102,13 +118,12 @@ function AboutAndExperiance() {
       );
 
       if (response.status === 200) {
-        alert("About section saved successfully!");
+        showSuccessToast("About section saved successfully!");
         navigate(`/ProfileEditSection/${userId}`);
       }
     } catch (error) {
-      console.error("Error saving about section:", error);
       if (error.response?.status === 401) {
-        alert("Your session has expired. Please log in again.");
+        showErrorToast("Your session has expired. Please log in again.");
         localStorage.removeItem("AuthToken");
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
@@ -116,7 +131,7 @@ function AboutAndExperiance() {
         navigate("/userlogin");
       } else {
         const errorMessage = error.response?.data?.message || error.response?.data?.error || "Failed to save about section. Please try again.";
-        alert(errorMessage);
+        showErrorToast(errorMessage);
       }
     } finally {
       setLoading(false);
@@ -159,7 +174,7 @@ function AboutAndExperiance() {
     );
 
     if (!isValid) {
-      alert("Please fill in all experience fields.");
+      showErrorToast("Please fill in all experience fields.");
       return;
     }
 
@@ -171,18 +186,6 @@ function AboutAndExperiance() {
       if (!authToken || !userId) {
         throw new Error("User not authenticated. Please log in.");
       }
-
-      // Log the data being sent
-      console.log("Sending experience data:", {
-        userId,
-        experiences: experiences.map(exp => ({
-          title: exp.title,
-          organizationName: exp.organizationName,
-          location: exp.location,
-          locationType: exp.locationType,
-          description: exp.description
-        }))
-      });
 
       const response = await axios.patch(
         `https://uniisphere-backend-latest.onrender.com/users/profile`,
@@ -204,17 +207,13 @@ function AboutAndExperiance() {
         }
       );
 
-      console.log("API Response:", response.data);
-
       if (response.status === 200) {
-        alert("Experience saved successfully!");
+        showSuccessToast("Experience saved successfully!");
         navigate(`/ProfileEditSection/${userId}`);
       }
     } catch (error) {
-      console.error("Error saving experience:", error);
-      console.error("Error response:", error.response?.data);
       if (error.response?.status === 401) {
-        alert("Your session has expired. Please log in again.");
+        showErrorToast("Your session has expired. Please log in again.");
         localStorage.removeItem("AuthToken");
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
@@ -222,7 +221,7 @@ function AboutAndExperiance() {
         navigate("/userlogin");
       } else {
         const errorMessage = error.response?.data?.message || error.response?.data?.error || "Failed to save experience. Please try again.";
-        alert(errorMessage);
+        showErrorToast(errorMessage);
       }
     } finally {
       setLoading(false);
@@ -370,6 +369,12 @@ function AboutAndExperiance() {
           <DesktopRight />
         </div>
       </div>
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }
