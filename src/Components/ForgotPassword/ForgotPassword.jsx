@@ -4,7 +4,6 @@ import axios from 'axios';
 import Unispherelogo from './Unispherelogo.png';
 import Background from '../Background/Background';
 import './ForgotPassword.css';
-import Toast from '../Common/Toast';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -12,51 +11,36 @@ function ForgotPassword() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otpSent, setOtpSent] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('success');
 
   const navigate = useNavigate(); // Initialize the navigate function
-
-  const showErrorToast = (message) => {
-    setToastMessage(message);
-    setToastType('error');
-    setShowToast(true);
-  };
-
-  const showSuccessToast = (message) => {
-    setToastMessage(message);
-    setToastType('success');
-    setShowToast(true);
-  };
 
   // Function to send OTP
   const sendOtp = async () => {
     try {
-      const response = await axios.post('https://uniisphere-backend-latest.onrender.com/auth/forgot-password', { email });
-      showSuccessToast(response.data.message || 'OTP sent successfully');
+      const response = await axios.post('https://uniisphere-backend-latest.onrender.com/api/auth/forgot-password', { email });
+      alert(response.data.message || 'OTP sent successfully');
       setOtpSent(true);
     } catch (error) {
-      showErrorToast(error.response?.data?.error || 'Failed to send OTP');
+      alert(error.response?.data?.error || 'Failed to send OTP');
     }
   };
 
   // Function to reset password and navigate to "/"
   const resetPassword = async () => {
     if (newPassword !== confirmPassword) {
-      showErrorToast("Passwords do not match");
+      alert("Passwords do not match");
       return;
     }
     try {
-      const response = await axios.post('https://uniisphere-backend-latest.onrender.com/auth/reset-password', {
+      const response = await axios.post('https://uniisphere-backend-latest.onrender.com/api/auth/reset-password', {
         email,
         otp,
         newPassword,
       });
-      showSuccessToast(response.data.message || 'Password reset successfully');
+      alert(response.data.message || 'Password reset successfully');
       navigate("/"); // Navigate to home page after successful reset
     } catch (error) {
-      showErrorToast(error.response?.data?.error || 'Failed to reset password');
+      alert(error.response?.data?.error || 'Failed to reset password');
     }
   };
 
@@ -127,12 +111,6 @@ function ForgotPassword() {
           )}
         </div>
       </div>
-      <Toast
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        message={toastMessage}
-        type={toastType}
-      />
     </div>
   );
 }

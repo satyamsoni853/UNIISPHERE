@@ -45,7 +45,7 @@ function SkillForm() {
         }
 
         const response = await axios.get(
-          `https://uniisphere-backend-latest.onrender.com/users/profile`,
+          `https://uniisphere-backend-latest.onrender.com/api/users/profile`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -142,7 +142,7 @@ function SkillForm() {
       });
 
       const response = await axios.patch(
-        `https://uniisphere-backend-latest.onrender.com/users/profile`,
+        `https://uniisphere-backend-latest.onrender.com/api/users/profile`,
         {
           userId: userId,
           Skills: selectedSkills

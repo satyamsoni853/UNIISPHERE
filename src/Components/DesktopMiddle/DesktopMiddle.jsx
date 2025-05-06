@@ -19,7 +19,6 @@ import linkIcon from "./Link.svg";
 import savedIcon from "./saved.svg";
 import whatsappIcon from "./Whatsapp.svg";
 import xIcon from "./X.svg";
-import Toast from '../Common/Toast';
 
 function DesktopMiddle() {
   const [showComment, setShowComment] = useState(false);
@@ -38,9 +37,6 @@ function DesktopMiddle() {
   const commentModalRef = useRef(null);
   const shareModalRef = useRef(null);
   const imageModalRef = useRef(null); // Added for image modal
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('success');
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -96,7 +92,7 @@ function DesktopMiddle() {
   const fetchUserProfile = async (userId, token) => {
     try {
       const response = await axios.get(
-        `https://uniisphere-backend-latest.onrender.com/api/users/${userId}`,
+        `https://uniisphere-1.onrender.com/api/users/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -122,7 +118,7 @@ function DesktopMiddle() {
   const fetchConnections = async (token) => {
     try {
       const response = await axios.get(
-        "https://uniisphere-backend-latest.onrender.com/api/connections",
+        "https://uniisphere-1.onrender.com/api/connections",
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -156,7 +152,7 @@ function DesktopMiddle() {
   const fetchSentConnectionRequests = async (token) => {
     try {
       const response = await axios.get(
-        "https://uniisphere-backend-latest.onrender.com/api/connections/sent",
+        "https://uniisphere-1.onrender.com/api/connections/sent",
         {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
@@ -190,7 +186,7 @@ function DesktopMiddle() {
     setImageLoading(true);
     try {
       const [feedResponse, sentRequests] = await Promise.all([
-        axios.get("https://uniisphere-backend-latest.onrender.com/api/feed/feed", {
+        axios.get("https://uniisphere-1.onrender.com/api/feed", {
           headers: { Authorization: `Bearer ${authData.token}` },
           timeout: 10000,
         }),
@@ -263,7 +259,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-backend-latest.onrender.com/api/connect/${receiverId}`,
+        `https://uniisphere-1.onrender.com/api/connect/${receiverId}`,
         {
           userId: authData.userId,
           senderName: userProfile?.name || "Anonymous",
@@ -305,8 +301,8 @@ function DesktopMiddle() {
 
     try {
       const endpoint = post.isLiked
-        ? `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/unlike`
-        : `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/like`;
+        ? `https://uniisphere-1.onrender.com/posts/${post._id}/unlike`
+        : `https://uniisphere-1.onrender.com/posts/${post._id}/like`;
 
       setPosts((prevPosts) =>
         prevPosts.map((p, i) =>
@@ -368,7 +364,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/comments`,
+        `https://uniisphere-1.onrender.com/posts/${post._id}/comments`,
         {
           postId: post._id,
           userId: authData.userId,
@@ -438,7 +434,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/share`,
+        `https://uniisphere-1.onrender.com/posts/${post._id}/share`,
         {
           postId: post._id,
           userId: authData.userId,
@@ -467,17 +463,18 @@ function DesktopMiddle() {
     }
   };
 
-  const showSuccessToast = (message) => {
-    setToastMessage(message);
-    setToastType('success');
-    setShowToast(true);
-  };
-
   const handleCopyLink = () => {
     const post = posts[activeSharePostIndex];
     const postUrl = `${window.location.origin}/post/${post._id}`;
-    navigator.clipboard.writeText(postUrl);
-    showSuccessToast("Link copied to clipboard!");
+    navigator.clipboard
+      .writeText(postUrl)
+      .then(() => {
+        alert("Link copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy link:", err);
+        setShareError("Failed to copy link.");
+      });
   };
 
   const handleShareToWhatsApp = () => {
@@ -521,7 +518,7 @@ function DesktopMiddle() {
 
     try {
       const response = await axios.post(
-        `https://uniisphere-backend-latest.onrender.com/posts/${post._id}/save`,
+        `https://uniisphere-1.onrender.com/posts/${post._id}/save`,
         { userId: authData.userId },
         {
           headers: {
@@ -532,7 +529,7 @@ function DesktopMiddle() {
         }
       );
       console.log("Save post response:", response.data);
-      showSuccessToast("Post saved successfully!");
+      alert("Post saved successfully!");
     } catch (error) {
       console.error("Save post error:", error.response?.data || error);
       setShareError(
@@ -1207,12 +1204,6 @@ function DesktopMiddle() {
           </div>
         </div>
       )}
-      <Toast
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        message={toastMessage}
-        type={toastType}
-      />
     </div>
   );
 }

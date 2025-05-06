@@ -42,7 +42,7 @@ function UserSignupwithemailandpass() {
     const otpString = otp.join(""); // Combine OTP digits
     try {
       const response = await axios.post(
-        "https://uniisphere-1.onrender.com/api/auth/verifyOtp",
+        "https://uniisphere-backend-latest.onrender.com/api/auth/verifyOtp",
         { email, otp }
       );
       console.log("OTP verified:", response.data);

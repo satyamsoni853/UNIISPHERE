@@ -130,7 +130,7 @@ function NetworkPage() {
       }
 
       const response = await axios.get(
-        "https://uniisphere-backend-latest.onrender.com/api/users/getAll",
+        "https://uniisphere-1.onrender.com/users/getAll",
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -191,7 +191,7 @@ function NetworkPage() {
       }
 
       const response = await fetch(
-        "https://uniisphere-backend-latest.onrender.com/api/getPending",
+        "https://uniisphere-1.onrender.com/api/getPending",
         {
           method: "POST",
           headers: {
@@ -266,7 +266,7 @@ function NetworkPage() {
 
     try {
       const response = await fetch(
-        `https://uniisphere-backend-latest.onrender.com/api/accept/${connectionId}`,
+        `https://uniisphere-1.onrender.com/api/accept/${connectionId}`,
         {
           method: "POST",
           headers: {
@@ -310,7 +310,7 @@ function NetworkPage() {
 
     try {
       const response = await fetch(
-        `https://uniisphere-backend-latest.onrender.com/api/decline/${connectionId}`,
+        `https://uniisphere-1.onrender.com/api/decline/${connectionId}`,
         {
           method: "POST",
           headers: {
