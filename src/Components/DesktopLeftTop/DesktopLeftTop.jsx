@@ -1,63 +1,115 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./DesktopLeftTop.css";
-import DesktopLeft2image1 from "./DesktopLeft2image1.png";
-import DesktopLeft2image2 from "./DesktopLeft2image2.png";
 
 function DesktopLeftTop() {
   const [articles, setArticles] = useState([]);
   const [visibleCount, setVisibleCount] = useState(5);
-  const observerRef = useRef(null);
 
   useEffect(() => {
-    const fetchedArticles = [
-      { id: 1, image: DesktopLeft2image1, title: "Students Association Union...", author: "As per the rumors it is said that the elections of this year is going that the elections of this year is going see more..." },
-      { id: 2, image: DesktopLeft2image2, title: "Technology Innovations", author: "Latest advancements in AI and tech are taking the world by storm..." },
-      { id: 3, image: DesktopLeft2image2, title: "Sports Updates", author: "The championship final is set to take place this weekend..." },
-      { id: 4, image: DesktopLeft2image2, title: "Health & Lifestyle", author: "Experts suggest a balanced diet for a healthier life..." },
-      { id: 5, image: DesktopLeft2image2, title: "Environmental Concerns", author: "Climate change effects are becoming more evident..." },
-      { id: 6, image: DesktopLeft2image1, title: "Stock Market Trends", author: "Investors are keeping a close eye on the fluctuating markets... " },
-      { id: 7, image: DesktopLeft2image2, title: "Entertainment Buzz", author: "New movie releases and celebrity gossip are trending..." },
-      { id: 8, image: DesktopLeft2image1, title: "Educational Reforms", author: "Governments are focusing on improving the education system..." },
-      { id: 9, image: DesktopLeft2image2, title: "Space Exploration", author: "NASA's new mission to Mars is set to launch soon..." },
-      { id: 10, image: DesktopLeft2image1, title: "Global Politics", author: "World leaders discuss climate policies at the UN summit..." }
-    ];
-    setArticles(fetchedArticles);
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(
+          "https://newsdata.io/api/1/news?apikey=pub_85216b04c15ab86fa40b413472e8e68aad1a5&q=news&country=in&language=en&category=entertainment,politics,science,technology"
+        );
+        const data = await response.json();
+
+        // Map API response to match existing article structure
+        const formattedArticles = data.results.map((item, index) => {
+          // Prioritize the specific article if matched
+          const isTargetArticle =
+            item.title === "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara" &&
+            item.source_id?.toLowerCase().includes("justshowbiz");
+
+          return {
+            id: index + 1,
+            title: isTargetArticle
+              ? "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara"
+              : item.title || "Untitled Article",
+            author: isTargetArticle
+              ? "JustShowBiz: " + (item.description?.slice(0, 100) + "..." || "No description available")
+              : item.description?.slice(0, 100) + "..." || "No description available"
+          };
+        });
+
+        // Ensure the target article is at the top if found
+        const sortedArticles = formattedArticles.sort((a, b) =>
+          a.title === "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara" ? -1 : 1
+        );
+
+        setArticles(sortedArticles);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+        // Fallback data including the specific article
+        setArticles([
+          {
+            id: 1,
+            title: "Anupama 6th May 2025 Written Update: Raghav screams at Vasundhara",
+            author: "JustShowBiz: Unable to fetch full details at this time..."
+          },
+          {
+            id: 2,
+            title: "Fallback News",
+            author: "Unable to fetch news at this time..."
+          }
+        ]);
+      }
+    };
+
+    fetchArticles();
   }, []);
 
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setVisibleCount((prevCount) => Math.min(prevCount + 3, articles.length));
-      }
-    });
-
-    const target = document.querySelector(".scroll-trigger");
-    if (target) observerRef.current.observe(target);
-
-    return () => {
-      if (observerRef.current) observerRef.current.disconnect();
-    };
-  }, [articles]);
+  const handleSeeMore = () => {
+    setVisibleCount((prevCount) => Math.min(prevCount + 3, articles.length));
+  };
 
   return (
-    <div className="leftsectiontop-1"  >
+    <div className="leftsectiontop-1">
       <h3 className="leftsectiontop-1-heading">Trends</h3>
       <div className="leftsectiontop-1-container">
         <div className="leftsectiontop-1-scroll">
           {articles.slice(0, visibleCount).map((article) => (
             <div key={article.id} className="leftsectiontop-1-article">
-              <img
-                src={article.image}
-                alt={article.title}
-                className="leftsectiontop-1-image"
-              />
+              <span
+                className="leftsectiontop-1-arrow"
+                style={{
+                  display: "inline-block",
+  width: "50px",
+  height: "50px",
+  lineHeight: "40px",
+  textAlign: "center",
+  fontSize: "50px",
+  marginRight: "10px",
+  border: "1px solid black", // <-- Add this line
+    borderRadius: "10px"
+                }}
+              >
+                ➔
+              </span>
               <div className="leftsectiontop-1-details">
                 <p className="leftsectiontop-1-title">{article.title}</p>
                 <p className="leftsectiontop-1-author">{article.author}</p>
               </div>
             </div>
           ))}
-          {visibleCount < articles.length && <div className="scroll-trigger"></div>}
+          {visibleCount < articles.length && (
+            <button
+              className="see-more-button"
+              onClick={handleSeeMore}
+              style={{
+                display: "block",
+                margin: "20px auto",
+                padding: "10px 20px",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontSize: "16px"
+              }}
+            >
+              See More
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -33,10 +33,11 @@
 
 /* Middle Section */
 .Followers-middle-section-2-middle-section-public {
-  width: 30vw; /* Fixed width for desktop */
-  border-radius: 15px;
+  width: 35vw; /* Fixed width for desktop */
+  border-radius: 50px;
   margin-top: 100px;
   padding: 20px;
+  margin-left: 60px;
   
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   /* background: white;  */
@@ -209,11 +210,15 @@
 }
 
 .Followers-middle-section-2-profile-buttons-public button:nth-child(1) {
-  background: linear-gradient(to bottom, #04e6ff1a, #ffd9001a);
+  background: linear-gradient(180deg, rgba(4, 230, 255, 0.04) 0%, rgba(255, 217, 0, 0.04) 88.89%);
+border: 0.5px solid #000000;
+border-radius: 20px;
+
 }
 
 .Followers-middle-section-2-profile-buttons-public button:nth-child(2) {
-  background: linear-gradient(to bottom, #4304ff1a, #ff00001a);
+  background: linear-gradient(180deg, rgba(67, 4, 255, 0.04) 0%, rgba(255, 0, 0, 0.04) 88.89%);
+  border-radius: 20px;
 }
 
 /* Scrollable Sections */
@@ -238,13 +243,13 @@
 .Followers-middle-section-2-skill-list-public
   .Followers-middle-section-2-skillsMiniDiv-public {
   border-radius: 5px;
-  padding: 10px 15px;
+  padding: 15px 25px;
   display: inline-block;
   flex-shrink: 0;
 }
 
 .Followers-middle-section-2-scroll-btn:hover {
-  background-color: #0056b3;
+  /* background-color: #0056b3; */
 }
 
 .Followers-middle-section-2-skill-list-public::-webkit-scrollbar {
@@ -288,7 +293,7 @@
 .Followers-middle-section-2-headingAndEdit-public p {
   font-size: 30px;
   font-weight: 600;
-  font-weight: 200;
+  /* font-weight: 200; */
 }
 
 .Followers-middle-section-2-icon-public {
@@ -375,14 +380,16 @@
 }
 
 .profile-picture-edit-label:hover {
-  background-color: #0056b3;
+  /* background-color: #0056b3; */
 }
 
 .edit-icon {
   color: white;
   font-size: 16px;
 }
-
+.Followers-middle-section-2-ArrowBack{
+  font-size: 1.8rem;
+}
 /* Tablet (≤1023px) */
 @media (max-width: 1023px) {
   .ProfileEditSection-main-container {
@@ -547,4 +554,8 @@
   .Followers-middle-section-2-top-nav-Icon {
     display: none;
   }
+}
+.Followers-middle-section-2-skill-list-public .Followers-middle-section-2-skillsMiniDiv-public{
+  border-radius: 20px;
+  border: 0.1px solid grey;
 }

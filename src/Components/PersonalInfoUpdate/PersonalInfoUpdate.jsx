@@ -9,6 +9,7 @@ import Background from "../Background/Background.jsx";
 import DesktopNavbar from  '../DesktopNavbar/DesktopNavbar.jsx'
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
+import Toast from '../Common/Toast';
 
 function PersonalInfoUpdate() {
   console.log("Component mounted");
@@ -18,6 +19,9 @@ function PersonalInfoUpdate() {
   const [error, setError] = useState(null);
   const [profilePicture, setProfilePicture] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
   
   const [profileData, setProfileData] = useState({
     username: "",
@@ -58,7 +62,7 @@ function PersonalInfoUpdate() {
         }
 
         const response = await axios.get(
-          "https://uniisphere-1.onrender.com/users/profile",
+          "https://uniisphere-backend-latest.onrender.com/users/profile",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -126,7 +130,20 @@ function PersonalInfoUpdate() {
     setPreviewUrl(null);
   };
 
-  const handleSubmit = async () => {
+  const showErrorToast = (message) => {
+    setToastMessage(message);
+    setToastType('error');
+    setShowToast(true);
+  };
+
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       console.log("Starting profile update...");
       setLoading(true);
@@ -150,6 +167,13 @@ function PersonalInfoUpdate() {
       Object.entries(profileData).forEach(([key, value]) => {
         // Skip empty values
         if (value === "" || value === null || value === undefined) {
+          return;
+        }
+
+        // Special handling for headline
+        if (key === 'headline') {
+          formData.append('headline', JSON.stringify({ text: value }));
+          console.log(`Appending headline as object:`, { text: value });
           return;
         }
 
@@ -182,7 +206,7 @@ function PersonalInfoUpdate() {
 
       console.log("Sending PATCH request to update profile...");
       const response = await axios.patch(
-        "https://uniisphere-1.onrender.com/users/profile",
+        "https://uniisphere-backend-latest.onrender.com/users/profile",
         formData,
         {
           headers: {
@@ -195,7 +219,7 @@ function PersonalInfoUpdate() {
 
       if (response.status === 200) {
         console.log("Profile updated successfully");
-        alert("Profile updated successfully!");
+        showSuccessToast("Profile updated successfully!");
         navigate("/profile");
       }
     } catch (err) {
@@ -211,7 +235,7 @@ function PersonalInfoUpdate() {
         });
         
         if (err.response.status === 401) {
-          alert("Session expired or unauthorized. Please log in again.");
+          showErrorToast("Session expired or unauthorized. Please log in again.");
           localStorage.removeItem("authToken");
           localStorage.removeItem("userId");
           navigate("/login");
@@ -219,7 +243,8 @@ function PersonalInfoUpdate() {
           setError("Server error. Please try again later.");
           console.error("Server error details:", err.response.data);
         } else {
-          setError(err.response.data.message || "Failed to update profile. Please try again.");
+          const errorMessage = err.response.data.message || "Failed to update profile. Please try again.";
+          showErrorToast(errorMessage);
         }
       } else if (err.request) {
         console.error("Network error details:", {
@@ -417,6 +442,12 @@ function PersonalInfoUpdate() {
           <DesktopRight />
         </div>
       </div>
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }

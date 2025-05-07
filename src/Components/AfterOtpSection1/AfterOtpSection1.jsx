@@ -68,24 +68,85 @@ function AfterOtpSection1() {
     "Crafting",
     "Gardening",
     "Driving",
+    "Photography",
+    "Reading",
+    "Cooking",
+    "Traveling",
+    "Gaming",
+    "Blogging",
+    "Swimming",
+    "Singing",
+    "Writing",
+    "Cycling",
+    "Hiking",
+    "Yoga",
+    "Coding",
+    "Video Editing",
+    "Public Speaking"
   ];
+  
 
   // State for Step 5 (Skills)
   const [searchSkill, setSearchSkill] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const skillSuggestions = [
+    // Frontend
     "HTML",
     "CSS",
     "JavaScript",
-    "Java",
-    "SQL",
-    "Python",
     "React",
+    "Vue.js",
+    "Angular",
+    "Bootstrap",
+    "Tailwind CSS",
+    "TypeScript",
+  
+    // Backend
     "Node.js",
+    "Express.js",
+    "Java",
+    "Spring Boot",
+    "Python",
+    "Django",
+    "Flask",
+    "PHP",
+    "Laravel",
+    "C#",
+    ".NET",
+  
+    // Databases
+    "SQL",
+    "MySQL",
+    "PostgreSQL",
     "MongoDB",
+    "Oracle",
+  
+    // DevOps & Tools
     "Git",
+    "GitHub",
+    "Docker",
+    "Jenkins",
+    "CI/CD",
+    "AWS",
+    "Azure",
+    "Firebase",
+  
+    // Testing
+    "Jest",
+    "Mocha",
+    "Selenium",
+    "JUnit",
+  
+    // Other
+    "REST APIs",
+    "GraphQL",
+    "JSON",
+    "Linux",
+    "VS Code",
+    "Agile/Scrum",
+    "Data Structures & Algorithms"
   ];
-
+  
   // State for Step 6 (About, Location)
   const [About, setAbout] = useState("");
   const [userLocation, setUserLocation] = useState("");
@@ -310,7 +371,7 @@ function AfterOtpSection1() {
         Gender: Gender || "",
         Skills: selectedSkills,
         Interests: selectedInterests,
-        headline: headline || "",
+        headline: headline ? [headline] : [],
         location: userLocation || "",
         About: About || "",
         college: college || "",
@@ -329,7 +390,7 @@ function AfterOtpSection1() {
       console.log("Profile data being sent:", logData);
 
       const response = await axios.post(
-        "https://uniisphere-1.onrender.com/auth/completeProfile",
+        "https://uniisphere-backend-latest.onrender.com/auth/completeProfile",
         userData,
         {
           headers: {
@@ -342,7 +403,7 @@ function AfterOtpSection1() {
 
       console.log("Profile completion successful:", response.data);
 
-      // Extract userId from response if provided, fallback to username
+      // Extract userId from response if provided, W to username
       const returnedUserId =
         response.data.userId || response.data.id || username;
       setUserId(returnedUserId);
@@ -382,8 +443,7 @@ function AfterOtpSection1() {
 
   // Interest and Skill Handlers
   const handleInterestSelect = (interest) => {
-    if (selectedInterests.includes(interest) || selectedInterests.length >= 5)
-      return;
+    if (selectedInterests.includes(interest)) return; // Prevent duplicates
     setSelectedInterests([...selectedInterests, interest]);
     setSearchInterest("");
   };
@@ -562,21 +622,21 @@ function AfterOtpSection1() {
         />
       </Form.Group>
       <Form.Group controlId="tenthschool" className="mb-3">
-        <Form.Label>10Th School</Form.Label>
+        <Form.Label>10th School</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter your 10Th School name"
+          placeholder="Enter your 10th School name"
           value={tenthschool}
-          onChange={(e) => tenthschool(e.target.value)}
+          onChange={(e) => setTenthschool(e.target.value)}
         />
       </Form.Group>
       <Form.Group controlId="twelveSchool" className="mb-3">
-        <Form.Label>12Th School</Form.Label>
+        <Form.Label>12th School</Form.Label>
         <Form.Control
           type="text"
           placeholder="Enter your 12th School name"
           value={twelveSchool}
-          onChange={(e) => twelveSchool(e.target.value)}
+          onChange={(e) => setTwelveSchool(e.target.value)}
         />
       </Form.Group>
       <Form.Group controlId="degree" className="mb-3">
@@ -605,7 +665,7 @@ function AfterOtpSection1() {
             placeholder="Enter start year"
             value={startYear}
             onChange={(e) => setStartYear(e.target.value)}
-            min="1900"
+            min="2000"
             max={new Date().getFullYear()}
           />
         </Form.Group>
@@ -616,7 +676,7 @@ function AfterOtpSection1() {
             placeholder="Enter end year"
             value={endYear}
             onChange={(e) => setEndYear(e.target.value)}
-            min="1900"
+            min="2000"
             max={new Date().getFullYear() + 10}
           />
         </Form.Group>
@@ -658,7 +718,7 @@ function AfterOtpSection1() {
           />
           <span className="search-icon">🔍</span>
         </div>
-        <p>Select up to 5 things which you are interested in.</p>
+        <p>Select any interests you have.</p>
       </Form.Group>
       <div className="interest-suggestions">
         {interestSuggestions
@@ -673,7 +733,6 @@ function AfterOtpSection1() {
               variant="outline-primary"
               className="interest-btn"
               onClick={() => handleInterestSelect(interest)}
-              disabled={selectedInterests.length >= 5}
             >
               {interest}
             </Button>
@@ -778,7 +837,7 @@ function AfterOtpSection1() {
 
   const renderSixthStep = () => (
     <Form onSubmit={handleSixthStepSubmit}>
-      <Form.Group controlId="About" className="mb-3">
+      <Form.Group control XSS="About" className="mb-3">
         <Form.Label>About*</Form.Label>
         <Form.Control
           as="textarea"

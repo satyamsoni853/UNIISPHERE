@@ -11,6 +11,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Toast from '../Common/Toast';
 
 function Interset() {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ function Interset() {
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
   
   useEffect(() => {
     const handleResize = () => {
@@ -41,7 +45,7 @@ function Interset() {
         }
 
         const response = await axios.get(
-          `https://uniisphere-1.onrender.com/users/profile`,
+          `https://uniisphere-backend-latest.onrender.com/api/users/profile`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -53,7 +57,7 @@ function Interset() {
           setSelectedInterests(response.data.interests);
         }
       } catch (error) {
-        console.error("Error fetching user interests:", error);
+        showErrorToast("Error fetching user interests. Please try again.");
       }
     };
 
@@ -105,13 +109,24 @@ function Interset() {
     });
   };
 
+  const showErrorToast = (message) => {
+    setToastMessage(message);
+    setToastType('error');
+    setShowToast(true);
+  };
+
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
+
   const handleSave = async () => {
     if (selectedInterests.length === 0) {
-      alert("Please select at least one interest to save.");
+      showErrorToast("Please select at least one interest to save.");
       return;
     }
 
-    setLoading(true);
     try {
       const authToken = localStorage.getItem("AuthToken") || localStorage.getItem("authToken");
       const userId = localStorage.getItem("userId") || localStorage.getItem("LoginuserId");
@@ -120,13 +135,8 @@ function Interset() {
         throw new Error("User not authenticated. Please log in.");
       }
 
-      console.log("Sending request with:", {
-        userId,
-        interests: selectedInterests
-      });
-
       const response = await axios.patch(
-        `https://uniisphere-1.onrender.com/users/profile`,
+        `https://uniisphere-backend-latest.onrender.com/api/users/profile`,
         {
           userId: userId,
           interests: selectedInterests
@@ -139,28 +149,20 @@ function Interset() {
         }
       );
 
-      console.log("Response:", response.data);
-
-      if (response.status === 200) {
-        alert("Interests saved successfully!");
-        navigate(`/ProfileEditSection/${userId}`);
-      }
+      showSuccessToast("Interests saved successfully!");
+      navigate(`/ProfileEditSection/${userId}`);
     } catch (error) {
-      console.error("Error saving interests:", error);
-      
       if (error.response?.status === 401) {
-        alert("Your session has expired. Please log in again.");
+        showErrorToast("Your session has expired. Please log in again.");
         localStorage.removeItem("AuthToken");
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
         localStorage.removeItem("LoginuserId");
         navigate("/userlogin");
       } else {
-        const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Failed to save interests. Please try again.';
-        alert(errorMessage);
+        const errorMessage = error.response?.data?.message || "Failed to save interests. Please try again.";
+        showErrorToast(errorMessage);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -297,6 +299,12 @@ function Interset() {
           <DesktopRight />
         </div>
       </div>
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }

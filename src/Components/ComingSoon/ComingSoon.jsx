@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ComingSoon.css';
+import Background from '../Background/Background';
 
 function ComingSoon() {
   const [email, setEmail] = useState('');
@@ -50,6 +51,7 @@ function ComingSoon() {
 
   return (
     <div className="ComingSoon-container">
+      <Background/>
       <div className="ComingSoon-particles"></div>
       <div className="ComingSoon-content">
         <h1 className="ComingSoon-title ComingSoon-glow ComingSoon-bounce">

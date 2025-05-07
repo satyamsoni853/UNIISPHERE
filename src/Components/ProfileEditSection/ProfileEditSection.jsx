@@ -15,6 +15,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import MobileFooter from "../Mobilefooter/MobileFooter";
 
 function ProfileEditSection() {
+  console.log("ProfileEditSection component mounted");
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [userId, setUserId] = useState(null);
@@ -31,6 +32,8 @@ function ProfileEditSection() {
   const [skills, setSkills] = useState([]);
   const [interests, setInterests] = useState([]);
   const [education, setEducation] = useState([]);
+  const [class10Board, setClass10Board] = useState("");
+  const [class12Board, setClass12Board] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullAboutText, setFullAboutText] = useState(
     "Passionate developer with experience in web and mobile development."
@@ -41,11 +44,11 @@ function ProfileEditSection() {
   const skillsRef = useRef(null);
   const interestsRef = useRef(null);
   const bgGradients = [
-    "linear-gradient(to bottom, #44A9B133, #33FF0033)",
-    "linear-gradient(to bottom, #DC4A4533, #E1C86B33)",
-    "linear-gradient(to bottom, #AC89A333, #67646433)",
-    "linear-gradient(to bottom, #44A9B133, #75757533)",
+    "linear-gradient(180deg, rgba(4, 230, 255, 0.04) 0%, rgba(255, 217, 0, 0.04) 88.89%)",
+    "linear-gradient(180deg, rgba(220, 74, 69, 0.06) 0%, rgba(225, 200, 107, 0.06) 100%)",
+    "linear-gradient(180deg, rgba(172, 137, 163, 0.06) 0%, rgba(103, 100, 100, 0.06) 100%)",
   ];
+  
 
   // Handle window resize for mobile detection
   useEffect(() => {
@@ -65,23 +68,23 @@ function ProfileEditSection() {
       }
       hasFetched.current = true;
 
-      console.log("Fetching user data...");
+      console.log("Starting to fetch user data...");
       try {
         const storedUserId = localStorage.getItem("userId");
         const authToken = localStorage.getItem("authToken");
 
+        console.log("Stored User ID:", storedUserId);
+        console.log("Auth Token exists:", !!authToken);
+
         if (!storedUserId || !authToken) {
-          throw new Error("User ID not found in localStorage.");
+          throw new Error("User ID or Auth Token not found in localStorage.");
         }
 
         setUserId(storedUserId);
-        console.log(
-          "Profile Edit Section The stored user ID is:",
-          storedUserId
-        );
+        console.log("Making API request to:", `https://uniisphere-backend-latest.onrender.com/api/users/profile/${storedUserId}`);
 
         const response = await axios.get(
-          `https://uniisphere-1.onrender.com/users/profile/${storedUserId}`,
+          `https://uniisphere-backend-latest.onrender.com/api/users/profile/${storedUserId}`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -92,15 +95,19 @@ function ProfileEditSection() {
         console.log("API Response:", response.data);
 
         if (response.status === 200) {
-          setUserData(response.data);
-          logUserDetails(response.data);
+          const userData = response.data.user || response.data;
+          setUserData(userData);
+          console.log("User data set successfully:", userData);
         }
       } catch (err) {
         console.error("Error fetching user data:", err);
         console.error("Error response:", err.response?.data);
+        console.error("Error status:", err.response?.status);
+        console.error("Error headers:", err.response?.headers);
         setError("Failed to load data. Please try again later.");
       } finally {
         setLoading(false);
+        console.log("Fetch completed, loading set to false");
       }
     };
 
@@ -121,9 +128,10 @@ function ProfileEditSection() {
     console.log("Location:", user.location);
     console.log("Gender:", user.Gender);
     console.log("Skills:", user.Skills || user.skills);
+    console.log("Interests (raw):", user.Interests);
+    console.log("Interests (lowercase):", user.interests);
     console.log("Python:", user.python);
     console.log("About:", user.About || user.about);
-    console.log("Interests:", user.Interests || user.interests);
     console.log("Work or Project:", user.workorProject);
     console.log("College:", user.college);
     console.log("Degree:", user.degree);
@@ -135,14 +143,50 @@ function ProfileEditSection() {
   useEffect(() => {
     if (userData) {
       const user = Array.isArray(userData) ? userData[0] : userData;
-      setProfilePic(user.profilePictureUrl || image); // Use profilePictureUrl
+      
+      // Debug logging
+      console.log("Processing user data for skills and interests:");
+      console.log("Raw skills:", user.Skills);
+      console.log("Raw interests:", user.Interests);
+      
+      // Ensure we handle arrays properly for both Skills and Interests
+      const processArray = (data) => {
+        if (!data) return [];
+        if (Array.isArray(data)) return data;
+        if (typeof data === 'string') {
+          try {
+            // Try parsing if it's a JSON string
+            const parsed = JSON.parse(data);
+            return Array.isArray(parsed) ? parsed : [];
+          } catch (e) {
+            // If not JSON, split by comma if it's a comma-separated string
+            return data.split(',').map(item => item.trim()).filter(Boolean);
+          }
+        }
+        return [];
+      };
+
+      // Set basic profile info
+      setProfilePic(user.profilePictureUrl || image);
       setCollabs(user.collabs || 10);
-      setConnections(user._count?.connections1 || 50); // Adjust based on API response
+      setConnections(user._count?.connections1 || 50);
       setName(user.username || "John Doe");
       setTitle(user.headline || "Building Uniisphere|Masters Union");
       setAddress(user.location || "New York, USA");
-      setSkills(user.Skills || user.skills || []);
-      setInterests(user.Interests || user.interests || []);
+      
+      // Process skills and interests
+      const processedSkills = processArray(user.Skills);
+      const processedInterests = processArray(user.Interests);
+      
+      console.log("Processed skills:", processedSkills);
+      console.log("Processed interests:", processedInterests);
+      
+      setSkills(processedSkills);
+      setInterests(processedInterests);
+      
+      // Set education data
+      setClass10Board(user.class10Board || "");
+      setClass12Board(user.class12Board || "");
       setEducation(user.education || []);
       setFullAboutText(user.About || user.about || "Passionate developer...");
     }
@@ -182,7 +226,7 @@ function ProfileEditSection() {
         console.log("Authorization header:", tokenWithBearer);
 
         const response = await axios.patch(
-          "https://uniisphere-1.onrender.com/users/profile",
+          "https://uniisphere-backend-latest.onrender.com/api/users/profile",
           formData,
           {
             headers: {
@@ -390,7 +434,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollLeft(skillsRef)}
                     >
-                      <IoIosArrowBack />
+                      <IoIosArrowBack className="Followers-middle-section-2-ArrowBack" />
                     </button>
                     <div
                       className="Followers-middle-section-2-skill-list-public"
@@ -412,7 +456,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollRight(skillsRef)}
                     >
-                      <IoIosArrowForward />
+                      {/* <IoIosArrowForward /> */}
                     </button>
                   </div>
                 </div>
@@ -441,7 +485,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollLeft(interestsRef)}
                     >
-                      <IoIosArrowBack />
+                      <IoIosArrowBack className="Followers-middle-section-2-ArrowBack" />
                     </button>
                     <div
                       className="Followers-middle-section-2-skill-list-public"
@@ -463,7 +507,7 @@ function ProfileEditSection() {
                       className="Followers-middle-section-2-scroll-btn"
                       onClick={() => scrollRight(interestsRef)}
                     >
-                      <IoIosArrowForward />
+                      {/* <IoIosArrowForward /> */}
                     </button>
                   </div>
                 </div>
@@ -477,10 +521,12 @@ function ProfileEditSection() {
                     </Link>
                   </div>
                   <div className="Followers-middle-section-2-buttons-section-public">
-                    <button className="mit">MIT</button>
-                    <button className="harvard">Harvard</button>
-                    <button className="tenth">10th</button>
-                    <button className="twelfth">12th</button>
+                    {class10Board && (
+                      <button className="tenth">{class10Board}</button>
+                    )}
+                    {class12Board && (
+                      <button className="twelfth">{class12Board}</button>
+                    )}
                     {isMobile && <MobileFooter />}
                   </div>
                 </div>

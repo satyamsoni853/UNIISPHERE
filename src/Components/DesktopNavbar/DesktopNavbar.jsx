@@ -108,7 +108,7 @@ function DesktopNavbar() {
   const [events] = useState([]);
   const [news] = useState([]);
 
-  // Click outside handler to close the dropdown
+  // Click outside handler to close dropdowns
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -116,6 +116,9 @@ function DesktopNavbar() {
         !searchContainerRef.current.contains(event.target)
       ) {
         setShowResults(false);
+      }
+      if (!event.target.closest(".connections-card") && !event.target.closest(".desktop-icon")) {
+        setShowDropdown(false);
       }
     };
 
@@ -130,6 +133,9 @@ function DesktopNavbar() {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         setShowResults(false);
+        setShowDropdown(false);
+        setShowNotificationDropdown(false);
+        setIsUserDropdownOpen(false);
       }
     };
 
@@ -326,6 +332,7 @@ function DesktopNavbar() {
   const handleUserIconClick = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
     setShowNotificationDropdown(false);
+    setShowDropdown(false);
   };
 
   const handleSignOut = () => {
@@ -353,17 +360,18 @@ function DesktopNavbar() {
     );
   };
 
-  // Handle clender icon click (placeholder)
+  // Handle calendar icon click
   const handleClenderClick = () => {
     setIsUserDropdownOpen(false);
     setShowDropdown(false);
     setShowNotificationDropdown(false);
     setActiveIcon((prev) => (prev === "clender" ? null : "clender"));
-    // Add clender functionality here, e.g., navigate("/calendar") or open a calendar modal
+    // Add calendar functionality here, e.g., navigate("/calendar") or open a calendar modal
   };
 
   // Navigation icon handlers
   const handleIconClick = (iconName) => {
+    console.log(`Icon clicked: ${iconName}, showDropdown: ${showDropdown}`); // Debug log
     setActiveIcon(activeIcon === iconName ? null : iconName);
     setShowNotificationDropdown(false);
     switch (iconName) {
@@ -371,7 +379,7 @@ function DesktopNavbar() {
         navigate("/view");
         break;
       case "network":
-        // navigate("/network");
+        setShowDropdown((prev) => !prev);
         break;
       case "add":
         setShowUploadSection(true);
@@ -481,45 +489,51 @@ function DesktopNavbar() {
   return (
     <div className="desktop-navbar-1">
       {/* Navigation Icons */}
-      {activeIcon === "home" ? (
-        <IoHomeOutline
-          className="desktop-icon"
-          onClick={() => handleIconClick("home")}
-          title="Home"
-        />
-      ) : (
-        <IoHome
-          className="desktop-icon"
-          onClick={() => handleIconClick("home")}
-          title="Home"
-        />
-      )}
-      <img
-        src={activeIcon === "network" ? NetworkWhite : NetworkBlack}
-        alt="Network"
-        className="desktop-icon"
-        onClick={() => {
-          setShowDropdown((prev) => !prev);
-          setShowNotificationDropdown(false);
-          handleIconClick("network");
-        }}
-      />
-      <img
-        src={activeIcon === "add" ? AddWhite : AddBlack}
-        alt="Add"
-        className="desktop-icon"
-        onClick={() => handleIconClick("add")}
-      />
-      <div className="notification-icon-container">
-        {activeIcon === "notifications" ? (
-          <IoMdNotificationsOutline
+      <div className="icon-wrapper">
+        {activeIcon === "home" ? (
+          <IoHome
             className="desktop-icon"
+            size={24}
+            onClick={() => handleIconClick("home")}
+            title="Home"
+          />
+        ) : (
+          <IoHomeOutline
+            className="desktop-icon"
+            size={24}
+            onClick={() => handleIconClick("home")}
+            title="Home"
+          />
+        )}
+      </div>
+      <div className="icon-wrapper">
+        <img
+          src={activeIcon === "network" ?   NetworkBlack:NetworkWhite}
+          alt="Explore"
+          className="desktop-icon"
+          onClick={() => handleIconClick("network")}
+        />
+      </div>
+      <div className="icon-wrapper">
+        <img
+          src={activeIcon === "add" ?   AddBlack:AddWhite}
+          alt="Add"
+          className="desktop-icon"
+          onClick={() => handleIconClick("add")}
+        />
+      </div>
+      <div className="notification-icon-container icon-wrapper">
+        {activeIcon === "notifications" ? (
+          <IoNotifications
+            className="desktop-icon"
+            size={24}
             onClick={handleNotificationClick}
             title="Notifications"
           />
         ) : (
-          <IoNotifications
+          <IoMdNotificationsOutline
             className="desktop-icon"
+            size={24}
             onClick={handleNotificationClick}
             title="Notifications"
           />
@@ -571,18 +585,20 @@ function DesktopNavbar() {
           </div>
         )}
       </div>
-      <img
-        src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
-        alt="Calendar"
-        className="desktop-icon"
-        onClick={handleClenderClick}
-        title="Calendar"
-      />
+      <div className="icon-wrapper">
+        <img
+          src={activeIcon === "clender" ? ClenderWhite : ClenderBlack}
+          alt="Calendar"
+          className="desktop-icon"
+          onClick={handleClenderClick}
+          title="Calendar"
+        />
+      </div>
 
       {/* User Dropdown */}
       <div className="user-icon-container">
         <img
-          src={userProfileImage || UserIcon}
+          src={localStorage.getItem("profilePicture")}
           alt="User"
           className="desktop-user-icon"
           onClick={handleUserIconClick}
@@ -592,14 +608,14 @@ function DesktopNavbar() {
           <div className="self-profile-card">
             <div className="self-profile-header">
               <img
-                src={userProfileImage || "https://via.placeholder.com/50"}
+                src={localStorage.getItem("profilePicture") || "https://via.placeholder.com/50"}
                 alt="Profile"
                 className="self-profile-pic"
                 onError={(e) => (e.target.src = UserIcon)}
               />
               <div className="self-profile-info">
                 <h2 className="self-profile-name">
-                  {username || "User Name"}
+                  {localStorage.getItem("username") || "User Name"}
                 </h2>
                 <p className="self-profile-label">Position</p>
               </div>
@@ -646,32 +662,52 @@ function DesktopNavbar() {
       {/* Network Dropdown */}
       {showDropdown && (
         <div className="connections-card">
-          <div className="connections-item">
+          <div className="connections-item connections-card-1">
             <Link to="/NetworkPage" className="connection-link">
               Connection
             </Link>
           </div>
           <div className="connections-item">
-            <Link to="/EduValt" className="desktop-connection-link">
-              Edu-vault
+            <Link to="/Books" className="connection-link">
+              Eduvault
             </Link>
           </div>
-          <div className="connections-item active">
-            <Link to="/HumanLibGuidelines" className="desktop-connection-link">
+          <div className="connections-item">
+            <Link to="/HumanLibGuidelines" className="connection-link">
               Human Library
             </Link>
           </div>
           <div className="connections-item">
-            <Link to="/Guiednest" className="desktop-connection-link">
-              Guidance
+            <Link to="/MentorSection" className="connection-link">
+              MentorShip
             </Link>
           </div>
-          <div className="connections-item">NGOs</div>
           <div className="connections-item">
-            <Link to="/libblog" className="desktop-connection-link">
+            <Link to="/coming-soon" className="connection-link">
+              Skillup
+            </Link>
+          </div>
+          <div className="connections-item">
+            <Link to="/coming-soon" className="connection-link">
+              Freelancing
+            </Link>
+          </div>
+          <div className="connections-item">
+            <Link to="/coming-soon" className="connection-link">
+              Intern Zone
+            </Link>
+          </div>
+          <div className="connections-item">
+            <Link to="/coming-soon" className="connection-link">
+              Events
+            </Link>
+          </div>
+          <div className="connections-item">
+            <Link to="/libblog" className="connection-link">
               Blog
             </Link>
           </div>
+       
         </div>
       )}
 
@@ -707,7 +743,7 @@ function DesktopNavbar() {
                       onClick={() => handleProfileClick(item.id)}
                     >
                       <img
-                        src={item.profilePictureUrl || UserIcon}
+                        src={localStorage.getItem("profilePicture")}
                         alt={item.name || item.username}
                         className="recent-search-avatar"
                         loading="lazy"
@@ -883,7 +919,7 @@ function DesktopNavbar() {
                     <div key={index} className="media-item">
                       {media.mediaType === "image" ? (
                         <img
-                          className="imageANdVideo"
+                          className="imageAndVideo"
                           src={media.previewURL}
                           alt="Uploaded media"
                         />

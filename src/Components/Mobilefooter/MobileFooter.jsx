@@ -38,7 +38,7 @@ function MobileFooter() {
       }
       try {
         const response = await axios.get(
-          "https://uniisphere-1.onrender.com/posts",
+          "https://uniisphere-backend-latest.onrender.com/posts",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -155,7 +155,7 @@ function MobileFooter() {
       formData.append("tags", mentions.join(","));
 
       const postResponse = await axios.post(
-        "https://uniisphere-1.onrender.com/posts",
+        "https://uniisphere-backend-latest.onrender.com/posts",
         formData,
         {
           headers: {

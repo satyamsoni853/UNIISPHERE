@@ -79,7 +79,7 @@ const Blog = () => {
 
         // Fetch blogs
         const blogResponse = await axios.get(
-          `https://uniisphere-1.onrender.com/api/allBlogs`,
+          `https://uniisphere-1.onrender.com/api/blogs/allBlogs`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -110,7 +110,7 @@ const Blog = () => {
             // Fetch profile from API
             try {
               const profileResponse = await axios.get(
-                `https://uniisphere-1.onrender.com/getProfile/profile/?userId=${authorId}`,
+                `https://uniisphere-1.onrender.com/api/users/profile/?userId=${authorId}`,
                 {
                   headers: {
                     Authorization: `Bearer ${authToken}`,

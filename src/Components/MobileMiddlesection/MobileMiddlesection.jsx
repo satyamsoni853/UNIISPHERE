@@ -21,6 +21,7 @@ import InstagramIcon from "./insta.svg";
 import linkIcon from "./Link.svg";
 import xIcon from "./X.svg";
 import { SearchIcon } from "lucide-react";
+import Toast from '../Common/Toast';
 
 function MobileMiddleSection() {
   const [showComment, setShowComment] = useState(false);
@@ -51,6 +52,9 @@ function MobileMiddleSection() {
   const imageModalRef = useRef(null); // For image modal click outside
   const location = useLocation();
   const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
 
   const userData = {
     profilePicture: profilePhoto,
@@ -448,18 +452,17 @@ function MobileMiddleSection() {
     }
   };
 
+  const showSuccessToast = (message) => {
+    setToastMessage(message);
+    setToastType('success');
+    setShowToast(true);
+  };
+
   const handleCopyLink = () => {
     const post = posts[activeSharePostIndex];
     const postUrl = `${window.location.origin}/post/${post._id}`;
-    navigator.clipboard
-      .writeText(postUrl)
-      .then(() => {
-        alert("Link copied to clipboard!");
-      })
-      .catch((err) => {
-        console.error("Failed to copy link:", err);
-        setShareError("Failed to copy link.");
-      });
+    navigator.clipboard.writeText(postUrl);
+    showSuccessToast("Link copied to clipboard!");
   };
 
   const handleShareToWhatsApp = () => {
@@ -514,7 +517,7 @@ function MobileMiddleSection() {
         }
       );
       console.log("Save post response:", response.data);
-      alert("Post saved successfully!");
+      showSuccessToast("Post saved successfully!");
     } catch (error) {
       console.error("Save post error:", error.response?.data || error);
       setShareError(
@@ -1321,6 +1324,12 @@ function MobileMiddleSection() {
           </div>
         </div>
       )}
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type={toastType}
+      />
     </div>
   );
 }

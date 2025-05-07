@@ -230,6 +230,7 @@ background: linear-gradient(to bottom, #ACCDF9, #BAFABC);
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  
   /* background: linear-gradient(45deg, #44A9B1 0%, #A3D8DC 50%, #E1C86B 50%, #F1E2A0 100%); */
   background-color: white;
   padding: 5px;

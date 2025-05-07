@@ -14,8 +14,8 @@
 }
 
 .desktop-icon {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   margin: 0 10px;
   cursor: pointer;
 }
@@ -234,24 +234,60 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-evenly;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  
 }
 .connections-card :nth-child(1) {
+  margin-top: 15px;
+
+  /* box-shadow: 0 2px 5px 2px #a7e1eb7b; */
+}
+.connections-card-1{
+ 
   box-shadow: 0 2px 5px 2px #a7e1eb7b;
+  padding-bottom: 10px;
 }
 .connections-card :nth-child(2) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px rgba(233, 149, 198, 0.429);
+  padding-bottom: 10px;
 }
 .connections-card :nth-child(3) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px #474fe96a;
+  padding-bottom: 10px;
 }
 .connections-card :nth-child(4) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px rgba(21, 75, 84, 0.338);
+  padding-bottom: 10px;
 }
 .connections-card :nth-child(5) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px #8d61e38c;
+  padding-bottom: 10px;
 }
 .connections-card :nth-child(6) {
+  margin-top: 15px;
   box-shadow: 0 2px 5px 2px #73d2868c;
+  padding-bottom: 10px;
+}
+.connections-card :nth-child(7) {
+  margin-top: 15px;
+  box-shadow: 0 2px 5px 2px #896c8d8c;
+  padding-bottom: 10px;
+}
+.connections-card :nth-child(8) {
+  margin-top: 15px;
+  box-shadow: 0 2px 5px 2px #8676be8c;
+  padding-bottom: 10px;
+}
+.connections-card :nth-child(9) {
+  margin-top: 15px;
+  box-shadow: 0 2px 5px 2px #3687618c;
+  padding-bottom: 10px;
 }
 
 .connections-item {
