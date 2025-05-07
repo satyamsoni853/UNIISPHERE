@@ -10,6 +10,7 @@ import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
 import EduValt from "./Components/EduValt/EduValt.jsx";
 import LibBlog from "./Components/Libblog/LibBlog.jsx";
 import Guiednest from "./Components/Guiednest/Guiednest.jsx";
+import ComingSoon from "./Components/ComingSoon/ComingSoon.jsx";
 
 // Lazy load other components
 const View = lazy(() => import("./Components/View/View.jsx"));
@@ -105,6 +106,7 @@ function App() {
             <Route path="/EduValt" element={<EduValt/>} />
             <Route path="/Guiednest" element={<Guiednest />} />
             <Route path="/libblog" element={< LibBlog />} />
+            <Route path="/comingsoon" element={<ComingSoon/>} />
           </Routes>
         </Suspense>
       </div>
